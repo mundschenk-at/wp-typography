@@ -68,7 +68,6 @@ There is an error in the core of WordPress (as of version 2.8.1) that uses the w
 
 This plugin is an official replacement for the [wp-Typogrify plugin](http://wordpress.org/extend/plugins/wp-typogrify/).  Please uninstall wp-Typogrify and install wp-Typography in its place.
 
-
 Remember, many more FAQs are are addressed the [wp-Typography website](http://kingdesk.com/projects/wp-typography-faqs/ "wp-Typography FAQs").
 
 
