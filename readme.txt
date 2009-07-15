@@ -64,7 +64,7 @@ If you are uncomfortable editing your theme's code, you may alternatively go to 
 
 There is an error in the core of WordPress (as of version 2.8.1) that uses the wrong function to provide post titles for secondary RSS feeds (like RSS feeds for single page comments or categories.  This error will return any HTML tags used for CSS Hooks or character styling, and the tags will be visible when someone clicks on the RSS icon in the address bar of their browser.  If this bothers you, your only option (until WordPress corrects this error) is to disable all typographic processing in your page titles as described in the paragraph above. Updates on this WordPress bug may be followed [here](https://core.trac.wordpress.org/ticket/10410).
 
-== Does this plugin work with wp-Typogrify? ==
+= Does this plugin work with wp-Typogrify? =
 
 This plugin is an official replacement for the [wp-Typogrify plugin](http://wordpress.org/extend/plugins/wp-typogrify/).  Please uninstall wp-Typogrify and install wp-Typography in its place.
 
