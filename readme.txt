@@ -55,7 +55,7 @@ FAQs are maintained at the [wp-Typography website](http://kingdesk.com/projects/
 
 This issue comes up so frequently, we will republish it here:
 
-=This plugin breaks post title links.  What gives?=
+= This plugin breaks post title links.  What gives? =
 
 More likely than not, your WordPress theme is using an improper function to set the title attribute of your heading's link.  It is probably using the `the_title()` function, which delivers the post title *after* filtering.  It should be using `the_title_attribute()` which delivers the post title *before* filtering.  Change out this function throughout your theme when it is used inside of an HTML tag, and the problem should go away.
 
