@@ -72,5 +72,65 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
-= 1.0 =
-initial release
+= 1.0 - July 15, 2009 =
+
+* Changed default settings from all options being enabled to a minimal set being enabled.
+* Added test to phpTypography methods `process()` and `process_feed()` to skip processing if `$isTitle` parameter is `TRUE` and `h1` or `h2` is an excluded HTML tag
+
+
+= 1.0 beta 9 - July 14, 2009 =
+
+* Added catch-all quote handling, now any quotes that escape previous filters will be assumed to be closing quotes
+* A section of resource links were added to the wp-Typography admin settings page.
+
+= 1.0 beta 8 - July 13, 2009 =
+
+* Changed thin space injection behavior so that for text such as "...often-always?-judging...", the second dash will be wrapped in thin spaces
+* Corrected error where fractions were not being styled because of a zero-space insertion with the wrap hard hyphens functionality
+* Added default class to exclude: `noTypo`
+* Changed order of admin page options, moving hyphenation options toward the top
+
+= 1.0 beta 7 - July 10, 2009 =
+
+* Added "/" as a valid word character so we could capture "this/that" as a word for processing (similar to "mother-in-law")
+* Corrected error where characters from the Latin 1 Supplement Block were not recognized as word characters
+* Corrected smart quote handling for strings of numbers
+* Added smart guillemet conversion: `&lt;&lt;` and `&gt;&gt;` to `&laquo;` and `&raquo;`
+* Added smart Single Low 9 Quote conversion as part of smart quotes: comma followed by non-space becomes Single Low 9 Quote
+* Added Single Low 9 Quote, Double Low 9 Quote and &raquo; to style_initial_character functionality
+* Added a new phpTypography method smart_math that assigns proper characters to minus, multiplication and division characters
+* Depreciated the phpTypography method smart_multiplication in favor of smart_math
+* Cleaned up some smart quote functionality
+* Added ability to wrap after "/" if set_wrap_hard_hyphen is TRUE (like "this/that")
+* Titles were not being properly processed, this has been corrected
+
+= 1.0 beta 6 - July 9, 2009 =
+
+* Critical bug fix:  RSS feeds were being disabled by previous versions.  This has been corrected.
+
+= 1.0 beta 5 - July 8, 2009 =
+
+* Corrected error where requiring  Em/En dash thin spacing "word-" would become "word &ndash;" instead of "word&ndash;"
+* Corrected default settings
+* Alphabetically sorted languages returned with get_languages() method
+* Added a "Restore Defaults" option to the admin page
+
+
+= 1.0 beta 4 - July 7, 2009 =
+
+* Added default encoding value to smart_quote handling to avoid PHP warning messages
+* Disabled processing of category titles using wp_list_categories()
+
+= 1.0 beta 3 - July 6, 2009 =
+
+* Corrected curling quotes at the end of block level elements
+* Disabled processing of page titles (some browsers did not properly handle soft hyphens) reverts to wp-texturize for titles.
+
+= 1.0 beta 2 - July 6, 2009 =
+
+* Corrected multibyte character conflict in smart-quote handling that caused infrequent dropping of text
+* Thin space injection included for en-dashes
+
+= 1.0 beta 1 - July 3, 2009 =
+
+* Initial release
