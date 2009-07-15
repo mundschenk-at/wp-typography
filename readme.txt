@@ -5,7 +5,7 @@ Requires at least: 2.7
 Tested up to: 2.8.1
 Stable tag: trunk
 
-Improve your web typography with: hyphenation, space control, intelligent character replacement, and (4) CSS hooks.
+Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
 == Description ==
 
