@@ -398,10 +398,8 @@ class wpTypography {
 		if($this->typoSettings['typoSmartCharacters']) {
 			$this->phpTypo->set_smart_dashes($this->typoSettings['typoSmartDashes']);
 			$this->phpTypo->set_smart_ellipses($this->typoSettings['typoSmartEllipses']);
-			if($this->typoSettings['typoSmartMath']) {
-				$this->phpTypo->set_smart_math(TRUE);
-				$this->phpTypo->set_smart_exponents(TRUE);
-			}
+			$this->phpTypo->set_smart_math($this->typoSettings['typoSmartMath']);
+			$this->phpTypo->set_smart_exponents($this->typoSettings['typoSmartMath']); // note smart_exponents was grouped with smart_math for the WordPress plugin, but does not have to be done that way for other ports
 			$this->phpTypo->set_smart_fractions($this->typoSettings['typoSmartFractions']);
 			$this->phpTypo->set_smart_ordinal_suffix($this->typoSettings['typoSmartOrdinals']);
 			$this->phpTypo->set_smart_marks($this->typoSettings['typoSmartMarks']);
