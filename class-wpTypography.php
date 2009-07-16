@@ -190,7 +190,7 @@ class wpTypography {
 			),
 			"typoSmartMath" => array(
 				"section"		=> "character-replacement",
-				"labelAfter" 	=> "Transform fractions [ <samp>1/2</samp> ] to  pretty fractions [ <samp><sup>1</sup>&#8260;<sub>2</sub></samp> ] exponents [ <samp>3^2</samp> ] to pretty exponents [ <samp>3<sup>2</sup></samp> ] and math symbols [ <samp>(2x6)/3=4</samp> ] to correct symbols [ <samp>(2&#215;6)&#247;3=4</samp> ].",
+				"labelAfter" 	=> "Transform exponents [ <samp>3^2</samp> ] to pretty exponents [ <samp>3<sup>2</sup></samp> ] and math symbols [ <samp>(2x6)/3=4</samp> ] to correct symbols [ <samp>(2&#215;6)&#247;3=4</samp> ].",
 				"control" 		=> "input",
 				"inputType" 	=> "checkbox",
 				"default" 		=> 0,
