@@ -78,6 +78,13 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
+= 1.0.2 - July 16, 2009 =
+
+* Fixed smart math handling so it can be turned off.
+* Corrected smart math handling to not convert slashes in URLs to division signs
+* Corrected issue where some server settings were throwing a warning in the admin panel for use of file_get_contents()
+
+
 = 1.0.1 - July 15, 2009 =
 
 * Corrected label in admin interface that indicated pretty fractions were part of basic math handling.
