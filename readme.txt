@@ -77,6 +77,10 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
+= 1.0.1 - July 15, 2009 =
+
+* Corrected label in admin interface that indicated pretty fractions were part of basic math handling.
+
 = 1.0 - July 15, 2009 =
 
 * Changed default settings from all options being enabled to a minimal set being enabled.
