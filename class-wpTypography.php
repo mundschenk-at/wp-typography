@@ -211,7 +211,7 @@ class wpTypography {
 			),
 			"typoDashSpacing" => array(
 				"section"		=> "space-control",
-				"labelAfter" 	=> "Force thin spaces between em &amp; en dashes and adjoining words.",
+				"labelAfter" 	=> "Force thin spaces between em &amp; en dashes and adjoining words.  This will display poorly in IE6 with some fonts (like Tahoma).",
 				"control" 		=> "input",
 				"inputType" 	=> "checkbox",
 				"default" 		=> 1,
@@ -308,7 +308,7 @@ class wpTypography {
 				"section"		=> "space-control",
 				"fieldset" 		=> "enable-wrapping",
 				"labelAfter" 	=> "Remove zero-width spaces from IE6.",
-				"helpText" 		=> "IE6 displays mangles zero-width spaces (uses JavaScript).",
+				"helpText" 		=> "IE6 displays mangles zero-width spaces with some fonts like Tahoma (uses JavaScript).",
 				"control" 		=> "input",
 				"inputType" 	=> "checkbox",
 				"default" 		=> 0,
@@ -483,6 +483,9 @@ class wpTypography {
 		add_filter('widget_text', array(&$this, 'process'), 9999);
 		add_filter('widget_title', array(&$this, 'processTitle'), 9999);
 
+		// add IE6 zero-width-space removal
+		if($this->typoSettings['typoRemoveIE6']) add_action('wp_head', array(&$this, 'add_wp_head'));
+
 		return;
 	}
 	
@@ -511,7 +514,7 @@ class wpTypography {
 		return;
 	}
 	function add_options_page() {
-		add_options_page($this->pluginName, $this->pluginName, 9, $this->pluginPath, array(&$this, 'get_admin_page_content'));
+		add_options_page($this->pluginName, $this->pluginName, 9, strtolower($this->pluginName), array(&$this, 'get_admin_page_content'));
 		return;
 	}
 	function add_filter_plugin_action_links($links) {
@@ -522,7 +525,7 @@ class wpTypography {
 		}
 	
 		// Add link "Settings" to the plugin in /wp-admin/plugins.php
-		$settings_link = '<a href="'.$adminurl.'options-general.php?page='.$this->localPluginPath.'">' . __('Settings') . '</a>';
+		$settings_link = '<a href="'.$adminurl.'options-general.php?page='.strtolower($this->pluginName).'">' . __('Settings') . '</a>';
 		array_push($links, $settings_link);
 		return $links;
 	}
@@ -844,5 +847,13 @@ class wpTypography {
 	}
 	function add_action_admin_notices_charsetIncompatible() { 
 		echo '<div class="error"><p>'.__('The activated plugin ').'<strong>'.$this->pluginName.'</strong>'.__(' requires your blog use the UTF-8 character encoding.  You have set your blogs encoding to ').get_bloginfo('charset').__('. Please deactivate this plugin, or ').'<a href="/wp-admin/options-reading.php">'.__('change your character encoding to UTF-8').'</a>.'.'</p></div>'; 
+	}
+	function add_wp_head() {
+		echo "<!--[if lt IE 7]>\r\n";
+		echo "<script type='text/javascript'>";
+		echo "function stripZWS() { document.body.innerHTML = document.body.innerHTML.replace(/\u200b/gi,''); }";
+		echo "window.onload = stripZWS;";
+		echo "</script>\r\n";
+		echo "<![endif]-->\r\n";
 	}
 }
