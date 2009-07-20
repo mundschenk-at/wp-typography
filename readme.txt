@@ -80,6 +80,7 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 = 1.1 - July 20, 2009 =
 
+* took advantage of new feature in PHP Typography 1.1 where we could just set user settings without first setting phpTypography defaults for a slight performance improvement.
 * Upgraded to [PHP Typography 1.1](http://kingdesk.com/projects/php-typography/)
 
 = 1.0.4 - July 20, 2009 =
