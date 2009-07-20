@@ -394,7 +394,7 @@ class wpTypography {
 		}
 	
 		// dynamically generate the list of hyphenation language patterns
-		$this->phpTypo = new phpTypography;
+		$this->phpTypo = new phpTypography(FALSE);
 		$this->adminFormControls['typoHyphenateLanguages']['optionValues'] = $this->phpTypo->get_languages();
 
 		// load configuration variables into our phpTypography class
