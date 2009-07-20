@@ -628,9 +628,8 @@ class wpTypography {
 <div class='wrap'>
 <div id='icon-options-general' class='icon32'><br /></div>
 <h2><?php echo $this->pluginName; ?></h2>
-<div class='updated fade'>
+
 <?php echo $this->get_admin_page_alert(); ?>
-</div><!-- .updated.fade -->
 
 <div id='poststuff' class='metabox-holder'>
 
@@ -721,15 +720,17 @@ class wpTypography {
 	}
 	
 	function get_admin_page_alert() {
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_HEADER, 0);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //Set curl to return the data instead of printing it to the browser.
-		curl_setopt($ch, CURLOPT_URL, $this->remoteFileURL);
-		$content = curl_exec($ch);
-		curl_close($ch);
-		
+		if(function_exists('curl_init')) {
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_HEADER, 0);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //Set curl to return the data instead of printing it to the browser.
+			curl_setopt($ch, CURLOPT_URL, $this->remoteFileURL);
+			$content = curl_exec($ch);
+			curl_close($ch);
+		}
+				
 		if ($content) {
-			return $content."\r\n";
+			return "<div class='updated fade'>".$content."</div><!-- .updated.fade -->\r\n";
 		}
 		return FALSE;
 	}

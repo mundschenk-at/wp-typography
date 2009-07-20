@@ -78,6 +78,10 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
+= 1.0.4 - July 20, 2009 =
+
+* Added test for curl to avoid bug where admin panel would not load 
+
 = 1.0.3 - July 17, 2009 =
 
 * Reverted use of the hyphen character to the basic minus-hyphen in words like "mother-in-law" because of poor support in IE6
