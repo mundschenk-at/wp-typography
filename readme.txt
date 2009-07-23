@@ -78,6 +78,10 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
+= 1.3 - in development =
+
+* Upgraded to [PHP Typography 1.3](http://kingdesk.com/projects/php-typography/)
+
 = 1.2 - July 23, 2009 =
 
 * added new 100 character option for max widow length protected
