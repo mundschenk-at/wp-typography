@@ -256,7 +256,7 @@ class wpTypography {
 				"labelBefore" 	=> "Only protect widows with",
 				"labelAfter"	=> "or fewer letters.",
 				"control" 		=> "select",
-				"optionValues"	=> array(4=>4,5=>5,6=>6,7=>7,8=>8,9=>9,10=>10),
+				"optionValues"	=> array(4=>4,5=>5,6=>6,7=>7,8=>8,9=>9,10=>10,100=>100),
 				"default" 		=> 5,
 			),
 			"typoWidowMaxPull" => array(
@@ -265,7 +265,7 @@ class wpTypography {
 				"labelBefore" 	=> "Pull at most",
 				"labelAfter"	=> "letters from the previous line to keep the widow company.",
 				"control" 		=> "select",
-				"optionValues"	=> array(4=>4,5=>5,6=>6,7=>7,8=>8,9=>9,10=>10),
+				"optionValues"	=> array(4=>4,5=>5,6=>6,7=>7,8=>8,9=>9,10=>10,100=>100),
 				"default" 		=> 5,
 			),
 			"typoWrapHyphens" => array(
@@ -727,11 +727,11 @@ class wpTypography {
 			curl_setopt($ch, CURLOPT_URL, $this->remoteFileURL);
 			$content = curl_exec($ch);
 			curl_close($ch);
+			if ($content) {
+				return "<div class='updated fade'>".$content."</div><!-- .updated.fade -->\r\n";
+			}
 		}
 				
-		if ($content) {
-			return "<div class='updated fade'>".$content."</div><!-- .updated.fade -->\r\n";
-		}
 		return FALSE;
 	}
 	
