@@ -83,6 +83,7 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 * added new 100 character option for max widow length protected
 * added new 100 character option for max pull length for widow protection
 * moved the processing of widow handling after hyphenation so that max-pull would not be compared to the length of the adjacent word, but rather the length of the adjacent word segment (i.e. that after a soft hyphen)
+* Upgraded to [PHP Typography 1.2](http://kingdesk.com/projects/php-typography/)
 
 
 = 1.1 - July 22, 2009 =
