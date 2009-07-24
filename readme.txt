@@ -78,6 +78,10 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
+= 1.4 - July 23, 2009 =
+
+* Updated with [PHP Typography 1.4](http://kingdesk.com/projects/php-typography/) (fixed a instance where pre-hyphenated words were hyphenated again)
+
 = 1.3 - July 23, 2009 =
 
 * Removed two uses of create_function() for improved performance
