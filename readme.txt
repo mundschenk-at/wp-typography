@@ -78,8 +78,11 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
-= 1.3 - in development =
+= 1.3 - July 23, 2009 =
 
+* Removed two uses of create_function() for improved performance
+* Corrected many uninitialized variables
+* Corrected two variables that were called out of scope
 * Upgraded to [PHP Typography 1.3](http://kingdesk.com/projects/php-typography/)
 
 = 1.2 - July 23, 2009 =
