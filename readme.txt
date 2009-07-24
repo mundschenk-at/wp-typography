@@ -55,7 +55,11 @@ View the [wp-Typography homepage](http://kingdesk.com/projects/wp-typography/ "w
 
 FAQs are maintained at the [wp-Typography website](http://kingdesk.com/projects/wp-typography-faqs/ "wp-Typography FAQs").
 
-Two questions come up so frequently, we will republish their answers here:
+Three questions come up so frequently, we will republish their answers here:
+
+= Will this plu­gin slow my page load­ing times? =
+
+Yes. Use [WP Super Cache](http://wordpress.org/extend/plugins/wp-super-cache/).
 
 = This plugin breaks post title links.  What gives? =
 
