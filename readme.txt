@@ -85,6 +85,7 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 = 1.5 - July 27, 2009 =
 
 * Added Hungarian hyphenation patterns
+* Updated with [PHP Typography 1.5](http://kingdesk.com/projects/php-typography/)
 
 = 1.4 - July 23, 2009 =
 
