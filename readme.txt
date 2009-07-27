@@ -82,6 +82,10 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
+= 1.5 - July 27, 2009 =
+
+* Added Hungarian hyphenation patterns
+
 = 1.4 - July 23, 2009 =
 
 * Fixed an instance where pre-hyphenated words were hyphenated again
