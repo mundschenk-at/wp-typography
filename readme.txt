@@ -84,7 +84,7 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 = 1.4 - July 23, 2009 =
 
-* Fixed a instance where pre-hyphenated words were hyphenated again
+* Fixed an instance where pre-hyphenated words were hyphenated again
 * Updated with [PHP Typography 1.4](http://kingdesk.com/projects/php-typography/)
 
 = 1.3 - July 23, 2009 =
