@@ -87,18 +87,18 @@ Efficiency Optimizations ( approximately 25% speed increase )  Thanks Jenny!
 = 1.6 - July 28, 2009 =
 
 * Efficiency Optimizations ( approximately 25% speed increase )
-* Updated with [PHP Typography 1.6](http://kingdesk.com/projects/php-typography/)
+* Upgraded to [PHP Typography 1.6](http://kingdesk.com/projects/php-typography/)
 
 = 1.5 - July 27, 2009 =
 
 * Added the ability to exclude hyphenation of capitalized (title case) words to help protect proper nouns
 * Added Hungarian hyphenation patterns
-* Updated with [PHP Typography 1.5](http://kingdesk.com/projects/php-typography/)
+* Upgraded to [PHP Typography 1.5](http://kingdesk.com/projects/php-typography/)
 
 = 1.4 - July 23, 2009 =
 
 * Fixed an instance where pre-hyphenated words were hyphenated again
-* Updated with [PHP Typography 1.4](http://kingdesk.com/projects/php-typography/)
+* Upgraded to [PHP Typography 1.4](http://kingdesk.com/projects/php-typography/)
 
 = 1.3 - July 23, 2009 =
 
