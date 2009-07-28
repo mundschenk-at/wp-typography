@@ -82,6 +82,11 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
+= 1.7 - July 29, 2009 =
+
+* Reformatted language files for increased stability
+* Upgraded to [PHP Typography 1.7](http://kingdesk.com/projects/php-typography/)
+
 = 1.6 - July 28, 2009 =
 
 * Efficiency Optimizations ( approximately 25% speed increase )
