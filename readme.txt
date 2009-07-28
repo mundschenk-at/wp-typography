@@ -82,6 +82,13 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
+Efficiency Optimizations ( approximately 25% speed increase )  Thanks Jenny!
+
+= 1.6 - July 28, 2009 =
+
+* Efficiency Optimizations ( approximately 25% speed increase )
+* Updated with [PHP Typography 1.6](http://kingdesk.com/projects/php-typography/)
+
 = 1.5 - July 27, 2009 =
 
 * Added the ability to exclude hyphenation of capitalized (title case) words to help protect proper nouns
