@@ -49,7 +49,7 @@ View the [wp-Typography homepage](http://kingdesk.com/projects/wp-typography/ "w
 
 1. Upload the `wp-typography` folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Go to the wp-Typography settings page (`/wp-admin/options-general.php?page=wp-typography/wp-typography.php`), and set your preferences
+3. Go to the wp-Typography settings page (`/wp-admin/options-general.php?page=wp-typography`), and set your preferences
 
 == Frequently Asked Questions ==
 
