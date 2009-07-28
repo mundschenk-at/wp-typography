@@ -122,6 +122,14 @@ class wpTypography {
 				"inputType" 	=> "checkbox",
 				"default" 		=> 0,
 			),
+			"typoHyphenateTitleCase" => array(
+				"section" 		=> "hyphenation",
+				"labelAfter" 	=> "Allow hyphenation of words that begin with a capital letter.",
+				"helpText" 		=> "Uncheck to avoid hyphenation of proper nouns.",
+				"control" 		=> "input",
+				"inputType" 	=> "checkbox",
+				"default" 		=> 0,
+			),
 			"typoHyphenateMinLength" => array(
 				"section"		=> "hyphenation",
 				"labelBefore" 	=> "Do not hyphenate words with less than",
@@ -440,6 +448,7 @@ class wpTypography {
 			$this->phpTypo->set_hyphenation($this->typoSettings['typoEnableHyphenation']);
 			$this->phpTypo->set_hyphenate_headings($this->typoSettings['typoHyphenateHeadings']);
 			$this->phpTypo->set_hyphenate_all_caps($this->typoSettings['typoHyphenateCaps']);
+			$this->phpTypo->set_hyphenate_title_case($this->typoSettings['typoHyphenateTitleCase']);
 			$this->phpTypo->set_hyphenation_language($this->typoSettings['typoHyphenateLanguages']);
 			$this->phpTypo->set_min_length_hyphenation($this->typoSettings['typoHyphenateMinLength']);
 			$this->phpTypo->set_min_before_hyphenation($this->typoSettings['typoHyphenateMinBefore']);
