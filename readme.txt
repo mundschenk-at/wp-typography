@@ -82,8 +82,6 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
-Efficiency Optimizations ( approximately 25% speed increase )  Thanks Jenny!
-
 = 1.6 - July 28, 2009 =
 
 * Efficiency Optimizations ( approximately 25% speed increase )
