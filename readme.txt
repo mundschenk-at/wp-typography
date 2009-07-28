@@ -84,6 +84,7 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 = 1.5 - July 27, 2009 =
 
+* Added the ability to exclude hyphenation of capitalized (title case) words to help protect proper nouns
 * Added Hungarian hyphenation patterns
 * Updated with [PHP Typography 1.5](http://kingdesk.com/projects/php-typography/)
 
