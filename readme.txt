@@ -13,7 +13,7 @@ Improve your web typography with: hyphenation, space control, intelligent charac
 
 Improve your web typography with:
 
-* Hyphenation &mdash; over 40 languages supported
+* Hyphenation &mdash; [over 40 languages supported](http://kingdesk.com/projects/wp-typography-faqs/#what-hyphenation-language-patterns-are-included)
 * Space control, including:
     * widow protection
     * gluing values to units
