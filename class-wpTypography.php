@@ -219,10 +219,10 @@ class wpTypography {
 			),
 			"typoDashSpacing" => array(
 				"section"		=> "space-control",
-				"labelAfter" 	=> "Force thin spaces between em &amp; en dashes and adjoining words.  This will display poorly in IE6 with some fonts (like Tahoma).",
+				"labelAfter" 	=> "Force thin spaces between em &amp; en dashes and adjoining words.  This will display poorly in IE6 with some fonts (like Tahoma) and in rare instances in WebKit browsers (Safari and Chrome).",
 				"control" 		=> "input",
 				"inputType" 	=> "checkbox",
-				"default" 		=> 1,
+				"default" 		=> 0,
 			),
 			"typoFractionSpacing" => array(
 				"section"		=> "space-control",
