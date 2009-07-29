@@ -664,7 +664,6 @@ class wpTypography {
 </div>
 
 <form method="post" action="options.php">
-<input type="hidden" name="action" value="update" />
 <?php  settings_fields($this->option_group); ?>
 	
 <?php foreach($this->adminFormSections as $sectionID => $heading): ?>
