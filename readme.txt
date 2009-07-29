@@ -94,10 +94,13 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
+= 1.7.2 MU beta - July 29, 2009 =
+
+* Updated Options Page to new register_setting() and settings_fields() API, should be WordPress MU compatable.
+
 = 1.7.1 - July 29, 2009 =
 
 * Updated thin space handling to be off by default, and updated the description in the admin panel to warn of rare mishandling in Safari and Chrome.
-
 
 = 1.7 - July 29, 2009 =
 
