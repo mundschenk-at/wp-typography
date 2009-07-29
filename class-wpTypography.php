@@ -16,6 +16,7 @@ class wpTypography {
 	var $localPluginPath = "wp-typography/wp-typography.php"; // relative from plugin folder
 	var $pluginPath = ""; // we will assign WP_PLUGIN_DIR base in __construct
 	var $remoteFileURL = 'http://a.kingdesk.com/wp-typography.php';
+	var $option_group = "typo_options"; //used to register options for option page
 	var $typoSettings;
 	var $phpTypo; // this will be a class within a class
 	var $adminResourceLinks = array(
@@ -462,6 +463,7 @@ class wpTypography {
 		// set up the plugin options page
 		register_activation_hook($this->pluginPath, array(&$this, 'register_plugin'));
 		add_action('admin_menu', array(&$this, 'add_options_page'));
+		add_action('admin_init', array(&$this, 'register_the_settings'));
 
 		global $wp_version;
 		if ( version_compare($wp_version, '2.7', '>=' ) ) {
@@ -526,6 +528,13 @@ class wpTypography {
 		add_options_page($this->pluginName, $this->pluginName, 9, strtolower($this->pluginName), array(&$this, 'get_admin_page_content'));
 		return;
 	}
+
+	function register_the_settings() {
+		foreach($this->adminFormControls as $controlID => $control){
+			register_setting( $this->option_group, $controlID );
+		}
+	}
+
 	function add_filter_plugin_action_links($links) {
 		if (function_exists('admin_url')) {	// since WP 2.6.0
 			$adminurl = trailingslashit(admin_url());			
@@ -655,17 +664,8 @@ class wpTypography {
 </div>
 
 <form method="post" action="options.php">
-<?php wp_nonce_field('update-options'); ?>
-<?php
-	$controlList = "";
-	foreach($this->adminFormControls as $controlID => $control){
-		$controlList .= $controlID.",";
-	}
-	$controlList = $controlList."restoreDefaults";
-//	$controlList = substr($controlList,0,-1);
-?>
 <input type="hidden" name="action" value="update" />
-<input type="hidden" name="page_options" value="<?php echo $controlList; ?>" />
+<?php  settings_fields($this->option_group); ?>
 	
 <?php foreach($this->adminFormSections as $sectionID => $heading): ?>
 <div id="<?php echo $sectionID; ?>" class='postbox submitdiv' >
