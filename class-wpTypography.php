@@ -402,9 +402,6 @@ class wpTypography {
 			$this->typoSettings[$key] = get_option($key);
 		}
 	
-		// let's correct the default language to match the blog's default
-		$this->adminFormControls['typoHyphenateLanguages']['default'] = get_bloginfo('language');
-
 		// dynamically generate the list of hyphenation language patterns
 		$this->phpTypo = new phpTypography(FALSE);
 		$this->adminFormControls['typoHyphenateLanguages']['optionValues'] = $this->phpTypo->get_languages();
@@ -520,6 +517,7 @@ class wpTypography {
 		// grab configuration variables
 		foreach($this->adminFormControls as $key => $value) {
 			if($update || !is_string(get_option($key))) {
+echo "_TRUE";
 				update_option($key, $value["default"]);
 			}
 		}
