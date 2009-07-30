@@ -391,13 +391,6 @@ class wpTypography {
 		$this->register_plugin($restoreDefaults);
 
 		foreach($this->adminFormControls as $key => $value) {
-			// grab configuration variables
-			$savedValue = get_option($key);
-			
-			// because unchecked checkboxes are stored as EMPTY in WordPress Options
-			// and an EMPTY parameter in many set_ methods will default to TRUE (which is the oppisite of unchecked)...
-			if ($savedValue == "") $savedValue = 0;
-			
 			$this->settings[$key] = get_option($key);
 		}
 	
