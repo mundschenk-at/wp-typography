@@ -17,6 +17,7 @@ class wpTypography {
 	var $pluginPath = ""; // we will assign WP_PLUGIN_DIR base in __construct
 	var $remoteFileURL = 'http://a.kingdesk.com/wp-typography.php';
 	var $option_group = "typo_options"; //used to register options for option page
+	var $lang = get_bloginfo('language');
 	var $typoSettings;
 	var $phpTypo; // this will be a class within a class
 	var $adminResourceLinks = array(
@@ -106,7 +107,7 @@ class wpTypography {
 				"labelBefore" 	=> "Language for hyphenation rules:",
 				"control" 		=> "select",
 				"optionValues"	=> array(), // automatically detected and listed in __construct
-				"default" 		=> get_bloginfo('language'),
+				"default" 		=> $lang,
 			),
 			"typoHyphenateHeadings" => array(
 				"section" 		=> "hyphenation",
