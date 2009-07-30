@@ -106,7 +106,7 @@ class wpTypography {
 				"labelBefore" 	=> "Language for hyphenation rules:",
 				"control" 		=> "select",
 				"optionValues"	=> array(), // automatically detected and listed in __construct
-				"default" 		=> "en-US",
+				"default" 		=> get_bloginfo('language'),
 			),
 			"typoHyphenateHeadings" => array(
 				"section" 		=> "hyphenation",
