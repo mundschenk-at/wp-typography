@@ -517,7 +517,6 @@ class wpTypography {
 		// grab configuration variables
 		foreach($this->adminFormControls as $key => $value) {
 			if($update || !is_string(get_option($key))) {
-echo "_TRUE";
 				update_option($key, $value["default"]);
 			}
 		}
@@ -534,6 +533,7 @@ echo "_TRUE";
 		foreach($this->adminFormControls as $controlID => $control){
 			register_setting( $this->option_group, $controlID );
 		}
+		register_setting( $this->option_group, "restoreDefaults" );
 	}
 
 	function add_filter_plugin_action_links($links) {
