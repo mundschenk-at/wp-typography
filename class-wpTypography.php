@@ -17,7 +17,6 @@ class wpTypography {
 	var $pluginPath = ""; // we will assign WP_PLUGIN_DIR base in __construct
 	var $remoteFileURL = 'http://a.kingdesk.com/wp-typography.php';
 	var $option_group = "typo_options"; //used to register options for option page
-	var $lang = get_bloginfo('language');
 	var $typoSettings;
 	var $phpTypo; // this will be a class within a class
 	var $adminResourceLinks = array(
@@ -107,7 +106,7 @@ class wpTypography {
 				"labelBefore" 	=> "Language for hyphenation rules:",
 				"control" 		=> "select",
 				"optionValues"	=> array(), // automatically detected and listed in __construct
-				"default" 		=> $lang,
+				"default" 		=> "",
 			),
 			"typoHyphenateHeadings" => array(
 				"section" 		=> "hyphenation",
@@ -381,7 +380,7 @@ class wpTypography {
 				add_action('admin_notices', array(&$this, 'add_action_admin_notices_charsetIncompatible'));
 			}
 		}
-
+		
 		$this->pluginPath = WP_PLUGIN_DIR."/".$this->localPluginPath;
 		// include needed files
 		require_once(WP_PLUGIN_DIR.'/wp-typography/php-typography/php-typography.php');
@@ -403,6 +402,9 @@ class wpTypography {
 			$this->typoSettings[$key] = get_option($key);
 		}
 	
+		// let's correct the default language to match the blog's default
+		$this->adminFormControls['typoHyphenateLanguages']['default'] = get_bloginfo('language');
+
 		// dynamically generate the list of hyphenation language patterns
 		$this->phpTypo = new phpTypography(FALSE);
 		$this->adminFormControls['typoHyphenateLanguages']['optionValues'] = $this->phpTypo->get_languages();
