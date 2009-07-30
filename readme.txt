@@ -97,7 +97,7 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 = 1.7.2 - July 29, 2009 =
 
 * Now WordPress MU compatible
-* Updated Options Page to new register_setting() and settings_fields() API
+* Updated Options Page to new `register_setting()` and `settings_fields()` API
 
 = 1.7.1 - July 29, 2009 =
 
