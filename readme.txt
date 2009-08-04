@@ -97,6 +97,7 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 = 1.8 - August 4, 2009 =
 
 * Corrected math and dash handling of dates
+* Styling of uppercase words now plays nicely with soft-hyphens
 * Upgraded to [PHP Typography 1.8](http://kingdesk.com/projects/php-typography/)
 
 = 1.7.2 - July 29, 2009 =
