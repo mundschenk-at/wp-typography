@@ -24,9 +24,9 @@ class wpTypography {
 			*/
 			"Plugin Home"	 		=> "http://kingdesk.com/projects/wp-typography/",
 			"FAQs"			 		=> "http://kingdesk.com/projects/wp-typography-faqs/",
-			"CSS Code Example" 		=> "http://kingdesk.com/projects/wp-typography-css-code-example/",
 			"Change Log"			=> "http://kingdesk.com/projects/wp-typography-change-log/",
 			"License"				=> "http://kingdesk.com/projects/wp-typography-license/",
+			"PHP Typography (sister project)"	=> "http://kingdesk.com/projects/php-typography/",
 		);
 	var $adminFormSections = array( // sections will be displayed in the order included
 			/*
