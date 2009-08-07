@@ -357,6 +357,49 @@ class wpTypography {
 				"control" 		=> "textarea",
 				"default" 		=> "p h1 h2 h3 h4 h5 h6 blockquote li dd dt",
 			),
+			"typoStyleCSSInclude" => array(
+				"section" 		=> "css-hooks",
+				"labelAfter" 	=> "Include Styling for CSS Hooks",
+				"helpText" 		=> "Attempts to inject the CSS specified below.  If you are familiar with CSS, it is recommended you not use this option, and maintain all styles in your main stylesheet.",
+				"control" 		=> "input",
+				"inputType" 	=> "checkbox",
+				"default" 		=> 0,
+			),
+			"typoStyleCSS" => array(
+				"section"		=> "css-hooks",
+				"labelBefore" 	=> "Styling for CSS Hooks:",
+				"helpText" 		=> "This will only be applied if explicitly selected with the preceding option.",
+				"control" 		=> "textarea",
+				"default" 		=> 'sup {
+	vertical-align: 60%;
+	font-size: 75%;
+	line-height: 100%;
+}
+sub {
+	vertical-align: -10%;
+	font-size: 75%;
+	line-height: 100%;
+}
+.amp {
+	font-family: Baskerville, "Goudy Old Style", "Palatino", "Book Antiqua", "Warnock Pro", "Goudy Old Style", serif;
+	font-weight: normal;
+	font-style: italic;
+	font-size: 1.1em;
+	line-height: 1em;
+}
+.caps {
+	font-size: 90%;
+}
+.dquo {
+	margin-left:-.40em;
+}
+.quo {
+	margin-left:-.2em;
+}
+/* because formatting .numbers should consider your current font settings, we will not style it here */
+}'
+			),
+
 		);
 	
 	//PHP 4 constructor
@@ -384,11 +427,12 @@ class wpTypography {
 		// include needed files
 		require_once(WP_PLUGIN_DIR.'/wp-typography/php-typography/php-typography.php');
 		
-		$restoreDefaults = FALSE;
-		if(get_option('restoreDefaults') == TRUE) {
-			$restoreDefaults = TRUE;
+		$typoRestoreDefaults = FALSE;
+		if(get_option('typoRestoreDefaults') == TRUE) {
+			$typoRestoreDefaults = TRUE;
+			echo " TRUE ";
 		}
-		$this->register_plugin($restoreDefaults);
+		$this->register_plugin($typoRestoreDefaults);
 
 		foreach($this->adminFormControls as $key => $value) {
 			$this->settings[$key] = get_option($key);
@@ -486,8 +530,8 @@ class wpTypography {
 		add_filter('widget_text', array(&$this, 'process'), 9999);
 		add_filter('widget_title', array(&$this, 'processTitle'), 9999);
 
-		// add IE6 zero-width-space removal
-		if($this->settings['typoRemoveIE6']) add_action('wp_head', array(&$this, 'add_wp_head'));
+		// add IE6 zero-width-space removal CSS Hook styling
+		add_action('wp_head', array(&$this, 'add_wp_head'));
 
 		return;
 	}
@@ -512,7 +556,7 @@ class wpTypography {
 				update_option($key, $value["default"]);
 			}
 		}
-		update_option("restoreDefaults", 0);
+		update_option("typoRestoreDefaults", 0);
 
 		return;
 	}
@@ -521,7 +565,7 @@ class wpTypography {
 		foreach($this->adminFormControls as $controlID => $control){
 			register_setting( $this->option_group, $controlID );
 		}
-		register_setting( $this->option_group, "restoreDefaults" );
+		register_setting( $this->option_group, "typoRestoreDefaults" );
 	}
 
 	function add_options_page() {
@@ -702,7 +746,7 @@ class wpTypography {
 </div><!-- .publishing-settings -->
 <div class='publishing-actions'>
 <?php echo $this->get_admin_form_control("saveChanges", "input", "submit"); ?>
-<?php echo $this->get_admin_form_control("restoreDefaults", "input", "submit"); ?>
+<?php echo $this->get_admin_form_control("typoRestoreDefaults", "input", "submit"); ?>
 <div class='clear'></div>
 </div><!-- .publishing-actions -->
 </div><!-- .submitbox -->
@@ -752,7 +796,7 @@ class wpTypography {
 		$helpTextClass = "helpText";
 		if($inputType != "submit") {
 			$value = get_option($id);
-		} elseif ($id == "restoreDefaults") {
+		} elseif ($id == "typoRestoreDefaults") {
 			$value = "Restore Defaults";
 		} else {
 			$value = "Save Changes";
@@ -856,11 +900,18 @@ class wpTypography {
 		echo '<div class="error"><p>'.__('The activated plugin ').'<strong>'.$this->pluginName.'</strong>'.__(' requires your blog use the UTF-8 character encoding.  You have set your blogs encoding to ').get_bloginfo('charset').__('. Please deactivate this plugin, or ').'<a href="/wp-admin/options-reading.php">'.__('change your character encoding to UTF-8').'</a>.'.'</p></div>'; 
 	}
 	function add_wp_head() {
-		echo "<!--[if lt IE 7]>\r\n";
-		echo "<script type='text/javascript'>";
-		echo "function stripZWS() { document.body.innerHTML = document.body.innerHTML.replace(/\u200b/gi,''); }";
-		echo "window.onload = stripZWS;";
-		echo "</script>\r\n";
-		echo "<![endif]-->\r\n";
+		if($this->settings['typoStyleCSSInclude'] && trim($this->settings['typoStyleCSS']) != "") {
+			echo '<style type="text/css">'."\r\n";
+			echo $this->settings['typoStyleCSS']."\r\n";
+			echo "</style>\r\n";
+		}
+		if($this->settings['typoRemoveIE6']) {
+			echo "<!--[if lt IE 7]>\r\n";
+			echo "<script type='text/javascript'>";
+			echo "function stripZWS() { document.body.innerHTML = document.body.innerHTML.replace(/\u200b/gi,''); }";
+			echo "window.onload = stripZWS;";
+			echo "</script>\r\n";
+			echo "<![endif]-->\r\n";
+		}
 	}
 }
