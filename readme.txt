@@ -97,6 +97,7 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 = 1.8.1 - August 7, 2009 =
 
 * Added optional automatic inclusion of styling of CSS hooks
+* Fixed "Restore Defaults" conflict with other plugins
 
 = 1.8 - August 4, 2009 =
 
