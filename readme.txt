@@ -94,6 +94,10 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
+= 1.8 -  =
+
+* Upgraded to [PHP Typography 1.9](http://kingdesk.com/projects/php-typography/)
+
 = 1.8.1 - August 7, 2009 =
 
 * Added optional automatic inclusion of styling of CSS hooks
