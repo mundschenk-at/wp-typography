@@ -217,6 +217,13 @@ class wpTypography {
 				"inputType" 	=> "checkbox",
 				"default" 		=> 0,
 			),
+			"typoSingleCharacterWordSpacing" => array(
+				"section"		=> "space-control",
+				"labelAfter" 	=> "Prevent single character words from residing at the end of a line of text (unless it is a widow).",
+				"control" 		=> "input",
+				"inputType" 	=> "checkbox",
+				"default" 		=> 0,
+			),
 			"typoDashSpacing" => array(
 				"section"		=> "space-control",
 				"labelAfter" 	=> "Force thin spaces between em &amp; en dashes and adjoining words.  This will display poorly in IE6 with some fonts (like Tahoma) and in rare instances in WebKit browsers (Safari and Chrome).",
@@ -465,6 +472,7 @@ sub {
 			$this->phpTypo->set_smart_marks(FALSE);
 			$this->phpTypo->set_smart_quotes(FALSE);
 		}
+		$this->phpTypo->set_single_character_word_spacing($this->settings['typoSingleCharacterWordSpacing']);
 		$this->phpTypo->set_dash_spacing($this->settings['typoDashSpacing']);
 		$this->phpTypo->set_fraction_spacing($this->settings['typoFractionSpacing']);
 		$this->phpTypo->set_unit_spacing($this->settings['typoUnitSpacing']);
