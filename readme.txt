@@ -99,7 +99,7 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 = 1.9 - August 12, 2009 =
 
-* Added option to force single character letters to wrap to new line (unless they are widows).
+* Added option to force single character words to wrap to new line (unless they are widows).
 * Upgraded to [PHP Typography 1.9](http://kingdesk.com/projects/php-typography/)
 
 = 1.8.1 - August 7, 2009 =
