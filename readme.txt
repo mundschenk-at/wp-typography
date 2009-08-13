@@ -97,6 +97,10 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
+= 1.10 - =
+
+* fixed typo in default CSS styles
+
 = 1.9 - August 12, 2009 =
 
 * Added option to force single character words to wrap to new line (unless they are widows).
