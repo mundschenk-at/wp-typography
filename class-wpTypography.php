@@ -404,7 +404,7 @@ sub {
 	margin-left:-.2em;
 }
 /* because formatting .numbers should consider your current font settings, we will not style it here */
-}'
+'
 			),
 
 		);
