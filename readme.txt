@@ -97,6 +97,10 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
+= 1.10.1 - August 14, 2009 =
+
+* Left a setting in test mode.  That is corrected.  Sorry.
+
 = 1.10 - August 14, 2009 =
 
 * Fixed typo in default CSS styles
