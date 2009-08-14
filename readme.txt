@@ -97,7 +97,7 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
-= 1.10 - =
+= 1.10 - August 14, 2009 =
 
 * Fixed typo in default CSS styles
 * Added language specific quote handling for English, German and French quotation styles
