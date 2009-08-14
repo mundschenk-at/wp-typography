@@ -99,9 +99,11 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 = 1.10 - =
 
-* fixed typo in default CSS styles
-* added language specific quote handling for English, German and French quotation styles
-* corrected multibyte character handling error that could cause some text to not display properly
+* Fixed typo in default CSS styles
+* Added language specific quote handling for English, German and French quotation styles
+* Corrected multibyte character handling error that could cause some text to not display properly
+* Expanded the multibyte character set recognized as valid word characters for improved hyphenation
+* Upgraded to [PHP Typography 1.10](http://kingdesk.com/projects/php-typography/)
 
 
 = 1.9 - August 12, 2009 =
