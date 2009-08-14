@@ -100,6 +100,9 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 = 1.10 - =
 
 * fixed typo in default CSS styles
+* added language specific quote handling for English, German and French quotation styles
+* corrected multibyte character handling error that could cause some text to not display properly
+
 
 = 1.9 - August 12, 2009 =
 
