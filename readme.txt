@@ -97,6 +97,10 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
+= 1.11 - August 14, 2009 =
+
+* Added language specific quote handling (for single quotes, not just double) for English, German and French quotation styles
+
 = 1.10.1 - August 14, 2009 =
 
 * Left a setting in test mode.  That is corrected.
