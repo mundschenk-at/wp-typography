@@ -99,7 +99,7 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 = 1.10.1 - August 14, 2009 =
 
-* Left a setting in test mode.  That is corrected.  Sorry.
+* Left a setting in test mode.  That is corrected.
 
 = 1.10 - August 14, 2009 =
 
