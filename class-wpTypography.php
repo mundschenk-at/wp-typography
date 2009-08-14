@@ -184,7 +184,13 @@ class wpTypography {
 				"section"		=> "character-replacement",
 				"fieldset" 		=> "smart-quotes",
 				"labelBefore" 	=> "Quotation language settings:",
-				"helpText" 		=> "<br />English setting converts <samp>\"foo\"</samp> to <samp>&ldquo;foo&rdquo;</samp><br />French setting converts <samp>\"foo\"</samp> to <samp>&laquo;foo&raquo;</samp><br />French (reversed) setting converts <samp>\"foo\"</samp> to <samp>&raquo;foo&laquo;</samp><br />German setting converts <samp>\"foo\"</samp> to <samp>&#8222;foo&rdquo;</samp>",
+				"helpText" 		=> "<br />
+				
+				English setting converts <samp>\"foo\"</samp> to <samp>&ldquo;foo&rdquo;</samp> and <samp>'bar'</samp> to <samp>&lsquo;bar&rsquo;</samp><br />
+				French setting converts <samp>\"foo\"</samp> to <samp>&laquo;foo&raquo;</samp> and <samp>'bar'</samp> to <samp>&lsaquo;bar&rsaquo;</samp><br />
+				French (reversed) setting converts <samp>\"foo\"</samp> to <samp>&raquo;foo&laquo;</samp> and <samp>'bar'</samp> to <samp>&rsaquo;bar&lsaquo;</samp><br />
+				German setting converts <samp>\"foo\"</samp> to <samp>&bdquo;foo&rdquo;</samp> and <samp>'bar'</samp> to <samp>&sbquo;bar&rsquo;</samp>",
+				
 				"control" 		=> "select",
 				"optionValues"	=> array("en"=>"English","fr"=>"French","fr-reverse"=>"French (reversed)","de"=>"German"),
 				"default" 		=> "en",
