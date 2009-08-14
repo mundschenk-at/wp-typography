@@ -100,6 +100,7 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 = 1.11 - August 14, 2009 =
 
 * Added language specific quote handling (for single quotes, not just double) for English, German and French quotation styles
+* Upgraded to [PHP Typography 1.11](http://kingdesk.com/projects/php-typography/)
 
 = 1.10.1 - August 14, 2009 =
 
