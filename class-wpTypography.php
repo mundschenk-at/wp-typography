@@ -45,6 +45,10 @@ class wpTypography {
 				"sectionID" 	=> string Parent Section ID,	// REQUIRED
 			),
 			*/
+			"smart-quotes" => array(
+				"heading" 	=> "Quotemarks", 
+				"sectionID" 	=> "character-replacement",
+			),
 			"values-and-units" => array(
 				"heading" 	=> "Values &amp; Units", 
 				"sectionID" 	=> "space-control",
@@ -170,11 +174,22 @@ class wpTypography {
 			),
 			"typoSmartQuotes" => array(
 				"section"		=> "character-replacement",
+				"fieldset" 		=> "smart-quotes",
 				"labelAfter" 	=> "Transform straight quotes [ <samp>'</samp> <samp>\"</samp> ] to curly quotes [ <samp>&lsquo;</samp> <samp>&rsquo;</samp> <samp>&ldquo;</samp> <samp>&rdquo;</samp> ].",
 				"control" 		=> "input",
 				"inputType" 	=> "checkbox",
 				"default" 		=> 1,
 			),
+			"typoSmartQuotesLanguage" => array(
+				"section"		=> "character-replacement",
+				"fieldset" 		=> "smart-quotes",
+				"labelBefore" 	=> "Quotation language settings:",
+				"helpText" 		=> "<br />English setting converts <samp>\"foo\"</samp> to <samp>&ldquo;foo&rdquo;</samp><br />German setting converts <samp>\"foo\"</samp> to <samp>&#8222;foo&rdquo;</samp><br />French setting converts <samp>\"foo\"</samp> to <samp>&laquo;foo&raquo;</samp><br />Reverse French setting converts <samp>\"foo\"</samp> to <samp>&raquo;foo&laquo;</samp>",
+				"control" 		=> "select",
+				"optionValues"	=> array("en"=>"English","de"=>"German","fr"=>"French","fr-reverse"=>"Reverse French"),
+				"default" 		=> "en",
+			),
+
 			"typoSmartDashes" => array(
 				"section"			=> "character-replacement",
 				"labelAfter" 		=> "Transform minus-hyphens [ <samp>-</samp> <samp>--</samp> ] to contextually appropriate dashes, minus signs, and hyphens [ <samp>&ndash;</samp> <samp>&mdash;</samp> <samp>&#8722;</samp> <samp>&#8208;</samp> ].",
@@ -462,6 +477,7 @@ sub {
 			$this->phpTypo->set_smart_ordinal_suffix($this->settings['typoSmartOrdinals']);
 			$this->phpTypo->set_smart_marks($this->settings['typoSmartMarks']);
 			$this->phpTypo->set_smart_quotes($this->settings['typoSmartQuotes']);
+			$this->phpTypo->set_smart_quotes_language($this->settings['typoSmartQuotesLanguage']);
 		} else {
 			$this->phpTypo->set_smart_dashes(FALSE);
 			$this->phpTypo->set_smart_ellipses(FALSE);
