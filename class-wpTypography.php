@@ -388,7 +388,7 @@ sub {
 	line-height: 100%;
 }
 .amp {
-	font-family: Baskerville, "Goudy Old Style", "Palatino", "Book Antiqua", "Warnock Pro", "Goudy Old Style", serif;
+	font-family: Baskerville, "Goudy Old Style", "Palatino", "Book Antiqua", "Warnock Pro", serif;
 	font-weight: normal;
 	font-style: italic;
 	font-size: 1.1em;
