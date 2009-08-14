@@ -184,9 +184,9 @@ class wpTypography {
 				"section"		=> "character-replacement",
 				"fieldset" 		=> "smart-quotes",
 				"labelBefore" 	=> "Quotation language settings:",
-				"helpText" 		=> "<br />English setting converts <samp>\"foo\"</samp> to <samp>&ldquo;foo&rdquo;</samp><br />German setting converts <samp>\"foo\"</samp> to <samp>&#8222;foo&rdquo;</samp><br />French setting converts <samp>\"foo\"</samp> to <samp>&laquo;foo&raquo;</samp><br />Reverse French setting converts <samp>\"foo\"</samp> to <samp>&raquo;foo&laquo;</samp>",
+				"helpText" 		=> "<br />English setting converts <samp>\"foo\"</samp> to <samp>&ldquo;foo&rdquo;</samp><br />French setting converts <samp>\"foo\"</samp> to <samp>&laquo;foo&raquo;</samp><br />French (reversed) setting converts <samp>\"foo\"</samp> to <samp>&raquo;foo&laquo;</samp><br />German setting converts <samp>\"foo\"</samp> to <samp>&#8222;foo&rdquo;</samp>",
 				"control" 		=> "select",
-				"optionValues"	=> array("en"=>"English","de"=>"German","fr"=>"French","fr-reverse"=>"Reverse French"),
+				"optionValues"	=> array("en"=>"English","fr"=>"French","fr-reverse"=>"French (reversed)","de"=>"German"),
 				"default" 		=> "en",
 			),
 
