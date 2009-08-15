@@ -39,7 +39,7 @@ wp‐Typography has the following requirements:
 
 * the host server must run PHP 5 or later
 * text must be encoded UTF‐8
-* all markup must be valid xHTML, specifically:
+* all markup must be valid xHTML syntax, specifically:
     * every element must be closed
     * every attribute must have a value enclosed in quotes
     * tag names and attributes must be lowercase
