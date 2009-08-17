@@ -97,6 +97,10 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
+= 1.12 - August 17, 2009 =
+
+* Corrected multibyte character handling error that could cause some text to not display properly
+
 = 1.11 - August 14, 2009 =
 
 * Added language specific quote handling (for single quotes, not just double) for English, German and French quotation styles
