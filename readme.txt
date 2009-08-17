@@ -100,6 +100,7 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 = 1.12 - August 17, 2009 =
 
 * Corrected multibyte character handling error that could cause some text to not display properly
+* Upgraded to [PHP Typography 1.12](http://kingdesk.com/projects/php-typography/)
 
 = 1.11 - August 14, 2009 =
 
