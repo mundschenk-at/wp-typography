@@ -97,6 +97,11 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
+= 1.13 - August 31, 2009 =
+
+* Added option to collapse adjacent space characters to a single character
+* Upgraded to [PHP Typography 1.13](http://kingdesk.com/projects/php-typography/)
+
 = 1.12 - August 17, 2009 =
 
 * Corrected multibyte character handling error that could cause some text to not display properly
