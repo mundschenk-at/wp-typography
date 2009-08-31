@@ -12,6 +12,7 @@ class wpTypography {
 			"Multibyte" 		=> TRUE,
 			"UTF-8"				=> TRUE,
 		);
+	var $abortLoad = FALSE;
 	var $localPluginPath = "wp-typography/wp-typography.php"; // relative from plugin folder
 	var $pluginPath = ""; // we will assign WP_PLUGIN_DIR base in __construct
 	var $remoteFileURL = 'http://a.kingdesk.com/wp-typography.php';
@@ -458,6 +459,8 @@ sub {
 				add_action('admin_notices', array(&$this, 'add_action_admin_notices_charsetIncompatible'));
 			}
 		}
+
+		if($this->abortLoad == TRUE) return;
 		
 		$this->pluginPath = WP_PLUGIN_DIR."/".$this->localPluginPath;
 		// include needed files
@@ -928,15 +931,19 @@ sub {
 	function add_action_admin_notices_wpVersionIncompatible() { 
 		global $wp_version;
 		echo '<div class="error"><p>'.__('The activated plugin ').'<strong>'.$this->pluginName.'</strong>'.__(' requires WordPress version ').$this->installRequirements['WordPress Version'].__(' or later.  You are running WordPress version ').$wp_version.__('. Please deactivate this plugin, or upgrade your installation of WordPress.').'</p></div>'; 
+		$this->abortLoad = TRUE;
 	}
 	function add_action_admin_notices_phpVersionIncompatible() { 
 		echo '<div class="error"><p>'.__('The activated plugin ').'<strong>'.$this->pluginName.'</strong>'.__(' requires PHP ').$this->installRequirements['PHP Version'].__(' or later.  Your server is running PHP ').phpversion().__('. Please deactivate this plugin, or upgrade your server\'s installation of PHP.').'</p></div>'; 
+		$this->abortLoad = TRUE;
 	}
 	function add_action_admin_notices_mbstringIncompatible() { 
 		echo '<div class="error"><p>'.__('The activated plugin ').'<strong>'.$this->pluginName.'</strong>'.__(' requires the mbstring PHP extension be enabled on your server.  It is not. Please deactivate this plugin, or ').'<a href="http://www.php.net/manual/en/mbstring.installation.php">'.__('enable this extension').'</a>.'.'</p></div>'; 
+		$this->abortLoad = TRUE;
 	}
 	function add_action_admin_notices_charsetIncompatible() { 
 		echo '<div class="error"><p>'.__('The activated plugin ').'<strong>'.$this->pluginName.'</strong>'.__(' requires your blog use the UTF-8 character encoding.  You have set your blogs encoding to ').get_bloginfo('charset').__('. Please deactivate this plugin, or ').'<a href="/wp-admin/options-reading.php">'.__('change your character encoding to UTF-8').'</a>.'.'</p></div>'; 
+		$this->abortLoad = TRUE;
 	}
 	function add_wp_head() {
 		if($this->settings['typoStyleCSSInclude'] && trim($this->settings['typoStyleCSS']) != "") {
