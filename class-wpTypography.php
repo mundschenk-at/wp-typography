@@ -260,6 +260,14 @@ class wpTypography {
 				"inputType" 	=> "checkbox",
 				"default" 		=> 0,
 			),
+			"typoSpaceCollapse" => array(
+				"section"		=> "space-control",
+				"labelAfter" 	=> "Collapse adjacent spacing to a single character.",
+				"helpText" 		=> "Normal HTML processing collapses basic spaces.  This option will additionally collapse no-break spaces, zero-width spaces, figure spaces, etc.",
+				"control" 		=> "input",
+				"inputType" 	=> "checkbox",
+				"default" 		=> 0,
+			),
 			"typoUnitSpacing" => array(
 				"section"		=> "space-control",
 				"fieldset" 		=> "values-and-units",
@@ -499,6 +507,7 @@ sub {
 		$this->phpTypo->set_fraction_spacing($this->settings['typoFractionSpacing']);
 		$this->phpTypo->set_unit_spacing($this->settings['typoUnitSpacing']);
 		$this->phpTypo->set_units($this->settings['typoUnits']);
+		$this->phpTypo->set_space_collapse($this->settings['typoSpaceCollapse']);
 		$this->phpTypo->set_dewidow($this->settings['typoPreventWidows']);
 		$this->phpTypo->set_max_dewidow_length($this->settings['typoWidowMinLength']);
 		$this->phpTypo->set_max_dewidow_pull($this->settings['typoWidowMaxPull']);
