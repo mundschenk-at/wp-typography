@@ -12,7 +12,6 @@ class wpTypography {
 			"Multibyte" 		=> TRUE,
 			"UTF-8"				=> TRUE,
 		);
-	var $abortLoad = FALSE;
 	var $localPluginPath = "wp-typography/wp-typography.php"; // relative from plugin folder
 	var $pluginPath = ""; // we will assign WP_PLUGIN_DIR base in __construct
 	var $remoteFileURL = 'http://a.kingdesk.com/wp-typography.php';
@@ -448,19 +447,22 @@ sub {
 	
 	function __construct(){
 		global $wp_version;
-		if(is_admin()) {
-			if (version_compare($wp_version, $this->installRequirements['WordPress Version'], '<' ) ) {
-				add_action('admin_notices', array(&$this, 'add_action_admin_notices_wpVersionIncompatible'));
-			} elseif (version_compare(PHP_VERSION, $this->installRequirements['PHP Version'], '<')) {
-				add_action('admin_notices', array(&$this, 'add_action_admin_notices_phpVersionIncompatible'));
-			} elseif (!function_exists('mb_strlen') || !function_exists('mb_strtolower') || !function_exists('mb_substr') || !function_exists('mb_detect_encoding')) {
-				add_action('admin_notices', array(&$this, 'add_action_admin_notices_mbstringIncompatible'));
-			} elseif (get_bloginfo('charset') != 'UTF-8' && get_bloginfo('charset') != 'utf-8') {
-				add_action('admin_notices', array(&$this, 'add_action_admin_notices_charsetIncompatible'));
-			}
+		$abortLoad = FALSE;
+		if (version_compare($wp_version, $this->installRequirements['WordPress Version'], '<' ) ) {
+			if(is_admin()) add_action('admin_notices', array(&$this, 'add_action_admin_notices_wpVersionIncompatible'));
+			$abortLoad = TRUE;
+		} elseif (version_compare(PHP_VERSION, $this->installRequirements['PHP Version'], '<')) {
+			if(is_admin()) add_action('admin_notices', array(&$this, 'add_action_admin_notices_phpVersionIncompatible'));
+			$abortLoad = TRUE;
+		} elseif (!function_exists('mb_strlen') || !function_exists('mb_strtolower') || !function_exists('mb_substr') || !function_exists('mb_detect_encoding')) {
+			if(is_admin()) add_action('admin_notices', array(&$this, 'add_action_admin_notices_mbstringIncompatible'));
+			$abortLoad = TRUE;
+		} elseif (get_bloginfo('charset') != 'UTF-8' && get_bloginfo('charset') != 'utf-8') {
+			if(is_admin()) add_action('admin_notices', array(&$this, 'add_action_admin_notices_charsetIncompatible'));
+			$abortLoad = TRUE;
 		}
 
-		if($this->abortLoad == TRUE) return;
+		if($abortLoad == TRUE) return;
 		
 		$this->pluginPath = WP_PLUGIN_DIR."/".$this->localPluginPath;
 		// include needed files
@@ -931,19 +933,15 @@ sub {
 	function add_action_admin_notices_wpVersionIncompatible() { 
 		global $wp_version;
 		echo '<div class="error"><p>'.__('The activated plugin ').'<strong>'.$this->pluginName.'</strong>'.__(' requires WordPress version ').$this->installRequirements['WordPress Version'].__(' or later.  You are running WordPress version ').$wp_version.__('. Please deactivate this plugin, or upgrade your installation of WordPress.').'</p></div>'; 
-		$this->abortLoad = TRUE;
 	}
 	function add_action_admin_notices_phpVersionIncompatible() { 
 		echo '<div class="error"><p>'.__('The activated plugin ').'<strong>'.$this->pluginName.'</strong>'.__(' requires PHP ').$this->installRequirements['PHP Version'].__(' or later.  Your server is running PHP ').phpversion().__('. Please deactivate this plugin, or upgrade your server\'s installation of PHP.').'</p></div>'; 
-		$this->abortLoad = TRUE;
 	}
 	function add_action_admin_notices_mbstringIncompatible() { 
 		echo '<div class="error"><p>'.__('The activated plugin ').'<strong>'.$this->pluginName.'</strong>'.__(' requires the mbstring PHP extension be enabled on your server.  It is not. Please deactivate this plugin, or ').'<a href="http://www.php.net/manual/en/mbstring.installation.php">'.__('enable this extension').'</a>.'.'</p></div>'; 
-		$this->abortLoad = TRUE;
 	}
 	function add_action_admin_notices_charsetIncompatible() { 
 		echo '<div class="error"><p>'.__('The activated plugin ').'<strong>'.$this->pluginName.'</strong>'.__(' requires your blog use the UTF-8 character encoding.  You have set your blogs encoding to ').get_bloginfo('charset').__('. Please deactivate this plugin, or ').'<a href="/wp-admin/options-reading.php">'.__('change your character encoding to UTF-8').'</a>.'.'</p></div>'; 
-		$this->abortLoad = TRUE;
 	}
 	function add_wp_head() {
 		if($this->settings['typoStyleCSSInclude'] && trim($this->settings['typoStyleCSS']) != "") {
