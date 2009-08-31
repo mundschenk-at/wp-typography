@@ -362,14 +362,14 @@ class wpTypography {
 				"labelAfter" 	=> "Wrap ampersands [ <samp>&amp;</samp> ] with <samp>&lt;span class=\"amp\"&gt;</samp>.",
 				"control" 		=> "input",
 				"inputType" 	=> "checkbox",
-				"default" 		=> 0,
+				"default" 		=> 1,
 			),
 			"typoStyleCaps" => array(
 				"section" 		=> "css-hooks",
 				"labelAfter" 	=> "Wrap acronyms (all capitals) with <samp>&lt;span class=\"caps\"&gt;</samp>.",
 				"control" 		=> "input",
 				"inputType" 	=> "checkbox",
-				"default" 		=> 0,
+				"default" 		=> 1,
 			),
 			"typoStyleNumbers" => array(
 				"section" 		=> "css-hooks",
@@ -384,7 +384,7 @@ class wpTypography {
 				"helpText" 		=> "Note: matches quotemarks at the beginning of blocks of text, <strong>not</strong> all opening quotemarks. <br />Single quotes [ <samp>&lsquo;</samp> <samp>&#8218;</samp> ] are wrapped with <samp>&lt;span class=\"quo\"&gt;</samp>. <br />Double quotes [ <samp>&ldquo;</samp> <samp>&#8222;</samp> ] are wrapped with <samp>&lt;span class=\"dquo\"&gt;</samp>. <br />Guillemets [ <samp>&laquo;</samp> <samp>&raquo;</samp> ] are wrapped with <samp>&lt;span class=\"dquo\"&gt;</samp>.",
 				"control" 		=> "input",
 				"inputType" 	=> "checkbox",
-				"default" 		=> 0,
+				"default" 		=> 1,
 			),
 			"typoInitialQuoteTags" => array(
 				"section" 		=> "css-hooks",
@@ -399,7 +399,7 @@ class wpTypography {
 				"helpText" 		=> "Attempts to inject the CSS specified below.  If you are familiar with CSS, it is recommended you not use this option, and maintain all styles in your main stylesheet.",
 				"control" 		=> "input",
 				"inputType" 	=> "checkbox",
-				"default" 		=> 0,
+				"default" 		=> 1,
 			),
 			"typoStyleCSS" => array(
 				"section"		=> "css-hooks",
