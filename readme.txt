@@ -38,6 +38,7 @@ Improve your web typography with:
 wp‐Typography has the following requirements:
 
 * the host server must run PHP 5 or later
+* your installation of PHP 5 must include the [mbstring extension](http://us3.php.net/manual/en/mbstring.installation.php) (most do)
 * text must be encoded UTF‐8
 * all markup must be valid xHTML syntax, specifically:
     * every element must be closed
@@ -96,6 +97,10 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 1. wp-Typography administrative settings page
 
 == Changelog ==
+
+= 1.13.1 - August 31, 2009 =
+
+* clarified requirement for PHP `mbstring` extension, and refined a test upon installation of the plugin to catch incapable server environments.
 
 = 1.13 - August 31, 2009 =
 
