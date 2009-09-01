@@ -100,12 +100,13 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 = 1.14 -  =
 
-* improved space collapse functionality
+* Improved space collapse functionality.
 * Upgraded to [PHP Typography 1.14](http://kingdesk.com/projects/php-typography/)
 
 = 1.13.1 - August 31, 2009 =
 
-* clarified requirement for PHP `mbstring` extension, and refined a test upon installation of the plugin to catch incapable server environments.
+* Clarified requirement for PHP `mbstring` extension, and refined a test upon installation of the plugin to catch incapable server environments.
+* Corrected default hyphenation language pattern to `English (United States)`.
 
 = 1.13 - August 31, 2009 =
 
