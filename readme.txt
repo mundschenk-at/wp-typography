@@ -98,7 +98,7 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
-= 1.14 -  =
+= 1.14 - September 8, 2009 =
 
 * Improved space collapse functionality.
 * Corrected bug in smart quote and single character word handling where the "0" character may be improperly duplicated
