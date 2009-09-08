@@ -101,6 +101,7 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 = 1.14 -  =
 
 * Improved space collapse functionality.
+* Corrected bug in smart quote and single character word handling where the "0" character may be improperly duplicated
 * Upgraded to [PHP Typography 1.14](http://kingdesk.com/projects/php-typography/)
 
 = 1.13.1 - August 31, 2009 =
