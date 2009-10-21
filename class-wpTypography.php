@@ -180,6 +180,8 @@ class wpTypography {
 				"inputType" 	=> "checkbox",
 				"default" 		=> 1,
 			),
+
+/*
 			"typoSmartQuotesLanguage" => array(
 				"section"		=> "character-replacement",
 				"fieldset" 		=> "smart-quotes",
@@ -194,6 +196,58 @@ class wpTypography {
 				"control" 		=> "select",
 				"optionValues"	=> array("en"=>"English","fr"=>"French","fr-reverse"=>"French (reversed)","de"=>"German"),
 				"default" 		=> "en",
+			),
+*/			
+
+			"typoSmartQuotesPrimary" => array(
+				"section"		=> "character-replacement",
+				"fieldset" 		=> "smart-quotes",
+				"labelBefore" 	=> "Convert <samp>\"foo\"</samp> to:",
+				"helpText" 		=> "Primary quotation style.",
+				"control" 		=> "select",
+				"optionValues"	=> array(
+											"doubleCurled" => "&ldquo;foo&rdquo;",
+											"doubleCurledReversed" => "&rdquo;foo&rdquo;",
+											"doubleLow9" => "&bdquo;foo&rdquo;",
+											"doubleLow9Reversed" => "&bdquo;foo&ldquo;",
+											"singleCurled" => "&lsquo;foo&rsquo;",
+											"singleCurledReversed" => "&rsquo;foo&rsquo;",
+											"singleLow9" => "&sbquo;foo&rsquo;",
+											"singleLow9Reversed" => "&sbquo;foo&lsquo;",
+											"doubleGuillemetsFrench" => "&laquo;&nbsp;foo&nbsp;&raquo;",
+											"doubleGuillemets" => "&laquo;foo&raquo;",
+											"doubleGuillemetsReversed" => "&raquo;foo&laquo;",
+											"singleGuillemets" => "&lsaquo;foo&rsaquo;",
+											"singleGuillemetsReversed" => "&rsaquo;foo&lsaquo;",
+											"cornerBrackets" => "&#x300c;foo&#x300d;",
+											"whiteCornerBracket" => "&#x300e;foo&#x300f;",
+											),
+				"default" 		=> "doubleCurled",
+			),
+			"typoSmartQuotesSecondary" => array(
+				"section"		=> "character-replacement",
+				"fieldset" 		=> "smart-quotes",
+				"labelBefore" 	=> "Convert <samp>'foo'</samp> to:",
+				"helpText" 		=> "Secondary quotation style.",
+				"control" 		=> "select",
+				"optionValues"	=> array(
+											"doubleCurled" => "&ldquo;foo&rdquo;",
+											"doubleCurledReversed" => "&rdquo;foo&rdquo;",
+											"doubleLow9" => "&bdquo;foo&rdquo;",
+											"doubleLow9Reversed" => "&bdquo;foo&ldquo;",
+											"singleCurled" => "&lsquo;foo&rsquo;",
+											"singleCurledReversed" => "&rsquo;foo&rsquo;",
+											"singleLow9" => "&sbquo;foo&rsquo;",
+											"singleLow9Reversed" => "&sbquo;foo&lsquo;",
+											"doubleGuillemetsFrench" => "&laquo;&nbsp;foo&nbsp;&raquo;",
+											"doubleGuillemets" => "&laquo;foo&raquo;",
+											"doubleGuillemetsReversed" => "&raquo;foo&laquo;",
+											"singleGuillemets" => "&lsaquo;foo&rsaquo;",
+											"singleGuillemetsReversed" => "&rsaquo;foo&lsaquo;",
+											"cornerBrackets" => "&#x300c;foo&#x300d;",
+											"whiteCornerBracket" => "&#x300e;foo&#x300f;",
+											),
+				"default" 		=> "singleCurled",
 			),
 
 			"typoSmartDashes" => array(
@@ -496,7 +550,14 @@ sub {
 			$this->phpTypo->set_smart_ordinal_suffix($this->settings['typoSmartOrdinals']);
 			$this->phpTypo->set_smart_marks($this->settings['typoSmartMarks']);
 			$this->phpTypo->set_smart_quotes($this->settings['typoSmartQuotes']);
+
+/*
 			$this->phpTypo->set_smart_quotes_language($this->settings['typoSmartQuotesLanguage']);
+*/
+
+			$this->phpTypo->set_smart_quotes_primary($this->settings['typoSmartQuotesPrimary']);
+			$this->phpTypo->set_smart_quotes_secondary($this->settings['typoSmartQuotesSecondary']);
+
 		} else {
 			$this->phpTypo->set_smart_dashes(FALSE);
 			$this->phpTypo->set_smart_ellipses(FALSE);
@@ -679,11 +740,14 @@ sub {
 		margin: .3125em 0 0 1.875em;
 	}
 	samp {
-		border: 1px solid #dfdfdf;
+		border: 1px solid #eee;
 		padding: .35em .25em .2em;
 		background-color:#fbfbfb;
 		color: #000;
-		
+		font-family: Consolas, Monaco, Courier, monospace !important;;
+	}
+	select, option, input, textarea {
+		font-family: Consolas, Monaco, Courier, monospace !important;;
 	}
 	span.helpText samp {
 		font-size: 111%;
