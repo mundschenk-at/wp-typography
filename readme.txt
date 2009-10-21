@@ -3,8 +3,8 @@ Contributors: kingjeffrey
 Donate link: http://kingdesk.com/projects/donate/
 Tags: typography, typogrify, hyphenation, SmartyPants, widow, widon't, units, wrapping, wrap, URLs, Email, formatting, smart quotes, quote marks, dashes, em dash, en dash, ellipses, trademark, copyright, service mark, fractions, math, math symbols, ordinal suffixes, ordinal, CSS hooks, ampersands, uppercase, numbers, guillemets, text, smartypants, format, style, quotes, prettify, type, font, admin, automatic, comment, comments, content, headings, heading, CSS, custom, excerpt, feed, feeds, RSS, filter, links, page, pages, plugin, post, posts, title, wordpress, XHTML
 Requires at least: 2.7
-Tested up to: 2.8.4
-Stable tag: 1.14
+Tested up to: 2.8.5
+Stable tag: 1.15
 
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
@@ -97,6 +97,12 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 1. wp-Typography administrative settings page
 
 == Changelog ==
+
+= 1.15 - October 21, 2009 =
+
+* Replaced quotation language styles with individual selection of primary and secondary quotation styles.  NOTE: this change requires reselection of quotation styles for anyone using non-English preferences.
+* Tested for WordPress version 2.8.5 compatibility.
+* Upgraded to [PHP Typography 1.15](http://kingdesk.com/projects/php-typography/)
 
 = 1.14 - September 8, 2009 =
 
