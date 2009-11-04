@@ -98,9 +98,10 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
-= 1.15 - October 21, 2009 =
+= 1.16 - November 4, 2009 =
 
 * Added automated diacritic replacements (i.e. "creme brulee" becomes "crème brûlée").
+* Improved smart quotes and smart dashes with sensitivity to adjacent diacritic characters.
 * Upgraded to [PHP Typography 1.16](http://kingdesk.com/projects/php-typography/)
 
 = 1.15 - October 21, 2009 =
