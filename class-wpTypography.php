@@ -49,6 +49,10 @@ class wpTypography {
 				"heading" 	=> "Quotemarks", 
 				"sectionID" 	=> "character-replacement",
 			),
+			"diacritics" => array(
+				"heading" 	=> "Diacritics", 
+				"sectionID" 	=> "diacritics",
+			),
 			"values-and-units" => array(
 				"heading" 	=> "Values &amp; Units", 
 				"sectionID" 	=> "space-control",
@@ -181,24 +185,6 @@ class wpTypography {
 				"default" 		=> 1,
 			),
 
-/*
-			"typoSmartQuotesLanguage" => array(
-				"section"		=> "character-replacement",
-				"fieldset" 		=> "smart-quotes",
-				"labelBefore" 	=> "Quotation language settings:",
-				"helpText" 		=> "<br />
-				
-				English setting converts <samp>\"foo\"</samp> to <samp>&ldquo;foo&rdquo;</samp> and <samp>'bar'</samp> to <samp>&lsquo;bar&rsquo;</samp><br />
-				French setting converts <samp>\"foo\"</samp> to <samp>&laquo;foo&raquo;</samp> and <samp>'bar'</samp> to <samp>&lsaquo;bar&rsaquo;</samp><br />
-				French (reversed) setting converts <samp>\"foo\"</samp> to <samp>&raquo;foo&laquo;</samp> and <samp>'bar'</samp> to <samp>&rsaquo;bar&lsaquo;</samp><br />
-				German setting converts <samp>\"foo\"</samp> to <samp>&bdquo;foo&rdquo;</samp> and <samp>'bar'</samp> to <samp>&sbquo;bar&rsquo;</samp>",
-				
-				"control" 		=> "select",
-				"optionValues"	=> array("en"=>"English","fr"=>"French","fr-reverse"=>"French (reversed)","de"=>"German"),
-				"default" 		=> "en",
-			),
-*/			
-
 			"typoSmartQuotesPrimary" => array(
 				"section"		=> "character-replacement",
 				"fieldset" 		=> "smart-quotes",
@@ -264,9 +250,38 @@ class wpTypography {
 				"inputType" 	=> "checkbox",
 				"default" 		=> 1,
 			),
+			
+			
+			"typoSmartDiacritics" => array(
+				"section"		=> "character-replacement",
+				"fieldset" 		=> "diacritics",
+				"labelAfter" 	=> "Force diacritics where appropriate.",
+				"helpText" 		=> "i.e. <samp>creme brulee</samp> becomes <samp>crème brûlée</samp>",
+				"control" 		=> "input",
+				"inputType" 	=> "checkbox",
+				"default" 		=> 0,
+			),
+			"typoDiacriticLanguages" => array(
+				"section"		=> "character-replacement",
+				"fieldset" 		=> "diacritics",
+				"labelBefore" 	=> "Language for diacritic replacements:",
+				"control" 		=> "select",
+				"optionValues"	=> array(), // automatically detected and listed in __construct
+				"default" 		=> "en-US",
+			),
+			"typoDiacriticCustomReplacements" => array(
+				"section" 		=> "character-replacement",
+				"fieldset" 		=> "diacritics",
+				"labelBefore" 	=> "Custom diacritic word replacements:",
+				"helpText" 		=> "Must be formatted <samp>\"word to replace\"=>\"replacement word\",</samp>.",
+				"control" 		=> "textarea",
+				"default" 		=> '"cooperate"=>"coöperate", "Cooperate"=>"Coöperate", "cooperation"=>"coöperation", "Cooperation"=>"Coöperation", "cooperative"=>"coöperative", "Cooperative"=>"Coöperative", "coordinate"=>"coördinate", "Coordinate"=>"Coördinate", "coordinated"=>"coördinated", "Coordinated"=>"Coördinated", "coordinating"=>"coördinating", "Coordinating"=>"Coördinating", "coordination"=>"coördination", "Coordination"=>"Coördination", "coordinator"=>"coördinator", "Coordinator"=>"Coördinator", "coordinators"=>"coördinators", "Coordinators"=>"Coördinators", "continuum"=>"continuüm", "Continuum"=>"Continuüm", "debacle"=>"débâcle", "Debacle"=>"Débâcle", "elite"=>"élite", "Elite"=>"Élite",',
+			),
+			
+			
 			"typoSmartMarks" => array(
 				"section"		=> "character-replacement",
-				"labelAfter" 	=> "Transform marks [ <samp>(c)</samp> <samp>(r)</samp> <samp>(tm)</samp> <samp>(sm)</samp> <samp>(p)</samp> ] to  proper characters [ <samp>©</samp> <samp>®</samp> <samp>™</samp> <samp>℠</samp> <samp>℗</samp> ].",
+				"labelAfter" 	=> "Transform registration marks [ <samp>(c)</samp> <samp>(r)</samp> <samp>(tm)</samp> <samp>(sm)</samp> <samp>(p)</samp> ] to  proper characters [ <samp>©</samp> <samp>®</samp> <samp>™</samp> <samp>℠</samp> <samp>℗</samp> ].",
 				"control" 		=> "input",
 				"inputType" 	=> "checkbox",
 				"default" 		=> 1,
@@ -536,6 +551,7 @@ sub {
 		// dynamically generate the list of hyphenation language patterns
 		$this->phpTypo = new phpTypography(FALSE);
 		$this->adminFormControls['typoHyphenateLanguages']['optionValues'] = $this->phpTypo->get_languages();
+		$this->adminFormControls['typoDiacriticLanguages']['optionValues'] = $this->phpTypo->get_diacritic_languages();
 
 		// load configuration variables into our phpTypography class
 		$this->phpTypo->set_tags_to_ignore($this->settings['typoIgnoreTags']);
@@ -550,6 +566,10 @@ sub {
 			$this->phpTypo->set_smart_ordinal_suffix($this->settings['typoSmartOrdinals']);
 			$this->phpTypo->set_smart_marks($this->settings['typoSmartMarks']);
 			$this->phpTypo->set_smart_quotes($this->settings['typoSmartQuotes']);
+			
+			$this->phpTypo->set_smart_diacritics($this->settings['typoSmartDiacritics']);
+			$this->phpTypo->set_diacritic_language($this->settings['typoDiacriticLanguages']);
+			$this->phpTypo->set_diacritic_custom_replacements($this->settings['typoDiacriticCustomReplacements']);
 
 /*
 			$this->phpTypo->set_smart_quotes_language($this->settings['typoSmartQuotesLanguage']);
@@ -567,6 +587,7 @@ sub {
 			$this->phpTypo->set_smart_ordinal_suffix(FALSE);
 			$this->phpTypo->set_smart_marks(FALSE);
 			$this->phpTypo->set_smart_quotes(FALSE);
+			$this->phpTypo->set_smart_diacritics(FALSE);
 		}
 		$this->phpTypo->set_single_character_word_spacing($this->settings['typoSingleCharacterWordSpacing']);
 		$this->phpTypo->set_dash_spacing($this->settings['typoDashSpacing']);
