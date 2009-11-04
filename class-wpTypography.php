@@ -571,10 +571,6 @@ sub {
 			$this->phpTypo->set_diacritic_language($this->settings['typoDiacriticLanguages']);
 			$this->phpTypo->set_diacritic_custom_replacements($this->settings['typoDiacriticCustomReplacements']);
 
-/*
-			$this->phpTypo->set_smart_quotes_language($this->settings['typoSmartQuotesLanguage']);
-*/
-
 			$this->phpTypo->set_smart_quotes_primary($this->settings['typoSmartQuotesPrimary']);
 			$this->phpTypo->set_smart_quotes_secondary($this->settings['typoSmartQuotesSecondary']);
 
