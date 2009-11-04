@@ -100,6 +100,11 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 = 1.15 - October 21, 2009 =
 
+* Added automated diacritic replacements (i.e. "creme brulee" becomes "crème brûlée").
+* Upgraded to [PHP Typography 1.16](http://kingdesk.com/projects/php-typography/)
+
+= 1.15 - October 21, 2009 =
+
 * Replaced quotation language styles with individual selection of primary and secondary quotation styles.  NOTE: this change requires reselection of quotation styles for anyone using non-English preferences.
 * Tested for WordPress version 2.8.5 compatibility.
 * Upgraded to [PHP Typography 1.15](http://kingdesk.com/projects/php-typography/)
