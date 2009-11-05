@@ -265,6 +265,7 @@ class wpTypography {
 				"section"		=> "character-replacement",
 				"fieldset" 		=> "diacritics",
 				"labelBefore" 	=> "Language for diacritic replacements:",
+				"helpText" 		=> "Language definitions will purposefully not words that have alternate meaning without diacritics like <samp>resume &amp; résumé</samp>, <samp>divorce &amp; divorcé</samp>, and <samp>expose &amp; exposé</samp>.",
 				"control" 		=> "select",
 				"optionValues"	=> array(), // automatically detected and listed in __construct
 				"default" 		=> "en-US",
