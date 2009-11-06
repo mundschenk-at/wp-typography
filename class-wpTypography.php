@@ -179,7 +179,7 @@ class wpTypography {
 			"typoSmartQuotes" => array(
 				"section"		=> "character-replacement",
 				"fieldset" 		=> "smart-quotes",
-				"labelAfter" 	=> "Transform straight quotes [ <samp>'</samp> <samp>\"</samp> ] to curly quotes [ <samp>&lsquo;</samp> <samp>&rsquo;</samp> <samp>&ldquo;</samp> <samp>&rdquo;</samp> ].",
+				"labelAfter" 	=> "Transform straight quotes [ <samp>'</samp> <samp>\"</samp> ] to typographically correct characters as detailed below.",
 				"control" 		=> "input",
 				"inputType" 	=> "checkbox",
 				"default" 		=> 1,
