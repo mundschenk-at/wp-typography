@@ -274,7 +274,7 @@ class wpTypography {
 				"section" 		=> "character-replacement",
 				"fieldset" 		=> "diacritics",
 				"labelBefore" 	=> "Custom diacritic word replacements:",
-				"helpText" 		=> "Must be formatted <samp>\"word to replace\"=>\"replacement word\",</samp>.",
+				"helpText" 		=> "Must be formatted <samp>\"word to replace\"=>\"replacement word\",</samp>; This is case-sensitive.",
 				"control" 		=> "textarea",
 				"default" 		=> '"cooperate"=>"coöperate", "Cooperate"=>"Coöperate", "cooperation"=>"coöperation", "Cooperation"=>"Coöperation", "cooperative"=>"coöperative", "Cooperative"=>"Coöperative", "coordinate"=>"coördinate", "Coordinate"=>"Coördinate", "coordinated"=>"coördinated", "Coordinated"=>"Coördinated", "coordinating"=>"coördinating", "Coordinating"=>"Coördinating", "coordination"=>"coördination", "Coordination"=>"Coördination", "coordinator"=>"coördinator", "Coordinator"=>"Coördinator", "coordinators"=>"coördinators", "Coordinators"=>"Coördinators", "continuum"=>"continuüm", "Continuum"=>"Continuüm", "debacle"=>"débâcle", "Debacle"=>"Débâcle", "elite"=>"élite", "Elite"=>"Élite",',
 			),
