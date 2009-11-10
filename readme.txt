@@ -98,6 +98,11 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
+= 1.17 - November 9, 2009 =
+
+* Fixed bug in diacritic handling.
+* Upgraded to [PHP Typography 1.17](http://kingdesk.com/projects/php-typography/)
+
 = 1.16 - November 4, 2009 =
 
 * Added automated diacritic replacements (i.e. "creme brulee" becomes "crème brûlée").
