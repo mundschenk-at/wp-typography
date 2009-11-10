@@ -98,6 +98,11 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
+= 1.18 - November 10, 2009 =
+
+* Added Norwegian Hyphenation Patterns
+* Upgraded to [PHP Typography 1.18](http://kingdesk.com/projects/php-typography/)
+
 = 1.17 - November 9, 2009 =
 
 * Fixed bug in diacritic handling.
