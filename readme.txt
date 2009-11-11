@@ -98,6 +98,11 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
+= 1.19 beta =
+
+* fixed bug where dewidow functionality would add broken no-break spaces to the end of texts, an smart_exponents would drop some of the resulting text.
+* Upgraded to [PHP Typography 1.19](http://kingdesk.com/projects/php-typography/)
+
 = 1.18 - November 10, 2009 =
 
 * Added Norwegian Hyphenation Patterns
