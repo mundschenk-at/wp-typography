@@ -3,7 +3,7 @@ Contributors: kingjeffrey
 Donate link: http://kingdesk.com/projects/donate/
 Tags: typography, typogrify, hyphenation, SmartyPants, widow, widon't, units, wrapping, wrap, URLs, Email, formatting, smart quotes, quote marks, dashes, em dash, en dash, ellipses, trademark, copyright, service mark, fractions, math, math symbols, ordinal suffixes, ordinal, CSS hooks, ampersands, uppercase, numbers, guillemets, text, smartypants, format, style, quotes, prettify, type, font, admin, automatic, comment, comments, content, headings, heading, CSS, custom, excerpt, feed, feeds, RSS, filter, links, page, pages, plugin, post, posts, title, wordpress, XHTML
 Requires at least: 2.7
-Tested up to: 2.8.6
+Tested up to: 2.9
 Stable tag: 1.19
 
 
@@ -97,6 +97,13 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 1. wp-Typography administrative settings page
 
 == Changelog ==
+
+= 1.20 - December 20, 2009 =
+
+* Verified compatible with WordPress 2.9
+* Resolved uninitialized variable
+* Added HTML5 elements to parsing algorithm for greater contextual awareness
+* Upgraded to [PHP Typography 1.20](http://kingdesk.com/projects/php-typography/)
 
 = 1.19 - December 1, 2009 =
 
