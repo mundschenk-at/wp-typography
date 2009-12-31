@@ -98,6 +98,12 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
+= 1.21 - December 31, 2009 =
+
+* Fixed bug in custom diacritic handling
+* Upgraded to [PHP Typography 1.21](http://kingdesk.com/projects/php-typography/)
+
+
 = 1.20 - December 20, 2009 =
 
 * Verified compatible with WordPress 2.9
