@@ -726,7 +726,7 @@ sub {
 		border-bottom-color:#DDDDDD;
 		border-bottom-style:solid;
 		border-bottom-width:1px;
-		padding: 0 1em 1em;;
+		padding: 0 1em 1em;
 	}
 	.publishing-actions {
 		background:#EAF2FA none repeat scroll 0 0;
@@ -762,10 +762,10 @@ sub {
 		padding: .35em .25em .2em;
 		background-color:#fbfbfb;
 		color: #000;
-		font-family: Consolas, Monaco, Courier, monospace !important;;
+		font-family: Consolas, Monaco, "Lucida Console", "Courier New", Courier, monospace !important;
 	}
 	select, option, input, textarea {
-		font-family: Consolas, Monaco, Courier, monospace !important;;
+		font-family: Consolas, Monaco, "Lucida Console", "Courier New", Courier, monospace !important;
 	}
 	span.helpText samp {
 		font-size: 111%;
