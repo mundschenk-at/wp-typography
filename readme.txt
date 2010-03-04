@@ -4,7 +4,7 @@ Donate link: http://kingdesk.com/projects/donate/
 Tags: typography, typogrify, hyphenation, SmartyPants, widow, widon't, units, wrapping, wrap, URLs, Email, formatting, smart quotes, quote marks, dashes, em dash, en dash, ellipses, trademark, copyright, service mark, fractions, math, math symbols, ordinal suffixes, ordinal, CSS hooks, ampersands, uppercase, numbers, guillemets, text, smartypants, format, style, quotes, prettify, type, font, admin, automatic, comment, comments, content, headings, heading, CSS, custom, excerpt, feed, feeds, RSS, filter, links, page, pages, plugin, post, posts, title, wordpress, XHTML
 Requires at least: 2.7
 Tested up to: 2.9.2
-Stable tag: 1.21.1
+Stable tag: 1.22
 
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
@@ -97,6 +97,12 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 1. wp-Typography administrative settings page
 
 == Changelog ==
+
+= 1.22 - March 4, 2009 =
+
+* Fixed bug that caused occasional hyphenation errors for non-English languages.
+* Upgraded to [PHP Typography 1.22](http://kingdesk.com/projects/php-typography/)
+
 
 = 1.21.1 - January 22, 2010 =
 
