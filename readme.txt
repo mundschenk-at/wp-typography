@@ -98,6 +98,11 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
+= trunk =
+
+* Added `*{text-rendering: optimizeLegibility;}` to default CSS rules to enable kerning and ligatures in supported browsers. Note this will not appear for upgrades, only new installs
+
+
 = 1.22 - March 4, 2009 =
 
 * Fixed bug that caused occasional hyphenation errors for non-English languages.
