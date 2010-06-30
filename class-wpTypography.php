@@ -476,7 +476,10 @@ class wpTypography {
 				"labelBefore" 	=> "Styling for CSS Hooks:",
 				"helpText" 		=> "This will only be applied if explicitly selected with the preceding option.",
 				"control" 		=> "textarea",
-				"default" 		=> 'sup {
+				"default" 		=> '* {
+	text-rendering: optimizeLegibility;
+}
+sup {
 	vertical-align: 60%;
 	font-size: 75%;
 	line-height: 100%;
