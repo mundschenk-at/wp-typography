@@ -3,8 +3,8 @@ Contributors: kingjeffrey
 Donate link: http://kingdesk.com/projects/donate/
 Tags: typography, typogrify, hyphenation, SmartyPants, widow, widon't, units, wrapping, wrap, URLs, Email, formatting, smart quotes, quote marks, dashes, em dash, en dash, ellipses, trademark, copyright, service mark, fractions, math, math symbols, ordinal suffixes, ordinal, CSS hooks, ampersands, uppercase, numbers, guillemets, text, smartypants, format, style, quotes, prettify, type, font, admin, automatic, comment, comments, content, headings, heading, CSS, custom, excerpt, feed, feeds, RSS, filter, links, page, pages, plugin, post, posts, title, wordpress, XHTML
 Requires at least: 2.7
-Tested up to: 2.9.2
-Stable tag: 1.22
+Tested up to: 3.0
+Stable tag: 1.23
 
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
@@ -98,12 +98,14 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
-= trunk =
+= 1.23 - July 6, 2010 =
 
+* Simplified acronym identification to not include some obscure uppercase characters. This will reduce support for some non-English languages, but it resolves an issue of catastrophic failure with certain server configurations.
 * Added `*{text-rendering: optimizeLegibility;}` to default CSS rules to enable kerning and ligatures in supported browsers. Note this will not appear for upgrades, only new installs
+* Upgraded to [PHP Typography 1.23](http://kingdesk.com/projects/php-typography/)
 
 
-= 1.22 - March 4, 2009 =
+= 1.22 - March 4, 2010 =
 
 * Fixed bug that caused occasional hyphenation errors for non-English languages.
 * Upgraded to [PHP Typography 1.22](http://kingdesk.com/projects/php-typography/)
