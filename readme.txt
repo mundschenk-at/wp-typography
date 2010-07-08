@@ -99,11 +99,12 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
-= 1.23 - July 6, 2010 =
+= 2.0 - July 7, 2010 =
 
-* Simplified acronym identification to not include some obscure uppercase characters. This will reduce support for some non-English languages, but it resolves an issue of catastrophic failure with certain server configurations.
+* Simplified acronym identification to not include some obscure uppercase characters. This will reduce support for some non-English languages, but it resolves an issue of catastrophic failure (where the entire page fails to load) with certain server configurations.
+* Security Fix: Prevented comments with exceptionally long strings from causing fatal PHP error.
 * Added `*{text-rendering: optimizeLegibility;}` to default CSS rules to enable kerning and ligatures in supported browsers. Note this will not appear for upgrades, only new installs
-* Upgraded to [PHP Typography 1.23](http://kingdesk.com/projects/php-typography/)
+* Upgraded to [PHP Typography 2.0](http://kingdesk.com/projects/php-typography/)
 
 
 = 1.22 - March 4, 2010 =
