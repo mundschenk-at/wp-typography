@@ -101,7 +101,7 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 = 2.0.1 - July 14, 2010 =
 
-* Applied title filter to blog name and description
+* Applied wp-Typography's title filter to bloginfo('name') and bloginfo('description')
 * Prevented processing of wp_title() and wp_post_title() so that HTML tags do not appear in page title
 
 = 2.0 - July 7, 2010 =
