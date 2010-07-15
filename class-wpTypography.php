@@ -646,11 +646,12 @@ sub {
 		}
 
 		// apply filters
-		add_filter('category_description', array(&$this, 'process'), 9999);
+		add_filter('bloginfo', array(&$this, 'processBloginfo'), 9999);
+		add_filter('wp_title', 'strip_tags', 9999);
+		add_filter('single_post_title', 'strip_tags', 9999);
 		add_filter('comment_author', array(&$this, 'process'), 9999);
 		add_filter('comment_text', array(&$this, 'process'), 9999);
-		add_filter('single_post_title', array(&$this, 'processTitle'), 9999);
-		add_filter('the_title', array(&$this, 'processTitle'), 9999);
+		add_filter('the_title', array(&$this, 'processTitle'), 9998);
 		add_filter('the_content', array(&$this, 'process'), 9999);
 		add_filter('the_excerpt', array(&$this, 'process'), 9999);
 		add_filter('widget_text', array(&$this, 'process'), 9999);
@@ -662,6 +663,13 @@ sub {
 		return;
 	}
 	
+
+	function processBloginfo($text) {
+		if( get_bloginfo( 'name' ) == $text || get_bloginfo( 'description' ) == $text) {
+				return $this->process($text, TRUE);
+		}
+		return $text;
+	}
 	function processTitle($text) {
 		return $this->process($text, TRUE);
 	}
