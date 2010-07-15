@@ -99,6 +99,11 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
+= 2.0.1 - July 14, 2010 =
+
+* Applied title filter to blog name and description
+* Prevented processing of wp_title() and wp_post_title() so that HTML tags do not appear in page title
+
 = 2.0 - July 7, 2010 =
 
 * Simplified acronym identification to not include some obscure uppercase characters. This will reduce support for some non-English languages, but it resolves an issue of catastrophic failure (where the entire page fails to load) with certain server configurations.
