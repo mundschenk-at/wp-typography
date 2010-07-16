@@ -4,7 +4,7 @@ Donate link: http://kingdesk.com/projects/donate/
 Tags: typography, typogrify, hyphenation, SmartyPants, widow, widon't, units, wrapping, wrap, URLs, Email, formatting, smart quotes, quote marks, dashes, em dash, en dash, ellipses, trademark, copyright, service mark, fractions, math, math symbols, ordinal suffixes, ordinal, CSS hooks, ampersands, uppercase, numbers, guillemets, text, smartypants, format, style, quotes, prettify, type, font, admin, automatic, comment, comments, content, headings, heading, CSS, custom, excerpt, feed, feeds, RSS, filter, links, page, pages, plugin, post, posts, title, wordpress, XHTML
 Requires at least: 2.7
 Tested up to: 3.0
-Stable tag: 2.0.1
+Stable tag: 2.0.2
 
 
 
@@ -98,6 +98,10 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 1. wp-Typography administrative settings page
 
 == Changelog ==
+
+= 2.0.2 - July 16, 2010 =
+
+* Rolled back application of wp-Typography's title filter to bloginfo('name') and bloginfo('description') to resolve conflicts introduced with RSS feeds
 
 = 2.0.1 - July 14, 2010 =
 
