@@ -646,9 +646,12 @@ sub {
 		}
 
 		// apply filters
+
+/*	// removed because it caused issues for feeds
 		add_filter('bloginfo', array(&$this, 'processBloginfo'), 9999);
 		add_filter('wp_title', 'strip_tags', 9999);
 		add_filter('single_post_title', 'strip_tags', 9999);
+*/
 		add_filter('comment_author', array(&$this, 'process'), 9999);
 		add_filter('comment_text', array(&$this, 'process'), 9999);
 		add_filter('the_title', array(&$this, 'processTitle'), 9998);
@@ -664,12 +667,14 @@ sub {
 	}
 	
 
+/*	// removed because it caused issues for feeds
 	function processBloginfo($text) {
 		if( get_bloginfo( 'name' ) == $text || get_bloginfo( 'description' ) == $text) {
 				return $this->process($text, TRUE);
 		}
 		return $text;
 	}
+*/
 	function processTitle($text) {
 		return $this->process($text, TRUE);
 	}
