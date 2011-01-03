@@ -4,7 +4,7 @@ Donate link: http://kingdesk.com/projects/donate/
 Tags: typography, typogrify, hyphenation, SmartyPants, widow, widon't, units, wrapping, wrap, URLs, Email, formatting, smart quotes, quote marks, dashes, em dash, en dash, ellipses, trademark, copyright, service mark, fractions, math, math symbols, ordinal suffixes, ordinal, CSS hooks, ampersands, uppercase, numbers, guillemets, text, smartypants, format, style, quotes, prettify, type, font, admin, automatic, comment, comments, content, headings, heading, CSS, custom, excerpt, feed, feeds, RSS, filter, links, page, pages, plugin, post, posts, title, wordpress, XHTML
 Requires at least: 2.7
 Tested up to: 3.0
-Stable tag: 2.0.2
+Stable tag: 2.0.3
 
 
 
@@ -98,6 +98,10 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 1. wp-Typography administrative settings page
 
 == Changelog ==
+
+= 2.0.3 - January 3, 2010 =
+
+* Removed "text-rendering: optimizeLegibility;" from the plugin's default CSS rules as a bug in Chrome with this statement causes all soft-hyphens to be displayed throughout the text. This will only correct the settings in new downloads. So, if you have an older version installed, remove the "* {text-rendering: optimizeLegibility;}" statement from the "Styling for CSS Hooks" textarea in this plugin's options page (the very last field).
 
 = 2.0.2 - July 16, 2010 =
 
