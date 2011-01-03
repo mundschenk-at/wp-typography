@@ -476,10 +476,7 @@ class wpTypography {
 				"labelBefore" 	=> "Styling for CSS Hooks:",
 				"helpText" 		=> "This will only be applied if explicitly selected with the preceding option.",
 				"control" 		=> "textarea",
-				"default" 		=> '* {
-	text-rendering: optimizeLegibility;
-}
-sup {
+				"default" 		=> 'sup {
 	vertical-align: 60%;
 	font-size: 75%;
 	line-height: 100%;
@@ -654,7 +651,7 @@ sub {
 */
 		add_filter('comment_author', array(&$this, 'process'), 9999);
 		add_filter('comment_text', array(&$this, 'process'), 9999);
-		add_filter('the_title', array(&$this, 'processTitle'), 9998);
+		add_filter('the_title', array(&$this, 'processTitle'), 9999);
 		add_filter('the_content', array(&$this, 'process'), 9999);
 		add_filter('the_excerpt', array(&$this, 'process'), 9999);
 		add_filter('widget_text', array(&$this, 'process'), 9999);
@@ -721,6 +718,7 @@ sub {
 	
 		// Add link "Settings" to the plugin in /wp-admin/plugins.php
 		$settings_link = '<a href="'.$adminurl.'options-general.php?page='.strtolower($this->pluginName).'">' . __('Settings') . '</a>';
+		echo $settings_link;
 		array_push($links, $settings_link);
 		return $links;
 	}
