@@ -541,7 +541,6 @@ sub {
 		$typoRestoreDefaults = FALSE;
 		if(get_option('typoRestoreDefaults') == TRUE) {
 			$typoRestoreDefaults = TRUE;
-			echo " TRUE ";
 		}
 		$this->register_plugin($typoRestoreDefaults);
 
@@ -718,7 +717,6 @@ sub {
 	
 		// Add link "Settings" to the plugin in /wp-admin/plugins.php
 		$settings_link = '<a href="'.$adminurl.'options-general.php?page='.strtolower($this->pluginName).'">' . __('Settings') . '</a>';
-		echo $settings_link;
 		array_push($links, $settings_link);
 		return $links;
 	}
