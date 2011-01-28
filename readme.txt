@@ -99,6 +99,10 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
+= 2.* - ???? = 
+
+* Fixed issue where a quote ending in a 4 digit year did not properly have the ending quotemark curled.
+
 = 2.0.4 - January 4, 2011 = 
 
 * An errant "settings" link was being injected into the "Plugins" page. It has been removed.
