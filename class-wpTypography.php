@@ -704,7 +704,7 @@ sub {
 	}
 
 	function add_options_page() {
-		add_options_page($this->pluginName, $this->pluginName, 9, strtolower($this->pluginName), array(&$this, 'get_admin_page_content'));
+		add_options_page($this->pluginName, $this->pluginName, 'manage_options', strtolower($this->pluginName), array($this, 'get_admin_page_content'));
 		return;
 	}
 
