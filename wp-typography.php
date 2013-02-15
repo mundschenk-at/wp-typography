@@ -23,3 +23,4 @@ Portions of this plugin are inspired by:
 
 require_once(WP_PLUGIN_DIR.'/wp-typography/class-wpTypography.php');
 new wpTypography;
+

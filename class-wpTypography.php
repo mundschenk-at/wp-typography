@@ -4,13 +4,14 @@
 // internationalize
 // test for compatiblity
 
-class wpTypography {
+class wpTypography 
+{
 	var $pluginName = "wp-Typography";
 	var $installRequirements = array(
 			"PHP Version" 		=> "5.0.0",
 			"WordPress Version"	=> "2.7",
-			"Multibyte" 		=> TRUE,
-			"UTF-8"				=> TRUE,
+			"Multibyte" 		=> true,
+			"UTF-8"				=> true,
 		);
 	var $localPluginPath = "wp-typography/wp-typography.php"; // relative from plugin folder
 	var $pluginPath = ""; // we will assign WP_PLUGIN_DIR base in __construct
@@ -509,47 +510,51 @@ sub {
 		);
 	
 	//PHP 4 constructor
-	function wpTypography() {
-		if(is_admin()) {
+	function wpTypography() 
+	{
+		if (is_admin()) {
 			$this->add_action_admin_notices_phpVersionIncompatible();
 		}
 	}
 	
-	function __construct(){
+	function __construct()
+	{
 		global $wp_version;
-		$abortLoad = FALSE;
+		$abortLoad = false;
 		if (version_compare($wp_version, $this->installRequirements['WordPress Version'], '<' ) ) {
 			if(is_admin()) add_action('admin_notices', array(&$this, 'add_action_admin_notices_wpVersionIncompatible'));
-			$abortLoad = TRUE;
+			$abortLoad = true;
 		} elseif (version_compare(PHP_VERSION, $this->installRequirements['PHP Version'], '<')) {
 			if(is_admin()) add_action('admin_notices', array(&$this, 'add_action_admin_notices_phpVersionIncompatible'));
-			$abortLoad = TRUE;
+			$abortLoad = true;
 		} elseif (!function_exists('mb_strlen') || !function_exists('mb_strtolower') || !function_exists('mb_substr') || !function_exists('mb_detect_encoding')) {
 			if(is_admin()) add_action('admin_notices', array(&$this, 'add_action_admin_notices_mbstringIncompatible'));
-			$abortLoad = TRUE;
+			$abortLoad = true;
 		} elseif (get_bloginfo('charset') != 'UTF-8' && get_bloginfo('charset') != 'utf-8') {
 			if(is_admin()) add_action('admin_notices', array(&$this, 'add_action_admin_notices_charsetIncompatible'));
-			$abortLoad = TRUE;
+			$abortLoad = true;
 		}
 
-		if($abortLoad == TRUE) return;
+		if ($abortLoad == true) return;
 		
 		$this->pluginPath = WP_PLUGIN_DIR."/".$this->localPluginPath;
 		// include needed files
 		require_once(WP_PLUGIN_DIR.'/wp-typography/php-typography/php-typography.php');
 		
-		$typoRestoreDefaults = FALSE;
-		if(get_option('typoRestoreDefaults') == TRUE) {
-			$typoRestoreDefaults = TRUE;
+		$typoRestoreDefaults = false;
+		if (get_option('typoRestoreDefaults') == true)
+		{
+			$typoRestoreDefaults = true;
 		}
 		$this->register_plugin($typoRestoreDefaults);
 
-		foreach($this->adminFormControls as $key => $value) {
+		foreach ($this->adminFormControls as $key => $value)
+		{
 			$this->settings[$key] = get_option($key);
 		}
 	
 		// dynamically generate the list of hyphenation language patterns
-		$this->phpTypo = new phpTypography(FALSE);
+		$this->phpTypo = new phpTypography(false);
 		$this->adminFormControls['typoHyphenateLanguages']['optionValues'] = $this->phpTypo->get_languages();
 		$this->adminFormControls['typoDiacriticLanguages']['optionValues'] = $this->phpTypo->get_diacritic_languages();
 
@@ -557,7 +562,8 @@ sub {
 		$this->phpTypo->set_tags_to_ignore($this->settings['typoIgnoreTags']);
 		$this->phpTypo->set_classes_to_ignore($this->settings['typoIgnoreClasses']);
 		$this->phpTypo->set_ids_to_ignore($this->settings['typoIgnoreIDs']);
-		if($this->settings['typoSmartCharacters']) {
+		if ($this->settings['typoSmartCharacters'])
+		{
 			$this->phpTypo->set_smart_dashes($this->settings['typoSmartDashes']);
 			$this->phpTypo->set_smart_ellipses($this->settings['typoSmartEllipses']);
 			$this->phpTypo->set_smart_math($this->settings['typoSmartMath']);
@@ -575,15 +581,15 @@ sub {
 			$this->phpTypo->set_smart_quotes_secondary($this->settings['typoSmartQuotesSecondary']);
 
 		} else {
-			$this->phpTypo->set_smart_dashes(FALSE);
-			$this->phpTypo->set_smart_ellipses(FALSE);
-			$this->phpTypo->set_smart_math(FALSE);
-			$this->phpTypo->set_smart_exponents(FALSE);
-			$this->phpTypo->set_smart_fractions(FALSE);
-			$this->phpTypo->set_smart_ordinal_suffix(FALSE);
-			$this->phpTypo->set_smart_marks(FALSE);
-			$this->phpTypo->set_smart_quotes(FALSE);
-			$this->phpTypo->set_smart_diacritics(FALSE);
+			$this->phpTypo->set_smart_dashes(false);
+			$this->phpTypo->set_smart_ellipses(false);
+			$this->phpTypo->set_smart_math(false);
+			$this->phpTypo->set_smart_exponents(false);
+			$this->phpTypo->set_smart_fractions(false);
+			$this->phpTypo->set_smart_ordinal_suffix(false);
+			$this->phpTypo->set_smart_marks(false);
+			$this->phpTypo->set_smart_quotes(false);
+			$this->phpTypo->set_smart_diacritics(false);
 		}
 		$this->phpTypo->set_single_character_word_spacing($this->settings['typoSingleCharacterWordSpacing']);
 		$this->phpTypo->set_dash_spacing($this->settings['typoDashSpacing']);
@@ -603,7 +609,8 @@ sub {
 		$this->phpTypo->set_style_numbers($this->settings['typoStyleNumbers']);
 		$this->phpTypo->set_style_initial_quotes($this->settings['typoStyleInitialQuotes']);
 		$this->phpTypo->set_initial_quote_tags($this->settings['typoInitialQuoteTags']);
-		if($this->settings['typoEnableHyphenation']) {
+		if ($this->settings['typoEnableHyphenation'])
+		{
 			$this->phpTypo->set_hyphenation($this->settings['typoEnableHyphenation']);
 			$this->phpTypo->set_hyphenate_headings($this->settings['typoHyphenateHeadings']);
 			$this->phpTypo->set_hyphenate_all_caps($this->settings['typoHyphenateCaps']);
@@ -624,7 +631,7 @@ sub {
 		add_action('admin_init', array(&$this, 'register_the_settings'));
 
 		global $wp_version;
-		if ( version_compare($wp_version, '2.7', '>=' ) ) {
+		if (version_compare($wp_version, '2.7', '>=' )) {
 			add_filter( "plugin_action_links_".$this->localPluginPath, array(&$this, 'add_filter_plugin_action_links'));
 		}
 
@@ -666,28 +673,31 @@ sub {
 /*	// removed because it caused issues for feeds
 	function processBloginfo($text) {
 		if( get_bloginfo( 'name' ) == $text || get_bloginfo( 'description' ) == $text) {
-				return $this->process($text, TRUE);
+				return $this->process($text, true);
 		}
 		return $text;
 	}
 */
-	function processTitle($text) {
-		return $this->process($text, TRUE);
+	function processTitle($text)
+	{
+		return $this->process($text, true);
 	}
 
-	function process($text, $isTitle = FALSE) {
+	function process($text, $isTitle = false)
+	{
 		
-		if(is_feed()) { //feed readers can be pretty stupid
+		if (is_feed()) { //feed readers can be pretty stupid
 			return $this->phpTypo->process_feed($text, $isTitle);
 		} else {
 			return $this->phpTypo->process($text, $isTitle);
 		}
 	}
 
-	function register_plugin($update = FALSE) {
+	function register_plugin($update = false)
+	{
 		// grab configuration variables
-		foreach($this->adminFormControls as $key => $value) {
-			if($update || !is_string(get_option($key))) {
+		foreach ($this->adminFormControls as $key => $value) {
+			if ($update || !is_string(get_option($key))) {
 				update_option($key, $value["default"]);
 			}
 		}
@@ -696,19 +706,22 @@ sub {
 		return;
 	}
 
-	function register_the_settings() {
-		foreach($this->adminFormControls as $controlID => $control){
+	function register_the_settings()
+	{
+		foreach ($this->adminFormControls as $controlID => $control) {
 			register_setting( $this->option_group, $controlID );
 		}
 		register_setting( $this->option_group, "typoRestoreDefaults" );
 	}
 
-	function add_options_page() {
+	function add_options_page()
+	{
 		add_options_page($this->pluginName, $this->pluginName, 'manage_options', strtolower($this->pluginName), array($this, 'get_admin_page_content'));
 		return;
 	}
 
-	function add_filter_plugin_action_links($links) {
+	function add_filter_plugin_action_links($links)
+	{
 		if (function_exists('admin_url')) {	// since WP 2.6.0
 			$adminurl = trailingslashit(admin_url());			
 		} else {
@@ -723,7 +736,8 @@ sub {
 
 
 	// admin page content
-	function get_admin_page_content() {
+	function get_admin_page_content()
+	{
 ?>
 
 <style type="text/css">
@@ -833,7 +847,7 @@ sub {
 
 <?php $i=0; ?>
 <?php foreach($this->adminResourceLinks as $anchor => $url) { ?>
-	<?php if($i++ > 0) echo " | ";?><a href="<?php echo $url; ?>"><?php echo __("$anchor") ?></a>
+	<?php if ($i++ > 0) echo " | ";?><a href="<?php echo $url; ?>"><?php echo __("$anchor") ?></a>
 <?php } ?>
 
 </div>
@@ -842,7 +856,7 @@ sub {
 <form method="post" action="options.php">
 <?php  settings_fields($this->option_group); ?>
 	
-<?php foreach($this->adminFormSections as $sectionID => $heading): ?>
+<?php foreach ($this->adminFormSections as $sectionID => $heading): ?>
 <div id="<?php echo $sectionID; ?>" class='postbox submitdiv' >
 <h3><span><?php echo $heading; ?></span></h3>
 <div class='inside'>
@@ -851,13 +865,13 @@ sub {
 
 <?php
 	$fieldsetID = NULL;
-	foreach($this->adminFormControls as $controlID => $adminFormControl) {
-		if($adminFormControl["section"] == $sectionID ) {
-			if($adminFormControl["fieldset"] != $fieldsetID) {
-				if($fieldsetID) { // close previous fieldset (if it existed)
+	foreach ($this->adminFormControls as $controlID => $adminFormControl) {
+		if ($adminFormControl["section"] == $sectionID ) {
+			if ($adminFormControl["fieldset"] != $fieldsetID) {
+				if ($fieldsetID) { // close previous fieldset (if it existed)
 					echo "</fieldset>\r\n\r\n";
 				}
-				if($adminFormControl["fieldset"]) { // start any new fieldset (if it exists)
+				if ($adminFormControl["fieldset"]) { // start any new fieldset (if it exists)
 					echo "\r\n<fieldset id='".$adminFormControl["fieldset"]."'>\r\n";
 					echo "<legend>".$this->adminFormSectionFieldsets[$adminFormControl["fieldset"]]["heading"]."</legend>\r\n";
 				}
@@ -876,7 +890,7 @@ sub {
 					);
 		}
 	}
-	if($fieldsetID) { // we have an unclosed fieldset
+	if ($fieldsetID) { // we have an unclosed fieldset
 		echo "</fieldset>\r\n\r\n";
 	}
 ?>
@@ -920,7 +934,7 @@ sub {
 			}
 		}
 				
-		return FALSE;
+		return false;
 	}
 	
 	//	parameter	$id REQUIRED STRING
@@ -930,9 +944,10 @@ sub {
 	//				$labelAfter OPTIONAL STRING, set this to the text that should appear after the control; not for $control = "textarea"
 	//				$helpText OPTIONAL STRING, requires an accompanying label
 	//				$optionValues OPTIONAL ARRAY, in the form array($value => $display)
-	function get_admin_form_control($id, $control="input", $inputType="text", $labelBefore=NULL, $labelAfter=NULL, $helpText=NULL, $optionValues=NULL) {
+	function get_admin_form_control ($id, $control="input", $inputType="text", 
+		$labelBefore=null, $labelAfter=null, $helpText=null, $optionValues=null) {
 		$helpTextClass = "helpText";
-		if($inputType != "submit") {
+		if ($inputType != "submit") {
 			$value = get_option($id);
 		} elseif ($id == "typoRestoreDefaults") {
 			$value = "Restore Defaults";
@@ -940,31 +955,30 @@ sub {
 			$value = "Save Changes";
 		}
 
-		if($inputType == "checkbox") {
+		if ($inputType == "checkbox") {
 			$checked = "";
 			if($value) $checked = 'checked="checked" ';
-			
 		}
 		
 		//make sure $value is in $optionValues if $optionValues is set
-		if($optionValues && !isset($optionValues[$value])) {
-			$value = NULL;
+		if ($optionValues && !isset($optionValues[$value])) {
+			$value = null;
 		}
 		
 	
-		if($inputType=="submit"){
+		if ($inputType == "submit") {
 			$controlMarkup = "<div class='publishing-action'>";
 		} else {
 			$controlMarkup = "<div class='control'>";
 		}
 		
-		if(($labelBefore || $labelAfter) && $inputType != "hidden" && $inputType != "submit"){
+		if (($labelBefore || $labelAfter) && $inputType != "hidden" && $inputType != "submit") {
 			$controlMarkup .= "<label for='$id'>";
-			if($labelBefore) {
+			if ($labelBefore) {
 				$controlMarkup .= "$labelBefore ";
 			}
-			if($control == "textarea") {
-				if($helpText) {
+			if ($control == "textarea") {
+				if ($helpText) {
 					$controlMarkup .= "<span class='$helpTextClass'>$helpText</span>";
 				}
 				$controlMarkup .= "</label>";
@@ -973,47 +987,47 @@ sub {
 		
 		$controlMarkup .= "<$control ";
 		
-		if($control == "input") {
+		if ($control == "input") {
 			$controlMarkup .= "type='$inputType' ";
 		}
 		
-		if($inputType=="submit" && $value == "Restore Defaults") {
+		if ($inputType=="submit" && $value == "Restore Defaults") {
 			$controlMarkup .= "name='$id' class='text-button'"; //to avoid duplicate ids and some pretty stylin'
-		} elseif($inputType=="submit") {
+		} elseif ($inputType=="submit") {
 			$controlMarkup .= "name='$id' class='button-primary'"; //to avoid duplicate ids and some pretty stylin'
 		} else {
 			$controlMarkup .= "id='$id' name='$id' ";
 		}
 
-		if($value && $control != "select" && $control != "textarea" && $inputType != "checkbox") {
+		if ($value && $control != "select" && $control != "textarea" && $inputType != "checkbox") {
 			$controlMarkup .= "value='$value' ";
-		} elseif($inputType == "checkbox") {
+		} elseif ($inputType == "checkbox") {
 			$controlMarkup .= "value='1' $checked";
 		}
 		
-		if($control != "select" && $control != "textarea") {
+		if ($control != "select" && $control != "textarea") {
 			$controlMarkup .= " />";
-		} elseif($control == "textarea") {
+		} elseif ($control == "textarea") {
 			$controlMarkup .= " >";
-			if($value) {
+			if ($value) {
 				$controlMarkup .= $value;
 			}
 			$controlMarkup .= "</$control>";
-		} elseif($control == "select") {
+		} elseif ($control == "select") {
 			$controlMarkup .= " >";
-			foreach($optionValues as $optionValue => $display){
+			foreach ($optionValues as $optionValue => $display) {
 				$selected = "";
-				if($value == $optionValue) $selected = "selected='selected'";
+				if ($value == $optionValue) $selected = "selected='selected'";
 				$controlMarkup .= "<option value='$optionValue' $selected>$display</option>";
 			}
 			$controlMarkup .= "</$control>";
 		}
 		
-		if(($labelBefore || $labelAfter) && $control != "textarea") {
-			if($labelAfter) {
+		if (($labelBefore || $labelAfter) && $control != "textarea") {
+			if ($labelAfter) {
 				$controlMarkup .= " $labelAfter";
 			}
-			if($helpText) {
+			if ($helpText) {
 				$controlMarkup .= "<span class='$helpTextClass'>$helpText</span>";
 			}
 			$controlMarkup .= "</label>";
@@ -1024,26 +1038,35 @@ sub {
 		return $controlMarkup;
 	}
 
-	function add_action_admin_notices_wpVersionIncompatible() { 
+	function add_action_admin_notices_wpVersionIncompatible()
+	{ 
 		global $wp_version;
 		echo '<div class="error"><p>'.__('The activated plugin ').'<strong>'.$this->pluginName.'</strong>'.__(' requires WordPress version ').$this->installRequirements['WordPress Version'].__(' or later.  You are running WordPress version ').$wp_version.__('. Please deactivate this plugin, or upgrade your installation of WordPress.').'</p></div>'; 
 	}
-	function add_action_admin_notices_phpVersionIncompatible() { 
+
+	function add_action_admin_notices_phpVersionIncompatible()
+	{ 
 		echo '<div class="error"><p>'.__('The activated plugin ').'<strong>'.$this->pluginName.'</strong>'.__(' requires PHP ').$this->installRequirements['PHP Version'].__(' or later.  Your server is running PHP ').phpversion().__('. Please deactivate this plugin, or upgrade your server\'s installation of PHP.').'</p></div>'; 
 	}
-	function add_action_admin_notices_mbstringIncompatible() { 
+
+	function add_action_admin_notices_mbstringIncompatible()
+	{ 
 		echo '<div class="error"><p>'.__('The activated plugin ').'<strong>'.$this->pluginName.'</strong>'.__(' requires the mbstring PHP extension be enabled on your server.  It is not. Please deactivate this plugin, or ').'<a href="http://www.php.net/manual/en/mbstring.installation.php">'.__('enable this extension').'</a>.'.'</p></div>'; 
 	}
-	function add_action_admin_notices_charsetIncompatible() { 
+
+	function add_action_admin_notices_charsetIncompatible()
+	{ 
 		echo '<div class="error"><p>'.__('The activated plugin ').'<strong>'.$this->pluginName.'</strong>'.__(' requires your blog use the UTF-8 character encoding.  You have set your blogs encoding to ').get_bloginfo('charset').__('. Please deactivate this plugin, or ').'<a href="/wp-admin/options-reading.php">'.__('change your character encoding to UTF-8').'</a>.'.'</p></div>'; 
 	}
-	function add_wp_head() {
-		if($this->settings['typoStyleCSSInclude'] && trim($this->settings['typoStyleCSS']) != "") {
+
+	function add_wp_head()
+	{
+		if ($this->settings['typoStyleCSSInclude'] && trim($this->settings['typoStyleCSS']) != "") {
 			echo '<style type="text/css">'."\r\n";
 			echo $this->settings['typoStyleCSS']."\r\n";
 			echo "</style>\r\n";
 		}
-		if($this->settings['typoRemoveIE6']) {
+		if ($this->settings['typoRemoveIE6']) {
 			echo "<!--[if lt IE 7]>\r\n";
 			echo "<script type='text/javascript'>";
 			echo "function stripZWS() { document.body.innerHTML = document.body.innerHTML.replace(/\u200b/gi,''); }";
@@ -1053,3 +1076,4 @@ sub {
 		}
 	}
 }
+
