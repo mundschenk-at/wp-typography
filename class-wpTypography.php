@@ -8,14 +8,13 @@ class wpTypography
 {
 	var $pluginName = "wp-Typography";
 	var $installRequirements = array(
-			"PHP Version" 		=> "5.0.0",
-			"WordPress Version"	=> "2.7",
+			"PHP Version" 		=> "5.3.0",
+			"WordPress Version"	=> "4.0",
 			"Multibyte" 		=> true,
 			"UTF-8"				=> true,
 		);
-	var $localPluginPath = "wp-typography/wp-typography.php"; // relative from plugin folder
-	var $pluginPath = ""; // we will assign WP_PLUGIN_DIR base in __construct
-	var $remoteFileURL = 'http://a.kingdesk.com/wp-typography.php';
+	var $localPluginPath = ''; // relative from plugins folder (assigned in __construct)
+	var $pluginPath = ''; // we will assign WP_PLUGIN_DIR base in __construct
 	var $option_group = "typo_options"; //used to register options for option page
 	var $settings;
 	var $phpTypo; // this will be a class within a class
@@ -27,7 +26,6 @@ class wpTypography
 			"FAQs"			 		=> "http://kingdesk.com/projects/wp-typography-faqs/",
 			"Change Log"			=> "http://kingdesk.com/projects/wp-typography-change-log/",
 			"License"				=> "http://kingdesk.com/projects/wp-typography-license/",
-			"PHP Typography (sister project)"	=> "http://kingdesk.com/projects/php-typography/",
 		);
 	var $adminFormSections = array( // sections will be displayed in the order included
 			/*
@@ -509,15 +507,7 @@ sub {
 
 		);
 	
-	//PHP 4 constructor
-	function wpTypography() 
-	{
-		if (is_admin()) {
-			$this->add_action_admin_notices_phpVersionIncompatible();
-		}
-	}
-	
-	function __construct()
+	function __construct( $basename = 'wp-typography/wp-typography.php' )
 	{
 		global $wp_version;
 		$abortLoad = false;
@@ -537,9 +527,11 @@ sub {
 
 		if ($abortLoad == true) return;
 		
-		$this->pluginPath = WP_PLUGIN_DIR."/".$this->localPluginPath;
+		$this->localPluginPath = $basename;
+		$this->pluginPath = plugin_dir_path( __FILE__ ) . basename($this->localPluginPath);
+		
 		// include needed files
-		require_once(WP_PLUGIN_DIR.'/wp-typography/php-typography/php-typography.php');
+		require_once(plugin_dir_path( __FILE__ ) . 'php-typography/php-typography.php');
 		
 		$typoRestoreDefaults = false;
 		if (get_option('typoRestoreDefaults') == true)
@@ -636,7 +628,7 @@ sub {
 		}
 
 		// Remove default Texturize filter if it conflicts.
-		if($this->settings['typoSmartCharacters']) {
+		if($this->settings['typoSmartCharacters'] && ! is_admin() ) {
 			remove_filter('category_description', 'wptexturize');
 			remove_filter('comment_author', 'wptexturize');
 			remove_filter('comment_text', 'wptexturize');
@@ -655,14 +647,16 @@ sub {
 		add_filter('wp_title', 'strip_tags', 9999);
 		add_filter('single_post_title', 'strip_tags', 9999);
 */
-		add_filter('comment_author', array(&$this, 'process'), 9999);
-		add_filter('comment_text', array(&$this, 'process'), 9999);
-		add_filter('the_title', array(&$this, 'processTitle'), 9999);
-		add_filter('the_content', array(&$this, 'process'), 9999);
-		add_filter('the_excerpt', array(&$this, 'process'), 9999);
-		add_filter('widget_text', array(&$this, 'process'), 9999);
-		add_filter('widget_title', array(&$this, 'processTitle'), 9999);
-
+		if ( ! is_admin() ) {
+			add_filter('comment_author', array(&$this, 'process'), 9999);
+			add_filter('comment_text', array(&$this, 'process'), 9999);
+			add_filter('the_title', array(&$this, 'processTitle'), 9999);
+			add_filter('the_content', array(&$this, 'process'), 9999);
+			add_filter('the_excerpt', array(&$this, 'process'), 9999);
+			add_filter('widget_text', array(&$this, 'process'), 9999);
+			add_filter('widget_title', array(&$this, 'processTitle'), 9999);
+		}
+		
 		// add IE6 zero-width-space removal CSS Hook styling
 		add_action('wp_head', array(&$this, 'add_wp_head'));
 
@@ -722,15 +716,11 @@ sub {
 
 	function add_filter_plugin_action_links($links)
 	{
-		if (function_exists('admin_url')) {	// since WP 2.6.0
-			$adminurl = trailingslashit(admin_url());			
-		} else {
-			$adminurl = trailingslashit(get_settings('siteurl')).'wp-admin/';
-		}
-	
+		$adminurl = trailingslashit(admin_url());			
+		
 		// Add link "Settings" to the plugin in /wp-admin/plugins.php
 		$settings_link = '<a href="'.$adminurl.'options-general.php?page='.strtolower($this->pluginName).'">' . __('Settings') . '</a>';
-		array_push($links, $settings_link);
+		$links[] = $settings_link;
 		return $links;
 	}
 
@@ -837,8 +827,6 @@ sub {
 <div id='icon-options-general' class='icon32'><br /></div>
 <h2><?php echo $this->pluginName; ?></h2>
 
-<?php echo $this->get_admin_page_alert(); ?>
-
 <div id='poststuff' class='metabox-holder'>
 
 <div id="resource-links" class='postbox' >
@@ -915,26 +903,6 @@ sub {
 
 <?php
 		return;
-	}
-	
-	function get_admin_page_alert() {
-		if(function_exists('curl_init')) {
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_HEADER, 0);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //Set curl to return the data instead of printing it to the browser.
-			curl_setopt($ch, CURLOPT_URL, $this->remoteFileURL);
-			$content = curl_exec($ch);
-			$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			if($httpCode == 404) {
-				$content = "";
-			}
-			curl_close($ch);
-			if ($content) {
-				return "<div class='updated fade'>".$content."</div><!-- .updated.fade -->\r\n";
-			}
-		}
-				
-		return false;
 	}
 	
 	//	parameter	$id REQUIRED STRING
