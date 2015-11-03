@@ -825,12 +825,12 @@ sub {
 
 <div class='wrap'>
 <div id='icon-options-general' class='icon32'><br /></div>
-<h2><?php echo $this->pluginName; ?></h2>
+<h1><?php echo $this->pluginName; ?></h1>
 
 <div id='poststuff' class='metabox-holder'>
 
 <div id="resource-links" class='postbox' >
-<h3><span>Resource Links</span></h3>
+<h2><span>Resource Links</span></h2>
 <div class='inside'>
 
 <?php $i=0; ?>
@@ -846,7 +846,7 @@ sub {
 	
 <?php foreach ($this->adminFormSections as $sectionID => $heading): ?>
 <div id="<?php echo $sectionID; ?>" class='postbox submitdiv' >
-<h3><span><?php echo $heading; ?></span></h3>
+<h2><span><?php echo $heading; ?></span></h2>
 <div class='inside'>
 <div class='submitbox'>
 <div class='publishing-settings'>
