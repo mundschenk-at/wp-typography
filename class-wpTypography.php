@@ -4,65 +4,70 @@
 // internationalize
 // test for compatiblity
 
-class wpTypography 
-{
-	var $pluginName = "wp-Typography";
+/**
+ * Main wp-Typography plugin class. All WordPress specific code goes here.
+ * 
+ * @author mundschenk-at
+ */
+class wpTypography {
+	
+	var $pluginName = 'wp-Typography';
 	var $installRequirements = array(
-			"PHP Version" 		=> "5.3.0",
-			"WordPress Version"	=> "4.0",
-			"Multibyte" 		=> true,
-			"UTF-8"				=> true,
+			'PHP Version' 		=> '5.3.0',
+			'WordPress Version'	=> '4.0',
+			'Multibyte' 		=> true,
+			'UTF-8'				=> true,
 		);
-	var $localPluginPath = ''; // relative from plugins folder (assigned in __construct)
-	var $pluginPath = ''; // we will assign WP_PLUGIN_DIR base in __construct
+	var $localPluginPath = '';          // relative from plugins folder (assigned in __construct)
+	var $pluginPath = '';               // we will assign WP_PLUGIN_DIR base in __construct
 	var $option_group = "typo_options"; //used to register options for option page
-	var $settings;
-	var $phpTypo; // this will be a class within a class
+	var $settings; 
+	var $phpTypo;                       // this will be a class within a class
 	var $adminResourceLinks = array(
 			/*
-			"anchor text"			=> string URL,		// REQUIRED
+			'anchor text'			=> string URL,		// REQUIRED
 			*/
-			"Plugin Home"	 		=> "http://kingdesk.com/projects/wp-typography/",
-			"FAQs"			 		=> "http://kingdesk.com/projects/wp-typography-faqs/",
-			"Change Log"			=> "http://kingdesk.com/projects/wp-typography-change-log/",
-			"License"				=> "http://kingdesk.com/projects/wp-typography-license/",
+			'Plugin Home'	 		=> 'http://kingdesk.com/projects/wp-typography/',
+			'FAQs'			 		=> 'http://kingdesk.com/projects/wp-typography-faqs/',
+			'Change Log'			=> 'http://kingdesk.com/projects/wp-typography-change-log/',
+			'License'				=> 'http://kingdesk.com/projects/wp-typography-license/',
 		);
 	var $adminFormSections = array( // sections will be displayed in the order included
 			/*
-			"id" 					=> string heading,		// REQUIRED
+			'id' 					=> string heading,		// REQUIRED
 			*/
-			"general-scope" 		=> "General Scope",
-			"hyphenation" 			=> "Hyphenation", 
-			"character-replacement"	=> "Intelligent Character Replacement", 
-			"space-control" 		=> "Space Control", 
-			"css-hooks" 			=> "Add CSS Hooks", 
+			'general-scope' 		=> 'General Scope',
+			'hyphenation' 			=> 'Hyphenation', 
+			'character-replacement'	=> 'Intelligent Character Replacement', 
+			'space-control' 		=> 'Space Control', 
+			'css-hooks' 			=> 'Add CSS Hooks', 
 		);
 	var $adminFormSectionFieldsets = array( // fieldsets will be displayed in the order included
 			/*
-			"id" => array(
-				"heading" 	=> string Fieldset Name,	// REQUIRED
-				"sectionID" 	=> string Parent Section ID,	// REQUIRED
+			'id' => array(
+				'heading' 	=> string Fieldset Name,	// REQUIRED
+				'sectionID' 	=> string Parent Section ID,	// REQUIRED
 			),
 			*/
-			"smart-quotes" => array(
-				"heading" 	=> "Quotemarks", 
-				"sectionID" 	=> "character-replacement",
+			'smart-quotes' => array(
+				'heading' 	=> 'Quotemarks', 
+				'sectionID' 	=> 'character-replacement',
 			),
-			"diacritics" => array(
-				"heading" 	=> "Diacritics", 
-				"sectionID" 	=> "diacritics",
+			'diacritics' => array(
+				'heading' 	=> 'Diacritics', 
+				'sectionID' 	=> 'diacritics',
 			),
-			"values-and-units" => array(
-				"heading" 	=> "Values &amp; Units", 
-				"sectionID" 	=> "space-control",
+			'values-and-units' => array(
+				'heading' 	=> 'Values &amp; Units', 
+				'sectionID' 	=> 'space-control',
 			),
-			"enable-wrapping" => array(
-				"heading" 	=> "Enable Wrapping", 
-				"sectionID" 	=> "space-control",
+			'enable-wrapping' => array(
+				'heading' 	=> 'Enable Wrapping', 
+				'sectionID' 	=> 'space-control',
 			),
-			"widows" => array(
-				"heading" 	=> "Widows", 
-				"sectionID" 	=> "space-control",
+			'widows' => array(
+				'heading' 	=> 'Widows', 
+				'sectionID' 	=> 'space-control',
 			),
 		);
 	var $adminFormControls = array(
@@ -166,7 +171,7 @@ class wpTypography
 				"labelBefore" 	=> "Exception List:",
 				"helpText" 		=> "Mark allowed hyphenations with \"-\"; separate words with spaces.",
 				"control" 		=> "textarea",
-				"default" 		=> "KING-desk",
+				"default" 		=> "Mund-schenk",
 			),
 			"typoSmartCharacters" => array(
 				"section"		=> "character-replacement",
@@ -507,8 +512,12 @@ sub {
 
 		);
 	
-	function __construct( $basename = 'wp-typography/wp-typography.php' )
-	{
+	/**
+	 * Sets up a new wpTypography object.
+	 * 
+	 * @param string $basename The result of plugin_basename() for the main plugin file.
+	 */
+	function __construct( $basename = 'wp-typography/wp-typography.php' ) {
 		global $wp_version;
 		$abortLoad = false;
 		if (version_compare($wp_version, $this->installRequirements['WordPress Version'], '<' ) ) {
@@ -621,11 +630,7 @@ sub {
 		register_activation_hook($this->pluginPath, array(&$this, 'register_plugin'));
 		add_action('admin_menu', array(&$this, 'add_options_page'));
 		add_action('admin_init', array(&$this, 'register_the_settings'));
-
-		global $wp_version;
-		if (version_compare($wp_version, '2.7', '>=' )) {
-			add_filter( "plugin_action_links_".$this->localPluginPath, array(&$this, 'add_filter_plugin_action_links'));
-		}
+		add_filter( 'plugin_action_links_'.$this->localPluginPath, array(&$this, 'add_filter_plugin_action_links'));
 
 		// Remove default Texturize filter if it conflicts.
 		if($this->settings['typoSmartCharacters'] && ! is_admin() ) {
@@ -672,62 +677,87 @@ sub {
 		return $text;
 	}
 */
-	function processTitle($text)
-	{
+	/**
+	 * Process title text fragment.
+	 * 
+	 * Calls `process( $text, true )`.
+	 * 
+	 * @param string $text
+	 */
+	function processTitle( $text ) {
 		return $this->process($text, true);
 	}
 
-	function process($text, $isTitle = false)
-	{
-		
-		if (is_feed()) { //feed readers can be pretty stupid
-			return $this->phpTypo->process_feed($text, $isTitle);
+	/**
+	 * Process text fragment.
+	 * 
+	 * @param string $text
+	 * @param boolean $isTitle Default false.
+	 */
+	function process( $text, $isTitle = false ) {
+		if ( is_feed() ) { //feed readers can be pretty stupid
+			return $this->phpTypo->process_feed( $text, $isTitle );
 		} else {
-			return $this->phpTypo->process($text, $isTitle);
+			return $this->phpTypo->process( $text, $isTitle );
 		}
 	}
 
-	function register_plugin($update = false)
-	{
+	/**
+	 * Called on plugin activation.
+	 * 
+	 * @param string $update Whether the standard settings should be restored. Default false.
+	 */
+	function register_plugin( $update = false ) {
 		// grab configuration variables
-		foreach ($this->adminFormControls as $key => $value) {
-			if ($update || !is_string(get_option($key))) {
-				update_option($key, $value["default"]);
+		foreach ( $this->adminFormControls as $key => $value ) {
+			if ( $update || ! is_string( get_option( $key ) ) ) {
+				update_option( $key, $value['default'] );
 			}
 		}
-		update_option("typoRestoreDefaults", 0);
+		
+		update_option( 'typoRestoreDefaults', 0 );
 
 		return;
 	}
 
-	function register_the_settings()
-	{
-		foreach ($this->adminFormControls as $controlID => $control) {
+	/**
+	 * Register admin settings.
+	 */
+	function register_the_settings() {
+		foreach ( $this->adminFormControls as $controlID => $control ) {
 			register_setting( $this->option_group, $controlID );
 		}
-		register_setting( $this->option_group, "typoRestoreDefaults" );
+		register_setting( $this->option_group, 'typoRestoreDefaults' );
 	}
 
-	function add_options_page()
-	{
-		add_options_page($this->pluginName, $this->pluginName, 'manage_options', strtolower($this->pluginName), array($this, 'get_admin_page_content'));
-		return;
+	/**
+	 * Add an options page for the plugin settings.
+	 */
+	function add_options_page()	{
+		add_options_page( $this->pluginName, $this->pluginName, 'manage_options', strtolower( $this->pluginName ), array( $this, 'get_admin_page_content' ) );
 	}
 
-	function add_filter_plugin_action_links($links)
-	{
-		$adminurl = trailingslashit(admin_url());			
+	/**
+	 * Add a 'Settings' link to the wp-Typography entry in the plugins list.
+	 * 
+	 * @param array $links An array of links.
+	 * @return array An array of links.
+	 */
+	function add_filter_plugin_action_links( $links ) {
+		$adminurl = trailingslashit( admin_url() );
 		
 		// Add link "Settings" to the plugin in /wp-admin/plugins.php
-		$settings_link = '<a href="'.$adminurl.'options-general.php?page='.strtolower($this->pluginName).'">' . __('Settings') . '</a>';
+		$settings_link = '<a href="'.$adminurl.'options-general.php?page='.strtolower( $this->pluginName ).'">' . __( 'Settings' ) . '</a>';
 		$links[] = $settings_link;
+		
 		return $links;
 	}
 
 
-	// admin page content
-	function get_admin_page_content()
-	{
+	/**
+	 * Display the plugin options page.
+	 */
+	function get_admin_page_content() {
 ?>
 
 <style type="text/css">
@@ -834,17 +864,17 @@ sub {
 <div class='inside'>
 
 <?php $i=0; ?>
-<?php foreach($this->adminResourceLinks as $anchor => $url) { ?>
-	<?php if ($i++ > 0) echo " | ";?><a href="<?php echo $url; ?>"><?php echo __("$anchor") ?></a>
+<?php foreach( $this->adminResourceLinks as $anchor => $url ) { ?>
+	<?php if ( $i++ > 0 ) echo " | ";?><a href="<?php echo $url; ?>"><?php echo __("$anchor") ?></a>
 <?php } ?>
 
 </div>
 </div>
 
 <form method="post" action="options.php">
-<?php  settings_fields($this->option_group); ?>
+<?php  settings_fields( $this->option_group ); ?>
 	
-<?php foreach ($this->adminFormSections as $sectionID => $heading): ?>
+<?php foreach ( $this->adminFormSections as $sectionID => $heading ): ?>
 <div id="<?php echo $sectionID; ?>" class='postbox submitdiv' >
 <h2><span><?php echo $heading; ?></span></h2>
 <div class='inside'>
@@ -866,16 +896,15 @@ sub {
 				$fieldsetID = $adminFormControl["fieldset"];
 			}
 		
-		
 			echo $this->get_admin_form_control(
-					$controlID,
-					$adminFormControl['control'],
-					$adminFormControl['inputType'],
-					$adminFormControl['labelBefore'],
-					$adminFormControl['labelAfter'],
-					$adminFormControl['helpText'],
-					$adminFormControl['optionValues']
-					);
+							$controlID,
+							$adminFormControl['control'],
+							$adminFormControl['inputType'],
+							$adminFormControl['labelBefore'],
+							$adminFormControl['labelAfter'],
+							$adminFormControl['helpText'],
+							$adminFormControl['optionValues']
+						);
 		}
 	}
 	if ($fieldsetID) { // we have an unclosed fieldset
@@ -885,8 +914,8 @@ sub {
 
 </div><!-- .publishing-settings -->
 <div class='publishing-actions'>
-<?php echo $this->get_admin_form_control("saveChanges", "input", "submit"); ?>
-<?php echo $this->get_admin_form_control("typoRestoreDefaults", "input", "submit"); ?>
+<?php echo $this->get_admin_form_control('saveChanges', 'input', 'submit'); ?>
+<?php echo $this->get_admin_form_control('typoRestoreDefaults', 'input', 'submit'); ?>
 <div class='clear'></div>
 </div><!-- .publishing-actions -->
 </div><!-- .submitbox -->
@@ -902,29 +931,41 @@ sub {
 <div class='clear'></div>
 
 <?php
-		return;
-	}
+	} // get_admin_page_content()
 	
-	//	parameter	$id REQUIRED STRING
-	//				$control REQUIRED STRING, must be: "input", "select", or "textarea"; not implemented: "button"
-	//				$inputType OPTIONAL STRING, for $control = "input"; must be: "text", "password", "checkbox", "submit", "hidden"; not implemented: "radio", "image", "reset", "button", "file"
-	//				$labelBefore OPTIONAL STRING, set this to the text that should appear before the control
-	//				$labelAfter OPTIONAL STRING, set this to the text that should appear after the control; not for $control = "textarea"
-	//				$helpText OPTIONAL STRING, requires an accompanying label
-	//				$optionValues OPTIONAL ARRAY, in the form array($value => $display)
-	function get_admin_form_control ($id, $control="input", $inputType="text", 
-		$labelBefore=null, $labelAfter=null, $helpText=null, $optionValues=null) {
-		$helpTextClass = "helpText";
-		if ($inputType != "submit") {
+	/**
+	 * Create the markup for a plugin setting.
+	 * 
+	 * @param string $id Required. The control ID.
+	 * @param string $control Required. Accepts: 'input', 'select', or 'textarea'; not implemented: 'button'. Default 'input'.
+	 * @param string $inputType Optional. Used when $control is set to 'input'. Accepts: 'text', 'password', 'checkbox', 'submit', 'hidden';
+	 *               not implemented: 'radio', 'image', 'reset', 'button', 'file'. Default 'text'.
+	 * @param string $labelBefore Optional. Text displayed before the control. Default empty.
+	 * @param string $labelAfter Optional. Text displayed after the control. Cannot be uses when $control is set to 'textarea'. Default empty.
+	 * @param string $helpText Optional. Requires an accompanying label. Default empty.
+	 * @param array  $optionValues {
+	 * 		Optional. Array of values and display strings in the form ($value => $display). Default empty.
+	 * }
+	 * @return string The markup for the control.
+	 */
+	function get_admin_form_control( $id, 
+								     $control = 'input', 
+									 $inputType = 'text', 
+									 $labelBefore = null, 
+									 $labelAfter = null, 
+									 $helpText = null,
+									 $optionValues = null ) {
+		$helpTextClass = 'helpText';
+		if ($inputType != 'submit') {
 			$value = get_option($id);
-		} elseif ($id == "typoRestoreDefaults") {
-			$value = "Restore Defaults";
+		} elseif ($id == 'typoRestoreDefaults') {
+			$value = 'Restore Defaults';
 		} else {
-			$value = "Save Changes";
+			$value = 'Save Changes';
 		}
 
-		if ($inputType == "checkbox") {
-			$checked = "";
+		if ($inputType == 'checkbox') {
+			$checked = '';
 			if($value) $checked = 'checked="checked" ';
 		}
 		
@@ -934,71 +975,71 @@ sub {
 		}
 		
 	
-		if ($inputType == "submit") {
+		if ($inputType == 'submit') {
 			$controlMarkup = "<div class='publishing-action'>";
 		} else {
 			$controlMarkup = "<div class='control'>";
 		}
 		
-		if (($labelBefore || $labelAfter) && $inputType != "hidden" && $inputType != "submit") {
+		if (($labelBefore || $labelAfter) && $inputType != 'hidden' && $inputType != 'submit') {
 			$controlMarkup .= "<label for='$id'>";
 			if ($labelBefore) {
 				$controlMarkup .= "$labelBefore ";
 			}
-			if ($control == "textarea") {
+			if ($control == 'textarea') {
 				if ($helpText) {
 					$controlMarkup .= "<span class='$helpTextClass'>$helpText</span>";
 				}
-				$controlMarkup .= "</label>";
+				$controlMarkup .= '</label>';
 			}
 		}
 		
 		$controlMarkup .= "<$control ";
 		
-		if ($control == "input") {
+		if ($control == 'input') {
 			$controlMarkup .= "type='$inputType' ";
 		}
 		
-		if ($inputType=="submit" && $value == "Restore Defaults") {
+		if ($inputType=='submit' && $value == 'Restore Defaults') {
 			$controlMarkup .= "name='$id' class='text-button'"; //to avoid duplicate ids and some pretty stylin'
-		} elseif ($inputType=="submit") {
+		} elseif ($inputType=='submit') {
 			$controlMarkup .= "name='$id' class='button-primary'"; //to avoid duplicate ids and some pretty stylin'
 		} else {
 			$controlMarkup .= "id='$id' name='$id' ";
 		}
 
-		if ($value && $control != "select" && $control != "textarea" && $inputType != "checkbox") {
+		if ($value && $control != 'select' && $control != 'textarea' && $inputType != 'checkbox') {
 			$controlMarkup .= "value='$value' ";
-		} elseif ($inputType == "checkbox") {
+		} elseif ($inputType == 'checkbox') {
 			$controlMarkup .= "value='1' $checked";
 		}
 		
-		if ($control != "select" && $control != "textarea") {
-			$controlMarkup .= " />";
-		} elseif ($control == "textarea") {
-			$controlMarkup .= " >";
+		if ($control != 'select' && $control != 'textarea') {
+			$controlMarkup .= ' />';
+		} elseif ($control == 'textarea') {
+			$controlMarkup .= ' >';
 			if ($value) {
 				$controlMarkup .= $value;
 			}
 			$controlMarkup .= "</$control>";
-		} elseif ($control == "select") {
-			$controlMarkup .= " >";
+		} elseif ($control == 'select') {
+			$controlMarkup .= ' >';
 			foreach ($optionValues as $optionValue => $display) {
-				$selected = "";
+				$selected = '';
 				if ($value == $optionValue) $selected = "selected='selected'";
 				$controlMarkup .= "<option value='$optionValue' $selected>$display</option>";
 			}
 			$controlMarkup .= "</$control>";
 		}
 		
-		if (($labelBefore || $labelAfter) && $control != "textarea") {
+		if (($labelBefore || $labelAfter) && $control != 'textarea') {
 			if ($labelAfter) {
 				$controlMarkup .= " $labelAfter";
 			}
 			if ($helpText) {
 				$controlMarkup .= "<span class='$helpTextClass'>$helpText</span>";
 			}
-			$controlMarkup .= "</label>";
+			$controlMarkup .= '</label>';
 		}
 		
 		$controlMarkup .= "</div>\r\n";
@@ -1006,35 +1047,46 @@ sub {
 		return $controlMarkup;
 	}
 
-	function add_action_admin_notices_wpVersionIncompatible()
-	{ 
+	/**
+	 * Print 'WordPress version incompatible' admin notice
+	 */
+	function add_action_admin_notices_wpVersionIncompatible() { 
 		global $wp_version;
 		echo '<div class="error"><p>'.__('The activated plugin ').'<strong>'.$this->pluginName.'</strong>'.__(' requires WordPress version ').$this->installRequirements['WordPress Version'].__(' or later.  You are running WordPress version ').$wp_version.__('. Please deactivate this plugin, or upgrade your installation of WordPress.').'</p></div>'; 
 	}
 
-	function add_action_admin_notices_phpVersionIncompatible()
-	{ 
+	/**
+	 * Print 'PHP version incompatible' admin notice
+	 */
+	function add_action_admin_notices_phpVersionIncompatible() { 
 		echo '<div class="error"><p>'.__('The activated plugin ').'<strong>'.$this->pluginName.'</strong>'.__(' requires PHP ').$this->installRequirements['PHP Version'].__(' or later.  Your server is running PHP ').phpversion().__('. Please deactivate this plugin, or upgrade your server\'s installation of PHP.').'</p></div>'; 
 	}
-
-	function add_action_admin_notices_mbstringIncompatible()
-	{ 
+	
+	/**
+	 * Print 'mbstring extension missing' admin notice
+	 */
+	function add_action_admin_notices_mbstringIncompatible() { 
 		echo '<div class="error"><p>'.__('The activated plugin ').'<strong>'.$this->pluginName.'</strong>'.__(' requires the mbstring PHP extension be enabled on your server.  It is not. Please deactivate this plugin, or ').'<a href="http://www.php.net/manual/en/mbstring.installation.php">'.__('enable this extension').'</a>.'.'</p></div>'; 
 	}
 
-	function add_action_admin_notices_charsetIncompatible()
-	{ 
+	/**
+	 * Print 'Charset incompatible' admin notice
+	 */
+	function add_action_admin_notices_charsetIncompatible() { 
 		echo '<div class="error"><p>'.__('The activated plugin ').'<strong>'.$this->pluginName.'</strong>'.__(' requires your blog use the UTF-8 character encoding.  You have set your blogs encoding to ').get_bloginfo('charset').__('. Please deactivate this plugin, or ').'<a href="/wp-admin/options-reading.php">'.__('change your character encoding to UTF-8').'</a>.'.'</p></div>'; 
 	}
 
-	function add_wp_head()
-	{
-		if ($this->settings['typoStyleCSSInclude'] && trim($this->settings['typoStyleCSS']) != "") {
+	/**
+	 * Print CSS and JS depending on plugin options.
+	 */
+	function add_wp_head() {
+		if ( $this->settings['typoStyleCSSInclude'] && trim( $this->settings['typoStyleCSS'] ) != '' ) {
 			echo '<style type="text/css">'."\r\n";
 			echo $this->settings['typoStyleCSS']."\r\n";
 			echo "</style>\r\n";
 		}
-		if ($this->settings['typoRemoveIE6']) {
+		
+		if ( $this->settings['typoRemoveIE6'] ) {
 			echo "<!--[if lt IE 7]>\r\n";
 			echo "<script type='text/javascript'>";
 			echo "function stripZWS() { document.body.innerHTML = document.body.innerHTML.replace(/\u200b/gi,''); }";
