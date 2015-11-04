@@ -27,10 +27,10 @@ class wpTypography {
 			/*
 			'anchor text'			=> string URL,		// REQUIRED
 			*/
-			'Plugin Home'	 		=> 'http://kingdesk.com/projects/wp-typography/',
-			'FAQs'			 		=> 'http://kingdesk.com/projects/wp-typography-faqs/',
-			'Change Log'			=> 'http://kingdesk.com/projects/wp-typography-change-log/',
-			'License'				=> 'http://kingdesk.com/projects/wp-typography-license/',
+			'Plugin Home'	 		=> 'https://code.mundschenk.at/wp-typography/',
+			'FAQs'			 		=> 'https://code.mundschenk.at/wp-typography/frequently-asked-questions/',
+			'Changelog'				=> 'https://code.mundschenk.at/wp-typography/changes/',
+			'License'				=> 'https://code.mundschenk.at/wp-typography/license/',
 		);
 	var $adminFormSections = array( // sections will be displayed in the order included
 			/*
