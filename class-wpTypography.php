@@ -80,6 +80,10 @@ class wpTypography {
 	function __construct( $basename = 'wp-typography/wp-typography.php' ) {
 		global $wp_version;
 		$abortLoad = false;
+		
+		// ensure that our translations are loaded
+		add_action( 'plugins_loaded', array( &$this, 'load_plugin_textdomain' ) );
+		
 		if ( version_compare( $wp_version, $this->install_requirements['WordPress Version'], '<' ) ) {
 			if ( is_admin() ) {
 				add_action( 'admin_notices', array( &$this, 'admin_notices_wp_version_incompatible' ) );
@@ -110,7 +114,6 @@ class wpTypography {
 		// property intialization
 		$this->local_plugin_path = $basename;
 		$this->plugin_path = plugin_dir_path( __FILE__ ) . basename( $this->local_plugin_path );
-		$this->initialize_settings_properties();
 		
 		// include needed files
 		require_once( plugin_dir_path( __FILE__ ) . 'php-typography/php-typography.php' );
@@ -462,8 +465,8 @@ class wpTypography {
 			),
 		
 			"typoSmartDashes" => array(
-				"section"			=> "character-replacement",
-				"label_after" 		=> __( "Transform minus-hyphens [ <samp>-</samp> <samp>--</samp> ] to contextually appropriate dashes, minus signs, and hyphens [ <samp>&ndash;</samp> <samp>&mdash;</samp> <samp>&#8722;</samp> <samp>&#8208;</samp> ].", 'wp-typography' ),
+				"section"		=> "character-replacement",
+				"label" 		=> __( "%1\$s Transform minus-hyphens [ <samp>-</samp> <samp>--</samp> ] to contextually appropriate dashes, minus signs, and hyphens [ <samp>&ndash;</samp> <samp>&mdash;</samp> <samp>&#8722;</samp> <samp>&#8208;</samp> ].", 'wp-typography' ),
 				"control" 		=> "input",
 				"input_type" 	=> "checkbox",
 				"default" 		=> 1,
@@ -831,7 +834,6 @@ sub {
 	 * @param string $input_type Optional. Used when $control is set to 'input'. Accepts: 'text', 'password', 'checkbox', 'submit', 'hidden';
 	 *               not implemented: 'radio', 'image', 'reset', 'button', 'file'. Default 'text'.
 	 * @param string $label_before Optional. Text displayed before the control. Default empty.
-	 * @param string $label_after Optional. Text displayed after the control. Cannot be uses when $control is set to 'textarea'. Default empty.
 	 * @param string $help_text Optional. Requires an accompanying label. Default empty.
 	 * @param array  $option_values {
 	 * 		Optional. Array of values and display strings in the form ($value => $display). Default empty.
@@ -1005,7 +1007,7 @@ sub {
 	function admin_notices_wp_version_incompatible() { 
 		global $wp_version;
 		
-		$this->_display_error_notice( __( 'The activated plugin %1$s requires WordPress version %2$s or later. You are running WordPress version %3$s. Please deactivate this plugin, or upgrade your installation of WordPress.', 'wp-typography' ), 
+		$this->display_error_notice( __( 'The activated plugin %1$s requires WordPress version %2$s or later. You are running WordPress version %3$s. Please deactivate this plugin, or upgrade your installation of WordPress.', 'wp-typography' ), 
 									  "<strong>{$this->plugin_name}</strong>", 
 									  $this->install_requirements['WordPress Version'], 
 									  $wp_version );
@@ -1015,7 +1017,7 @@ sub {
 	 * Print 'PHP version incompatible' admin notice
 	 */
 	function admin_notices_php_version_incompatible() { 
-		$this->_display_error_notice( __( 'The activated plugin %1$s requires PHP %2$s or later. Your server is running PHP %3$s. Please deactivate this plugin, or upgrade your server\'s installation of PHP.', 'wp-typography' ),
+		$this->display_error_notice( __( 'The activated plugin %1$s requires PHP %2$s or later. Your server is running PHP %3$s. Please deactivate this plugin, or upgrade your server\'s installation of PHP.', 'wp-typography' ),
 								  	  "<strong>{$this->plugin_name}</strong>",
 									  $this->install_requirements['PHP Version'],
 									  phpversion() );
@@ -1025,7 +1027,7 @@ sub {
 	 * Print 'mbstring extension missing' admin notice
 	 */
 	function admin_notices_mbstring_incompatible() { 
-		$this->_display_error_notice( __( 'The activated plugin %1$s requires the mbstring PHP extension to be enabled on your server. Please deactivate this plugin, or <a href="%2$s">enable the extension</a>.', 'wp-typography' ),
+		$this->display_error_notice( __( 'The activated plugin %1$s requires the mbstring PHP extension to be enabled on your server. Please deactivate this plugin, or <a href="%2$s">enable the extension</a>.', 'wp-typography' ),
 			"<strong>{$this->plugin_name}</strong>",
 			'http://www.php.net/manual/en/mbstring.installation.php' );
 	}
@@ -1034,7 +1036,7 @@ sub {
 	 * Print 'Charset incompatible' admin notice
 	 */
 	function admin_notices_charset_incompatible() { 
-		$this->_display_error_notice( __( 'The activated plugin %1$s requires your blog use the UTF-8 character encoding. You have set your blogs encoding to %2$s. Please deactivate this plugin, or <a href="%3$s">change your character encoding to UTF-8</a>.', 'wp-typography' ),
+		$this->display_error_notice( __( 'The activated plugin %1$s requires your blog use the UTF-8 character encoding. You have set your blogs encoding to %2$s. Please deactivate this plugin, or <a href="%3$s">change your character encoding to UTF-8</a>.', 'wp-typography' ),
 			"<strong>{$this->plugin_name}</strong>",
 			get_bloginfo( 'charset' ),
 			'/wp-admin/options-reading.php' );
@@ -1045,9 +1047,8 @@ sub {
 	 * 
 	 * @param string $format    An `sprintf` format string.
 	 * @param mixed  $param1... An optional number of parameters for sprintf.
-	 * @access private
 	 */
-	private function _display_error_notice($format) {
+	function display_error_notice($format) {
 		if ( func_num_args() < 1 ) {
 			return; // abort
 		}
@@ -1076,6 +1077,15 @@ sub {
 			echo "</script>\r\n";
 			echo "<![endif]-->\r\n";
 		}
+	}
+	
+	/**
+	 * Load translations.
+	 */
+	function load_plugin_textdomain() {	
+		load_plugin_textdomain( 'wp-typography', false, dirname( plugin_basename( __FILE__ ) ) . '/translations/' );
+		
+		$this->initialize_settings_properties();
 	}
 }
 

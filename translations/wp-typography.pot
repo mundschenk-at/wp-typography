@@ -1,0 +1,481 @@
+# Copyright (C) 2015 Peter Putzer
+# This file is distributed under the GPL2.
+msgid ""
+msgstr ""
+"Project-Id-Version: wp-Typography 3.0.0-beta1\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/wp-typography\n"
+"POT-Creation-Date: 2015-11-05 21:02:27+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"X-Generator: grunt-wp-i18n 0.4.9\n"
+
+#: class-wpTypography.php:253
+msgid "Plugin Home"
+msgstr ""
+
+#: class-wpTypography.php:254
+msgid "FAQs"
+msgstr ""
+
+#: class-wpTypography.php:255
+msgid "Changelog"
+msgstr ""
+
+#: class-wpTypography.php:256
+msgid "License"
+msgstr ""
+
+#: class-wpTypography.php:264
+msgid "General Scope"
+msgstr ""
+
+#: class-wpTypography.php:265
+msgid "Hyphenation"
+msgstr ""
+
+#: class-wpTypography.php:266
+msgid "Intelligent Character Replacement"
+msgstr ""
+
+#: class-wpTypography.php:267
+msgid "Space Control"
+msgstr ""
+
+#: class-wpTypography.php:268
+msgid "Add CSS Hooks"
+msgstr ""
+
+#: class-wpTypography.php:280
+msgid "Quotemarks"
+msgstr ""
+
+#: class-wpTypography.php:284
+msgid "Diacritics"
+msgstr ""
+
+#: class-wpTypography.php:288
+msgid "Values &amp; Units"
+msgstr ""
+
+#: class-wpTypography.php:292
+msgid "Enable Wrapping"
+msgstr ""
+
+#: class-wpTypography.php:296
+msgid "Widows"
+msgstr ""
+
+#: class-wpTypography.php:316
+msgid "Do not process the content of these <strong>HTML elements</strong>:"
+msgstr ""
+
+#: class-wpTypography.php:317 class-wpTypography.php:687
+msgid ""
+"Separate tag names with spaces; do not include the <samp>&lt;</samp> or "
+"<samp>&gt;</samp>."
+msgstr ""
+
+#: class-wpTypography.php:323
+msgid "Do not process elements of <strong>class</strong>:"
+msgstr ""
+
+#: class-wpTypography.php:324
+msgid "Separate class names with spaces."
+msgstr ""
+
+#: class-wpTypography.php:330
+msgid "Do not process elements of <strong>ID</strong>:"
+msgstr ""
+
+#: class-wpTypography.php:331
+msgid "Separate ID names with spaces."
+msgstr ""
+
+#: class-wpTypography.php:337
+msgid "%1$s Enable hyphenation."
+msgstr ""
+
+#: class-wpTypography.php:344
+msgid "Language for hyphenation rules: %1$s"
+msgstr ""
+
+#: class-wpTypography.php:351
+msgid "%1$s Hyphenate headings."
+msgstr ""
+
+#: class-wpTypography.php:352
+msgid ""
+"Unchecking will disallow hyphenation of headings, even if allowed in the "
+"general scope."
+msgstr ""
+
+#: class-wpTypography.php:359
+msgid "%1$s Allow hyphenation of words that begin with a capital letter."
+msgstr ""
+
+#: class-wpTypography.php:360
+msgid "Uncheck to avoid hyphenation of proper nouns."
+msgstr ""
+
+#: class-wpTypography.php:367
+msgid "%1$s Hyphenate words in ALL CAPS."
+msgstr ""
+
+#: class-wpTypography.php:374
+msgid "Do not hyphenate words with less than %1$s letters."
+msgstr ""
+
+#: class-wpTypography.php:381
+msgid "Keep at least %1$s letters before hyphenation."
+msgstr ""
+
+#: class-wpTypography.php:388
+msgid "Keep at least %1$s letters after hyphenation."
+msgstr ""
+
+#: class-wpTypography.php:395
+msgid "Exception List:"
+msgstr ""
+
+#: class-wpTypography.php:396
+msgid "Mark allowed hyphenations with \"-\"; separate words with spaces."
+msgstr ""
+
+#: class-wpTypography.php:402
+msgid ""
+"%1$s Override WordPress' automatic character handling with your preferences "
+"here."
+msgstr ""
+
+#: class-wpTypography.php:410
+msgid ""
+"%1$s Transform straight quotes [ <samp>'</samp> <samp>\"</samp> ] to "
+"typographically correct characters as detailed below."
+msgstr ""
+
+#: class-wpTypography.php:419
+msgid "Convert <samp>\"foo\"</samp> to: %1$s"
+msgstr ""
+
+#: class-wpTypography.php:420
+msgid "Primary quotation style."
+msgstr ""
+
+#: class-wpTypography.php:444
+msgid "Convert <samp>'foo'</samp> to: %1$s"
+msgstr ""
+
+#: class-wpTypography.php:445
+msgid "Secondary quotation style."
+msgstr ""
+
+#: class-wpTypography.php:469
+msgid ""
+"%1$s Transform minus-hyphens [ <samp>-</samp> <samp>--</samp> ] to "
+"contextually appropriate dashes, minus signs, and hyphens [ "
+"<samp>&ndash;</samp> <samp>&mdash;</samp> <samp>&#8722;</samp> "
+"<samp>&#8208;</samp> ]."
+msgstr ""
+
+#: class-wpTypography.php:476
+msgid ""
+"%1$s Transform three periods [ <samp>...</samp> ] to  ellipses [ "
+"<samp>&hellip;</samp> ]."
+msgstr ""
+
+#: class-wpTypography.php:486
+msgid "%1$s Force diacritics where appropriate."
+msgstr ""
+
+#: class-wpTypography.php:487
+msgid "i.e. <samp>creme brulee</samp> becomes <samp>crème brûlée</samp>"
+msgstr ""
+
+#: class-wpTypography.php:495
+msgid "Language for diacritic replacements: %1$s"
+msgstr ""
+
+#: class-wpTypography.php:496
+msgid ""
+"Language definitions will purposefully <strong>not</strong> process words "
+"that have alternate meaning without diacritics like <samp>resume &amp; "
+"résumé</samp>, <samp>divorce &amp; divorcé</samp>, and <samp>expose &amp; "
+"exposé</samp>."
+msgstr ""
+
+#: class-wpTypography.php:504
+msgid "Custom diacritic word replacements:"
+msgstr ""
+
+#: class-wpTypography.php:505
+msgid ""
+"Must be formatted <samp>\"word to replace\"=>\"replacement word\",</samp>; "
+"This is case-sensitive."
+msgstr ""
+
+#: class-wpTypography.php:513
+msgid ""
+"%1$s Transform registration marks [ <samp>(c)</samp> <samp>(r)</samp> "
+"<samp>(tm)</samp> <samp>(sm)</samp> <samp>(p)</samp> ] to  proper "
+"characters [ <samp>©</samp> <samp>®</samp> <samp>™</samp> <samp>℠</samp> "
+"<samp>℗</samp> ]."
+msgstr ""
+
+#: class-wpTypography.php:520
+msgid ""
+"%1$s Transform exponents [ <samp>3^2</samp> ] to pretty exponents [ "
+"<samp>3<sup>2</sup></samp> ] and math symbols [ <samp>(2x6)/3=4</samp> ] to "
+"correct symbols [ <samp>(2&#215;6)&#247;3=4</samp> ]."
+msgstr ""
+
+#: class-wpTypography.php:527
+msgid ""
+"%1$s Transform fractions [ <samp>1/2</samp> ] to  pretty fractions [ "
+"<samp><sup>1</sup>&#8260;<sub>2</sub></samp> ].<br>WARNING: If you use a "
+"font (like Lucida Grande) that does not have a fraction-slash character, "
+"this may cause a missing line between the numerator and denominator."
+msgstr ""
+
+#: class-wpTypography.php:534
+msgid ""
+"%1$s Transform ordinal suffixes [ <samp>1st</samp> ] to  pretty ordinals [ "
+"<samp>1<sup>st</sup></samp> ]."
+msgstr ""
+
+#: class-wpTypography.php:541
+msgid ""
+"%1$s Prevent single character words from residing at the end of a line of "
+"text (unless it is a widow)."
+msgstr ""
+
+#: class-wpTypography.php:548
+msgid ""
+"%1$s Force thin spaces between em &amp; en dashes and adjoining words.  "
+"This will display poorly in IE6 with some fonts (like Tahoma) and in rare "
+"instances in WebKit browsers (Safari and Chrome)."
+msgstr ""
+
+#: class-wpTypography.php:555
+msgid "%1$s Keep integers with adjoining fractions."
+msgstr ""
+
+#: class-wpTypography.php:556
+msgid "i.e. <samp>1 1/2</samp> or <samp>1 <sup>1</sup>&#8260;<sub>2</sub></samp>"
+msgstr ""
+
+#: class-wpTypography.php:563
+msgid "%1$s Collapse adjacent spacing to a single character."
+msgstr ""
+
+#: class-wpTypography.php:564
+msgid ""
+"Normal HTML processing collapses basic spaces.  This option will "
+"additionally collapse no-break spaces, zero-width spaces, figure spaces, "
+"etc."
+msgstr ""
+
+#: class-wpTypography.php:572
+msgid "%1$s Keep values and units together."
+msgstr ""
+
+#: class-wpTypography.php:573
+msgid "i.e. <samp>1 in.</samp> or <samp>10 m<sup>2</sup></samp>"
+msgstr ""
+
+#: class-wpTypography.php:581
+msgid "Unit names:"
+msgstr ""
+
+#: class-wpTypography.php:582
+msgid ""
+"Separate unit names with spaces. We already look for a large list; fill in "
+"any holes here."
+msgstr ""
+
+#: class-wpTypography.php:589
+msgid "%1$s Prevent widows"
+msgstr ""
+
+#: class-wpTypography.php:590
+msgid "Widows are the last word in a block of text that wraps to its own line."
+msgstr ""
+
+#: class-wpTypography.php:598
+msgid "Only protect widows with %1$s or fewer letters."
+msgstr ""
+
+#: class-wpTypography.php:606
+msgid "Pull at most %1$s letters from the previous line to keep the widow company."
+msgstr ""
+
+#: class-wpTypography.php:614
+msgid "%1$s Enable wrapping after hard hyphens."
+msgstr ""
+
+#: class-wpTypography.php:615
+msgid ""
+"Adds zero-width spaces after hard hyphens (like in "
+"&ldquo;zero-width&rdquo;)."
+msgstr ""
+
+#: class-wpTypography.php:623
+msgid "%1$s Enable wrapping of long emails."
+msgstr ""
+
+#: class-wpTypography.php:624
+msgid "Adds zero-width spaces throughout the email."
+msgstr ""
+
+#: class-wpTypography.php:632
+msgid "%1$s Enable wrapping of long URLs."
+msgstr ""
+
+#: class-wpTypography.php:633
+msgid "Adds zero-width spaces throughout the URL."
+msgstr ""
+
+#: class-wpTypography.php:641
+msgid "Keep at least the last %1$s characters of a URL together."
+msgstr ""
+
+#: class-wpTypography.php:649
+msgid "%1$s Remove zero-width spaces from IE6."
+msgstr ""
+
+#: class-wpTypography.php:650
+msgid ""
+"IE6 displays mangles zero-width spaces with some fonts like Tahoma (uses "
+"JavaScript)."
+msgstr ""
+
+#: class-wpTypography.php:657
+msgid ""
+"%1$s Wrap ampersands [ <samp>&amp;</samp> ] with <samp>&lt;span "
+"class=\"amp\"&gt;</samp>."
+msgstr ""
+
+#: class-wpTypography.php:664
+msgid ""
+"%1$s Wrap acronyms (all capitals) with <samp>&lt;span "
+"class=\"caps\"&gt;</samp>."
+msgstr ""
+
+#: class-wpTypography.php:671
+msgid ""
+"%1$s Wrap digits [ <samp>0123456789</samp> ] with <samp>&lt;span "
+"class=\"numbers\"&gt;</samp>."
+msgstr ""
+
+#: class-wpTypography.php:678
+msgid "%1$s Wrap initial quotes"
+msgstr ""
+
+#: class-wpTypography.php:679
+msgid ""
+"Note: matches quotemarks at the beginning of blocks of text, "
+"<strong>not</strong> all opening quotemarks. <br />Single quotes [ "
+"<samp>&lsquo;</samp> <samp>&#8218;</samp> ] are wrapped with <samp>&lt;span "
+"class=\"quo\"&gt;</samp>. <br />Double quotes [ <samp>&ldquo;</samp> "
+"<samp>&#8222;</samp> ] are wrapped with <samp>&lt;span "
+"class=\"dquo\"&gt;</samp>. <br />Guillemets [ <samp>&laquo;</samp> "
+"<samp>&raquo;</samp> ] are wrapped with <samp>&lt;span "
+"class=\"dquo\"&gt;</samp>."
+msgstr ""
+
+#: class-wpTypography.php:686
+msgid "Limit styling of initial quotes to these <strong>HTML elements</strong>:"
+msgstr ""
+
+#: class-wpTypography.php:693
+msgid "%1$s Include Styling for CSS Hooks"
+msgstr ""
+
+#: class-wpTypography.php:694
+msgid ""
+"Attempts to inject the CSS specified below.  If you are familiar with CSS, "
+"it is recommended you not use this option, and maintain all styles in your "
+"main stylesheet."
+msgstr ""
+
+#: class-wpTypography.php:701
+msgid "Styling for CSS Hooks:"
+msgstr ""
+
+#: class-wpTypography.php:702
+msgid "This will only be applied if explicitly selected with the preceding option."
+msgstr ""
+
+#: class-wpTypography.php:815
+msgid "Settings"
+msgstr ""
+
+#: class-wpTypography.php:855
+msgid "Restore Defaults"
+msgstr ""
+
+#: class-wpTypography.php:859
+msgid "Save Changes"
+msgstr ""
+
+#: class-wpTypography.php:1010
+msgid ""
+"The activated plugin %1$s requires WordPress version %2$s or later. You are "
+"running WordPress version %3$s. Please deactivate this plugin, or upgrade "
+"your installation of WordPress."
+msgstr ""
+
+#: class-wpTypography.php:1020
+msgid ""
+"The activated plugin %1$s requires PHP %2$s or later. Your server is "
+"running PHP %3$s. Please deactivate this plugin, or upgrade your server's "
+"installation of PHP."
+msgstr ""
+
+#: class-wpTypography.php:1030
+msgid ""
+"The activated plugin %1$s requires the mbstring PHP extension to be enabled "
+"on your server. Please deactivate this plugin, or <a href=\"%2$s\">enable "
+"the extension</a>."
+msgstr ""
+
+#: class-wpTypography.php:1039
+msgid ""
+"The activated plugin %1$s requires your blog use the UTF-8 character "
+"encoding. You have set your blogs encoding to %2$s. Please deactivate this "
+"plugin, or <a href=\"%3$s\">change your character encoding to UTF-8</a>."
+msgstr ""
+
+#: templates/settings.php:100
+msgid "Resource Links"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "wp-Typography"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://code.mundschenk.at/wp-typography/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Improve your web typography with: (1) hyphenation &mdash; over 40 languages "
+"supported, (2) Space control, includes: widow protection, gluing values to "
+"units, and forced internal wrapping of long URLs & email addresses, (3) "
+"Intelligent character replacement, including smart handling of: quote "
+"marks, dashes, ellipses, trademarks, math symbols, fractions, and ordinal "
+"suffixes, and (4) CSS hooks for styling: ampersands, uppercase words, "
+"numbers,  initial quotes &amp; guillemets."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Peter Putzer"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://code.mundschenk.at"
+msgstr ""
