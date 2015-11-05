@@ -866,30 +866,29 @@ sub {
 			$value = $save_changes_value;
 		}
 
-		if ($input_type == 'checkbox') {
-			$checked = '';
-			if($value) $checked = 'checked="checked" ';
+		if ( 'checkbox' === $input_type ) {
+			$checked = $value ? 'checked="checked" ' : '';
 		}
 		
-		//make sure $value is in $option_values if $option_values is set
-		if ($option_values && !isset($option_values[$value])) {
+		// make sure $value is in $option_values if $option_values is set
+		if ( $option_values && ! isset( $option_values[ $value ] ) ) {
 			$value = null;
 		}
 		
 	
-		if ($input_type == 'submit') {
+		if ('submit' === $input_type ) {
 			$control_markup = "<div class='publishing-action'>";
 		} else {
 			$control_markup = "<div class='control'>";
 		}
 		
-		if (($label_before || $label_after) && $input_type != 'hidden' && $input_type != 'submit') {
+		if ( ( $label_before || $label_after ) && 'hidden' !== $input_type && 'submit' !== $input_type ) {
 			$control_markup .= "<label for='$id'>";
-			if ($label_before) {
+			if ( $label_before ) {
 				$control_markup .= "$label_before ";
 			}
-			if ($control == 'textarea') {
-				if ($help_text) {
+			if ( 'textarea' === $control ) {
+				if ( $help_text ) {
 					$control_markup .= "<span class='$help_text_class'>$help_text</span>";
 				}
 				$control_markup .= '</label>';
@@ -898,47 +897,53 @@ sub {
 		
 		$control_markup .= "<$control ";
 		
-		if ($control == 'input') {
+		if ( 'input' === $control ) {
 			$control_markup .= "type='$input_type' ";
 		}
 		
-		if ($input_type=='submit' && $value === $restore_defaults_value ) {
-			$control_markup .= "name='$id' class='text-button'"; //to avoid duplicate ids and some pretty stylin'
-		} elseif ($input_type=='submit') {
-			$control_markup .= "name='$id' class='button-primary'"; //to avoid duplicate ids and some pretty stylin'
+		if ( 'submit' === $input_type ) {
+			if ( $value === $restore_defaults_value ) {
+				$control_markup .= "name='$id' class='text-button'"; // to avoid duplicate ids and some pretty stylin'
+			} else {
+				$control_markup .= "name='$id' class='button-primary'"; // to avoid duplicate ids and some pretty stylin'
+			}
 		} else {
 			$control_markup .= "id='$id' name='$id' ";
 		}
 
-		if ($value && $control != 'select' && $control != 'textarea' && $input_type != 'checkbox') {
-			$control_markup .= "value='$value' ";
-		} elseif ($input_type == 'checkbox') {
+		if ('checkbox' === $input_type ) {
 			$control_markup .= "value='1' $checked";
+		} else if ( $value && 'select' !== $control && 'textarea' !== $control ) {
+			$control_markup .= "value='$value' ";
 		}
 		
-		if ($control != 'select' && $control != 'textarea') {
-			$control_markup .= ' />';
-		} elseif ($control == 'textarea') {
-			$control_markup .= ' >';
-			if ($value) {
-				$control_markup .= $value;
-			}
-			$control_markup .= "</$control>";
-		} elseif ($control == 'select') {
-			$control_markup .= ' >';
-			foreach ($option_values as $option_value => &$display) {
-				$selected = '';
-				if ($value == $option_value) $selected = "selected='selected'";
-				$control_markup .= "<option value='$option_value' $selected>$display</option>";
-			}
-			$control_markup .= "</$control>";
+		switch ( $control ) {
+			case 'select':
+				$control_markup .= ' >';
+				foreach ($option_values as $option_value => &$display) {
+					$selected = ($value === $option_value) ? "selected='selected'" : '';
+					$control_markup .= "<option value='$option_value' $selected>$display</option>";
+				}
+				$control_markup .= "</$control>";
+				break;
+				
+			case 'textarea':
+				$control_markup .= ' >';
+				if ($value) {
+					$control_markup .= $value;
+				}
+				$control_markup .= "</$control>";
+				break;
+				
+			default:
+				$control_markup .= ' />';
 		}
 		
-		if (($label_before || $label_after) && $control != 'textarea') {
-			if ($label_after) {
+		if ( ( $label_before || $label_after ) && $control != 'textarea' ) {
+			if ( $label_after ) {
 				$control_markup .= " $label_after";
 			}
-			if ($help_text) {
+			if ( $help_text ) {
 				$control_markup .= "<span class='$help_text_class'>$help_text</span>";
 			}
 			$control_markup .= '</label>';
