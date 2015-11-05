@@ -130,13 +130,12 @@
 										}
 										$fieldsetID = $admin_form_control["fieldset"];
 									}
-								
+																	
 									echo $this->get_admin_form_control(
 													$controlID,
 													$admin_form_control['control'],
 													$admin_form_control['input_type'],
-													$admin_form_control['label_before'],
-													$admin_form_control['label_after'],
+													$admin_form_control['label'],
 													$admin_form_control['help_text'],
 													$admin_form_control['option_values']
 												);
