@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: wp-Typography 3.0.0-beta1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/wp-typography\n"
 "POT-Creation-Date: 2015-11-05 21:02:27+00:00\n"
-"PO-Revision-Date: 2015-11-05 22:05+0100\n"
+"PO-Revision-Date: 2015-11-05 23:04+0100\n"
 "Last-Translator: Peter Putzer <peter.putzer@gmail.com>\n"
 "Language-Team: Peter Putzer <github@mundschenk.at>\n"
 "Language: de_DE\n"
@@ -410,7 +410,7 @@ msgid ""
 "JavaScript)."
 msgstr ""
 "IE6 hat bei manchen Schriftarten (wie Tahoma) Probleme bei der Darstellung "
-"von breitenlosen Leerzeichen (verwendet JavaScript)."
+"von breitenlosen Leerzeichen (benötigt JavaScript)."
 
 #: class-wpTypography.php:657
 msgid ""
@@ -463,8 +463,8 @@ msgstr ""
 msgid ""
 "Limit styling of initial quotes to these <strong>HTML elements</strong>:"
 msgstr ""
-"Gestaltung initialer Anführungszeichen auf folgende <strong>HTML-Elemente</"
-"strong> einschränken:"
+"Gestaltung initialer Anführungszeichen auf bestimmte <strong>HTML-Elemente</"
+"strong> beschränken:"
 
 #: class-wpTypography.php:693
 msgid "%1$s Include Styling for CSS Hooks"
@@ -496,7 +496,7 @@ msgstr "Einstellungen"
 
 #: class-wpTypography.php:855
 msgid "Restore Defaults"
-msgstr "Default-Einstellungen wiederherstellen"
+msgstr "Alles zurücksetzen"
 
 #: class-wpTypography.php:859
 msgid "Save Changes"
