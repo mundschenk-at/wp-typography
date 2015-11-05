@@ -955,30 +955,60 @@ sub {
 	 */
 	function admin_notices_wp_version_incompatible() { 
 		global $wp_version;
-		echo '<div class="error"><p>'.__('The activated plugin ', 'wp-typography').'<strong>'.$this->plugin_name.'</strong>'.__(' requires WordPress version ', 'wp-typography').$this->install_requirements['WordPress Version'].__(' or later.  You are running WordPress version ', 'wp-typography').$wp_version.__('. Please deactivate this plugin, or upgrade your installation of WordPress.', 'wp-typography').'</p></div>'; 
+		
+		$this->_display_error_notice( __( 'The activated plugin %1$s requires WordPress version %2$s or later. You are running WordPress version %3$s. Please deactivate this plugin, or upgrade your installation of WordPress.', 'wp-typography' ), 
+									  "<strong>{$this->plugin_name}</strong>", 
+									  $this->install_requirements['WordPress Version'], 
+									  $wp_version );
 	}
 
 	/**
 	 * Print 'PHP version incompatible' admin notice
 	 */
 	function admin_notices_php_version_incompatible() { 
-		echo '<div class="error"><p>'.__('The activated plugin ', 'wp-typography').'<strong>'.$this->plugin_name.'</strong>'.__(' requires PHP ', 'wp-typography').$this->install_requirements['PHP Version'].__(' or later.  Your server is running PHP ', 'wp-typography').phpversion().__('. Please deactivate this plugin, or upgrade your server\'s installation of PHP.', 'wp-typography').'</p></div>'; 
+		$this->_display_error_notice( __( 'The activated plugin %1$s requires PHP %2$s or later. Your server is running PHP %3$s. Please deactivate this plugin, or upgrade your server\'s installation of PHP.', 'wp-typography' ),
+								  	  "<strong>{$this->plugin_name}</strong>",
+									  $this->install_requirements['PHP Version'],
+									  phpversion() );
 	}
 	
 	/**
 	 * Print 'mbstring extension missing' admin notice
 	 */
 	function admin_notices_mbstring_incompatible() { 
-		echo '<div class="error"><p>'.__('The activated plugin ', 'wp-typography').'<strong>'.$this->plugin_name.'</strong>'.__(' requires the mbstring PHP extension be enabled on your server.  It is not. Please deactivate this plugin, or ', 'wp-typography').'<a href="http://www.php.net/manual/en/mbstring.installation.php">'.__('enable this extension', 'wp-typography').'</a>.'.'</p></div>'; 
+		$this->_display_error_notice( __( 'The activated plugin %1$s requires the mbstring PHP extension to be enabled on your server. Please deactivate this plugin, or <a href="%2$s">enable the extension</a>.', 'wp-typography' ),
+			"<strong>{$this->plugin_name}</strong>",
+			'http://www.php.net/manual/en/mbstring.installation.php' );
 	}
 
 	/**
 	 * Print 'Charset incompatible' admin notice
 	 */
 	function admin_notices_charset_incompatible() { 
-		echo '<div class="error"><p>'.__('The activated plugin ', 'wp-typography').'<strong>'.$this->plugin_name.'</strong>'.__(' requires your blog use the UTF-8 character encoding.  You have set your blogs encoding to ', 'wp-typography').get_bloginfo('charset').__('. Please deactivate this plugin, or ', 'wp-typography').'<a href="/wp-admin/options-reading.php">'.__('change your character encoding to UTF-8', 'wp-typography').'</a>.'.'</p></div>'; 
+		$this->_display_error_notice( __( 'The activated plugin %1$s requires your blog use the UTF-8 character encoding. You have set your blogs encoding to %2$s. Please deactivate this plugin, or <a href="%3$s">change your character encoding to UTF-8</a>.', 'wp-typography' ),
+			"<strong>{$this->plugin_name}</strong>",
+			get_bloginfo( 'charset' ),
+			'/wp-admin/options-reading.php' );
 	}
 
+	/**
+	 * Show an error message in the admin area.
+	 * 
+	 * @param string $format    An `sprintf` format string.
+	 * @param mixed  $param1... An optional number of parameters for sprintf.
+	 * @access private
+	 */
+	private function _display_error_notice($format) {
+		if ( func_num_args() < 1 ) {
+			return; // abort
+		}
+		
+		$args = func_get_args();
+		$format = array_shift( $args );
+		
+		echo '<div class="error"><p>' . vsprintf( $format, $args ) . '</p></div>'; 
+	}
+	
 	/**
 	 * Print CSS and JS depending on plugin options.
 	 */
