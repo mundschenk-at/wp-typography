@@ -127,12 +127,10 @@ class wpTypography {
 		foreach ( $this->admin_form_controls as $key => $value ) {
 			$this->settings[ $key ] = get_option( $key );
 		}
-	
-		// dynamically generate the list of hyphenation language patterns
-		$this->php_typo = new phpTypography( false );
-		$this->admin_form_controls['typoHyphenateLanguages']['option_values'] = $this->php_typo->get_languages();
-		$this->admin_form_controls['typoDiacriticLanguages']['option_values'] = $this->php_typo->get_diacritic_languages();
 
+		// create parser
+		$this->php_typo = new phpTypography( false );
+		
 		// load configuration variables into our phpTypography class
 		$this->php_typo->set_tags_to_ignore($this->settings['typoIgnoreTags']);
 		$this->php_typo->set_classes_to_ignore($this->settings['typoIgnoreClasses']);
@@ -854,7 +852,7 @@ sub {
 		} elseif ( 'typoRestoreDefaults' === $id ) {
 			$value = __( 'Restore Defaults', 'wp-typography' );
 			$control_class = 'publishing-action';
-			$button_class = 'text-button';
+			$button_class = 'button-secondary';
 		} else {
 			$value = __( 'Save Changes', 'wp-typography' );
 			$control_class = 'publishing-action';
@@ -936,7 +934,7 @@ sub {
 			}
 			
 			if ( $help ) {
-				$control_markup .= " <span class='$help_text_class'>$help</span>";
+				$control_markup .= " <span class='helpText'>$help</span>";
 			}
 			
 			$control_markup .= '</label>';
@@ -1008,9 +1006,9 @@ sub {
 		global $wp_version;
 		
 		$this->display_error_notice( __( 'The activated plugin %1$s requires WordPress version %2$s or later. You are running WordPress version %3$s. Please deactivate this plugin, or upgrade your installation of WordPress.', 'wp-typography' ), 
-									  "<strong>{$this->plugin_name}</strong>", 
-									  $this->install_requirements['WordPress Version'], 
-									  $wp_version );
+									 "<strong>{$this->plugin_name}</strong>", 
+									 $this->install_requirements['WordPress Version'], 
+									 $wp_version );
 	}
 
 	/**
@@ -1018,9 +1016,9 @@ sub {
 	 */
 	function admin_notices_php_version_incompatible() { 
 		$this->display_error_notice( __( 'The activated plugin %1$s requires PHP %2$s or later. Your server is running PHP %3$s. Please deactivate this plugin, or upgrade your server\'s installation of PHP.', 'wp-typography' ),
-								  	  "<strong>{$this->plugin_name}</strong>",
-									  $this->install_requirements['PHP Version'],
-									  phpversion() );
+								  	 "<strong>{$this->plugin_name}</strong>",
+									 $this->install_requirements['PHP Version'],
+									 phpversion() );
 	}
 	
 	/**
@@ -1028,8 +1026,8 @@ sub {
 	 */
 	function admin_notices_mbstring_incompatible() { 
 		$this->display_error_notice( __( 'The activated plugin %1$s requires the mbstring PHP extension to be enabled on your server. Please deactivate this plugin, or <a href="%2$s">enable the extension</a>.', 'wp-typography' ),
-			"<strong>{$this->plugin_name}</strong>",
-			'http://www.php.net/manual/en/mbstring.installation.php' );
+									 "<strong>{$this->plugin_name}</strong>",
+									 'http://www.php.net/manual/en/mbstring.installation.php' );
 	}
 
 	/**
@@ -1037,9 +1035,9 @@ sub {
 	 */
 	function admin_notices_charset_incompatible() { 
 		$this->display_error_notice( __( 'The activated plugin %1$s requires your blog use the UTF-8 character encoding. You have set your blogs encoding to %2$s. Please deactivate this plugin, or <a href="%3$s">change your character encoding to UTF-8</a>.', 'wp-typography' ),
-			"<strong>{$this->plugin_name}</strong>",
-			get_bloginfo( 'charset' ),
-			'/wp-admin/options-reading.php' );
+									 "<strong>{$this->plugin_name}</strong>",
+									 get_bloginfo( 'charset' ),
+									 '/wp-admin/options-reading.php' );
 	}
 
 	/**
@@ -1085,7 +1083,13 @@ sub {
 	function load_plugin_textdomain() {	
 		load_plugin_textdomain( 'wp-typography', false, dirname( plugin_basename( __FILE__ ) ) . '/translations/' );
 		
+		// intialize settings strings with translations
 		$this->initialize_settings_properties();
+
+		// dynamically generate the list of hyphenation language patterns
+		$this->admin_form_controls['typoHyphenateLanguages']['option_values'] = $this->php_typo->get_languages();
+		$this->admin_form_controls['typoDiacriticLanguages']['option_values'] = $this->php_typo->get_diacritic_languages();
+		
 	}
 }
 

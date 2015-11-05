@@ -48,7 +48,7 @@
 		color: #000;
 		font-family: Consolas, Monaco, "Lucida Console", "Courier New", Courier, monospace !important;
 	}
-	select, option, input, textarea {
+	textarea {
 		font-family: Consolas, Monaco, "Lucida Console", "Courier New", Courier, monospace !important;
 	}
 	span.helpText samp {
@@ -71,23 +71,12 @@
 	select, input {
 		margin-top: -.1em;
 	}
-	.publishing-action input {
-		margin-top: 0;
-	}
 	
 	.control {
 		margin: 0 1em;
 	}
 	fieldset .control {
 		margin: 0;
-	}
-	.text-button {
-		background: none;
-		border: none;
-		text-decoration: underline;
-	}
-	.text-button:hover {
-		cursor: pointer;
 	}
 </style>
 
