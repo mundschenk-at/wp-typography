@@ -118,27 +118,27 @@
 						<div class='publishing-settings'>		
 						<?php
 							$fieldsetID = NULL;
-							foreach ($this->admin_form_controls as $controlID => $adminFormControl) {
-								if ($adminFormControl["section"] == $sectionID ) {
-									if ($adminFormControl["fieldset"] != $fieldsetID) {
+							foreach ($this->admin_form_controls as $controlID => $admin_form_control) {
+								if ($admin_form_control["section"] == $sectionID ) {
+									if ($admin_form_control["fieldset"] != $fieldsetID) {
 										if ($fieldsetID) { // close previous fieldset (if it existed)
 											echo "</fieldset>\r\n\r\n";
 										}
-										if ($adminFormControl["fieldset"]) { // start any new fieldset (if it exists)
-											echo "\r\n<fieldset id='".$adminFormControl["fieldset"]."'>\r\n";
-											echo "<legend>".$this->admin_form_section_fieldsets[$adminFormControl["fieldset"]]["heading"]."</legend>\r\n";
+										if ($admin_form_control["fieldset"]) { // start any new fieldset (if it exists)
+											echo "\r\n<fieldset id='".$admin_form_control["fieldset"]."'>\r\n";
+											echo "<legend>".$this->admin_form_section_fieldsets[$admin_form_control["fieldset"]]["heading"]."</legend>\r\n";
 										}
-										$fieldsetID = $adminFormControl["fieldset"];
+										$fieldsetID = $admin_form_control["fieldset"];
 									}
 								
 									echo $this->get_admin_form_control(
 													$controlID,
-													$adminFormControl['control'],
-													$adminFormControl['inputType'],
-													$adminFormControl['labelBefore'],
-													$adminFormControl['labelAfter'],
-													$adminFormControl['helpText'],
-													$adminFormControl['optionValues']
+													$admin_form_control['control'],
+													$admin_form_control['input_type'],
+													$admin_form_control['label_before'],
+													$admin_form_control['label_after'],
+													$admin_form_control['help_text'],
+													$admin_form_control['option_values']
 												);
 								}
 							}
