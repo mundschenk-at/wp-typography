@@ -4,3 +4,6 @@
 # Eclipse
 .project
 .settings/*
+
+# Node.js/Grunt
+node_modules/*
