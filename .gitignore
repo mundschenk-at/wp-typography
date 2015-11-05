@@ -1,1 +1,6 @@
+# tmp files
 *~
+
+# Eclipse
+.project
+.settings/*
