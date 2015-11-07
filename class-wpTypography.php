@@ -796,7 +796,7 @@ sub {
 	 * Add an options page for the plugin settings.
 	 */
 	function add_options_page()	{
-		add_options_page( $this->plugin_name, $this->plugin_name, 'manage_options', strtolower( $this->plugin_name ), array( $this, 'get_admin_page_content' ) );
+		add_options_page( $this->plugin_name, $this->plugin_name, 'manage_options', strtolower( $this->plugin_name ), array( &$this, 'get_admin_page_content' ) );
 	}
 
 	/**
@@ -843,19 +843,20 @@ sub {
 									 $label = null, 
 									 $help_text = null,
 									 $option_values = null ) {
-		$control_class = 'control';
 		$button_class = null;
+		$control_begin = '<div class="control">';
+		$control_end = '</div>';
 		
 		if ($input_type != 'submit') {
 			$value = get_option( $id );
 		} elseif ( 'typoRestoreDefaults' === $id ) {
 			$value = __( 'Restore Defaults', 'wp-typography' );
-			$control_class = 'publishing-action';
-			$button_class = 'button-secondary';
+			$control_begin = $control_end = '';
+			$button_class = 'button button-secondary';
 		} else {
 			$value = __( 'Save Changes', 'wp-typography' );
-			$control_class = 'publishing-action';
-			$button_class = 'button-primary';
+			$control_begin = $control_end = '';
+			$button_class = 'button button-primary';
 		}
 		
 		// make sure $value is in $option_values if $option_values is set
@@ -881,7 +882,7 @@ sub {
 				return '';
 		}
 
-		return "<div class='$control_class'>" . $control_markup . "</div>\r\n";
+		return $control_begin . $control_markup . "$control_end\r\n";
 	}
 
 	/**

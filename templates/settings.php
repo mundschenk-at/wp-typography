@@ -1,16 +1,15 @@
 <style type="text/css">
 	#poststuff .inside {
-	margin: 2em;
+		margin: 1em;
 	}
 	.submitdiv .inside {
 		margin:  0 !important;
-		padding-top: 2em;
+		padding-top: 1em;
 	}
 	.publishing-settings {
 		border-bottom-color:#DDDDDD;
 		border-bottom-style:solid;
 		border-bottom-width:1px;
-		padding: 0 1em 1em;
 	}
 	.publishing-actions {
 		background:#EAF2FA none repeat scroll 0 0;
@@ -18,10 +17,10 @@
 		clear:both;
 		padding:6px 1em;
 	}
-	.publishing-action {
-		float:right;
-		text-align:right;
+	.publishing-actions .button-primary {
+		float: right;
 	}
+	
 	fieldset {
 		margin:2em -1px 1em;
 		padding: 2em 1em 1em;
@@ -97,7 +96,7 @@
 		</div>
 		
 		<form method="post" action="options.php">
-			<?php  settings_fields( $this->option_group ); ?>
+			<?php settings_fields( $this->option_group ); ?>
 				
 			<?php foreach ( $this->admin_form_sections as $sectionID => $heading ): ?>
 			<div id="<?php echo $sectionID; ?>" class='postbox submitdiv' >
