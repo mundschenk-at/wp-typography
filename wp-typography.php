@@ -6,14 +6,11 @@
 	Author: Peter Putzer
 	Author URI: https://code.mundschenk.at
 	Version: 3.0.0-beta1
-	License: GPL2
+	License: GNU General Public License v2
 	License URI: https://www.gnu.org/licenses/gpl-2.0.html
 	Text Domain: wp-typography
 	Domain Path: /translations
 
-*/
-
-/*
  	Copyright 2014-2015 Peter Putzer.
  	
  	This program is free software; you can redistribute it and/or
@@ -28,19 +25,21 @@
 	You should have received a copy of the GNU General Public License
 	along with this program; if not, write to the Free Software
 	Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-*/
 
-/*
+	***
+
 	Copyright 2009, KINGdesk, LLC. Licensed under the GNU General Public License 2.0. 
-	If you use, modify and/or redistribute this software, you must leave the KINGdesk, LLC copyright information,
-	the request for a link to http://kingdesk.com, and the web design services contact information unchanged.
-	If you redistribute this software, or any derivative, it must be released under the GNU General Public License 2.0. 
-	This program is distributed without warranty (implied or otherwise) of suitability for any particular purpose. 
-	See the GNU General Public License for full license terms <http://creativecommons.org/licenses/GPL/2.0/>.
+	If you use, modify and/or redistribute this software, you must leave the KINGdesk,
+	LLC copyright information, the request for a link to http://kingdesk.com, and the 
+	web design services contact information unchanged. If you redistribute this software, 
+	or any derivative, it must be released under the GNU General Public License 2.0. 
+	This program is distributed without warranty (implied or otherwise) of suitability 
+	for any particular purpose. See the GNU General Public License for full license 
+	terms <http://creativecommons.org/licenses/GPL/2.0/>.
 	
-	WE DON'T WANT YOUR MONEY: NO TIPS NECESSARY!  If you enjoy this plugin, a link to http://kingdesk.com from your website would be appreciated.
-	
-	For web design services, please contact jeff@kingdesk.com.
+	WE DON'T WANT YOUR MONEY: NO TIPS NECESSARY!  If you enjoy this plugin, a link to 
+	http://kingdesk.com from your website would be appreciated. For web design services, 
+	please contact jeff@kingdesk.com.
 
 	Portions of this plugin are inspired by:
 	 	Christian Metts - href="http://code.google.com/p/typogrify/
