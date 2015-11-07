@@ -5,7 +5,7 @@
  * 
  * (c) 2015 Peter Putzer
  */
-require_once '../php-typography/php-typography.php';
+require_once '../php-typography/class-php-typography.php';
 
 $testHTML = <<<'EOD'
 <h1>HTML Ipsum Presents</h1>
@@ -110,11 +110,11 @@ $testHTML = <<<'EOD'
 	
 EOD;
 
-$phpTypo = new phpTypography();
+$php_typo = new PHP_Typography();
 $i = 0;
 $startTime = microtime(true);
 for (; $i < 100; ++$i) {
-	$phpTypo->process($testHTML, false);
+	$php_typo->process($testHTML, false);
 }
 $endTime = microtime(true);
 

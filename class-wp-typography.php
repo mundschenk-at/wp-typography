@@ -49,7 +49,7 @@
 /**
  * Main wp-Typography plugin class. All WordPress specific code goes here.
  */
-class wpTypography {
+class WP_Typography {
 	
 	private $plugin_name = 'wp-Typography';
 	private $install_requirements = array(
@@ -157,7 +157,7 @@ class wpTypography {
 		$this->plugin_path = plugin_dir_path( __FILE__ ) . basename( $this->local_plugin_path );
 		
 		// include needed files
-		require_once( plugin_dir_path( __FILE__ ) . 'php-typography/php-typography.php' );
+		require_once( plugin_dir_path( __FILE__ ) . 'php-typography/class-php-typography.php' );
 		
 		$typoRestoreDefaults = false;
 		if ( get_option( 'typoRestoreDefaults' ) == true ) {
@@ -170,7 +170,7 @@ class wpTypography {
 		}
 
 		// create parser
-		$this->php_typo = new phpTypography( false );
+		$this->php_typo = new PHP_Typography( false );
 			
 		// load configuration variables into our phpTypography class
 		$this->php_typo->set_tags_to_ignore( $this->settings['typoIgnoreTags'] );
@@ -345,7 +345,7 @@ class wpTypography {
 			 	'help_text' 	=> string Help Text,		// OPTIONAL
 			 	'control' 		=> string Control,			// REQUIRED
 			 	'input_type' 	=> string Control Type,		// OPTIONAL
-			 	"option_values"	=> array(value=>text, ... )	// OPTIONAL, only for controls of type 'select'
+			 	'option_values'	=> array(value=>text, ... )	// OPTIONAL, only for controls of type 'select'
 			 	'default' 		=> string Default Value,	// REQUIRED (although it may be an empty string)
 			 ),
 			*/
@@ -381,7 +381,7 @@ class wpTypography {
 				'section'		=> 'hyphenation',
 				'label' 		=> __( "Language for hyphenation rules: %1\$s", 'wp-typography' ),
 				'control' 		=> 'select',
-				"option_values"	=> array(), // automatically detected and listed in __construct
+				'option_values'	=> array(), // automatically detected and listed in __construct
 				'default' 		=> "en-US",
 			),
 			'typoHyphenateHeadings' => array(
@@ -411,21 +411,21 @@ class wpTypography {
 				'section'		=> 'hyphenation',
 				'label' 		=> __( "Do not hyphenate words with less than %1\$s letters.", 'wp-typography' ),
 				'control' 		=> 'select',
-				"option_values"	=> array(4=>4,5=>5,6=>6,7=>7,8=>8,9=>9,10=>10),
+				'option_values'	=> array(4=>4,5=>5,6=>6,7=>7,8=>8,9=>9,10=>10),
 				'default' 		=> 5,
 			),
 			'typoHyphenateMinBefore' => array(
 				'section'		=> 'hyphenation',
 				'label' 		=> __( "Keep at least %1\$s letters before hyphenation.", 'wp-typography' ),
 				'control' 		=> 'select',
-				"option_values"	=> array(2=>2,3=>3,4=>4,5=>5),
+				'option_values'	=> array(2=>2,3=>3,4=>4,5=>5),
 				'default' 		=> 3,
 			),
 			'typoHyphenateMinAfter' => array(
 				'section'		=> 'hyphenation',
 				'label' 		=> __( "Keep at least %1\$s letters after hyphenation.", 'wp-typography' ),
 				'control' 		=> 'select',
-				"option_values"	=> array(2=>2,3=>3,4=>4,5=>5),
+				'option_values'	=> array(2=>2,3=>3,4=>4,5=>5),
 				'default' 		=> 2,
 			),
 			'typoHyphenateExceptions' => array(
@@ -457,7 +457,7 @@ class wpTypography {
 				'label' 		=> __( "Convert <samp>\"foo\"</samp> to: %1\$s", 'wp-typography' ),
 				'help_text' 	=> __( "Primary quotation style.", 'wp-typography' ),
 				'control' 		=> 'select',
-				"option_values"	=> array(
+				'option_values'	=> array(
 					"doubleCurled" => "&ldquo;foo&rdquo;",
 					"doubleCurledReversed" => "&rdquo;foo&rdquo;",
 					"doubleLow9" => "&bdquo;foo&rdquo;",
@@ -482,7 +482,7 @@ class wpTypography {
 				'label' 		=> __( "Convert <samp>'foo'</samp> to: %1\$s", 'wp-typography' ),
 				'help_text' 	=> __( "Secondary quotation style.", 'wp-typography' ),
 				'control' 		=> 'select',
-				"option_values"	=> array(
+				'option_values'	=> array(
 					"doubleCurled" => "&ldquo;foo&rdquo;",
 					"doubleCurledReversed" => "&rdquo;foo&rdquo;",
 					"doubleLow9" => "&bdquo;foo&rdquo;",
@@ -533,7 +533,7 @@ class wpTypography {
 				'label' 		=> __( "Language for diacritic replacements: %1\$s", 'wp-typography' ),
 				'help_text' 	=> __( "Language definitions will purposefully <strong>not</strong> process words that have alternate meaning without diacritics like <samp>resume &amp; résumé</samp>, <samp>divorce &amp; divorcé</samp>, and <samp>expose &amp; exposé</samp>.", 'wp-typography' ),
 				'control' 		=> 'select',
-				"option_values"	=> array(), // automatically detected and listed in __construct
+				'option_values'	=> array(), // automatically detected and listed in __construct
 				'default' 		=> "en-US",
 			),
 			'typoDiacriticCustomReplacements' => array(
@@ -635,7 +635,7 @@ class wpTypography {
 				"fieldset" 		=> 'widows',
 				'label' 		=> __( "Only protect widows with %1\$s or fewer letters.", 'wp-typography' ),
 				'control' 		=> 'select',
-				"option_values"	=> array(4=>4,5=>5,6=>6,7=>7,8=>8,9=>9,10=>10,100=>100),
+				'option_values'	=> array(4=>4,5=>5,6=>6,7=>7,8=>8,9=>9,10=>10,100=>100),
 				'default' 		=> 5,
 			),
 			'typoWidowMaxPull' => array(
@@ -643,7 +643,7 @@ class wpTypography {
 				"fieldset" 		=> 'widows',
 				'label' 		=> __( "Pull at most %1\$s letters from the previous line to keep the widow company.", 'wp-typography' ),
 				'control' 		=> 'select',
-				"option_values"	=> array(4=>4,5=>5,6=>6,7=>7,8=>8,9=>9,10=>10,100=>100),
+				'option_values'	=> array(4=>4,5=>5,6=>6,7=>7,8=>8,9=>9,10=>10,100=>100),
 				'default' 		=> 5,
 			),
 			'typoWrapHyphens' => array(
@@ -678,7 +678,7 @@ class wpTypography {
 				"fieldset" 		=> 'enable-wrapping',
 				'label' 		=> __( "Keep at least the last %1\$s characters of a URL together.", 'wp-typography' ),
 				'control' 		=> 'select',
-				"option_values"	=> array(3=>3,4=>4,5=>5,6=>6,7=>7,8=>8,9=>9,10=>10),
+				'option_values'	=> array(3=>3,4=>4,5=>5,6=>6,7=>7,8=>8,9=>9,10=>10),
 				'default' 		=> 3,
 			),
 			'typoRemoveIE6' => array(
