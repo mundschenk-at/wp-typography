@@ -159,41 +159,54 @@ class WP_Typography {
 		// include needed files
 		require_once( plugin_dir_path( __FILE__ ) . 'php-typography/class-php-typography.php' );
 		
+		// restore defaults if necessary
 		$typoRestoreDefaults = false;
 		if ( get_option( 'typoRestoreDefaults' ) == true ) {
 			$typoRestoreDefaults = true;
 		}
 		$this->register_plugin($typoRestoreDefaults);
-
-		foreach ( $this->admin_form_controls as $key => $value ) {
+		add_action( 'init', array( &$this, 'load_settings') );
+		
+		// create parser
+		$this->php_typo = new PHP_Typography( false );
+					
+		// set up the plugin options page
+		register_activation_hook( $this->plugin_path, array( &$this, 'register_plugin' ) );
+		add_action( 'admin_menu', array( &$this, 'add_options_page') );
+		add_action( 'admin_init', array( &$this, 'register_the_settings') );
+		add_filter( 'plugin_action_links_' . $this->local_plugin_path, array( &$this, 'add_filter_plugin_action_links' ) );
+	}
+	
+	/**
+	 * Load the settings from the option table.
+	 */
+	function load_settings() {
+		foreach ( $this->admin_form_controls as $key => &$value ) {
 			$this->settings[ $key ] = get_option( $key );
 		}
 
-		// create parser
-		$this->php_typo = new PHP_Typography( false );
-			
 		// load configuration variables into our phpTypography class
 		$this->php_typo->set_tags_to_ignore( $this->settings['typoIgnoreTags'] );
 		$this->php_typo->set_classes_to_ignore( $this->settings['typoIgnoreClasses'] );
 		$this->php_typo->set_ids_to_ignore( $this->settings['typoIgnoreIDs'] );
 		
-		if ( $this->settings['typoSmartCharacters'] ) {	
+		if ( $this->settings['typoSmartCharacters'] ) {
 			$this->php_typo->set_smart_dashes( $this->settings['typoSmartDashes'] );
 			$this->php_typo->set_smart_ellipses( $this->settings['typoSmartEllipses'] );
 			$this->php_typo->set_smart_math( $this->settings['typoSmartMath'] );
 		
 			// note smart_exponents was grouped with smart_math for the WordPress plugin,
 			// but does not have to be done that way for other ports
-			$this->php_typo->set_smart_exponents( $this->settings['typoSmartMath'] ); 
+			$this->php_typo->set_smart_exponents( $this->settings['typoSmartMath'] );
 			$this->php_typo->set_smart_fractions( $this->settings['typoSmartFractions'] );
 			$this->php_typo->set_smart_ordinal_suffix( $this->settings['typoSmartOrdinals'] );
 			$this->php_typo->set_smart_marks( $this->settings['typoSmartMarks'] );
 			$this->php_typo->set_smart_quotes( $this->settings['typoSmartQuotes'] );
-			
+				
 			$this->php_typo->set_smart_diacritics( $this->settings['typoSmartDiacritics'] );
 			$this->php_typo->set_diacritic_language( $this->settings['typoDiacriticLanguages'] );
 			$this->php_typo->set_diacritic_custom_replacements( $this->settings['typoDiacriticCustomReplacements'] );
-			
+				
 			$this->php_typo->set_smart_quotes_primary( $this->settings['typoSmartQuotesPrimary'] );
 			$this->php_typo->set_smart_quotes_secondary( $this->settings['typoSmartQuotesSecondary'] );
 		} else {
@@ -241,12 +254,6 @@ class WP_Typography {
 			$this->php_typo->set_hyphenation( $this->settings['typoEnableHyphenation'] );
 		}
 		
-		// set up the plugin options page
-		register_activation_hook( $this->plugin_path, array( &$this, 'register_plugin' ) );
-		add_action( 'admin_menu', array( &$this, 'add_options_page') );
-		add_action( 'admin_init', array( &$this, 'register_the_settings') );
-		add_filter( 'plugin_action_links_' . $this->local_plugin_path, array( &$this, 'add_filter_plugin_action_links' ) );
-			
 		// Remove default Texturize filter if it conflicts.
 		if ( $this->settings['typoSmartCharacters'] && ! is_admin() ) {
 			remove_filter( 'category_description', 'wptexturize' );
@@ -259,8 +266,8 @@ class WP_Typography {
 			remove_filter( 'widget_text', 'wptexturize' );
 			remove_filter( 'widget_title', 'wptexturize' );
 		}
-
-		// apply filters
+		
+		// apply our filters
 		if ( ! is_admin() ) {
 			// removed because it caused issues for feeds
 			// add_filter('bloginfo', array(&$this, 'processBloginfo'), 9999);
@@ -279,7 +286,6 @@ class WP_Typography {
 		add_action( 'wp_head', array( &$this, 'add_wp_head' ) );
 	}
 	
-
 	/**
 	 * Initialize displayable strings for the plugin settings page.
 	 */
@@ -819,8 +825,6 @@ sub {
 		}
 		
 		update_option( 'typoRestoreDefaults', 0 );
-
-		return;
 	}
 
 	/**
