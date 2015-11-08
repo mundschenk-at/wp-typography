@@ -111,14 +111,14 @@ class PHP_Typography_Test extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHP_Typography::set_smart_quotes
-     * @todo   Implement testSet_smart_quotes().
      */
     public function testSet_smart_quotes()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+		$this->object->set_smart_quotes( true );
+		$this->assertTrue( $this->object->settings['smartQuotes'] );
+        
+		$this->object->set_smart_quotes( false );
+		$this->assertFalse( $this->object->settings['smartQuotes'] );
     }
 
     /**
@@ -147,26 +147,26 @@ class PHP_Typography_Test extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHP_Typography::set_smart_dashes
-     * @todo   Implement testSet_smart_dashes().
      */
     public function testSet_smart_dashes()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+		$this->object->set_smart_dashes( true );
+		$this->assertTrue( $this->object->settings['smartDashes'] );
+        
+		$this->object->set_smart_dashes( false );
+		$this->assertFalse( $this->object->settings['smartDashes'] );
     }
 
     /**
      * @covers PHP_Typography::set_smart_ellipses
-     * @todo   Implement testSet_smart_ellipses().
      */
     public function testSet_smart_ellipses()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+		$this->object->set_smart_ellipses( true );
+		$this->assertTrue( $this->object->settings['smartEllipses'] );
+        
+		$this->object->set_smart_ellipses( false );
+		$this->assertFalse( $this->object->settings['smartEllipses'] );
     }
 
     /**
@@ -175,22 +175,27 @@ class PHP_Typography_Test extends PHPUnit_Framework_TestCase
      */
     public function testSet_smart_diacritics()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+		$this->object->set_smart_diacritics( true );
+		$this->assertTrue( $this->object->settings['smartDiacritics'] );
+        
+		$this->object->set_smart_diacritics( false );
+		$this->assertFalse( $this->object->settings['smartDiacritics'] );
     }
 
     /**
      * @covers PHP_Typography::set_diacritic_language
-     * @todo   Implement testSet_diacritic_language().
      */
     public function testSet_diacritic_language()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+		$this->object->set_diacritic_language( 'en-US' );
+		$this->assertGreaterThan( 0, count( $this->object->settings['diacriticWords'] ) );
+		
+		$this->object->set_diacritic_language( 'foobar' );
+		$this->assertFalse( isset( $this->object->settings['diacriticWords'] ) );
+		
+		$this->object->set_diacritic_language( 'de-DE' );
+		$this->assertTrue( isset( $this->object->settings['diacriticWords'] ) );
+		$this->assertGreaterThan( 0, count( $this->object->settings['diacriticWords'] ) );
     }
 
     /**
@@ -207,290 +212,323 @@ class PHP_Typography_Test extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHP_Typography::set_smart_marks
-     * @todo   Implement testSet_smart_marks().
      */
     public function testSet_smart_marks()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+		$this->object->set_smart_marks( true );
+		$this->assertTrue( $this->object->settings['smartMarks'] );
+        
+		$this->object->set_smart_marks( false );
+		$this->assertFalse( $this->object->settings['smartMarks'] );
     }
 
     /**
      * @covers PHP_Typography::set_smart_math
-     * @todo   Implement testSet_smart_math().
      */
     public function testSet_smart_math()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+		$this->object->set_smart_math( true );
+		$this->assertTrue( $this->object->settings['smartMath'] );
+        
+		$this->object->set_smart_math( false );
+		$this->assertFalse( $this->object->settings['smartMath'] );
     }
 
     /**
      * @covers PHP_Typography::set_smart_exponents
-     * @todo   Implement testSet_smart_exponents().
      */
     public function testSet_smart_exponents()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+		$this->object->set_smart_exponents( true );
+		$this->assertTrue( $this->object->settings['smartExponents'] );
+        
+		$this->object->set_smart_exponents( false );
+		$this->assertFalse( $this->object->settings['smartExponents'] );
     }
 
     /**
      * @covers PHP_Typography::set_smart_fractions
-     * @todo   Implement testSet_smart_fractions().
      */
     public function testSet_smart_fractions()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+		$this->object->set_smart_fractions( true );
+		$this->assertTrue( $this->object->settings['smartFractions'] );
+        
+		$this->object->set_smart_fractions( false );
+		$this->assertFalse( $this->object->settings['smartFractions'] );
     }
 
     /**
      * @covers PHP_Typography::set_smart_ordinal_suffix
-     * @todo   Implement testSet_smart_ordinal_suffix().
      */
     public function testSet_smart_ordinal_suffix()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+		$this->object->set_smart_ordinal_suffix( true );
+		$this->assertTrue( $this->object->settings['smartOrdinalSuffix'] );
+        
+		$this->object->set_smart_ordinal_suffix( false );
+		$this->assertFalse( $this->object->settings['smartOrdinalSuffix'] );
     }
 
     /**
      * @covers PHP_Typography::set_single_character_word_spacing
-     * @todo   Implement testSet_single_character_word_spacing().
      */
     public function testSet_single_character_word_spacing()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+		$this->object->set_single_character_word_spacing( true );
+		$this->assertTrue( $this->object->settings['singleCharacterWordSpacing'] );
+        
+		$this->object->set_single_character_word_spacing( false );
+		$this->assertFalse( $this->object->settings['singleCharacterWordSpacing'] );
     }
 
     /**
      * @covers PHP_Typography::set_fraction_spacing
-     * @todo   Implement testSet_fraction_spacing().
      */
     public function testSet_fraction_spacing()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+		$this->object->set_fraction_spacing( true );
+		$this->assertTrue( $this->object->settings['fractionSpacing'] );
+        
+		$this->object->set_fraction_spacing( false );
+		$this->assertFalse( $this->object->settings['fractionSpacing'] );
     }
 
     /**
      * @covers PHP_Typography::set_unit_spacing
-     * @todo   Implement testSet_unit_spacing().
      */
     public function testSet_unit_spacing()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+		$this->object->set_unit_spacing( true );
+		$this->assertTrue( $this->object->settings['unitSpacing'] );
+        
+		$this->object->set_unit_spacing( false );
+		$this->assertFalse( $this->object->settings['unitSpacing'] );
     }
 
     /**
      * @covers PHP_Typography::set_units
-     * @todo   Implement testSet_units().
      */
     public function testSet_units()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+    	$units_as_array = array( 'foo', 'bar', 'xx/yy');
+    	$units_as_string = implode( ', ', $units_as_array );
+    	
+		$this->object->set_units( $units_as_array );
+		foreach( $units_as_array as $unit ) {
+			$this->assertContains( $unit, $this->object->settings['units'] );
+		}
+    	
+		$this->object->set_units( array() );
+		foreach( $units_as_array as $unit ) {
+			$this->assertNotContains( $unit, $this->object->settings['units'] );
+		}
+		
+		$this->object->set_units( $units_as_string );
+		foreach( $units_as_array as $unit ) {
+			$this->assertContains( $unit, $this->object->settings['units'] );
+		}
     }
 
     /**
      * @covers PHP_Typography::set_dash_spacing
-     * @todo   Implement testSet_dash_spacing().
      */
     public function testSet_dash_spacing()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+		$this->object->set_dash_spacing( true );
+		$this->assertTrue( $this->object->settings['dashSpacing'] );
+        
+		$this->object->set_dash_spacing( false );
+		$this->assertFalse( $this->object->settings['dashSpacing'] );
     }
 
     /**
      * @covers PHP_Typography::set_space_collapse
-     * @todo   Implement testSet_space_collapse().
      */
     public function testSet_space_collapse()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+		$this->object->set_space_collapse( true );
+		$this->assertTrue( $this->object->settings['spaceCollapse'] );
+        
+		$this->object->set_space_collapse( false );
+		$this->assertFalse( $this->object->settings['spaceCollapse'] );
     }
 
     /**
      * @covers PHP_Typography::set_dewidow
-     * @todo   Implement testSet_dewidow().
      */
     public function testSet_dewidow()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+		$this->object->set_dewidow( true );
+		$this->assertTrue( $this->object->settings['dewidow'] );
+        
+		$this->object->set_dewidow( false );
+		$this->assertFalse( $this->object->settings['dewidow'] );
     }
 
     /**
      * @covers PHP_Typography::set_max_dewidow_length
-     * @todo   Implement testSet_max_dewidow_length().
      */
     public function testSet_max_dewidow_length()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+		$this->object->set_max_dewidow_length( 10 );
+		$this->assertSame( 10, $this->object->settings['dewidowMaxLength'] );
+
+		$this->object->set_max_dewidow_length( 1 );
+		$this->assertSame( 5, $this->object->settings['dewidowMaxLength'] );
+		
+		$this->object->set_max_dewidow_length( 2 );
+		$this->assertSame( 2, $this->object->settings['dewidowMaxLength'] );
     }
 
     /**
      * @covers PHP_Typography::set_max_dewidow_pull
-     * @todo   Implement testSet_max_dewidow_pull().
      */
     public function testSet_max_dewidow_pull()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+		$this->object->set_max_dewidow_pull( 10 );
+		$this->assertSame( 10, $this->object->settings['dewidowMaxPull'] );
+
+		$this->object->set_max_dewidow_pull( 1 );
+		$this->assertSame( 5, $this->object->settings['dewidowMaxPull'] );
+		
+		$this->object->set_max_dewidow_pull( 2 );
+		$this->assertSame( 2, $this->object->settings['dewidowMaxPull'] );
     }
 
     /**
      * @covers PHP_Typography::set_wrap_hard_hyphens
-     * @todo   Implement testSet_wrap_hard_hyphens().
      */
     public function testSet_wrap_hard_hyphens()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+		$this->object->set_wrap_hard_hyphens( true );
+		$this->assertTrue( $this->object->settings['hyphenHardWrap'] );
+        
+		$this->object->set_wrap_hard_hyphens( false );
+		$this->assertFalse( $this->object->settings['hyphenHardWrap'] );
     }
 
     /**
      * @covers PHP_Typography::set_url_wrap
-     * @todo   Implement testSet_url_wrap().
      */
     public function testSet_url_wrap()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+		$this->object->set_url_wrap( true );
+		$this->assertTrue( $this->object->settings['urlWrap'] );
+        
+		$this->object->set_url_wrap( false );
+		$this->assertFalse( $this->object->settings['urlWrap'] );
     }
 
     /**
      * @covers PHP_Typography::set_email_wrap
-     * @todo   Implement testSet_email_wrap().
      */
     public function testSet_email_wrap()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+		$this->object->set_email_wrap( true );
+		$this->assertTrue( $this->object->settings['emailWrap'] );
+        
+		$this->object->set_email_wrap( false );
+		$this->assertFalse( $this->object->settings['emailWrap'] );
     }
 
     /**
      * @covers PHP_Typography::set_min_after_url_wrap
-     * @todo   Implement testSet_min_after_url_wrap().
      */
     public function testSet_min_after_url_wrap()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+		$this->object->set_min_after_url_wrap( 10 );
+		$this->assertSame( 10, $this->object->settings['urlMinAfterWrap'] );
+
+		$this->object->set_min_after_url_wrap( 0 );
+		$this->assertSame( 5, $this->object->settings['urlMinAfterWrap'] );
+		
+		$this->object->set_min_after_url_wrap( 1 );
+		$this->assertSame( 1, $this->object->settings['urlMinAfterWrap'] );
     }
 
     /**
      * @covers PHP_Typography::set_style_ampersands
-     * @todo   Implement testSet_style_ampersands().
      */
     public function testSet_style_ampersands()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+		$this->object->set_style_ampersands( true );
+		$this->assertTrue( $this->object->settings['styleAmpersands'] );
+        
+		$this->object->set_style_ampersands( false );
+		$this->assertFalse( $this->object->settings['styleAmpersands'] );
     }
 
     /**
      * @covers PHP_Typography::set_style_caps
-     * @todo   Implement testSet_style_caps().
      */
     public function testSet_style_caps()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+		$this->object->set_style_caps( true );
+		$this->assertTrue( $this->object->settings['styleCaps'] );
+        
+		$this->object->set_style_caps( false );
+		$this->assertFalse( $this->object->settings['styleCaps'] );
     }
 
     /**
      * @covers PHP_Typography::set_style_initial_quotes
-     * @todo   Implement testSet_style_initial_quotes().
      */
     public function testSet_style_initial_quotes()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+		$this->object->set_style_initial_quotes( true );
+		$this->assertTrue( $this->object->settings['styleInitialQuotes'] );
+        
+		$this->object->set_style_initial_quotes( false );
+		$this->assertFalse( $this->object->settings['styleInitialQuotes'] );
     }
 
     /**
      * @covers PHP_Typography::set_style_numbers
-     * @todo   Implement testSet_style_numbers().
      */
     public function testSet_style_numbers()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+		$this->object->set_style_numbers( true );
+		$this->assertTrue( $this->object->settings['styleNumbers'] );
+        
+		$this->object->set_style_numbers( false );
+		$this->assertFalse( $this->object->settings['styleNumbers'] );
     }
 
     /**
      * @covers PHP_Typography::set_initial_quote_tags
-     * @todo   Implement testSet_initial_quote_tags().
      */
     public function testSet_initial_quote_tags()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+       	$tags_as_array = array( 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'div' );
+    	$tags_as_string = implode( ', ', $tags_as_array );
+    	
+		$this->object->set_initial_quote_tags( $tags_as_array );
+		foreach( $tags_as_array as $tag ) {
+			$this->assertArrayHasKey( $tag, $this->object->settings['initialQuoteTags'] );
+		}
+
+		$this->object->set_initial_quote_tags( array() );
+		foreach( $tags_as_array as $tag ) {
+			$this->assertArrayNotHasKey( $tag, $this->object->settings['initialQuoteTags'] );
+		}
+		
+		$this->object->set_initial_quote_tags( $tags_as_string );
+		foreach( $tags_as_array as $tag ) {
+			$this->assertArrayHasKey( $tag, $this->object->settings['initialQuoteTags'] );
+		}
     }
 
     /**
      * @covers PHP_Typography::set_hyphenation
-     * @todo   Implement testSet_hyphenation().
      */
     public function testSet_hyphenation()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+		$this->object->set_hyphenation( true );
+		$this->assertTrue( $this->object->settings['hyphenation'] );
+        
+		$this->object->set_hyphenation( false );
+		$this->assertFalse( $this->object->settings['hyphenation'] );
     }
 
     /**
@@ -499,10 +537,21 @@ class PHP_Typography_Test extends PHPUnit_Framework_TestCase
      */
     public function testSet_hyphenation_language()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+		$this->object->set_hyphenation_language( 'en-US' );
+		$this->assertGreaterThan( 0, count( $this->object->settings['hyphenationPattern'] ) );
+		$this->assertGreaterThan( 0, count( $this->object->settings['hyphenationPatternMaxSegment'] ) );
+		$this->assertGreaterThan( 0, count( $this->object->settings['hyphenationPatternExceptions'] ) );
+		
+		$this->object->set_hyphenation_language( 'foobar' );
+		$this->assertFalse( isset( $this->object->settings['hyphenationPattern'] ) );
+		$this->assertFalse( isset( $this->object->settings['hyphenationPatternMaxSegment'] ) );
+		$this->assertFalse( isset( $this->object->settings['hyphenationPatternExceptions'] ) );
+		
+		$this->object->set_hyphenation_language( 'de' );
+		$this->assertTrue( isset( $this->object->settings['hyphenationPattern'] ) );
+		$this->assertGreaterThan( 0, count( $this->object->settings['hyphenationPattern'] ) );
+		$this->assertGreaterThan( 0, count( $this->object->settings['hyphenationPatternMaxSegment'] ) );
+		$this->assertEmpty( $this->object->settings['hyphenationPatternExceptions'] ); // no exceptions in the German pattern file
     }
 
     /**
