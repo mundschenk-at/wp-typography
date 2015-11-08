@@ -5,6 +5,9 @@
  * 
  * (c) 2015 Peter Putzer
  */
+
+error_reporting( E_ALL & E_STRICT );
+
 require_once '../php-typography/class-php-typography.php';
 
 $testHTML = <<<'EOD'
