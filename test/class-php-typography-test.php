@@ -52,14 +52,37 @@ class PHP_Typography_Test extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHP_Typography::set_tags_to_ignore
-     * @todo   Implement testSet_tags_to_ignore().
      */
     public function testSet_tags_to_ignore()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+    	$always_ignore = array( 'iframe', 'textarea', 'button', 'select', 'optgroup', 'option', 'map',
+    							'style', 'head', 'title', 'script', 'applet', 'object', 'param' );
+    	$self_closing_tags = array('area', 'base', 'basefont', 'br', 'frame', 'hr', 'img', 'input', 'link', 'meta');
+    	 
+    	// default tags
+		$this->object->set_tags_to_ignore( array( 'code', 'head', 'kbd', 'object', 'option', 'pre',	'samp',
+												  'script',	'noscript',	'noembed', 'select', 'style', 'textarea',
+												  'title',	'var', 'math' ) );
+		$this->assertArraySubset( array( 'code', 'head', 'kbd', 'object', 'option',	'pre', 'samp',
+										 'script', 'noscript', 'noembed', 'select', 'style', 'textarea',
+ 								 		 'title', 'var', 'math' ), $this->object->settings['ignoreTags'] );
+		foreach ( $always_ignore as $tag ) {
+			$this->assertContains( $tag, $this->object->settings['ignoreTags'] );
+		}
+		foreach ( $self_closing_tags as $tag ) {
+			$this->assertNotContains( $tag, $this->object->settings['ignoreTags'] );
+		}
+		
+		// auto-close tag and something else
+		$this->object->set_tags_to_ignore( array( 'img', 'foo' ) );
+		$this->assertContains( 'foo', $this->object->settings['ignoreTags'] );
+    	foreach ( $self_closing_tags as $tag ) {
+			$this->assertNotContains( $tag, $this->object->settings['ignoreTags'] );
+		}
+		foreach ( $always_ignore as $tag ) {
+			$this->assertContains( $tag, $this->object->settings['ignoreTags'] );
+		}
+		
     }
 
     /**
