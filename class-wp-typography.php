@@ -111,7 +111,7 @@ class WP_Typography {
 	 * 		}
 	 * }
 	 */
-	private $admin_form_controls;
+	private $admin_form_controls = array();
 	
 	/**
 	 * Sets up a new wpTypography object.
@@ -159,12 +159,6 @@ class WP_Typography {
 		// include needed files
 		require_once( plugin_dir_path( __FILE__ ) . 'php-typography/class-php-typography.php' );
 		
-		// restore defaults if necessary
-		$typoRestoreDefaults = false;
-		if ( get_option( 'typoRestoreDefaults' ) == true ) {
-			$typoRestoreDefaults = true;
-		}
-		$this->register_plugin($typoRestoreDefaults);
 		add_action( 'init', array( &$this, 'load_settings') );
 		
 		// create parser
@@ -181,6 +175,14 @@ class WP_Typography {
 	 * Load the settings from the option table.
 	 */
 	function load_settings() {
+		// restore defaults if necessary
+		$typoRestoreDefaults = false;
+		if ( get_option( 'typoRestoreDefaults' ) == true ) {
+			$typoRestoreDefaults = true;
+		}
+		$this->register_plugin($typoRestoreDefaults);
+		
+		// load settings
 		foreach ( $this->admin_form_controls as $key => &$value ) {
 			$this->settings[ $key ] = get_option( $key );
 		}
