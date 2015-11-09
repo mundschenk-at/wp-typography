@@ -943,7 +943,7 @@ sub {
 	 */
 	private function get_admin_form_textarea( $id, $value, $label, $help, $option_values ) {
 		if ( ( $label || $help ) ) {
-			$control_markup .= "<label for='$id'>";
+			$control_markup = "<label for='$id'>";
 			
 			if ( $label ) {
 				$control_markup .= $label;
@@ -1017,7 +1017,7 @@ sub {
 			case 'submit':
 				$id_and_class = "name='$id' class='$button_class'"; // to avoid duplicate ids and some pretty stylin'
 			case 'hidden':
-				$control_markup .= '%1$s';
+				$control_markup = '%1$s';
 				break;
 	
 			case 'checkbox':
