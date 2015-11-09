@@ -1,6 +1,6 @@
 === wp-Typography ===
 Contributors: pputzer
-Tags: typography, typogrify, hyphenation, SmartyPants, widow, widon't, units, wrapping, wrap, URLs, Email, formatting, smart quotes, quote marks, dashes, em dash, en dash, ellipses, trademark, copyright, service mark, fractions, math, math symbols, ordinal suffixes, ordinal, CSS hooks, ampersands, uppercase, numbers, guillemets, text, smartypants, format, style, quotes, prettify, type, font, admin, automatic, comment, comments, content, headings, heading, CSS, custom, excerpt, feed, feeds, RSS, filter, links, page, pages, plugin, post, posts, title, wordpress, XHTML
+Tags: typography, hyphenation, smart quotes, quote marks, smartypants, typogrify, quotes, prettify, widows, orphans, small caps, diacritics
 Requires at least: 4.0
 Tested up to: 4.3.1
 Stable tag: trunk
