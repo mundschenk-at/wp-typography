@@ -23,7 +23,7 @@ class PHP_Typography_Test extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new PHP_Typography( false );
+        $this->object = new \PHP_Typography\PHP_Typography( false );
     }
 
     /**

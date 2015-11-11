@@ -113,7 +113,7 @@ $testHTML = <<<'EOD'
 	
 EOD;
 
-$php_typo = new PHP_Typography();
+$php_typo = new \PHP_Typography\PHP_Typography();
 $i = 0;
 $startTime = microtime(true);
 for (; $i < 100; ++$i) {
