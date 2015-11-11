@@ -162,7 +162,7 @@ class WP_Typography {
 		add_action( 'init', array( &$this, 'load_settings') );
 		
 		// create parser
-		$this->php_typo = new PHP_Typography( false );
+		$this->php_typo = new PHP_Typography\PHP_Typography( false );
 					
 		// set up the plugin options page
 		register_activation_hook( $this->plugin_path, array( &$this, 'register_plugin' ) );
