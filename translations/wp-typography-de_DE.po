@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: wp-Typography 3.0.0-beta1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/wp-typography\n"
 "POT-Creation-Date: 2015-11-09 19:35:40+00:00\n"
-"PO-Revision-Date: 2015-11-09 21:06+0100\n"
+"PO-Revision-Date: 2015-11-09 21:12+0100\n"
 "Last-Translator: Peter Putzer <github@mundschenk.at>\n"
 "Language-Team: Peter Putzer <github@mundschenk.at>\n"
 "Language: de_DE\n"
@@ -680,7 +680,7 @@ msgstr "Serbokroatisch (Kyrillisch)"
 
 #: php-typography/lang/sh-Latn.php:74
 msgid "Serbocroatian (Latin)"
-msgstr "Serbokroatisch (Latein)"
+msgstr "Serbokroatisch (Lateinisch)"
 
 #: php-typography/lang/sk.php:99
 msgid "Slovak"
