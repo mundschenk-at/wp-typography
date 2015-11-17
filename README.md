@@ -76,7 +76,7 @@ If you are uncomfortable editing your theme's code, you may alternatively go to 
 
 This plugin is an official replacement for the [wp-Typogrify plugin](http://wordpress.org/extend/plugins/wp-typogrify/).  Please uninstall wp-Typogrify and install wp-Typography in its place.
 
-Remember, many more FAQs are are addressed the [wp-Typography website](https://code.mundschenk.at/wp-typography/frequently-asked-questions/"wp-Typography FAQs").
+Remember, many more FAQs are are addressed the [wp-Typography website](https://code.mundschenk.at/wp-typography/frequently-asked-questions/).
 
 
 ## Screenshots ##
