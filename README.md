@@ -82,7 +82,7 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 ## Screenshots ##
 
 ### wp-Typography Administrative Settings ###
-![Imawp-Typography administrative settings](screenshot-1.png)
+![Imawp-Typography administrative settings](wp-assets/screenshot-1.png)
 
 ## Changelog ##
 
