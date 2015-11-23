@@ -436,6 +436,14 @@ class WP_Typography {
 				'option_values'	=> array(2=>2,3=>3,4=>4,5=>5),
 				'default' 		=> 2,
 			),
+			'typoHyphenateSafariFontWorkaround' => array(
+				'section' 		=> 'hyphenation',
+				'label' 		=> __( '%1$s Add workaround for Safari hyphenation bug', 'wp-typography' ),
+				'help_text' 	=> __( 'Safari displays weird ligature-like characters with some fonts (like Open Sans) when hyhpenation is enabled. Inserts <code>-webkit-font-feature-settings: "liga", "dlig";</code> as inline CSS workaround.', 'wp-typography' ),
+				'control' 		=> 'input',
+				'input_type' 	=> 'checkbox',
+				'default' 		=> 1,
+			),
 			'typoHyphenateExceptions' => array(
 				'section' 		=> 'hyphenation',
 				'label' 		=> __( "Exception List:", 'wp-typography' ),
@@ -1121,6 +1129,10 @@ sub {
 			echo "window.onload = stripZWS;";
 			echo "</script>\r\n";
 			echo "<![endif]-->\r\n";
+		}
+
+		if ( $this->settings['typoHyphenateSafariFontWorkaround'] ) {
+			echo "<style type=\"text/css\">body {-webkit-font-feature-settings: \"liga\", \"dlig\";}</style>\r\n";
 		}
 	}
 
