@@ -176,11 +176,11 @@ class WP_Typography {
 	 */
 	function load_settings() {
 		// restore defaults if necessary
-		$typoRestoreDefaults = false;
+		$typo_restore_defaults = false;
 		if ( get_option( 'typoRestoreDefaults' ) == true ) {
-			$typoRestoreDefaults = true;
+			$typo_restore_defaults = true;
 		}
-		$this->register_plugin($typoRestoreDefaults);
+		$this->register_plugin( $typo_restore_defaults );
 
 		// load settings
 		foreach ( $this->admin_form_controls as $key => &$value ) {
@@ -788,14 +788,6 @@ sub {
 		);
 	}
 
-/*	// removed because it caused issues for feeds
-	function processBloginfo($text) {
-		if( get_bloginfo( 'name' ) == $text || get_bloginfo( 'description' ) == $text) {
-				return $this->process($text, true);
-		}
-		return $text;
-	}
-*/
 	/**
 	 * Process title text fragment.
 	 *
@@ -804,7 +796,7 @@ sub {
 	 * @param string $text
 	 */
 	function process_title( $text ) {
-		return $this->process($text, true);
+		return $this->process( $text, true );
 	}
 
 	/**
@@ -814,7 +806,7 @@ sub {
 	 * @param boolean $isTitle Default false.
 	 */
 	function process( $text, $isTitle = false ) {
-		if ( is_feed() ) { //feed readers can be pretty stupid
+		if ( is_feed() ) { // feed readers can be pretty stupid
 			return $this->php_typo->process_feed( $text, $isTitle );
 		} else {
 			return $this->php_typo->process( $text, $isTitle );
@@ -902,7 +894,7 @@ sub {
 		$control_begin = '<div class="control">';
 		$control_end = '</div>';
 
-		if ($input_type != 'submit') {
+		if ( 'submit' !== $input_type ) {
 			$value = get_option( $id );
 		} elseif ( 'typoRestoreDefaults' === $id ) {
 			$value = __( 'Restore Defaults', 'wp-typography' );
@@ -998,7 +990,7 @@ sub {
 		}
 
 		$select_markup = "<select id='$id' name='$id' >";
-		foreach ($option_values as $option_value => &$display) {
+		foreach ( $option_values as $option_value => $display ) {
 			$select_markup .= "<option value='$option_value' " . ( $value === $option_value ? "selected='selected'" : '' ) . ">$display</option>";
 		}
 		$select_markup .= '</select>';
@@ -1101,7 +1093,7 @@ sub {
 	 * @param string $format    An `sprintf` format string.
 	 * @param mixed  $param1... An optional number of parameters for sprintf.
 	 */
-	function display_error_notice($format) {
+	function display_error_notice( $format ) {
 		if ( func_num_args() < 1 ) {
 			return; // abort
 		}
