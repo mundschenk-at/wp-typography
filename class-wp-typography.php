@@ -157,37 +157,37 @@ class WP_Typography {
 	 */
 	function __construct( $basename = 'wp-typography/wp-typography.php' ) {
 		global $wp_version;
-		$abortLoad = false;
+		$abort_load = false;
 
 		// ensure that our translations are loaded
-		add_action( 'plugins_loaded', array( &$this, 'load_plugin_textdomain' ) );
+		add_action( 'plugins_loaded', array( $this, 'load_plugin_textdomain' ) );
 
 		if ( version_compare( $wp_version, $this->install_requirements['WordPress Version'], '<' ) ) {
 			if ( is_admin() ) {
-				add_action( 'admin_notices', array( &$this, 'admin_notices_wp_version_incompatible' ) );
+				add_action( 'admin_notices', array( $this, 'admin_notices_wp_version_incompatible' ) );
 			}
-			$abortLoad = true;
+			$abort_load = true;
 		} elseif ( version_compare( PHP_VERSION, $this->install_requirements['PHP Version'], '<' ) ) {
 			if( is_admin() ) {
-				add_action( 'admin_notices', array( &$this, 'admin_notices_php_version_incompatible' ) );
+				add_action( 'admin_notices', array( $this, 'admin_notices_php_version_incompatible' ) );
 			}
-			$abortLoad = true;
+			$abort_load = true;
 		} elseif ( ! function_exists( 'mb_strlen' ) ||
 				   ! function_exists( 'mb_strtolower' ) ||
 				   ! function_exists( 'mb_substr') ||
 				   ! function_exists( 'mb_detect_encoding' ) ) {
 			if( is_admin() ) {
-				add_action( 'admin_notices', array( &$this, 'admin_notices_mbstring_incompatible' ) );
+				add_action( 'admin_notices', array( $this, 'admin_notices_mbstring_incompatible' ) );
 			}
-			$abortLoad = true;
-		} elseif ( get_bloginfo( 'charset' ) != 'UTF-8' && get_bloginfo( 'charset' ) != 'utf-8' ) {
+			$abort_load = true;
+		} elseif ( get_bloginfo( 'charset' ) !== 'UTF-8' && get_bloginfo( 'charset' ) !== 'utf-8' ) {
 			if ( is_admin() ) {
-				add_action( 'admin_notices', array( &$this, 'admin_notices_charset_incompatible' ) );
+				add_action( 'admin_notices', array( $this, 'admin_notices_charset_incompatible' ) );
 			}
-			$abortLoad = true;
+			$abort_load = true;
 		}
 
-		if ( $abortLoad == true ) return;
+		if ( true === $abort_load ) return;
 
 		// property intialization
 		$this->local_plugin_path = $basename;
@@ -196,16 +196,16 @@ class WP_Typography {
 		// include needed files
 		require_once( plugin_dir_path( __FILE__ ) . 'php-typography/class-php-typography.php' );
 
-		add_action( 'init', array( &$this, 'load_settings') );
+		add_action( 'init', array( $this, 'load_settings') );
 
 		// create parser
-		$this->php_typo = new PHP_Typography\PHP_Typography( false );
+		$this->php_typo = new \PHP_Typography\PHP_Typography( false );
 
 		// set up the plugin options page
-		register_activation_hook( $this->plugin_path, array( &$this, 'register_plugin' ) );
-		add_action( 'admin_menu', array( &$this, 'add_options_page') );
-		add_action( 'admin_init', array( &$this, 'register_the_settings') );
-		add_filter( 'plugin_action_links_' . $this->local_plugin_path, array( &$this, 'add_filter_plugin_action_links' ) );
+		register_activation_hook( $this->plugin_path, array( $this, 'register_plugin' ) );
+		add_action( 'admin_menu', array( $this, 'add_options_page') );
+		add_action( 'admin_init', array( $this, 'register_the_settings') );
+		add_filter( 'plugin_action_links_' . $this->local_plugin_path, array( $this, 'add_filter_plugin_action_links' ) );
 	}
 
 	/**
@@ -214,7 +214,7 @@ class WP_Typography {
 	function load_settings() {
 		// restore defaults if necessary
 		$typo_restore_defaults = false;
-		if ( get_option( 'typoRestoreDefaults' ) == true ) {
+		if ( true == get_option( 'typoRestoreDefaults' ) ) {  // any truthy value will do
 			$typo_restore_defaults = true;
 		}
 		$this->register_plugin( $typo_restore_defaults );
@@ -309,20 +309,20 @@ class WP_Typography {
 		// apply our filters
 		if ( ! is_admin() ) {
 			// removed because it caused issues for feeds
-			// add_filter('bloginfo', array(&$this, 'processBloginfo'), 9999);
+			// add_filter('bloginfo', array($this, 'processBloginfo'), 9999);
 			// add_filter('wp_title', 'strip_tags', 9999);
 			// add_filter('single_post_title', 'strip_tags', 9999);
-			add_filter( 'comment_author', array( &$this, 'process' ), 9999 );
-			add_filter( 'comment_text', array( &$this, 'process' ), 9999 );
-			add_filter( 'the_title', array( &$this, 'process_title' ), 9999 );
-			add_filter( 'the_content', array( &$this, 'process' ), 9999 );
-			add_filter( 'the_excerpt', array( &$this, 'process' ), 9999 );
-			add_filter( 'widget_text', array( &$this, 'process' ), 9999 );
-			add_filter( 'widget_title', array( &$this, 'process_title' ), 9999 );
+			add_filter( 'comment_author', array( $this, 'process' ), 9999 );
+			add_filter( 'comment_text', array( $this, 'process' ), 9999 );
+			add_filter( 'the_title', array( $this, 'process_title' ), 9999 );
+			add_filter( 'the_content', array( $this, 'process' ), 9999 );
+			add_filter( 'the_excerpt', array( $this, 'process' ), 9999 );
+			add_filter( 'widget_text', array( $this, 'process' ), 9999 );
+			add_filter( 'widget_title', array( $this, 'process_title' ), 9999 );
 		}
 
 		// add IE6 zero-width-space removal CSS Hook styling
-		add_action( 'wp_head', array( &$this, 'add_wp_head' ) );
+		add_action( 'wp_head', array( $this, 'add_wp_head' ) );
 	}
 
 	/**
@@ -385,7 +385,7 @@ class WP_Typography {
 			/*
 			 "id" => array(
 			 	'section' 		=> string Section ID, 		// REQUIRED
-			 	"fieldset" 		=> string Fieldset ID,		// OPTIONAL
+			 	'fieldset' 		=> string Fieldset ID,		// OPTIONAL
 			 	'label'     	=> string Label Content,	// OPTIONAL
 			 	'help_text' 	=> string Help Text,		// OPTIONAL
 			 	'control' 		=> string Control,			// REQUIRED
@@ -497,7 +497,7 @@ class WP_Typography {
 			),
 			'typoSmartQuotes' => array(
 				'section'		=> 'character-replacement',
-				"fieldset" 		=> 'smart-quotes',
+				'fieldset' 		=> 'smart-quotes',
 				'label' 		=> __( "%1\$s Transform straight quotes [ <samp>'</samp> <samp>\"</samp> ] to typographically correct characters as detailed below.", 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
@@ -506,7 +506,7 @@ class WP_Typography {
 
 			'typoSmartQuotesPrimary' => array(
 				'section'		=> 'character-replacement',
-				"fieldset" 		=> 'smart-quotes',
+				'fieldset' 		=> 'smart-quotes',
 				'label' 		=> __( "Convert <samp>\"foo\"</samp> to: %1\$s", 'wp-typography' ),
 				'help_text' 	=> __( "Primary quotation style.", 'wp-typography' ),
 				'control' 		=> 'select',
@@ -531,7 +531,7 @@ class WP_Typography {
 			),
 			'typoSmartQuotesSecondary' => array(
 				'section'		=> 'character-replacement',
-				"fieldset" 		=> 'smart-quotes',
+				'fieldset' 		=> 'smart-quotes',
 				'label' 		=> __( "Convert <samp>'foo'</samp> to: %1\$s", 'wp-typography' ),
 				'help_text' 	=> __( "Secondary quotation style.", 'wp-typography' ),
 				'control' 		=> 'select',
@@ -573,7 +573,7 @@ class WP_Typography {
 
 			'typoSmartDiacritics' => array(
 				'section'		=> 'character-replacement',
-				"fieldset" 		=> 'diacritics',
+				'fieldset' 		=> 'diacritics',
 				'label' 		=> __( "%1\$s Force diacritics where appropriate.", 'wp-typography' ),
 				'help_text' 	=> __( "i.e. <samp>creme brulee</samp> becomes <samp>crème brûlée</samp>", 'wp-typography' ),
 				'control' 		=> 'input',
@@ -582,7 +582,7 @@ class WP_Typography {
 			),
 			'typoDiacriticLanguages' => array(
 				'section'		=> 'character-replacement',
-				"fieldset" 		=> 'diacritics',
+				'fieldset' 		=> 'diacritics',
 				'label' 		=> __( "Language for diacritic replacements: %1\$s", 'wp-typography' ),
 				'help_text' 	=> __( "Language definitions will purposefully <strong>not</strong> process words that have alternate meaning without diacritics like <samp>resume &amp; résumé</samp>, <samp>divorce &amp; divorcé</samp>, and <samp>expose &amp; exposé</samp>.", 'wp-typography' ),
 				'control' 		=> 'select',
@@ -591,7 +591,7 @@ class WP_Typography {
 			),
 			'typoDiacriticCustomReplacements' => array(
 				'section' 		=> 'character-replacement',
-				"fieldset" 		=> 'diacritics',
+				'fieldset' 		=> 'diacritics',
 				'label' 		=> __( "Custom diacritic word replacements:", 'wp-typography' ),
 				'help_text' 	=> __( "Must be formatted <samp>\"word to replace\"=>\"replacement word\",</samp>; This is case-sensitive.", 'wp-typography' ),
 				'control' 		=> 'textarea',
@@ -659,7 +659,7 @@ class WP_Typography {
 			),
 			'typoUnitSpacing' => array(
 				'section'		=> 'space-control',
-				"fieldset" 		=> "values-and-units",
+				'fieldset' 		=> "values-and-units",
 				'label' 		=> __( "%1\$s Keep values and units together.", 'wp-typography' ),
 				'help_text' 	=> __( "i.e. <samp>1 in.</samp> or <samp>10 m<sup>2</sup></samp>", 'wp-typography' ),
 				'control' 		=> 'input',
@@ -668,7 +668,7 @@ class WP_Typography {
 			),
 			'typoUnits' => array(
 				'section'		=> 'space-control',
-				"fieldset" 		=> "values-and-units",
+				'fieldset' 		=> "values-and-units",
 				'label' 		=> __( "Unit names:", 'wp-typography' ),
 				'help_text' 	=> __( "Separate unit names with spaces. We already look for a large list; fill in any holes here.", 'wp-typography' ),
 				'control' 		=> 'textarea',
@@ -676,7 +676,7 @@ class WP_Typography {
 			),
 			'typoPreventWidows' => array(
 				'section'		=> 'space-control',
-				"fieldset" 		=> 'widows',
+				'fieldset' 		=> 'widows',
 				'label' 		=> __( "%1\$s Prevent widows", 'wp-typography' ),
 				'help_text' 	=> __( "Widows are the last word in a block of text that wraps to its own line.", 'wp-typography' ),
 				'control' 		=> 'input',
@@ -685,7 +685,7 @@ class WP_Typography {
 			),
 			'typoWidowMinLength' => array(
 				'section'		=> 'space-control',
-				"fieldset" 		=> 'widows',
+				'fieldset' 		=> 'widows',
 				'label' 		=> __( "Only protect widows with %1\$s or fewer letters.", 'wp-typography' ),
 				'control' 		=> 'select',
 				'option_values'	=> array(4=>4,5=>5,6=>6,7=>7,8=>8,9=>9,10=>10,100=>100),
@@ -693,7 +693,7 @@ class WP_Typography {
 			),
 			'typoWidowMaxPull' => array(
 				'section'		=> 'space-control',
-				"fieldset" 		=> 'widows',
+				'fieldset' 		=> 'widows',
 				'label' 		=> __( "Pull at most %1\$s letters from the previous line to keep the widow company.", 'wp-typography' ),
 				'control' 		=> 'select',
 				'option_values'	=> array(4=>4,5=>5,6=>6,7=>7,8=>8,9=>9,10=>10,100=>100),
@@ -701,7 +701,7 @@ class WP_Typography {
 			),
 			'typoWrapHyphens' => array(
 				'section'		=> 'space-control',
-				"fieldset" 		=> 'enable-wrapping',
+				'fieldset' 		=> 'enable-wrapping',
 				'label' 		=> __( "%1\$s Enable wrapping after hard hyphens.", 'wp-typography' ),
 				'help_text' 	=> __( "Adds zero-width spaces after hard hyphens (like in &ldquo;zero-width&rdquo;).", 'wp-typography' ),
 				'control' 		=> 'input',
@@ -710,7 +710,7 @@ class WP_Typography {
 			),
 			'typoWrapEmails' => array(
 				'section'		=> 'space-control',
-				"fieldset" 		=> 'enable-wrapping',
+				'fieldset' 		=> 'enable-wrapping',
 				'label' 		=> __( "%1\$s Enable wrapping of long emails.", 'wp-typography' ),
 				'help_text' 	=> __( "Adds zero-width spaces throughout the email.", 'wp-typography' ),
 				'control' 		=> 'input',
@@ -719,7 +719,7 @@ class WP_Typography {
 			),
 			'typoWrapURLs' => array(
 				'section'		=> 'space-control',
-				"fieldset" 		=> 'enable-wrapping',
+				'fieldset' 		=> 'enable-wrapping',
 				'label' 		=> __( "%1\$s Enable wrapping of long URLs.", 'wp-typography' ),
 				'help_text' 	=> __( "Adds zero-width spaces throughout the URL.", 'wp-typography' ),
 				'control' 		=> 'input',
@@ -728,7 +728,7 @@ class WP_Typography {
 			),
 			'typoWrapMinAfter' => array(
 				'section'		=> 'space-control',
-				"fieldset" 		=> 'enable-wrapping',
+				'fieldset' 		=> 'enable-wrapping',
 				'label' 		=> __( "Keep at least the last %1\$s characters of a URL together.", 'wp-typography' ),
 				'control' 		=> 'select',
 				'option_values'	=> array(3=>3,4=>4,5=>5,6=>6,7=>7,8=>8,9=>9,10=>10),
@@ -736,7 +736,7 @@ class WP_Typography {
 			),
 			'typoRemoveIE6' => array(
 				'section'		=> 'space-control',
-				"fieldset" 		=> 'enable-wrapping',
+				'fieldset' 		=> 'enable-wrapping',
 				'label' 		=> __( "%1\$s Remove zero-width spaces from IE6.", 'wp-typography' ),
 				'help_text' 	=> __( "IE6 displays mangles zero-width spaces with some fonts like Tahoma (uses JavaScript).", 'wp-typography' ),
 				'control' 		=> 'input',
@@ -840,13 +840,13 @@ sub {
 	 * Process text fragment.
 	 *
 	 * @param string $text
-	 * @param boolean $isTitle Default false.
+	 * @param boolean $is_title Default false.
 	 */
-	function process( $text, $isTitle = false ) {
+	function process( $text, $is_title = false ) {
 		if ( is_feed() ) { // feed readers can be pretty stupid
-			return $this->php_typo->process_feed( $text, $isTitle );
+			return $this->php_typo->process_feed( $text, $is_title );
 		} else {
-			return $this->php_typo->process( $text, $isTitle );
+			return $this->php_typo->process( $text, $is_title );
 		}
 	}
 
@@ -863,15 +863,15 @@ sub {
 			}
 		}
 
-		update_option( 'typoRestoreDefaults', 0 );
+		update_option( 'typoRestoreDefaults', false );
 	}
 
 	/**
 	 * Register admin settings.
 	 */
 	function register_the_settings() {
-		foreach ( $this->admin_form_controls as $controlID => $control ) {
-			register_setting( $this->option_group, $controlID );
+		foreach ( $this->admin_form_controls as $control_idd => $control ) {
+			register_setting( $this->option_group, $control_id );
 		}
 		register_setting( $this->option_group, 'typoRestoreDefaults' );
 	}
@@ -880,7 +880,7 @@ sub {
 	 * Add an options page for the plugin settings.
 	 */
 	function add_options_page()	{
-		add_options_page( $this->plugin_name, $this->plugin_name, 'manage_options', strtolower( $this->plugin_name ), array( &$this, 'get_admin_page_content' ) );
+		add_options_page( $this->plugin_name, $this->plugin_name, 'manage_options', strtolower( $this->plugin_name ), array( $this, 'get_admin_page_content' ) );
 	}
 
 	/**
@@ -1180,4 +1180,3 @@ sub {
 
 	}
 }
-
