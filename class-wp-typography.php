@@ -415,6 +415,14 @@ class WP_Typography {
 				'control' 		=> 'textarea',
 				'default' 		=> "",
 			),
+			'typoDisableCaching' => array(
+				'section' 		=> 'general-scope',
+				'label' 		=> __( "%1\$s Disable caching", 'wp-typography' ),
+				'help_text' 	=> __( "Prevents processed text from being cached (normally only needed for debugging purposes).", 'wp-typography' ),
+				'control' 		=> 'input',
+				'input_type' 	=> 'checkbox',
+				'default' 		=> 0,
+			),
 			'typoEnableHyphenation' => array(
 				'section' 		=> 'hyphenation',
 				'label' 		=> __( "%1\$s Enable hyphenation.", 'wp-typography' ),
@@ -843,11 +851,25 @@ sub {
 	 * @param boolean $is_title Default false.
 	 */
 	function process( $text, $is_title = false ) {
+		$transient = 'typo_' . base64_encode( md5( $text, true ) . $this->php_typo->get_settings_hash( 11 ) );
+
 		if ( is_feed() ) { // feed readers can be pretty stupid
-			return $this->php_typo->process_feed( $text, $is_title );
+			$transient .= 'f' . $is_title ? 't' : 's';
+
+			if ( ! empty( $this->settings['typoDisableCaching'] ) || false === ( $processed_text = get_transient( $transient ) ) ) {
+				$processed_text = $this->php_typo->process_feed( $text, $is_title );
+				set_transient( $transient, $processed_text, DAY_IN_SECONDS );
+			}
 		} else {
-			return $this->php_typo->process( $text, $is_title );
+			$transient .= $is_title ? 't' : 's';
+
+			if ( ! empty( $this->settings['typoDisableCaching'] ) || false === ( $processed_text = get_transient( $transient ) ) ) {
+				$processed_text = $this->php_typo->process( $text, $is_title );
+				set_transient( $transient, $processed_text, DAY_IN_SECONDS );
+			}
 		}
+
+		return $processed_text;
 	}
 
 	/**
