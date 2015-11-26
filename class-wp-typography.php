@@ -51,18 +51,55 @@
  */
 class WP_Typography {
 
+	/**
+	 * The user-visible name of the plugin.
+	 *
+	 * // FIXME Translate?
+	 * @var string $plugin_name
+	 */
 	private $plugin_name = 'wp-Typography';
+
+	/**
+	 * The minimum requirements for running the plugins. Must contain:
+	 *  - 'PHP Version'
+	 *  - 'WordPress Version'
+	 *  - 'Multibyte'
+	 *  - 'UTF-8'
+	 *
+	 * @var array A Hash containing the version requirements for the plugin.
+	 */
 	private $install_requirements = array(
 											'PHP Version' 		=> '5.3.0',
 											'WordPress Version'	=> '4.0',
 											'Multibyte' 		=> true,
 											'UTF-8'				=> true,
-										 );
-	private $local_plugin_path;             // relative from plugins folder (assigned in __construct)
-	private $plugin_path;                   // we will assign WP_PLUGIN_DIR base in __construct
-	private $option_group = 'typo_options'; // used to register options for option page
+				 						 );
+
+	/**
+	 * The result of plugin_basename() for the main plugin file.
+	 * (Relative from plugins folder.)
+	 */
+	private $local_plugin_path;
+
+	/**
+	 * The absolute path to top-level directory for the plugin.
+	 */
+	private $plugin_path;
+
+	/**
+	 * The group name used for registering the plugin options.
+	 */
+	private $option_group = 'typo_options';
+
+	/**
+	 * A hash containing the various plugin settings.
+	 */
 	private $settings;
-	private $php_typo;                      // this will be a class within a class
+
+	/**
+	 * The PHP_Typography instance doing the actual work.
+	 */
+	private $php_typo;
 
 	/**
 	 * Links to add the settings page.
