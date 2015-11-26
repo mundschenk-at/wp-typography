@@ -870,7 +870,7 @@ sub {
 	 * Register admin settings.
 	 */
 	function register_the_settings() {
-		foreach ( $this->admin_form_controls as $control_idd => $control ) {
+		foreach ( $this->admin_form_controls as $control_id => $control ) {
 			register_setting( $this->option_group, $control_id );
 		}
 		register_setting( $this->option_group, 'typoRestoreDefaults' );
