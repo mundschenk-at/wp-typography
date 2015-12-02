@@ -49,3 +49,4 @@
 
 require_once( plugin_dir_path( __FILE__ ) . 'class-wp-typography.php' );
 new WP_Typography( plugin_basename( __FILE__ ) );
+
