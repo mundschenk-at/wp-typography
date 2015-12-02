@@ -3,9 +3,7 @@ Contributors: pputzer
 Tags: typography, hyphenation, smart quotes, quote marks, smartypants, typogrify, quotes, prettify, widows, orphans, small caps, diacritics
 Requires at least: 4.0
 Tested up to: 4.4
-Stable tag: trunk
-
-
+Stable tag: 3.0.0
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
@@ -90,17 +88,18 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
-= 3.0.0 - unreleased =
+= 3.0.0 - December 2, 2015 =
 * DOM-based HTML parsing with HTML5-PHP
 * Translation-ready & German translation added
-* Added German as a diacritics language (mainly for French words)
+* Added German as a diacritics language (mainly for French words).
 * Various optimizations (hyphenation is still slow, though)
-* Fixed custom hyphenation patterns
-* Fixed some calls to deprecated functions
-* Adopted semantic versioning for the project
-* ...
+* Fixed custom hyphenation patterns.
+* Fixed some calls to deprecated functions.
+* Adopted semantic versioning for the project.
+* Added workaround for Safari font bug.
+* Added transient caching to speed things up a bit.
 
-= 2.0.4 - January 4, 2011 = 
+= 2.0.4 - January 4, 2011 =
 
 * An errant "settings" link was being injected into the "Plugins" page. It has been removed.
 
@@ -285,7 +284,7 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 = 1.0.4 - July 20, 2009 =
 
-* Added test for curl to avoid bug where admin panel would not load 
+* Added test for curl to avoid bug where admin panel would not load
 
 = 1.0.3 - July 17, 2009 =
 
