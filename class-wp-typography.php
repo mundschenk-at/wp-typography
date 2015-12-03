@@ -87,6 +87,16 @@ class WP_Typography {
 	private $plugin_path;
 
 	/**
+	 * The full version string of the plugin.
+	 */
+	private $version;
+
+	/**
+	 * A byte-encoded version number used as part of the key for transient caching
+	 */
+	private $version_hash;
+
+	/**
 	 * The group name used for registering the plugin options.
 	 */
 	private $option_group = 'typo_options';
@@ -153,9 +163,10 @@ class WP_Typography {
 	/**
 	 * Sets up a new wpTypography object.
 	 *
+	 * @param string $version  The full plugin version string (e.g. "3.0.0-beta.2")
 	 * @param string $basename The result of plugin_basename() for the main plugin file.
 	 */
-	function __construct( $basename = 'wp-typography/wp-typography.php' ) {
+	function __construct( $version, $basename = 'wp-typography/wp-typography.php' ) {
 		global $wp_version;
 		$abort_load = false;
 
@@ -190,6 +201,8 @@ class WP_Typography {
 		if ( true === $abort_load ) return;
 
 		// property intialization
+		$this->version = $version;
+		$this->version_hash = $this->hash_version_string( $version );
 		$this->local_plugin_path = $basename;
 		$this->plugin_path = plugin_dir_path( __FILE__ ) . basename( $this->local_plugin_path );
 
@@ -854,14 +867,14 @@ sub {
 		$transient = 'typo_' . base64_encode( md5( $text, true ) . $this->php_typo->get_settings_hash( 11 ) );
 
 		if ( is_feed() ) { // feed readers can be pretty stupid
-			$transient .= 'f' . $is_title ? 't' : 's';
+			$transient .= 'f' . ( $is_title ? 't' : 's' ) . $this->version_hash;
 
 			if ( ! empty( $this->settings['typoDisableCaching'] ) || false === ( $processed_text = get_transient( $transient ) ) ) {
 				$processed_text = $this->php_typo->process_feed( $text, $is_title );
 				set_transient( $transient, $processed_text, DAY_IN_SECONDS );
 			}
 		} else {
-			$transient .= $is_title ? 't' : 's';
+			$transient .= ( $is_title ? 't' : 's' ) . $this->version_hash;
 
 			if ( ! empty( $this->settings['typoDisableCaching'] ) || false === ( $processed_text = get_transient( $transient ) ) ) {
 				$processed_text = $this->php_typo->process( $text, $is_title );
@@ -1200,5 +1213,32 @@ sub {
 		$this->admin_form_controls['typoHyphenateLanguages']['option_values'] = $this->php_typo->get_languages();
 		$this->admin_form_controls['typoDiacriticLanguages']['option_values'] = $this->php_typo->get_diacritic_languages();
 
+	}
+
+	/**
+	 * Encodes the given version string (in the form "3.0.0-beta.1") to a representation suitable for hashing.
+	 *
+	 * The current implementation works as follows:
+	 * 1. The version is broken into tokens at each ".".
+	 * 2. Each token is stripped of all characters except numbers.
+	 * 3. Each number is added to decimal 64 to arrive at an ASCII code.
+	 * 4. The character representation of that ASCII code is added to the result.
+	 *
+	 * This means that textual qualifiers like "alpha" and "beta" are ignored, so "3.0.0-alpha.1" and
+	 * "3.0.0-beta.1" result in the same hash. Since those are not regular release names, this is deemed
+	 * acceptable to make the algorithm simpler.
+	 *
+	 * @param unknown $version
+	 * @return string The hashed version (containing as few bytes as possible);
+	 */
+	private function hash_version_string( $version ) {
+		$hash = '';
+
+		$parts = explode( '.', $version );
+		foreach( $parts as $part ) {
+			$hash .= chr( 64 + preg_replace('/[^0-9]/', '', $part ) );
+		}
+
+		return $hash;
 	}
 }

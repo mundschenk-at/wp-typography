@@ -6,7 +6,7 @@
 	Description: Improve your web typography with: (1) hyphenation &mdash; over 40 languages supported, (2) Space control, includes: widow protection, gluing values to units, and forced internal wrapping of long URLs & email addresses, (3) Intelligent character replacement, including smart handling of: quote marks, dashes, ellipses, trademarks, math symbols, fractions, and ordinal suffixes, and (4) CSS hooks for styling: ampersands, uppercase words, numbers,  initial quotes &amp; guillemets.
 	Author: Peter Putzer
 	Author URI: https://code.mundschenk.at
-	Version: 3.0.2
+	Version: 3.1.0-beta.1
 	License: GNU General Public License v2
 	License URI: https://www.gnu.org/licenses/gpl-2.0.html
 	Text Domain: wp-typography
@@ -58,8 +58,19 @@ function run_wp_typography() {
 		add_action( 'admin_notices', create_function( '', "echo '<div class=\"error\"><p>" . __('wp-Typography requires PHP 5.3 or later. Please upgrade your installation of PHP or deactivate wp-Typography.', 'wp-typography') ."</p></div>';" ) );
 		return; // abort
 	} else {
+		/**
+		 * Load version from plugin data
+		 */
+		if( ! function_exists( 'get_plugin_data' ) ) {
+			include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+		}
+		$plugin_data = get_plugin_data( __FILE__, false, false );
+
+		// should be moved to an autoloader
 		require_once( plugin_dir_path( __FILE__ ) . 'class-wp-typography.php' );
-		new WP_Typography( plugin_basename( __FILE__ ) );
+
+		// start up the plugin
+		new WP_Typography( $plugin_data['Version'], plugin_basename( __FILE__ ) );
 	}
 }
 run_wp_typography();
