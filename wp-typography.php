@@ -47,6 +47,19 @@
 		Hamish Macpherson - http://www.hamstu.com/
 */
 
-require_once( plugin_dir_path( __FILE__ ) . 'class-wp-typography.php' );
-new WP_Typography( plugin_basename( __FILE__ ) );
-
+/**
+ * Load the plugin after checking for the necessary PHP version.
+ *
+ * It's necessary to do this here because main class relies on namespaces.
+ */
+function run_wp_typography() {
+	if ( version_compare( PHP_VERSION, '5.3', '<' ) ) {
+		load_plugin_textdomain( 'wp-typography', false, dirname( plugin_basename( __FILE__ ) ) . '/translations/' );
+		add_action( 'admin_notices', create_function( '', "echo '<div class=\"error\"><p>" . __('wp-Typography requires PHP 5.3 or later. Please upgrade your installation of PHP or deactivate wp-Typography.', 'wp-typography') ."</p></div>';" ) );
+		return; // abort
+	} else {
+		require_once( plugin_dir_path( __FILE__ ) . 'class-wp-typography.php' );
+		new WP_Typography( plugin_basename( __FILE__ ) );
+	}
+}
+run_wp_typography();

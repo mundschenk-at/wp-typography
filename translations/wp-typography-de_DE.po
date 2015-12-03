@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: wp-Typography 3.0.0-beta1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/wp-typography\n"
 "POT-Creation-Date: 2015-11-18 19:34:42+00:00\n"
-"PO-Revision-Date: 2015-11-26 23:54+0100\n"
+"PO-Revision-Date: 2015-12-03 16:44+0100\n"
 "Last-Translator: Peter Putzer <github@mundschenk.at>\n"
 "Language-Team: Peter Putzer <github@mundschenk.at>\n"
 "Language: de_DE\n"
@@ -740,6 +740,14 @@ msgstr "Chinesisch (Pinyin)"
 #: templates/settings.php:88
 msgid "Resource Links"
 msgstr "Ressourcen"
+
+#: wp-typography.php:54
+msgid ""
+"wp-Typography requires PHP 5.3 or later. Please upgrade your installation of "
+"PHP or deactivate wp-Typography."
+msgstr ""
+"wp-Typography benötigt PHP 5.3 oder höher. Bitte das Plugin deaktivieren "
+"oder ein Upgrade der PHP-Version durchführen. "
 
 #. Plugin Name of the plugin/theme
 msgid "wp-Typography"

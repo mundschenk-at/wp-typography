@@ -643,6 +643,12 @@ msgstr ""
 msgid "Resource Links"
 msgstr ""
 
+#: wp-typography.php:54
+msgid ""
+"wp-Typography requires PHP 5.3 or later. Please upgrade your installation "
+"of PHP or deactivate wp-Typography."
+msgstr ""
+
 #. Plugin Name of the plugin/theme
 msgid "wp-Typography"
 msgstr ""
