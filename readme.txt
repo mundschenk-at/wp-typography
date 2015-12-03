@@ -3,7 +3,7 @@ Contributors: pputzer
 Tags: typography, hyphenation, smart quotes, quote marks, smartypants, typogrify, quotes, prettify, widows, orphans, small caps, diacritics
 Requires at least: 4.0
 Tested up to: 4.4
-Stable tag: 3.0.0
+Stable tag: 3.0.1
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
@@ -88,6 +88,10 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
+= 3.0.1 - December 3, 2015 =
+* Prevent drop-down box settings from being accidentally overwritten (props Stefan Engenhorst).
+* Earlier check for minimum PHP version to prevent a parsing error on PHP 5.2 (props Javi).
+
 = 3.0.0 - December 2, 2015 =
 * DOM-based HTML parsing with HTML5-PHP
 * Translation-ready & German translation added
@@ -123,12 +127,10 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 * Added `*{text-rendering: optimizeLegibility;}` to default CSS rules to enable kerning and ligatures in supported browsers. Note this will not appear for upgrades, only new installs
 * Upgraded to [PHP Typography 2.0](http://kingdesk.com/projects/php-typography/)
 
-
 = 1.22 - March 4, 2010 =
 
 * Fixed bug that caused occasional hyphenation errors for non-English languages.
 * Upgraded to [PHP Typography 1.22](http://kingdesk.com/projects/php-typography/)
-
 
 = 1.21.1 - January 22, 2010 =
 
@@ -138,7 +140,6 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 * Fixed bug in custom diacritic handling
 * Upgraded to [PHP Typography 1.21](http://kingdesk.com/projects/php-typography/)
-
 
 = 1.20 - December 20, 2009 =
 
@@ -214,7 +215,6 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 * Expanded the multibyte character set recognized as valid word characters for improved hyphenation
 * Upgraded to [PHP Typography 1.10](http://kingdesk.com/projects/php-typography/)
 
-
 = 1.9 - August 12, 2009 =
 
 * Added option to force single character words to wrap to new line (unless they are widows).
@@ -275,7 +275,6 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 * moved the processing of widow handling after hyphenation so that max-pull would not be compared to the length of the adjacent word, but rather the length of the adjacent word segment (i.e. that after a soft hyphen)
 * Upgraded to [PHP Typography 1.2](http://kingdesk.com/projects/php-typography/)
 
-
 = 1.1 - July 22, 2009 =
 
 * took advantage of new feature in PHP Typography 1.1 where we could just set user settings without first setting phpTypography defaults for a slight performance improvement.
@@ -299,7 +298,6 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 * Corrected smart math handling to not convert slashes in URLs to division signs
 * Corrected issue where some server settings were throwing a warning in the admin panel for use of file_get_contents()
 
-
 = 1.0.1 - July 15, 2009 =
 
 * Corrected label in admin interface that indicated pretty fractions were part of basic math handling.
@@ -308,7 +306,6 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 * Changed default settings from all options being enabled to a minimal set being enabled.
 * Added test to phpTypography methods `process()` and `process_feed()` to skip processing if `$isTitle` parameter is `TRUE` and `h1` or `h2` is an excluded HTML tag
-
 
 = 1.0 beta 9 - July 14, 2009 =
 
@@ -346,7 +343,6 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 * Corrected default settings
 * Alphabetically sorted languages returned with get_languages() method
 * Added a "Restore Defaults" option to the admin page
-
 
 = 1.0 beta 4 - July 7, 2009 =
 
