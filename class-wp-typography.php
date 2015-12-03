@@ -1050,7 +1050,7 @@ sub {
 
 		$select_markup = "<select id='$id' name='$id' >";
 		foreach ( $option_values as $option_value => $display ) {
-			$select_markup .= "<option value='$option_value' " . ( $value === $option_value ? "selected='selected'" : '' ) . ">$display</option>";
+			$select_markup .= "<option value='$option_value' " . selected( $value, $option_value, false ) . ">$display</option>";
 		}
 		$select_markup .= '</select>';
 
@@ -1080,7 +1080,7 @@ sub {
 				break;
 
 			case 'checkbox':
-				$value_markup = "value='1' " . ( ! empty( $value ) ? 'checked="checked" ' : '' );
+				$value_markup = "value='1' " . checked( $value, true, false );
 			default:
 				if ( $label || $help ) {
 					$control_markup = "<label for='$id'>";
