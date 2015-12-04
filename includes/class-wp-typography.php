@@ -872,7 +872,17 @@ sub {
 	 * Add an options page for the plugin settings.
 	 */
 	function add_options_page()	{
-		add_options_page( $this->plugin_name, $this->plugin_name, 'manage_options', strtolower( $this->plugin_name ), array( $this, 'get_admin_page_content' ) );
+		$page = add_options_page( $this->plugin_name, $this->plugin_name, 'manage_options', strtolower( $this->plugin_name ), array( $this, 'get_admin_page_content' ) );
+
+		/* Using registered $page handle to hook stylesheet loading */
+		add_action( 'admin_print_styles-' . $page, array( $this, 'print_admin_styles' ) );
+	}
+
+	/**
+	 * Enqueue stylesheet for options page.
+	 */
+	function print_admin_styles() {
+		wp_enqueue_style( 'wp-typography-settings', plugins_url( 'css/settings.css', $this->local_plugin_path ), array(), $this->version, 'all' );
 	}
 
 	/**

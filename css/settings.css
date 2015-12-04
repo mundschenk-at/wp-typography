@@ -1,0 +1,78 @@
+	#poststuff .inside {
+		margin: 1em;
+	}
+	.submitdiv .inside {
+		margin:  0 !important;
+		padding-top: 1em;
+	}
+	.publishing-settings {
+		border-bottom-color:#DDDDDD;
+		border-bottom-style:solid;
+		border-bottom-width:1px;
+	}
+	.publishing-actions {
+		background:#EAF2FA none repeat scroll 0 0;
+		border-top:medium none;
+		clear:both;
+		padding:6px 1em;
+	}
+	.publishing-actions .button-primary {
+		float: right;
+	}
+
+	fieldset {
+		margin:2em -1px 1em;
+		padding: 2em 1em 1em;
+		border: 1px solid #dfdfdf;
+		-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+		border-radius: 5px;
+		background-color: #fbfbfb;
+	}
+	legend {
+		font-size: 111%;
+		font-weight: 700;
+		font-style: italic;
+	}
+	span.helpText {
+		color: gray;
+		font-size: 90%;
+		margin: .3125em 0 0 1.875em;
+	}
+	samp {
+		border: 1px solid #eee;
+		padding: .35em .25em .2em;
+		background-color:#fbfbfb;
+		color: #000;
+		font-family: Consolas, Monaco, "Lucida Console", "Courier New", Courier, monospace !important;
+	}
+	textarea {
+		font-family: Consolas, Monaco, "Lucida Console", "Courier New", Courier, monospace !important;
+	}
+	span.helpText samp {
+		font-size: 111%;
+	}
+	fieldset samp {
+		background-color:#f9f9f9;
+	}
+	textarea{
+		width: 100%;
+		margin: -.75em 0 1em;
+		background-color:#fff;
+	}
+	label {
+		font-size: 111%;
+		display: block;
+		margin-bottom: 1em;
+		line-height: 1.5em;
+	}
+	select, input {
+		margin-top: -.1em;
+	}
+
+	.control {
+		margin: 0 1em;
+	}
+	fieldset .control {
+		margin: 0;
+	}
