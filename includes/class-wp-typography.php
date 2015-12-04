@@ -882,7 +882,7 @@ sub {
 	 * Enqueue stylesheet for options page.
 	 */
 	function print_admin_styles() {
-		wp_enqueue_style( 'wp-typography-settings', plugins_url( 'css/settings.css', $this->local_plugin_path ), array(), $this->version, 'all' );
+		wp_enqueue_style( 'wp-typography-settings', plugins_url( 'admin/css/settings.css', $this->local_plugin_path ), array(), $this->version, 'all' );
 	}
 
 	/**
@@ -906,7 +906,7 @@ sub {
 	 * Display the plugin options page.
 	 */
 	function get_admin_page_content() {
-		include_once realpath( __DIR__ . '/../partials/settings.php' );
+		include_once realpath( __DIR__ . '/../admin/partials/settings.php' );
 	}
 
 	/**
