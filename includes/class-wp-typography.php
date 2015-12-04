@@ -64,22 +64,6 @@ class WP_Typography {
 	private $plugin_name = 'wp-Typography';
 
 	/**
-	 * The minimum requirements for running the plugins. Must contain:
-	 *  - 'PHP Version'
-	 *  - 'WordPress Version'
-	 *  - 'Multibyte'
-	 *  - 'UTF-8'
-	 *
-	 * @var array A Hash containing the version requirements for the plugin.
-	 */
-	private $install_requirements = array(
-											'PHP Version' 		=> '5.3.0',
-											'WordPress Version'	=> '4.0',
-											'Multibyte' 		=> true,
-											'UTF-8'				=> true,
-				 						 );
-
-	/**
 	 * The result of plugin_basename() for the main plugin file.
 	 * (Relative from plugins folder.)
 	 */
@@ -171,47 +155,17 @@ class WP_Typography {
 	 * @param string $basename The result of plugin_basename() for the main plugin file.
 	 */
 	function __construct( $version, $basename = 'wp-typography/wp-typography.php' ) {
-		global $wp_version;
-		$abort_load = false;
-
-		// ensure that our translations are loaded
-		add_action( 'plugins_loaded', array( $this, 'load_plugin_textdomain' ) );
-
-		if ( version_compare( $wp_version, $this->install_requirements['WordPress Version'], '<' ) ) {
-			if ( is_admin() ) {
-				add_action( 'admin_notices', array( $this, 'admin_notices_wp_version_incompatible' ) );
-			}
-			$abort_load = true;
-		} elseif ( version_compare( PHP_VERSION, $this->install_requirements['PHP Version'], '<' ) ) {
-			if( is_admin() ) {
-				add_action( 'admin_notices', array( $this, 'admin_notices_php_version_incompatible' ) );
-			}
-			$abort_load = true;
-		} elseif ( ! function_exists( 'mb_strlen' ) ||
-				   ! function_exists( 'mb_strtolower' ) ||
-				   ! function_exists( 'mb_substr') ||
-				   ! function_exists( 'mb_detect_encoding' ) ) {
-			if( is_admin() ) {
-				add_action( 'admin_notices', array( $this, 'admin_notices_mbstring_incompatible' ) );
-			}
-			$abort_load = true;
-		} elseif ( get_bloginfo( 'charset' ) !== 'UTF-8' && get_bloginfo( 'charset' ) !== 'utf-8' ) {
-			if ( is_admin() ) {
-				add_action( 'admin_notices', array( $this, 'admin_notices_charset_incompatible' ) );
-			}
-			$abort_load = true;
-		}
-
-		if ( true === $abort_load ) return;
 
 		// property intialization
 		$this->version = $version;
 		$this->version_hash = $this->hash_version_string( $version );
 		$this->local_plugin_path = $basename;
-		$this->plugin_path = plugin_dir_path( __FILE__ ) . basename( $this->local_plugin_path );
+		$this->plugin_path = plugin_dir_path( dirname( __FILE__ ) ) . basename( $this->local_plugin_path );
 
-		error_log("this->plugin_path " . $this->plugin_path );
+		// ensure that our translations are loaded
+		add_action( 'plugins_loaded', array( $this, 'load_plugin_textdomain' ) );
 
+		// load settings
 		add_action( 'init', array( $this, 'load_settings') );
 
 		// create parser
@@ -942,7 +896,7 @@ sub {
 	 * Display the plugin options page.
 	 */
 	function get_admin_page_content() {
-		include_once dirname( __DIR__) . '/partials/settings.php';
+		include_once realpath( __DIR__ . '/../partials/settings.php' );
 	}
 
 	/**
@@ -1120,65 +1074,6 @@ sub {
 		return sprintf( $control_markup, "<input type='$input_type' $id_and_class $value_markup/>" );
 	}
 
-
-	/**
-	 * Print 'WordPress version incompatible' admin notice
-	 */
-	function admin_notices_wp_version_incompatible() {
-		global $wp_version;
-
-		$this->display_error_notice( __( 'The activated plugin %1$s requires WordPress version %2$s or later. You are running WordPress version %3$s. Please deactivate this plugin, or upgrade your installation of WordPress.', 'wp-typography' ),
-									 "<strong>{$this->plugin_name}</strong>",
-									 $this->install_requirements['WordPress Version'],
-									 $wp_version );
-	}
-
-	/**
-	 * Print 'PHP version incompatible' admin notice
-	 */
-	function admin_notices_php_version_incompatible() {
-		$this->display_error_notice( __( 'The activated plugin %1$s requires PHP %2$s or later. Your server is running PHP %3$s. Please deactivate this plugin, or upgrade your server\'s installation of PHP.', 'wp-typography' ),
-								  	 "<strong>{$this->plugin_name}</strong>",
-									 $this->install_requirements['PHP Version'],
-									 phpversion() );
-	}
-
-	/**
-	 * Print 'mbstring extension missing' admin notice
-	 */
-	function admin_notices_mbstring_incompatible() {
-		$this->display_error_notice( __( 'The activated plugin %1$s requires the mbstring PHP extension to be enabled on your server. Please deactivate this plugin, or <a href="%2$s">enable the extension</a>.', 'wp-typography' ),
-									 "<strong>{$this->plugin_name}</strong>",
-									 'http://www.php.net/manual/en/mbstring.installation.php' );
-	}
-
-	/**
-	 * Print 'Charset incompatible' admin notice
-	 */
-	function admin_notices_charset_incompatible() {
-		$this->display_error_notice( __( 'The activated plugin %1$s requires your blog use the UTF-8 character encoding. You have set your blogs encoding to %2$s. Please deactivate this plugin, or <a href="%3$s">change your character encoding to UTF-8</a>.', 'wp-typography' ),
-									 "<strong>{$this->plugin_name}</strong>",
-									 get_bloginfo( 'charset' ),
-									 '/wp-admin/options-reading.php' );
-	}
-
-	/**
-	 * Show an error message in the admin area.
-	 *
-	 * @param string $format    An `sprintf` format string.
-	 * @param mixed  $param1... An optional number of parameters for sprintf.
-	 */
-	function display_error_notice( $format ) {
-		if ( func_num_args() < 1 ) {
-			return; // abort
-		}
-
-		$args = func_get_args();
-		$format = array_shift( $args );
-
-		echo '<div class="error"><p>' . vsprintf( $format, $args ) . '</p></div>';
-	}
-
 	/**
 	 * Print CSS and JS depending on plugin options.
 	 */
@@ -1215,7 +1110,6 @@ sub {
 		// dynamically generate the list of hyphenation language patterns
 		$this->admin_form_controls['typoHyphenateLanguages']['option_values'] = $this->php_typo->get_languages();
 		$this->admin_form_controls['typoDiacriticLanguages']['option_values'] = $this->php_typo->get_diacritic_languages();
-
 	}
 
 	/**

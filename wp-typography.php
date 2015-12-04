@@ -59,11 +59,9 @@ require_once __DIR__ . '/includes/wp-typography-autoload.php';
  */
 function run_wp_typography() {
 
-	if ( version_compare( PHP_VERSION, '5.3', '<' ) ) {
-		load_plugin_textdomain( 'wp-typography', false, dirname( plugin_basename( __FILE__ ) ) . '/translations/' );
-		add_action( 'admin_notices', create_function( '', "echo '<div class=\"error\"><p>" . __('wp-Typography requires PHP 5.3 or later. Please upgrade your installation of PHP or deactivate wp-Typography.', 'wp-typography') ."</p></div>';" ) );
-		return; // abort
-	} else {
+	$requirements = new WP_Typography_Requirements( 'wp-Typography', plugin_basename( __FILE__ ) );
+
+	if ( $requirements->check() ) {
 		/**
 		 * Load version from plugin data
 		 */

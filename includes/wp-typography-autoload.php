@@ -10,8 +10,6 @@ function wp_typography_autoloader( $class_name ) {
 		return; // abort
 	}
 
-	error_log("WP-autoloader $class_name");
-
 	static $classes_dir;
 	if ( empty( $classes_dir ) ) {
 		$classes_dir = realpath( plugin_dir_path( __FILE__ ) ) . DIRECTORY_SEPARATOR;
