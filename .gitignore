@@ -8,5 +8,8 @@
 # Node.js/Grunt
 node_modules/*
 
-# buidl dir
+# build dir
 build/*
+
+# SASS
+.sass-cache/*
