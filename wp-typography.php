@@ -50,7 +50,7 @@
 /**
  * Autoload our classes
  */
-require_once __DIR__ . '/includes/wp-typography-autoload.php';
+require_once dirname( __FILE__ ) . '/includes/wp-typography-autoload.php';
 
 /**
  * Load the plugin after checking for the necessary PHP version.

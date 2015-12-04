@@ -160,7 +160,7 @@ class WP_Typography {
 		$this->version = $version;
 		$this->version_hash = $this->hash_version_string( $version );
 		$this->local_plugin_path = $basename;
-		$this->plugin_path = plugin_dir_path( dirname( __FILE__ ) ) . basename( $this->local_plugin_path );
+		$this->plugin_path = plugin_dir_path( __DIR__ ) . basename( $this->local_plugin_path );
 
 		// ensure that our translations are loaded
 		add_action( 'plugins_loaded', array( $this, 'load_plugin_textdomain' ) );
@@ -1102,7 +1102,7 @@ sub {
 	 * Load translations.
 	 */
 	function load_plugin_textdomain() {
-		load_plugin_textdomain( 'wp-typography', false, dirname( plugin_basename( __FILE__ ) ) . '/translations/' );
+		load_plugin_textdomain( 'wp-typography', false, dirname( __DIR__ ) . '/translations/' );
 
 		// intialize settings strings with translations
 		$this->initialize_settings_properties();
