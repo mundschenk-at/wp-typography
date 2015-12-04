@@ -48,11 +48,17 @@
 */
 
 /**
+ * Autoload our classes
+ */
+require_once __DIR__ . '/includes/wp-typography-autoload.php';
+
+/**
  * Load the plugin after checking for the necessary PHP version.
  *
  * It's necessary to do this here because main class relies on namespaces.
  */
 function run_wp_typography() {
+
 	if ( version_compare( PHP_VERSION, '5.3', '<' ) ) {
 		load_plugin_textdomain( 'wp-typography', false, dirname( plugin_basename( __FILE__ ) ) . '/translations/' );
 		add_action( 'admin_notices', create_function( '', "echo '<div class=\"error\"><p>" . __('wp-Typography requires PHP 5.3 or later. Please upgrade your installation of PHP or deactivate wp-Typography.', 'wp-typography') ."</p></div>';" ) );
@@ -65,9 +71,6 @@ function run_wp_typography() {
 			include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 		}
 		$plugin_data = get_plugin_data( __FILE__, false, false );
-
-		// should be moved to an autoloader
-		require_once( plugin_dir_path( __FILE__ ) . 'class-wp-typography.php' );
 
 		// start up the plugin
 		new WP_Typography( $plugin_data['Version'], plugin_basename( __FILE__ ) );

@@ -45,6 +45,10 @@
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
+/**
+ * Autoload parser classes
+ */
+require_once dirname( __DIR__ ) . '/php-typography/php-typography-autoload.php';
 
 /**
  * Main wp-Typography plugin class. All WordPress specific code goes here.
@@ -206,8 +210,7 @@ class WP_Typography {
 		$this->local_plugin_path = $basename;
 		$this->plugin_path = plugin_dir_path( __FILE__ ) . basename( $this->local_plugin_path );
 
-		// include needed files
-		require_once( plugin_dir_path( __FILE__ ) . 'php-typography/class-php-typography.php' );
+		error_log("this->plugin_path " . $this->plugin_path );
 
 		add_action( 'init', array( $this, 'load_settings') );
 
@@ -939,7 +942,7 @@ sub {
 	 * Display the plugin options page.
 	 */
 	function get_admin_page_content() {
-		include_once( 'templates/settings.php' );
+		include_once dirname( __DIR__) . '/partials/settings.php';
 	}
 
 	/**
