@@ -175,7 +175,7 @@ class WP_Typography {
 		register_activation_hook( $this->plugin_path, array( $this, 'register_plugin' ) );
 		add_action( 'admin_menu', array( $this, 'add_options_page') );
 		add_action( 'admin_init', array( $this, 'register_the_settings') );
-		add_filter( 'plugin_action_links_' . $this->local_plugin_path, array( $this, 'add_filter_plugin_action_links' ) );
+		add_filter( 'plugin_action_links_' . $this->local_plugin_path, array( $this, 'plugin_action_links' ) );
 	}
 
 	/**
@@ -891,12 +891,12 @@ sub {
 	 * @param array $links An array of links.
 	 * @return array An array of links.
 	 */
-	function add_filter_plugin_action_links( $links ) {
+	function plugin_action_links( $links ) {
 		$adminurl = trailingslashit( admin_url() );
 
 		// Add link "Settings" to the plugin in /wp-admin/plugins.php
 		$settings_link = '<a href="'.$adminurl.'options-general.php?page='.strtolower( $this->plugin_name ).'">' . __( 'Settings' , 'wp-typography') . '</a>';
-		$links[] = $settings_link;
+		array_unshift( $links, $settings_link );
 
 		return $links;
 	}
