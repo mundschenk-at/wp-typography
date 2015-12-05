@@ -199,7 +199,12 @@ class WP_Typography {
 		if ( true == get_option( 'typoRestoreDefaults' ) ) {  // any truthy value will do
 			$typo_restore_defaults = true;
 		}
-		$this->register_plugin( $typo_restore_defaults );
+		// clear cache if necessary
+		$clear_cache = false;
+		if ( true == get_option( 'typo_clear_cache' ) ) {  // any truthy value will do
+			$clear_cache = true;
+		}
+		$this->register_plugin( $typo_restore_defaults, $clear_cache );
 
 		// load settings
 		foreach ( $this->admin_form_controls as $key => &$value ) {
@@ -910,17 +915,28 @@ sub {
 	/**
 	 * Called on plugin activation.
 	 *
-	 * @param string $update Whether the standard settings should be restored. Default false.
+	 * @param string $restore_defaults Whether the standard settings should be restored. Default false.
 	 */
-	function register_plugin( $update = false ) {
+	function register_plugin( $restore_defaults = false, $clear_cache = false ) {
 		// grab configuration variables
 		foreach ( $this->admin_form_controls as $key => $value ) {
-			if ( $update || ! is_string( get_option( $key ) ) ) {
+			if ( $restore_defaults || ! is_string( get_option( $key ) ) ) {
 				update_option( $key, $value['default'] );
 			}
 		}
 
+		// Delete all our transients
+		if ( $clear_cache ) {
+ 			foreach( array_keys( $this->transients ) as $transient ) {
+ 				delete_transient( $transient );
+ 			}
+
+ 			$this->transients = array();
+ 			update_option( 'typo_transient_keys', $this->transients );
+		}
+
 		update_option( 'typoRestoreDefaults', false );
+		update_option( 'typo_clear_cache', false );
 	}
 
 	/**
@@ -932,6 +948,7 @@ sub {
 		}
 
 		register_setting( $this->option_group, 'typoRestoreDefaults' );
+		register_setting( $this->option_group, 'typo_clear_cache' );
 	}
 
 	/**
@@ -1003,6 +1020,10 @@ sub {
 			$value = get_option( $id );
 		} elseif ( 'typoRestoreDefaults' === $id ) {
 			$value = __( 'Restore Defaults', 'wp-typography' );
+			$control_begin = $control_end = '';
+			$button_class = 'button button-secondary';
+		} elseif ( 'typo_clear_cache' === $id ) {
+			$value = __( 'Clear Cache', 'wp-typography' );
 			$control_begin = $control_end = '';
 			$button_class = 'button button-secondary';
 		} else {
