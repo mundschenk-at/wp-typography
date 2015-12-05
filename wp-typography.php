@@ -69,9 +69,17 @@ function run_wp_typography() {
 			include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 		}
 		$plugin_data = get_plugin_data( __FILE__, false, false );
+		$version = $plugin_data['Version'];
 
-		// start up the plugin
-		new WP_Typography( $plugin_data['Version'], plugin_basename( __FILE__ ) );
+		// create the plugin
+		$plugin = new WP_Typography( $version, plugin_basename( __FILE__ ) );
+
+		// register activation & deactivation hooks
+		$setup = new WP_Typography_Setup( 'wp-typography', $plugin );
+		$setup->register( __FILE__ );
+
+		// start the plugin for real
+		$plugin->run();
 	}
 }
 run_wp_typography();

@@ -169,22 +169,24 @@ class WP_Typography {
 	 * @param string $basename The result of plugin_basename() for the main plugin file.
 	 */
 	function __construct( $version, $basename = 'wp-typography/wp-typography.php' ) {
-
-		// property intialization
-		$this->version = $version;
-		$this->version_hash = $this->hash_version_string( $version );
+		$this->version           = $version;
+		$this->version_hash      = $this->hash_version_string( $version );
 		$this->local_plugin_path = $basename;
-		$this->plugin_path = plugin_dir_path( __DIR__ ) . basename( $this->local_plugin_path );
-		$this->transients = get_option( 'typo_transient_keys', array() );
+		$this->plugin_path       = plugin_dir_path( __DIR__ ) . basename( $this->local_plugin_path );
+		$this->transients        = get_option( 'typo_transient_keys', array() );
+	}
 
+	/**
+	 * Start the plugin for real.
+	 */
+	function run() {
 		// ensure that our translations are loaded
 		add_action( 'plugins_loaded', array( $this, 'load_plugin_textdomain' ) );
 
 		// load settings
-		add_action( 'init', array( $this, 'load_settings') );
+		add_action( 'init', array( $this, 'init') );
 
 		// set up the plugin options page
-		register_activation_hook( $this->plugin_path, array( $this, 'register_plugin' ) );
 		add_action( 'admin_menu', array( $this, 'add_options_page') );
 		add_action( 'admin_init', array( $this, 'register_the_settings') );
 		add_filter( 'plugin_action_links_' . $this->local_plugin_path, array( $this, 'plugin_action_links' ) );
@@ -193,18 +195,16 @@ class WP_Typography {
 	/**
 	 * Load the settings from the option table.
 	 */
-	function load_settings() {
+	function init() {
 		// restore defaults if necessary
-		$typo_restore_defaults = false;
-		if ( true == get_option( 'typoRestoreDefaults' ) ) {  // any truthy value will do
-			$typo_restore_defaults = true;
+		if ( get_option( 'typo_restore_defaults' ) ) {  // any truthy value will do
+			$this->set_default_options( true );
 		}
+
 		// clear cache if necessary
-		$clear_cache = false;
-		if ( true == get_option( 'typo_clear_cache' ) ) {  // any truthy value will do
-			$clear_cache = true;
+		if ( get_option( 'typo_clear_cache' ) ) {  // any truthy value will do
+			$this->clear_cache();
 		}
-		$this->register_plugin( $typo_restore_defaults, $clear_cache );
 
 		// load settings
 		foreach ( $this->admin_form_controls as $key => &$value ) {
@@ -913,29 +913,37 @@ sub {
 	}
 
 	/**
-	 * Called on plugin activation.
+	 * Initialize options with default values.
 	 *
-	 * @param string $restore_defaults Whether the standard settings should be restored. Default false.
+	 * @param boolean $force_defaults Optional. Default false.
 	 */
-	function register_plugin( $restore_defaults = false, $clear_cache = false ) {
+	function set_default_options( $force_defaults = false ) {
 		// grab configuration variables
 		foreach ( $this->admin_form_controls as $key => $value ) {
-			if ( $restore_defaults || ! is_string( get_option( $key ) ) ) {
+			// set or update the options with the default value if necessary.
+			if ( $force_defaults || ! is_string( get_option( $key ) ) ) {
 				update_option( $key, $value['default'] );
 			}
 		}
 
-		// Delete all our transients
-		if ( $clear_cache ) {
- 			foreach( array_keys( $this->transients ) as $transient ) {
- 				delete_transient( $transient );
- 			}
+		if ( $force_defaults ) {
+			// reset switch
+			update_option( 'typo_restore_defaults', false );
+			update_option( 'typo_clear_cache', false );
+		}
+	}
 
- 			$this->transients = array();
- 			update_option( 'typo_transient_keys', $this->transients );
+	/**
+	 * Clear all transients set by the plugin.
+	 */
+	 function clear_cache() {
+		// delete all our transients
+		foreach( array_keys( $this->transients ) as $transient ) {
+			delete_transient( $transient );
 		}
 
-		update_option( 'typoRestoreDefaults', false );
+		$this->transients = array();
+		update_option( 'typo_transient_keys', $this->transients );
 		update_option( 'typo_clear_cache', false );
 	}
 
@@ -947,7 +955,7 @@ sub {
 			register_setting( $this->option_group, $control_id );
 		}
 
-		register_setting( $this->option_group, 'typoRestoreDefaults' );
+		register_setting( $this->option_group, 'typo_restore_defaults' );
 		register_setting( $this->option_group, 'typo_clear_cache' );
 	}
 
@@ -1018,7 +1026,7 @@ sub {
 
 		if ( 'submit' !== $input_type ) {
 			$value = get_option( $id );
-		} elseif ( 'typoRestoreDefaults' === $id ) {
+		} elseif ( 'typo_restore_defaults' === $id ) {
 			$value = __( 'Restore Defaults', 'wp-typography' );
 			$control_begin = $control_end = '';
 			$button_class = 'button button-secondary';
@@ -1246,5 +1254,14 @@ sub {
 		}
 
 		return $hash;
+	}
+
+	/**
+	 * Retrieve the plugin version.
+	 *
+	 * @return string
+	 */
+	function get_version() {
+		return $this->version;
 	}
 }

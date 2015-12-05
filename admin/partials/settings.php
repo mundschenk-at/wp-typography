@@ -58,7 +58,7 @@
 
 						<div class='publishing-actions'>
 							<?php echo $this->get_admin_form_control( 'saveChanges', 'input', 'submit' ); ?>
-							<?php echo $this->get_admin_form_control( 'typoRestoreDefaults', 'input', 'submit' ); ?>
+							<?php echo $this->get_admin_form_control( 'typo_restore_defaults', 'input', 'submit' ); ?>
 							<?php echo $this->get_admin_form_control( 'typo_clear_cache', 'input', 'submit' ); ?>
 							<div class='clear'></div>
 						</div><!-- .publishing-actions -->
