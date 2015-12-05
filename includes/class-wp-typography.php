@@ -149,6 +149,13 @@ class WP_Typography {
 	private $admin_form_controls = array();
 
 	/**
+	 * The transients set by the plugin (to clear on update).
+	 *
+	 * @var array A hash with the transient keys set by the plugin stored as ( $key => true ).
+	 */
+	private $transients = array();
+
+	/**
 	 * Sets up a new wpTypography object.
 	 *
 	 * @param string $version  The full plugin version string (e.g. "3.0.0-beta.2")
@@ -161,15 +168,13 @@ class WP_Typography {
 		$this->version_hash = $this->hash_version_string( $version );
 		$this->local_plugin_path = $basename;
 		$this->plugin_path = plugin_dir_path( __DIR__ ) . basename( $this->local_plugin_path );
+		$this->transients = get_option( 'typo_transient_keys', array() );
 
 		// ensure that our translations are loaded
 		add_action( 'plugins_loaded', array( $this, 'load_plugin_textdomain' ) );
 
 		// load settings
 		add_action( 'init', array( $this, 'load_settings') );
-
-		// create parser
-		$this->php_typo = new \PHP_Typography\PHP_Typography( false );
 
 		// set up the plugin options page
 		register_activation_hook( $this->plugin_path, array( $this, 'register_plugin' ) );
@@ -194,101 +199,32 @@ class WP_Typography {
 			$this->settings[ $key ] = get_option( $key );
 		}
 
-		// load configuration variables into our phpTypography class
-		$this->php_typo->set_tags_to_ignore( $this->settings['typoIgnoreTags'] );
-		$this->php_typo->set_classes_to_ignore( $this->settings['typoIgnoreClasses'] );
-		$this->php_typo->set_ids_to_ignore( $this->settings['typoIgnoreIDs'] );
-
-		if ( $this->settings['typoSmartCharacters'] ) {
-			$this->php_typo->set_smart_dashes( $this->settings['typoSmartDashes'] );
-			$this->php_typo->set_smart_ellipses( $this->settings['typoSmartEllipses'] );
-			$this->php_typo->set_smart_math( $this->settings['typoSmartMath'] );
-
-			// note smart_exponents was grouped with smart_math for the WordPress plugin,
-			// but does not have to be done that way for other ports
-			$this->php_typo->set_smart_exponents( $this->settings['typoSmartMath'] );
-			$this->php_typo->set_smart_fractions( $this->settings['typoSmartFractions'] );
-			$this->php_typo->set_smart_ordinal_suffix( $this->settings['typoSmartOrdinals'] );
-			$this->php_typo->set_smart_marks( $this->settings['typoSmartMarks'] );
-			$this->php_typo->set_smart_quotes( $this->settings['typoSmartQuotes'] );
-
-			$this->php_typo->set_smart_diacritics( $this->settings['typoSmartDiacritics'] );
-			$this->php_typo->set_diacritic_language( $this->settings['typoDiacriticLanguages'] );
-			$this->php_typo->set_diacritic_custom_replacements( $this->settings['typoDiacriticCustomReplacements'] );
-
-			$this->php_typo->set_smart_quotes_primary( $this->settings['typoSmartQuotesPrimary'] );
-			$this->php_typo->set_smart_quotes_secondary( $this->settings['typoSmartQuotesSecondary'] );
-		} else {
-			$this->php_typo->set_smart_dashes( false );
-			$this->php_typo->set_smart_ellipses( false );
-			$this->php_typo->set_smart_math( false );
-			$this->php_typo->set_smart_exponents( false );
-			$this->php_typo->set_smart_fractions( false );
-			$this->php_typo->set_smart_ordinal_suffix( false );
-			$this->php_typo->set_smart_marks( false );
-			$this->php_typo->set_smart_quotes( false );
-			$this->php_typo->set_smart_diacritics( false );
-		}
-
-		$this->php_typo->set_single_character_word_spacing( $this->settings['typoSingleCharacterWordSpacing'] );
-		$this->php_typo->set_dash_spacing( $this->settings['typoDashSpacing'] );
-		$this->php_typo->set_fraction_spacing( $this->settings['typoFractionSpacing'] );
-		$this->php_typo->set_unit_spacing( $this->settings['typoUnitSpacing'] );
-		$this->php_typo->set_units( $this->settings['typoUnits'] );
-		$this->php_typo->set_space_collapse( $this->settings['typoSpaceCollapse'] );
-		$this->php_typo->set_dewidow( $this->settings['typoPreventWidows'] );
-		$this->php_typo->set_max_dewidow_length( $this->settings['typoWidowMinLength'] );
-		$this->php_typo->set_max_dewidow_pull( $this->settings['typoWidowMaxPull'] );
-		$this->php_typo->set_wrap_hard_hyphens( $this->settings['typoWrapHyphens'] );
-		$this->php_typo->set_email_wrap( $this->settings['typoWrapEmails'] );
-		$this->php_typo->set_url_wrap( $this->settings['typoWrapURLs'] );
-		$this->php_typo->set_min_after_url_wrap( $this->settings['typoWrapMinAfter'] );
-		$this->php_typo->set_style_ampersands( $this->settings['typoStyleAmps'] );
-		$this->php_typo->set_style_caps( $this->settings['typoStyleCaps'] );
-		$this->php_typo->set_style_numbers( $this->settings['typoStyleNumbers'] );
-		$this->php_typo->set_style_initial_quotes( $this->settings['typoStyleInitialQuotes'] );
-		$this->php_typo->set_initial_quote_tags( $this->settings['typoInitialQuoteTags'] );
-
-		if ( $this->settings['typoEnableHyphenation'] ) {
-			$this->php_typo->set_hyphenation( $this->settings['typoEnableHyphenation'] );
-			$this->php_typo->set_hyphenate_headings( $this->settings['typoHyphenateHeadings'] );
-			$this->php_typo->set_hyphenate_all_caps( $this->settings['typoHyphenateCaps'] );
-			$this->php_typo->set_hyphenate_title_case( $this->settings['typoHyphenateTitleCase'] );
-			$this->php_typo->set_hyphenation_language( $this->settings['typoHyphenateLanguages'] );
-			$this->php_typo->set_min_length_hyphenation( $this->settings['typoHyphenateMinLength'] );
-			$this->php_typo->set_min_before_hyphenation( $this->settings['typoHyphenateMinBefore'] );
-			$this->php_typo->set_min_after_hyphenation( $this->settings['typoHyphenateMinAfter'] );
-			$this->php_typo->set_hyphenation_exceptions( $this->settings['typoHyphenateExceptions'] );
-		} else { // save some cycles
-			$this->php_typo->set_hyphenation( $this->settings['typoEnableHyphenation'] );
-		}
-
 		// Remove default Texturize filter if it conflicts.
 		if ( $this->settings['typoSmartCharacters'] && ! is_admin() ) {
-			remove_filter( 'category_description', 'wptexturize' );
-			remove_filter( 'comment_author', 'wptexturize' );
-			remove_filter( 'comment_text', 'wptexturize' );
-			remove_filter( 'the_content', 'wptexturize' );
-			remove_filter( 'single_post_title', 'wptexturize' );
-			remove_filter( 'the_title', 'wptexturize' );
-			remove_filter( 'the_excerpt', 'wptexturize' );
-			remove_filter( 'widget_text', 'wptexturize' );
-			remove_filter( 'widget_title', 'wptexturize' );
+			remove_filter( 'category_description', 'wptexturize' ); // TODO: necessary?
+			remove_filter( 'single_post_title',    'wptexturize' ); // TODO: necessary?
+			remove_filter( 'comment_author',       'wptexturize' );
+			remove_filter( 'comment_text',         'wptexturize' );
+			remove_filter( 'the_title',            'wptexturize' );
+			remove_filter( 'the_content',          'wptexturize' );
+			remove_filter( 'the_excerpt',          'wptexturize' );
+			remove_filter( 'widget_text',          'wptexturize' );
+			remove_filter( 'widget_title',         'wptexturize' );
 		}
 
 		// apply our filters
 		if ( ! is_admin() ) {
 			// removed because it caused issues for feeds
-			// add_filter('bloginfo', array($this, 'processBloginfo'), 9999);
-			// add_filter('wp_title', 'strip_tags', 9999);
-			// add_filter('single_post_title', 'strip_tags', 9999);
+			// add_filter( 'bloginfo', array($this, 'processBloginfo'), 9999);
+			// add_filter( 'wp_title', 'strip_tags', 9999);
+			// add_filter( 'single_post_title', 'strip_tags', 9999);
 			add_filter( 'comment_author', array( $this, 'process' ), 9999 );
-			add_filter( 'comment_text', array( $this, 'process' ), 9999 );
-			add_filter( 'the_title', array( $this, 'process_title' ), 9999 );
-			add_filter( 'the_content', array( $this, 'process' ), 9999 );
-			add_filter( 'the_excerpt', array( $this, 'process' ), 9999 );
-			add_filter( 'widget_text', array( $this, 'process' ), 9999 );
-			add_filter( 'widget_title', array( $this, 'process_title' ), 9999 );
+			add_filter( 'comment_text',   array( $this, 'process' ), 9999 );
+			add_filter( 'the_title',      array( $this, 'process_title' ), 9999 );
+			add_filter( 'the_content',    array( $this, 'process' ), 9999 );
+			add_filter( 'the_excerpt',    array( $this, 'process' ), 9999 );
+			add_filter( 'widget_text',    array( $this, 'process' ), 9999 );
+			add_filter( 'widget_title',   array( $this, 'process_title' ), 9999 );
 		}
 
 		// add IE6 zero-width-space removal CSS Hook styling
@@ -315,7 +251,7 @@ class WP_Typography {
 			'id' 					=> string heading,		// REQUIRED
 			*/
 			'general-scope' 		=> __( 'General Scope', 'wp-typography' ),
-			'hyphenation' 			=> __( 'Hyphenation', 'wp-typography' ),
+			'hyphenation' 			=> __( 'Hyphenation',   'wp-typography' ),
 			'character-replacement'	=> __( 'Intelligent Character Replacement', 'wp-typography' ),
 			'space-control' 		=> __( 'Space Control', 'wp-typography' ),
 			'css-hooks' 			=> __( 'Add CSS Hooks', 'wp-typography' ),
@@ -489,23 +425,23 @@ class WP_Typography {
 				'help_text' 	=> __( "Primary quotation style.", 'wp-typography' ),
 				'control' 		=> 'select',
 				'option_values'	=> array(
-					"doubleCurled" => "&ldquo;foo&rdquo;",
-					"doubleCurledReversed" => "&rdquo;foo&rdquo;",
-					"doubleLow9" => "&bdquo;foo&rdquo;",
-					"doubleLow9Reversed" => "&bdquo;foo&ldquo;",
-					"singleCurled" => "&lsquo;foo&rsquo;",
-					"singleCurledReversed" => "&rsquo;foo&rsquo;",
-					"singleLow9" => "&sbquo;foo&rsquo;",
-					"singleLow9Reversed" => "&sbquo;foo&lsquo;",
-					"doubleGuillemetsFrench" => "&laquo;&nbsp;foo&nbsp;&raquo;",
-					"doubleGuillemets" => "&laquo;foo&raquo;",
-					"doubleGuillemetsReversed" => "&raquo;foo&laquo;",
-					"singleGuillemets" => "&lsaquo;foo&rsaquo;",
-					"singleGuillemetsReversed" => "&rsaquo;foo&lsaquo;",
-					"cornerBrackets" => "&#x300c;foo&#x300d;",
-					"whiteCornerBracket" => "&#x300e;foo&#x300f;",
+					'doubleCurled'             => "&ldquo;foo&rdquo;",
+					'doubleCurledReversed'     => "&rdquo;foo&rdquo;",
+					'doubleLow9'               => "&bdquo;foo&rdquo;",
+					'doubleLow9Reversed'       => "&bdquo;foo&ldquo;",
+					'singleCurled'             => "&lsquo;foo&rsquo;",
+					'singleCurledReversed'     => "&rsquo;foo&rsquo;",
+					'singleLow9'               => "&sbquo;foo&rsquo;",
+					'singleLow9Reversed'       => "&sbquo;foo&lsquo;",
+					'doubleGuillemetsFrench'   => "&laquo;&nbsp;foo&nbsp;&raquo;",
+					'doubleGuillemets'         => "&laquo;foo&raquo;",
+					'doubleGuillemetsReversed' => "&raquo;foo&laquo;",
+					'singleGuillemets'         => "&lsaquo;foo&rsaquo;",
+					'singleGuillemetsReversed' => "&rsaquo;foo&lsaquo;",
+					'cornerBrackets'           => "&#x300c;foo&#x300d;",
+					'whiteCornerBracket'       => "&#x300e;foo&#x300f;",
 				),
-				'default' 		=> "doubleCurled",
+				'default' 		=> 'doubleCurled',
 			),
 			'typoSmartQuotesSecondary' => array(
 				'section'		=> 'character-replacement',
@@ -514,23 +450,23 @@ class WP_Typography {
 				'help_text' 	=> __( "Secondary quotation style.", 'wp-typography' ),
 				'control' 		=> 'select',
 				'option_values'	=> array(
-					"doubleCurled" => "&ldquo;foo&rdquo;",
-					"doubleCurledReversed" => "&rdquo;foo&rdquo;",
-					"doubleLow9" => "&bdquo;foo&rdquo;",
-					"doubleLow9Reversed" => "&bdquo;foo&ldquo;",
-					"singleCurled" => "&lsquo;foo&rsquo;",
-					"singleCurledReversed" => "&rsquo;foo&rsquo;",
-					"singleLow9" => "&sbquo;foo&rsquo;",
-					"singleLow9Reversed" => "&sbquo;foo&lsquo;",
-					"doubleGuillemetsFrench" => "&laquo;&nbsp;foo&nbsp;&raquo;",
-					"doubleGuillemets" => "&laquo;foo&raquo;",
-					"doubleGuillemetsReversed" => "&raquo;foo&laquo;",
-					"singleGuillemets" => "&lsaquo;foo&rsaquo;",
-					"singleGuillemetsReversed" => "&rsaquo;foo&lsaquo;",
-					"cornerBrackets" => "&#x300c;foo&#x300d;",
-					"whiteCornerBracket" => "&#x300e;foo&#x300f;",
+					'doubleCurled'             => "&ldquo;foo&rdquo;",
+					'doubleCurledReversed'     => "&rdquo;foo&rdquo;",
+					'doubleLow9'               => "&bdquo;foo&rdquo;",
+					'doubleLow9Reversed'       => "&bdquo;foo&ldquo;",
+					'singleCurled'             => "&lsquo;foo&rsquo;",
+					'singleCurledReversed'     => "&rsquo;foo&rsquo;",
+					'singleLow9'               => "&sbquo;foo&rsquo;",
+					'singleLow9Reversed'       => "&sbquo;foo&lsquo;",
+					'doubleGuillemetsFrench'   => "&laquo;&nbsp;foo&nbsp;&raquo;",
+					'doubleGuillemets'         => "&laquo;foo&raquo;",
+					'doubleGuillemetsReversed' => "&raquo;foo&laquo;",
+					'singleGuillemets'         => "&lsaquo;foo&rsaquo;",
+					'singleGuillemetsReversed' => "&rsaquo;foo&lsaquo;",
+					'cornerBrackets'           => "&#x300c;foo&#x300d;",
+					'whiteCornerBracket'       => "&#x300e;foo&#x300f;",
 				),
-				'default' 		=> "singleCurled",
+				'default' 		=> 'singleCurled',
 			),
 
 			'typoSmartDashes' => array(
@@ -821,25 +757,144 @@ sub {
 	 * @param boolean $is_title Default false.
 	 */
 	function process( $text, $is_title = false ) {
-		$transient = 'typo_' . base64_encode( md5( $text, true ) . $this->php_typo->get_settings_hash( 11 ) );
+		$typo = $this->get_php_typo();
+		$transient = 'typo_' . base64_encode( md5( $text, true ) . $typo->get_settings_hash( 11 ) );
 
 		if ( is_feed() ) { // feed readers can be pretty stupid
 			$transient .= 'f' . ( $is_title ? 't' : 's' ) . $this->version_hash;
 
 			if ( ! empty( $this->settings['typoDisableCaching'] ) || false === ( $processed_text = get_transient( $transient ) ) ) {
-				$processed_text = $this->php_typo->process_feed( $text, $is_title );
-				set_transient( $transient, $processed_text, DAY_IN_SECONDS );
+				$processed_text = $typo->process_feed( $text, $is_title );
+				$this->set_transient( $transient, $processed_text, DAY_IN_SECONDS );
 			}
 		} else {
 			$transient .= ( $is_title ? 't' : 's' ) . $this->version_hash;
 
 			if ( ! empty( $this->settings['typoDisableCaching'] ) || false === ( $processed_text = get_transient( $transient ) ) ) {
-				$processed_text = $this->php_typo->process( $text, $is_title );
-				set_transient( $transient, $processed_text, DAY_IN_SECONDS );
+				$processed_text = $typo->process( $text, $is_title );
+				$this->set_transient( $transient, $processed_text, DAY_IN_SECONDS );
 			}
 		}
 
 		return $processed_text;
+	}
+
+	/**
+	 * Set a transient and store the key.
+	 *
+	 * @param string $transient The transient key. Maximum length depends on WordPress version (for WP < 4.4 it is 45 characters)
+	 * @param mixed  $value The value to store.
+	 * @param number $duration The duration in seconds. Optional. Default 1 second.
+	 * @return boolean True if the transient could be set successfully.
+	 */
+	private function set_transient( $transient, $value, $duration = 1 ) {
+		$result = false;
+
+		if ( $result = set_transient( $transient, $value, $duration ) ) {
+			// store $transient as keys to prevent duplicates
+			$this->transients[ $transient ] = true;
+			update_option( 'typo_transient_keys', $this->transients );
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Retrieve the PHP_Typography instance and ensure just-in-time initialization.
+	 */
+	private function get_php_typo() {
+
+		if ( empty( $this->php_typo ) ) {
+			$this->php_typo = new \PHP_Typography\PHP_Typography( false, 'lazy' );
+			$transient = 'typo_php_' . md5( json_encode( $this->settings ) ) . '_' . $this->version_hash;
+
+			if ( ! $this->php_typo->load_state( get_transient( $transient ) ) ) {
+				// OK, we have to initialize the PHP_Typography instance manually
+				$this->php_typo->init( false );
+
+				// Load our settings into the instance
+				$this->init_php_typo();
+
+				// try again next time
+				$this->set_transient( $transient, $this->php_typo->save_state(), WEEK_IN_SECONDS );
+			}
+		}
+
+		return $this->php_typo;
+	}
+
+	/**
+	 * Initialize the PHP_Typograpyh instance from our settings.
+	 */
+	private function init_php_typo() {
+		// load configuration variables into our phpTypography class
+		$this->php_typo->set_tags_to_ignore( $this->settings['typoIgnoreTags'] );
+		$this->php_typo->set_classes_to_ignore( $this->settings['typoIgnoreClasses'] );
+		$this->php_typo->set_ids_to_ignore( $this->settings['typoIgnoreIDs'] );
+
+		if ( $this->settings['typoSmartCharacters'] ) {
+			$this->php_typo->set_smart_dashes( $this->settings['typoSmartDashes'] );
+			$this->php_typo->set_smart_ellipses( $this->settings['typoSmartEllipses'] );
+			$this->php_typo->set_smart_math( $this->settings['typoSmartMath'] );
+
+			// note smart_exponents was grouped with smart_math for the WordPress plugin,
+			// but does not have to be done that way for other ports
+			$this->php_typo->set_smart_exponents( $this->settings['typoSmartMath'] );
+			$this->php_typo->set_smart_fractions( $this->settings['typoSmartFractions'] );
+			$this->php_typo->set_smart_ordinal_suffix( $this->settings['typoSmartOrdinals'] );
+			$this->php_typo->set_smart_marks( $this->settings['typoSmartMarks'] );
+			$this->php_typo->set_smart_quotes( $this->settings['typoSmartQuotes'] );
+
+			$this->php_typo->set_smart_diacritics( $this->settings['typoSmartDiacritics'] );
+			$this->php_typo->set_diacritic_language( $this->settings['typoDiacriticLanguages'] );
+			$this->php_typo->set_diacritic_custom_replacements( $this->settings['typoDiacriticCustomReplacements'] );
+
+			$this->php_typo->set_smart_quotes_primary( $this->settings['typoSmartQuotesPrimary'] );
+			$this->php_typo->set_smart_quotes_secondary( $this->settings['typoSmartQuotesSecondary'] );
+		} else {
+			$this->php_typo->set_smart_dashes( false );
+			$this->php_typo->set_smart_ellipses( false );
+			$this->php_typo->set_smart_math( false );
+			$this->php_typo->set_smart_exponents( false );
+			$this->php_typo->set_smart_fractions( false );
+			$this->php_typo->set_smart_ordinal_suffix( false );
+			$this->php_typo->set_smart_marks( false );
+			$this->php_typo->set_smart_quotes( false );
+			$this->php_typo->set_smart_diacritics( false );
+		}
+
+		$this->php_typo->set_single_character_word_spacing( $this->settings['typoSingleCharacterWordSpacing'] );
+		$this->php_typo->set_dash_spacing( $this->settings['typoDashSpacing'] );
+		$this->php_typo->set_fraction_spacing( $this->settings['typoFractionSpacing'] );
+		$this->php_typo->set_unit_spacing( $this->settings['typoUnitSpacing'] );
+		$this->php_typo->set_units( $this->settings['typoUnits'] );
+		$this->php_typo->set_space_collapse( $this->settings['typoSpaceCollapse'] );
+		$this->php_typo->set_dewidow( $this->settings['typoPreventWidows'] );
+		$this->php_typo->set_max_dewidow_length( $this->settings['typoWidowMinLength'] );
+		$this->php_typo->set_max_dewidow_pull( $this->settings['typoWidowMaxPull'] );
+		$this->php_typo->set_wrap_hard_hyphens( $this->settings['typoWrapHyphens'] );
+		$this->php_typo->set_email_wrap( $this->settings['typoWrapEmails'] );
+		$this->php_typo->set_url_wrap( $this->settings['typoWrapURLs'] );
+		$this->php_typo->set_min_after_url_wrap( $this->settings['typoWrapMinAfter'] );
+		$this->php_typo->set_style_ampersands( $this->settings['typoStyleAmps'] );
+		$this->php_typo->set_style_caps( $this->settings['typoStyleCaps'] );
+		$this->php_typo->set_style_numbers( $this->settings['typoStyleNumbers'] );
+		$this->php_typo->set_style_initial_quotes( $this->settings['typoStyleInitialQuotes'] );
+		$this->php_typo->set_initial_quote_tags( $this->settings['typoInitialQuoteTags'] );
+
+		if ( $this->settings['typoEnableHyphenation'] ) {
+			$this->php_typo->set_hyphenation( $this->settings['typoEnableHyphenation'] );
+			$this->php_typo->set_hyphenate_headings( $this->settings['typoHyphenateHeadings'] );
+			$this->php_typo->set_hyphenate_all_caps( $this->settings['typoHyphenateCaps'] );
+			$this->php_typo->set_hyphenate_title_case( $this->settings['typoHyphenateTitleCase'] );
+			$this->php_typo->set_hyphenation_language( $this->settings['typoHyphenateLanguages'] );
+			$this->php_typo->set_min_length_hyphenation( $this->settings['typoHyphenateMinLength'] );
+			$this->php_typo->set_min_before_hyphenation( $this->settings['typoHyphenateMinBefore'] );
+			$this->php_typo->set_min_after_hyphenation( $this->settings['typoHyphenateMinAfter'] );
+			$this->php_typo->set_hyphenation_exceptions( $this->settings['typoHyphenateExceptions'] );
+		} else { // save some cycles
+			$this->php_typo->set_hyphenation( $this->settings['typoEnableHyphenation'] );
+		}
 	}
 
 	/**
@@ -865,6 +920,7 @@ sub {
 		foreach ( $this->admin_form_controls as $control_id => $control ) {
 			register_setting( $this->option_group, $control_id );
 		}
+
 		register_setting( $this->option_group, 'typoRestoreDefaults' );
 	}
 
@@ -1118,8 +1174,20 @@ sub {
 		$this->initialize_settings_properties();
 
 		// dynamically generate the list of hyphenation language patterns
-		$this->admin_form_controls['typoHyphenateLanguages']['option_values'] = $this->php_typo->get_languages();
-		$this->admin_form_controls['typoDiacriticLanguages']['option_values'] = $this->php_typo->get_diacritic_languages();
+		$hyphenate_languages_transient = 'typo_hyphenate_languages_' . $this->version_hash;
+		$diacritic_languages_transient = 'typo_diacritic_languages_' . $this->version_hash;
+
+		if ( false === ( $languages = get_transient( $hyphenate_languages_transient ) ) ) {
+			$languages = $this->get_php_typo()->get_languages();
+			$this->set_transient( $hyphenate_languages_transient, $languages, WEEK_IN_SECONDS );
+		}
+		$this->admin_form_controls['typoHyphenateLanguages']['option_values'] = $languages;
+
+		if ( false === ( $languages = get_transient( $diacritic_languages_transient ) ) ) {
+			$languages = $this->get_php_typo()->get_diacritic_languages();
+			$this->set_transient( $diacritic_languages_transient, $languages, WEEK_IN_SECONDS );
+		}
+		$this->admin_form_controls['typoDiacriticLanguages']['option_values'] = $languages;
 	}
 
 	/**
