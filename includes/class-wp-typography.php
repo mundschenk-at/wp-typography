@@ -156,6 +156,13 @@ class WP_Typography {
 	private $transients = array();
 
 	/**
+	 * The PHP_Typography configuration is not changed after initialization, so the settings hash can be cached.
+	 *
+	 * @var string The settings hash for the PHP_Typography instance
+	 */
+	private $cached_settings_hash;
+
+	/**
 	 * Sets up a new wpTypography object.
 	 *
 	 * @param string $version  The full plugin version string (e.g. "3.0.0-beta.2")
@@ -758,7 +765,7 @@ sub {
 	 */
 	function process( $text, $is_title = false ) {
 		$typo = $this->get_php_typo();
-		$transient = 'typo_' . base64_encode( md5( $text, true ) . $typo->get_settings_hash( 11 ) );
+		$transient = 'typo_' . base64_encode( md5( $text, true ) . $this->cached_settings_hash );
 
 		if ( is_feed() ) { // feed readers can be pretty stupid
 			$transient .= 'f' . ( $is_title ? 't' : 's' ) . $this->version_hash;
@@ -815,9 +822,12 @@ sub {
 				// Load our settings into the instance
 				$this->init_php_typo();
 
-				// try again next time
+				// Try again next time
 				$this->set_transient( $transient, $this->php_typo->save_state(), WEEK_IN_SECONDS );
 			}
+
+			// Settings won't be touched again, so cache the hash
+			$this->cached_settings_hash = $this->php_typo->get_settings_hash( 11 );
 		}
 
 		return $this->php_typo;
