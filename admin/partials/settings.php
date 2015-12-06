@@ -9,7 +9,7 @@
 			<div class='inside'>
 			<?php $i=0; ?>
 			<?php foreach( $this->admin_resource_links as $anchor => $url ) { ?>
-				<?php if ( $i++ > 0 ) echo " | ";?><a href="<?php echo $url; ?>"><?php echo $anchor; ?></a>
+				<?php if ( $i++ > 0 ) echo " | ";?><a href="<?php echo $url; ?>"><?php _e( $anchor, 'wp-typography' ); ?></a>
 			<?php } ?>
 			</div>
 		</div>
@@ -19,7 +19,7 @@
 
 			<?php foreach ( $this->admin_form_sections as $section_id => $heading ): ?>
 			<div id="<?php echo $section_id; ?>" class='postbox submitdiv' >
-				<h2><span><?php echo $heading; ?></span></h2>
+				<h2><span><?php _e( $heading, 'wp-typography' ); ?></span></h2>
 				<div class='inside'>
 					<div class='submitbox'>
 						<div class='publishing-settings'>
@@ -35,7 +35,7 @@
 										if ( ! empty( $admin_form_control['fieldset'] ) ) { // start any new fieldset (if it exists)
 											echo "\r\n<fieldset id='" . $admin_form_control['fieldset'] . "'>\r\n";
 											echo "<legend>" .
-												 $this->admin_form_section_fieldsets[ $admin_form_control['fieldset'] ]['heading'] .
+												 __( $this->admin_form_section_fieldsets[ $admin_form_control['fieldset'] ]['heading'], 'wp-typography' ) .
 												 "</legend>\r\n";
 										}
 
@@ -44,9 +44,9 @@
 
 									echo $this->get_admin_form_control( $control_id, // mandatory
 																		$admin_form_control['control'], // mandatory
-																		isset( $admin_form_control['input_type'] ) ? $admin_form_control['input_type'] : null,
-																		isset( $admin_form_control['label'] ) ? $admin_form_control['label'] : null,
-																		isset( $admin_form_control['help_text'] ) ? $admin_form_control['help_text'] : null,
+																		isset( $admin_form_control['input_type'] )    ? $admin_form_control['input_type']    : null,
+																		isset( $admin_form_control['label'] )         ? $admin_form_control['label']         : null,
+																		isset( $admin_form_control['help_text'] )     ? $admin_form_control['help_text']     : null,
 																		isset( $admin_form_control['option_values'] ) ? $admin_form_control['option_values'] : null );
 								}
 							}

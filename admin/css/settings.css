@@ -45,12 +45,12 @@ legend {
   font-style: italic;
 }
 
-span.helpText {
+.helptext {
   color: gray;
   font-size: 90%;
   margin: .3125em 0 0 1.875em;
 }
-span.helpText samp {
+.helptext samp {
   font-size: 111%;
 }
 
