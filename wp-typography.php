@@ -3,7 +3,7 @@
 /*
 	Plugin Name: wp-Typography
 	Plugin URI: https://code.mundschenk.at/wp-typography/
-	Description: Improve your web typography with: (1) hyphenation &mdash; over 40 languages supported, (2) Space control, includes: widow protection, gluing values to units, and forced internal wrapping of long URLs & email addresses, (3) Intelligent character replacement, including smart handling of: quote marks, dashes, ellipses, trademarks, math symbols, fractions, and ordinal suffixes, and (4) CSS hooks for styling: ampersands, uppercase words, numbers,  initial quotes &amp; guillemets.
+	Description: Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 	Author: Peter Putzer
 	Author URI: https://code.mundschenk.at
 	Version: 3.1.0-beta.1
