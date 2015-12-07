@@ -109,6 +109,13 @@ class WP_Typography {
 	private $admin;
 
 	/**
+	 * The priority for our filter hooks.
+	 *
+	 * @var number
+	 */
+	private $filter_priority = 9999;
+
+	/**
 	 * Sets up a new wpTypography object.
 	 *
 	 * @param string $version  The full plugin version string (e.g. "3.0.0-beta.2")
@@ -131,7 +138,7 @@ class WP_Typography {
 	 */
 	function run() {
 		// ensure that our translations are loaded
-		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
+		add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ) );
 
 		// load settings
 		add_action( 'init', array( $this, 'init') );
@@ -178,13 +185,13 @@ class WP_Typography {
 			// add_filter( 'bloginfo', array($this, 'processBloginfo'), 9999);
 			// add_filter( 'wp_title', 'strip_tags', 9999);
 			// add_filter( 'single_post_title', 'strip_tags', 9999);
-			add_filter( 'comment_author', array( $this, 'process' ), 9999 );
-			add_filter( 'comment_text',   array( $this, 'process' ), 9999 );
-			add_filter( 'the_title',      array( $this, 'process_title' ), 9999 );
-			add_filter( 'the_content',    array( $this, 'process' ), 9999 );
-			add_filter( 'the_excerpt',    array( $this, 'process' ), 9999 );
-			add_filter( 'widget_text',    array( $this, 'process' ), 9999 );
-			add_filter( 'widget_title',   array( $this, 'process_title' ), 9999 );
+			add_filter( 'comment_author', array( $this, 'process' ),       $this->filter_priority );
+			add_filter( 'comment_text',   array( $this, 'process' ),       $this->filter_priority );
+			add_filter( 'the_title',      array( $this, 'process_title' ), $this->filter_priority );
+			add_filter( 'the_content',    array( $this, 'process' ),       $this->filter_priority );
+			add_filter( 'the_excerpt',    array( $this, 'process' ),       $this->filter_priority );
+			add_filter( 'widget_text',    array( $this, 'process' ),       $this->filter_priority );
+			add_filter( 'widget_title',   array( $this, 'process_title' ), $this->filter_priority );
 		}
 
 		// add IE6 zero-width-space removal CSS Hook styling
@@ -437,8 +444,14 @@ class WP_Typography {
 	/**
 	 * Load translations.
 	 */
-	function load_textdomain() {
+	function plugins_loaded() {
+		// Load our translations
 		load_plugin_textdomain( 'wp-typography', false, dirname( $this->local_plugin_path ) . '/translations/' );
+
+		// Check for NextGEN Gallery and use insane filter priority if activated
+		if ( class_exists( 'C_NextGEN_Bootstrap' ) ) {
+			$this->filter_priority = PHP_INT_MAX;
+		}
 	}
 
 	/**
