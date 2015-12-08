@@ -157,13 +157,13 @@ class WP_Typography_Admin {
 		$diacritic_languages_transient = 'typo_diacritic_languages_' . $plugin->get_version_hash();
 
 		if ( false === ( $languages = get_transient( $hyphenate_languages_transient ) ) ) {
-			$languages = $plugin->get_hyphenation_languages();
+			$languages = \PHP_Typography\PHP_Typography::get_hyphenation_languages();
 			$plugin->set_transient( $hyphenate_languages_transient, $languages, WEEK_IN_SECONDS );
 		}
 		$this->admin_form_controls['typo_hyphenate_languages']['option_values'] = $languages;
 
 		if ( false === ( $languages = get_transient( $diacritic_languages_transient ) ) ) {
-			$languages = $plugin->get_diacritic_languages();
+			$languages = \PHP_Typography\PHP_Typography::get_diacritic_languages();
 			$plugin->set_transient( $diacritic_languages_transient, $languages, WEEK_IN_SECONDS );
 		}
 		$this->admin_form_controls['typo_diacritic_languages']['option_values'] = $languages;

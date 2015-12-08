@@ -361,26 +361,6 @@ class WP_Typography {
 	}
 
 	/**
-	 * Retrieve the list of valid hyphenation languages.
-	 * The language names are translation-ready but not translated yet.
-	 *
-	 * @return array An array in the form of ( LANG_CODE => LANGUAGE ).
-	 */
-	public function get_hyphenation_languages() {
-		return $this->get_php_typo()->get_hyphenation_languages();
-	}
-
-	/**
-	 * Retrieve the list of valid diacritic replacement languages.
-	 * The language names are translation-ready but not translated yet.
-	 *
-	 * @return array An array in the form of ( LANG_CODE => LANGUAGE ).
-	 */
-	public function get_diacritic_languages() {
-		return $this->get_php_typo()->get_diacritic_languages();
-	}
-
-	/**
 	 * Initialize options with default values.
 	 *
 	 * @param boolean $force_defaults Optional. Default false.
