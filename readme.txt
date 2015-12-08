@@ -88,6 +88,13 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 
 == Changelog ==
 
+= 3.1.0 - December xx, 2015 =
+* Added workaround for insane NextGEN Gallery filter priority (props Itsacon).
+* Added "Clear Cache" button.
+* Changed internal option names to conform to WordPress standards (no camel case).
+* Performance improvements through lazy initialization and caching of PHP Typography
+*
+
 = 3.0.3 - December 8, 2015 =
 * Use WordPress languages packs for translations.
 * Fixed a bug in the XPath expression for ignoring tags by CSS ID.
