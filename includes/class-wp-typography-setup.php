@@ -101,17 +101,65 @@ class WP_Typography_Setup {
 	 * @since      3.1.0
 	 */
 	public function activate() {
+		// update option values & other stuff if necessary
+		$this->plugin_updated( get_option( 'typo_installed_version' ) );
+
+		// load default options and clear the cache
 		$this->plugin->set_default_options();
 		$this->plugin->clear_cache();
+	}
 
-		$previous_version = get_option( 'typo_installed_version' );
-		if ( ! $previous_version ) {
-			// previous version < 3.1.0
-			update_option( 'typo_restore_defaults', get_option( 'typoRestoreDefaults' ) );
-			delete_option( 'typoRestoreDefaults' );
+	/**
+	 * Upgrade plugin data.
+	 *
+	 * @param string $previous_version The version we are upgrading from.
+	 */
+	private function plugin_updated( $previous_version ) {
+
+		// Each version should get it's own if-block
+		if ( version_compare( $previous_version, '3.1.0-beta.2', '<' ) ) {
+			error_log( "Uppgrading wp-Typography from " . ( $previous_version ? $previous_version : '< 3.1.0') );
+
+			foreach( $this->plugin->get_default_options() as $option_name => $option ) {
+				$old_option = $this->get_old_option_name( $option_name );
+				$old_value = get_option( $old_option, 'UPGRADING_WP_TYPOGRAPHY' );
+
+				if ( 'UPGRADING_WP_TYPOGRAPHY' !== $old_value ) {
+					$result_update = update_option( $option_name, $old_value );
+					$result_delete = delete_option( $old_option );
+
+					if ( ! $result_update || ! $result_delete ) {
+						error_log("Error while upgrading $old_option: " . ( $result_update ? '' : 'Update failed. ' .
+																		  ( $result_delete ? '' : 'Delete failed.') ) );
+					}
+				}
+			}
 		}
 
 		update_option( 'typo_installed_version', $this->plugin->get_version() );
+	}
+
+	private function get_old_option_name( $option ) {
+		$parts = explode( '_', $option );
+		$oldname = array_shift( $parts );
+
+		// Does not really seem to matter, but try
+		// to match the correct case.
+		foreach( $parts as $part ) {
+			if ( 'ie6' === $part ) {
+				$oldname .= 'IE6';
+			} elseif ( 'css' === $part ) {
+				$oldname .= 'CSS';
+			} elseif ( 'urls' === $part ) {
+				$oldname .= 'URLs';
+			} elseif ( 'ids' === $part ) {
+				$oldname .= 'IDs';
+			} else {
+				$oldname .= ucfirst( $part );
+			}
+		}
+
+		return $oldname;
 	}
 
 	/**

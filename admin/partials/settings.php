@@ -57,15 +57,15 @@
 						</div><!-- .publishing-settings -->
 
 						<div class='publishing-actions'>
-							<?php echo $this->get_admin_form_control( 'saveChanges', 'input', 'submit' ); ?>
+							<?php echo $this->get_admin_form_control( 'save_changes',          'input', 'submit' ); ?>
 							<?php echo $this->get_admin_form_control( 'typo_restore_defaults', 'input', 'submit' ); ?>
-							<?php echo $this->get_admin_form_control( 'typo_clear_cache', 'input', 'submit' ); ?>
+							<?php echo $this->get_admin_form_control( 'typo_clear_cache',      'input', 'submit' ); ?>
 							<div class='clear'></div>
 						</div><!-- .publishing-actions -->
 					</div><!-- .submitbox -->
 				</div><!-- .inside -->
 			</div><!-- .postbox.submitdiv -->
-			<?php endforeach; //adminFormSections ?>
+			<?php endforeach; //admin_form_sections ?>
 		</form>
 
 	</div><!-- #poststuff.metabox-holder -->
