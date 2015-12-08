@@ -3,10 +3,10 @@
 /*
 	Plugin Name: wp-Typography
 	Plugin URI: https://code.mundschenk.at/wp-typography/
-	Description: Improve your web typography with: (1) hyphenation &mdash; over 40 languages supported, (2) Space control, includes: widow protection, gluing values to units, and forced internal wrapping of long URLs & email addresses, (3) Intelligent character replacement, including smart handling of: quote marks, dashes, ellipses, trademarks, math symbols, fractions, and ordinal suffixes, and (4) CSS hooks for styling: ampersands, uppercase words, numbers,  initial quotes &amp; guillemets.
+	Description: Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 	Author: Peter Putzer
 	Author URI: https://code.mundschenk.at
-	Version: 3.0.3
+	Version: 3.1.0-beta.2
 	License: GNU General Public License v2
 	License URI: https://www.gnu.org/licenses/gpl-2.0.html
 	Text Domain: wp-typography
@@ -48,16 +48,20 @@
 */
 
 /**
+ * Autoload our classes
+ */
+require_once dirname( __FILE__ ) . '/includes/wp-typography-autoload.php';
+
+/**
  * Load the plugin after checking for the necessary PHP version.
  *
  * It's necessary to do this here because main class relies on namespaces.
  */
 function run_wp_typography() {
-	if ( version_compare( PHP_VERSION, '5.3', '<' ) ) {
-		load_plugin_textdomain( 'wp-typography', false, dirname( plugin_basename( __FILE__ ) ) . '/translations/' );
-		add_action( 'admin_notices', create_function( '', "echo '<div class=\"error\"><p>" . __('wp-Typography requires PHP 5.3 or later. Please upgrade your installation of PHP or deactivate wp-Typography.', 'wp-typography') ."</p></div>';" ) );
-		return; // abort
-	} else {
+
+	$requirements = new WP_Typography_Requirements( 'wp-Typography', plugin_basename( __FILE__ ) );
+
+	if ( $requirements->check() ) {
 		/**
 		 * Load version from plugin data
 		 */
@@ -65,12 +69,17 @@ function run_wp_typography() {
 			include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 		}
 		$plugin_data = get_plugin_data( __FILE__, false, false );
+		$version = $plugin_data['Version'];
 
-		// should be moved to an autoloader
-		require_once( plugin_dir_path( __FILE__ ) . 'class-wp-typography.php' );
+		// create the plugin
+		$plugin = new WP_Typography( $version, plugin_basename( __FILE__ ) );
 
-		// start up the plugin
-		new WP_Typography( $plugin_data['Version'], plugin_basename( __FILE__ ) );
+		// register activation & deactivation hooks
+		$setup = new WP_Typography_Setup( 'wp-typography', $plugin );
+		$setup->register( __FILE__ );
+
+		// start the plugin for real
+		$plugin->run();
 	}
 }
 run_wp_typography();
