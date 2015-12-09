@@ -93,6 +93,8 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 * Added "Clear Cache" button.
 * Changed internal option names to conform to WordPress standards (no camel case).
 * Performance improvements through lazy initialization and caching of PHP Typography
+* Fixed diacritics replacement for UTF-8 strings
+* Refactored plugin code for easier maintenance.
 *
 
 = 3.0.3 - December 8, 2015 =
