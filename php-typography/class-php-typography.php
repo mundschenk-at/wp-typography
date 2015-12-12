@@ -1616,8 +1616,14 @@ class PHP_Typography {
 		}
 
 		$all_textnodes = $xpath->query( '//text()' );
-		if ( count( $xpath_ignore_query ) > 0 ) {
-			$tags_to_ignore = nodelist_to_array( $xpath->query( implode(' | ', $xpath_ignore_query ), $body_node ) );
+		if ( ! empty( $xpath_ignore_query ) ) {
+			$ignore_query = implode(' | ', $xpath_ignore_query );
+
+			if ( false !== ( $nodelist = $xpath->query( $ignore_query, $body_node ) ) ) {
+				$tags_to_ignore = nodelist_to_array( $nodelist );
+			} else {
+				error_log("Invalid XPath ignore query: $ignore_query" );
+			}
 		}
 
 		foreach ( $all_textnodes as $textnode ) {
