@@ -89,6 +89,8 @@ class PHP_Typography_Test extends PHPUnit_Framework_TestCase
 			$this->assertContains( $tag, $typo->settings['ignoreTags'] );
 		}
 
+		$typo->set_tags_to_ignore( "img foo  \    " ); // should not result in an error
+
 		$html = '<p><foo>Ignore this "quote",</foo><span class="other"> but not "this" one.</span></p>';
 		$expected = '<p><foo>Ignore this "quote",</foo><span class="other"> but not &ldquo;this&rdquo; one.</span></p>';
 		$this->object->set_smart_quotes( true );

@@ -932,11 +932,11 @@ class PHP_Typography {
 												'style', 'textarea', 'title', 'var', 'math',
 										      ) ) {
 		if ( ! is_array( $tags ) ) {
-			$tags = preg_split( $this->regex['parameterSplitting'], $tags, -1, PREG_SPLIT_NO_EMPTY);
+			$tags = preg_split( $this->regex['parameterSplitting'], $tags, -1, PREG_SPLIT_NO_EMPTY );
 		}
-		foreach ( $tags as &$tag ){
-			$tag = strtolower( $tag ); // FIXME
-		}
+
+		// ensure that we pass only lower-case tag names to XPath
+		$tags = array_filter( array_map( 'strtolower', $tags ), 'ctype_lower' );
 
 		// self closing tags shouldn't be in $tags
 		$this->settings['ignoreTags'] = array_unique( array_merge( array_diff( $tags, $this->self_closing_tags ), $this->inappropriate_tags ) );;
