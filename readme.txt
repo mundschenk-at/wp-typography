@@ -3,7 +3,7 @@ Contributors: pputzer
 Tags: typography, hyphenation, smart quotes, quote marks, smartypants, typogrify, quotes, prettify, widows, orphans, small caps, diacritics
 Requires at least: 4.0
 Tested up to: 4.4
-Stable tag: 3.0.3
+Stable tag: 3.0.4
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
@@ -11,7 +11,7 @@ Improve your web typography with: hyphenation, space control, intelligent charac
 
 Improve your web typography with:
 
-* Hyphenation &mdash; [over 40 languages supported](http://kingdesk.com/projects/wp-typography-faqs/#what-hyphenation-language-patterns-are-included)
+* Hyphenation &mdash; [over 40 languages supported](https://code.mundschenk.at/wp-typography/frequently-asked-questions/#what-hyphenation-language-patterns-are-included)
 
 * Space control, including:
     * widow protection
@@ -61,7 +61,7 @@ Alternately, you may manually upload the plugin by following the following instr
 
 == Frequently Asked Questions ==
 
-FAQs are maintained at the [wp-Typography website](http://kingdesk.com/projects/wp-typography-faqs/ "wp-Typography FAQs").
+FAQs are maintained on the [wp-Typography website](https://code.mundschenk.at/wp-typography/frequently-asked-questions/).
 
 Three questions come up so frequently, we will republish their answers here:
 
@@ -79,7 +79,7 @@ If you are uncomfortable editing your theme's code, you may alternatively go to 
 
 This plugin is an official replacement for the [wp-Typogrify plugin](http://wordpress.org/extend/plugins/wp-typogrify/).  Please uninstall wp-Typogrify and install wp-Typography in its place.
 
-Remember, many more FAQs are are addressed the [wp-Typography website](http://kingdesk.com/projects/wp-typography-faqs/ "wp-Typography FAQs").
+Remember, many more FAQs are are addressed the [wp-Typography website](https://code.mundschenk.at/wp-typography/frequently-asked-questions/).
 
 
 == Screenshots ==
@@ -87,6 +87,10 @@ Remember, many more FAQs are are addressed the [wp-Typography website](http://ki
 1. wp-Typography administrative settings page
 
 == Changelog ==
+
+= 3.0.4 - December 12, 2015 =
+* Prevent accidentally invalid XPath queries from being fatal on the frontend.
+* Replaced old FAQ links in the README.
 
 = 3.0.3 - December 8, 2015 =
 * Use WordPress languages packs for translations.
