@@ -251,6 +251,10 @@ class WP_Typography_Admin {
 				'heading'      => __( 'Quotemarks', 'wp-typography' ),
 				'sectionID'    => 'character-replacement',
 			),
+			'dashes'           => array(
+				'heading'      => __( 'Dashes', 'wp-typography' ),
+				'sectionID'    => 'character-replacement',
+			),
 			'diacritics'       => array(
 				'heading'      => __( 'Diacritics', 'wp-typography' ),
 				'sectionID'    => 'diacritics',
@@ -459,19 +463,20 @@ class WP_Typography_Admin {
 
 			'typo_smart_dashes' => array(
 				'section'		=> 'character-replacement',
+				'fieldset' 		=> 'dashes',
 				'label' 		=> __( "%1\$s Transform minus-hyphens [ <samp>-</samp> <samp>--</samp> ] to contextually appropriate dashes, minus signs, and hyphens [ <samp>&ndash;</samp> <samp>&mdash;</samp> <samp>&#8722;</samp> <samp>&#8208;</samp> ].", 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 1,
 			),
-			'typo_smart_ellipses' => array(
+			'typo_smart_dashes_style' => array(
 				'section'		=> 'character-replacement',
-				'label' 		=> __( "%1\$s Transform three periods [ <samp>...</samp> ] to  ellipses [ <samp>&hellip;</samp> ].", 'wp-typography' ),
-				'control' 		=> 'input',
-				'input_type' 	=> 'checkbox',
-				'default' 		=> 1,
+				'fieldset' 		=> 'dashes',
+				'label' 		=> __( "Use the %1\$s style for dashes. In the US, the em dash&#8202;&mdash;&#8202with no or very little spacing&#8202;&mdash;&#8202is used for parenthetical expressions, while internationally, the en dash &ndash; with spaces &ndash; is more prevalent.", 'wp-typography' ),
+				'control' 		=> 'select',
+				'option_values' => array( 'traditionalUS' => __( 'Traditional US' ), 'international' => __( 'International' ) ),
+				'default' 		=> 'traditionalUS',
 			),
-
 
 			'typo_smart_diacritics' => array(
 				'section'		=> 'character-replacement',
@@ -500,7 +505,13 @@ class WP_Typography_Admin {
 				'default' 		=> '"cooperate"=>"coöperate", "Cooperate"=>"Coöperate", "cooperation"=>"coöperation", "Cooperation"=>"Coöperation", "cooperative"=>"coöperative", "Cooperative"=>"Coöperative", "coordinate"=>"coördinate", "Coordinate"=>"Coördinate", "coordinated"=>"coördinated", "Coordinated"=>"Coördinated", "coordinating"=>"coördinating", "Coordinating"=>"Coördinating", "coordination"=>"coördination", "Coordination"=>"Coördination", "coordinator"=>"coördinator", "Coordinator"=>"Coördinator", "coordinators"=>"coördinators", "Coordinators"=>"Coördinators", "continuum"=>"continuüm", "Continuum"=>"Continuüm", "debacle"=>"débâcle", "Debacle"=>"Débâcle", "elite"=>"élite", "Elite"=>"Élite",',
 			),
 
-
+			'typo_smart_ellipses' => array(
+				'section'		=> 'character-replacement',
+				'label' 		=> __( "%1\$s Transform three periods [ <samp>...</samp> ] to  ellipses [ <samp>&hellip;</samp> ].", 'wp-typography' ),
+				'control' 		=> 'input',
+				'input_type' 	=> 'checkbox',
+				'default' 		=> 1,
+			),
 			'typo_smart_marks' => array(
 				'section'		=> 'character-replacement',
 				'label' 		=> __( "%1\$s Transform registration marks [ <samp>(c)</samp> <samp>(r)</samp> <samp>(tm)</samp> <samp>(sm)</samp> <samp>(p)</samp> ] to  proper characters [ <samp>©</samp> <samp>®</samp> <samp>™</samp> <samp>℠</samp> <samp>℗</samp> ].", 'wp-typography' ),
