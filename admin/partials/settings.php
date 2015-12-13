@@ -27,17 +27,19 @@
 							$fieldset_id = NULL;
 							foreach ( $this->admin_form_controls as $control_id => $admin_form_control ) {
 								if ( $admin_form_control['section'] === $section_id ) {
-									if ( isset( $admin_form_control['fieldset'] ) && $admin_form_control['fieldset'] !== $fieldset_id ) {
-										if ( $fieldset_id ) { // close previous fieldset (if it existed)
+									if ( empty( $admin_form_control['fieldset'] ) ) {
+										// close previous fieldset (if it existed
+										if ( ! empty( $fieldset_id ) ) {
 											echo "</fieldset>\r\n\r\n";
+											$fieldset_id = null;
 										}
+									} elseif ( $admin_form_control['fieldset'] !== $fieldset_id ) {
+										// close previous fieldset
+										echo "</fieldset>\r\n\r\n";
 
-										if ( ! empty( $admin_form_control['fieldset'] ) ) { // start any new fieldset (if it exists)
-											echo "\r\n<fieldset id='" . $admin_form_control['fieldset'] . "'>\r\n";
-											echo "<legend>" .
-												 __( $this->admin_form_section_fieldsets[ $admin_form_control['fieldset'] ]['heading'], 'wp-typography' ) .
-												 "</legend>\r\n";
-										}
+										// ... and open new one
+										echo "\r\n<fieldset id='" . $admin_form_control['fieldset'] . "'>\r\n";
+										echo "<legend>" . __( $this->admin_form_section_fieldsets[ $admin_form_control['fieldset'] ]['heading'], 'wp-typography' ) . "</legend>\r\n";
 
 										$fieldset_id = $admin_form_control['fieldset'];
 									}
@@ -50,8 +52,9 @@
 																		isset( $admin_form_control['option_values'] ) ? $admin_form_control['option_values'] : null );
 								}
 							}
-							if ( $fieldset_id ) { // we have an unclosed fieldset
+							if ( ! empty( $fieldset_id ) ) { // we have an unclosed fieldset
 								echo "</fieldset>\r\n\r\n";
+								$fieldset_id = null;
 							}
 						?>
 						</div><!-- .publishing-settings -->
