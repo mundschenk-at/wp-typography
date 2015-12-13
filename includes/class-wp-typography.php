@@ -297,6 +297,7 @@ class WP_Typography {
 
 		if ( $this->settings['typo_smart_characters'] ) {
 			$this->php_typo->set_smart_dashes( $this->settings['typo_smart_dashes'] );
+			$this->php_typo->set_smart_dashes_style( $this->settings['typo_smart_dashes_style'] );
 			$this->php_typo->set_smart_ellipses( $this->settings['typo_smart_ellipses'] );
 			$this->php_typo->set_smart_math( $this->settings['typo_smart_math'] );
 
