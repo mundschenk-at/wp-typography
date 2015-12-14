@@ -136,6 +136,20 @@ class WP_Typography_Admin {
 	private $admin_form_controls = array();
 
 	/**
+	 * An array of transient names.
+	 *
+	 * @var array
+	 */
+	private $transient_names = array();
+
+	/**
+	 * The plugin instance used for setting transients.
+	 *
+	 * @var callable
+	 */
+	private $plugin;
+
+	/**
 	 * Create a new instace of WP_Typography_Setup.
 	 *
 	 * @param string $slug
@@ -145,28 +159,15 @@ class WP_Typography_Admin {
 		$this->local_plugin_path = $basename;
 		$this->plugin_path       = plugin_dir_path( __DIR__ ) . basename( $this->local_plugin_path );
 		$this->version			 = $plugin->get_version();
+		$this->transient_names['hyphenate_languages'] = 'typo_hyphenate_languages_' . $plugin->get_version_hash();
+		$this->transient_names['diacritic_languages'] = 'typo_diacritic_languages_' . $plugin->get_version_hash();
+		$this->plugin = $plugin;
 
 		// initialize admin form
 		$this->admin_resource_links         = $this->initialize_resource_links();
 		$this->admin_form_sections          = $this->initialize_form_sections();
 		$this->admin_form_section_fieldsets = $this->initialize_fieldsets();
 		$this->admin_form_controls          = $this->initialize_controls();
-
-		// dynamically generate the list of hyphenation language patterns
-		$hyphenate_languages_transient = 'typo_hyphenate_languages_' . $plugin->get_version_hash();
-		$diacritic_languages_transient = 'typo_diacritic_languages_' . $plugin->get_version_hash();
-
-		if ( false === ( $languages = get_transient( $hyphenate_languages_transient ) ) ) {
-			$languages = \PHP_Typography\PHP_Typography::get_hyphenation_languages();
-			$plugin->set_transient( $hyphenate_languages_transient, $languages, WEEK_IN_SECONDS );
-		}
-		$this->admin_form_controls['typo_hyphenate_languages']['option_values'] = $languages;
-
-		if ( false === ( $languages = get_transient( $diacritic_languages_transient ) ) ) {
-			$languages = \PHP_Typography\PHP_Typography::get_diacritic_languages();
-			$plugin->set_transient( $diacritic_languages_transient, $languages, WEEK_IN_SECONDS );
-		}
-		$this->admin_form_controls['typo_diacritic_languages']['option_values'] = $languages;
 	}
 
 	/**
@@ -787,7 +788,21 @@ sub {
 	 * Display the plugin options page.
 	 */
 	function get_admin_page_content() {
-		include_once realpath( __DIR__ . '/../admin/partials/settings.php' );
+		// dynamically generate the list of hyphenation language patterns
+		if ( false === ( $languages = get_transient( $this->transient_names['hyphenate_languages'] ) ) ) {
+			$languages = \PHP_Typography\PHP_Typography::get_hyphenation_languages();
+			$this->plugin->set_transient( $this->transient_names['hyphenate_languages'], $languages, WEEK_IN_SECONDS );
+		}
+		$this->admin_form_controls['typo_hyphenate_languages']['option_values'] = $languages;
+
+		if ( false === ( $languages = get_transient( $this->transient_names['diacritic_languages'] ) ) ) {
+			$languages = \PHP_Typography\PHP_Typography::get_diacritic_languages();
+			$this->plugin->set_transient( $this->transient_names['diacritic_languages'], $languages, WEEK_IN_SECONDS );
+		}
+		$this->admin_form_controls['typo_diacritic_languages']['option_values'] = $languages;
+
+		// load the settings page HTML
+		include_once dirname( __DIR__ ) . '/admin/partials/settings.php';
 	}
 
 	/**
