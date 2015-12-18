@@ -13,3 +13,6 @@ build/*
 
 # SASS
 .sass-cache/*
+
+# Ignore generated code coverage files
+tests/coverage/*
