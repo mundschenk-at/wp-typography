@@ -92,10 +92,14 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 * Added workaround for insane NextGEN Gallery filter priority (props Itsacon).
 * Added "Clear Cache" button.
 * Changed internal option names to conform to WordPress standards (no camel case).
-* Performance improvements through lazy initialization and caching of PHP Typography
+* Performance improvements through lazy initialization and caching of the PHP_Typography object state.
 * Fixed diacritics replacement for UTF-8 strings
 * Refactored plugin code for easier maintenance.
-*
+* Date-like values (e.g. "during the fiscal year 2015/2016") are not converted to smart fractions anymore.
+* Added ability to switch between dash styles: both traditional US (em dash without spacing) and international usage (en dash with spaces) can be selected.
+* Various white-space fixes related to dash styling.
+* Language names in the Settings panel are sorted correctly for all locales.
+* Fixed a bug where block-level tags where not detected corrected.
 
 = 3.0.4 - December 12, 2015 =
 * Prevent accidentally invalid XPath queries from being fatal on the frontend.
