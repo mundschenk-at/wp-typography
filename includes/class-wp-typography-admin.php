@@ -457,7 +457,7 @@ class WP_Typography_Admin {
 			'typo_smart_dashes_style' => array(
 				'section'		=> 'character-replacement',
 				'fieldset' 		=> 'dashes',
-				'label' 		=> __( "Use the %1\$s style for dashes. In the US, the em dash&#8202;&mdash;&#8202with no or very little spacing&#8202;&mdash;&#8202is used for parenthetical expressions, while internationally, the en dash &ndash; with spaces &ndash; is more prevalent.", 'wp-typography' ),
+				'label' 		=> __( "Use the %1\$s style for dashes. In the US, the em dash&#8202;&mdash;&#8202;with no or very little spacing&#8202;&mdash;&#8202;is used for parenthetical expressions, while internationally, the en dash &ndash; with spaces &ndash; is more prevalent.", 'wp-typography' ),
 				'control' 		=> 'select',
 				'option_values' => array( 'traditionalUS' => __( 'Traditional US' ), 'international' => __( 'International' ) ),
 				'default' 		=> 'traditionalUS',
