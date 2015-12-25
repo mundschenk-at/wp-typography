@@ -7,16 +7,19 @@
 	Author: Peter Putzer
 	Author URI: https://code.mundschenk.at
 	Version: 3.1.0-beta.2
-	License: GNU General Public License v2
+	License: GNU General Public License v2 or later
 	License URI: https://www.gnu.org/licenses/gpl-2.0.html
 	Text Domain: wp-typography
 	Domain Path: /translations
 
  	Copyright 2014-2015 Peter Putzer.
+	Copyright 2012-2013 Marie Hogebrandt.
+	Coypright 2009-2011 KINGdesk, LLC.
 
  	This program is free software; you can redistribute it and/or
-	modify it under the terms of the GNU General Public License,
-	version 2 as published by the Free Software Foundation.
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
 
 	This program is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -28,20 +31,7 @@
 	Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 	***
-
-	Copyright 2009, KINGdesk, LLC. Licensed under the GNU General Public License 2.0.
-	If you use, modify and/or redistribute this software, you must leave the KINGdesk,
-	LLC copyright information, the request for a link to http://kingdesk.com, and the
-	web design services contact information unchanged. If you redistribute this software,
-	or any derivative, it must be released under the GNU General Public License 2.0.
-	This program is distributed without warranty (implied or otherwise) of suitability
-	for any particular purpose. See the GNU General Public License for full license
-	terms <http://creativecommons.org/licenses/GPL/2.0/>.
-
-	WE DON'T WANT YOUR MONEY: NO TIPS NECESSARY!  If you enjoy this plugin, a link to
-	http://kingdesk.com from your website would be appreciated. For web design services,
-	please contact jeff@kingdesk.com.
-
+	*
 	Portions of this plugin are inspired by:
 	 	Christian Metts - href="http://code.google.com/p/typogrify/
 		Hamish Macpherson - http://www.hamstu.com/
