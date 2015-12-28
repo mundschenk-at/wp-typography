@@ -2,7 +2,7 @@
 # This file is distributed under the GNU General Public License v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: wp-Typography 3.1.0-beta.2\n"
+"Project-Id-Version: wp-Typography 3.1.0-beta.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-typography\n"
 "POT-Creation-Date: 2015-11-18 19:34:42+00:00\n"
 "MIME-Version: 1.0\n"
@@ -500,7 +500,7 @@ msgid ""
 "plugin, or <a href=\"%3$s\">change your character encoding to UTF-8</a>."
 msgstr ""
 
-#: php-typography/diacritics/de-DE.php:18 php-typography/lang/de.php:48
+#: php-typography/diacritics/de-DE.php:18 php-typography/lang/de.php:52
 msgid "German"
 msgstr ""
 
@@ -526,6 +526,10 @@ msgstr ""
 
 #: php-typography/lang/da.php:91
 msgid "Danish"
+msgstr ""
+
+#: php-typography/lang/de-1901.php:52
+msgid "German (Traditional)"
 msgstr ""
 
 #: php-typography/lang/el-Mono.php:49

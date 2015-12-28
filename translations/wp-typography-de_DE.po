@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: wp-Typography 3.0.0-beta1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-typography\n"
 "POT-Creation-Date: 2015-11-18 19:34:42+00:00\n"
-"PO-Revision-Date: 2015-12-25 10:23+0100\n"
+"PO-Revision-Date: 2015-12-28 23:28+0100\n"
 "Last-Translator: Peter Putzer <github@mundschenk.at>\n"
 "Language-Team: Peter Putzer <github@mundschenk.at>\n"
 "Language: de_DE\n"
@@ -235,7 +235,6 @@ msgstr ""
 "<samp>&mdash;</samp> <samp>&#8722;</samp> <samp>&#8208;</samp> ]."
 
 #: includes/class-wp-typography-admin.php:460
-#, fuzzy
 msgid ""
 "Use the %1$s style for dashes. In the US, the em dash&#8202;&mdash;&#8202;"
 "with no or very little spacing&#8202;&mdash;&#8202;is used for parenthetical "
@@ -602,7 +601,7 @@ msgstr ""
 "die Kodierung PHP %2$s verwendet. Bitte das Plugin deaktivieren oder <a href="
 "\"%3$s\">die Zeichenkodierung auf UTF-8 ändern</a>."
 
-#: php-typography/diacritics/de-DE.php:18 php-typography/lang/de.php:48
+#: php-typography/diacritics/de-DE.php:18 php-typography/lang/de.php:52
 msgid "German"
 msgstr "Deutsch"
 
@@ -629,6 +628,10 @@ msgstr "Walisisch"
 #: php-typography/lang/da.php:91
 msgid "Danish"
 msgstr "Dänisch"
+
+#: php-typography/lang/de-1901.php:52
+msgid "German (Traditional)"
+msgstr "Deutsch (traditionelle Rechtschreibung)"
 
 #: php-typography/lang/el-Mono.php:49
 msgid "Greek (Modern Monotonic)"
