@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: wp-Typography 3.0.0-beta1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-typography\n"
 "POT-Creation-Date: 2015-11-18 19:34:42+00:00\n"
-"PO-Revision-Date: 2015-12-28 23:28+0100\n"
+"PO-Revision-Date: 2015-12-29 12:34+0100\n"
 "Last-Translator: Peter Putzer <github@mundschenk.at>\n"
 "Language-Team: Peter Putzer <github@mundschenk.at>\n"
 "Language: de_DE\n"
@@ -605,115 +605,139 @@ msgstr ""
 msgid "German"
 msgstr "Deutsch"
 
-#: php-typography/diacritics/en-US.php:18 php-typography/lang/en-US.php:55
+#: php-typography/diacritics/en-US.php:18 php-typography/lang/en-US.php:59
 msgid "English (United States)"
 msgstr "Englisch (USA)"
 
-#: php-typography/lang/bg.php:60
+#: php-typography/lang/af.php:49
+msgid "Afrikaans"
+msgstr "Afrikaans"
+
+#: php-typography/lang/bg.php:65
 msgid "Bulgarian"
 msgstr "Bulgarisch"
 
-#: php-typography/lang/ca.php:142
+#: php-typography/lang/ca.php:145
 msgid "Catalan"
 msgstr "Katalanisch"
 
-#: php-typography/lang/cs.php:62
+#: php-typography/lang/cs.php:108
 msgid "Czech"
 msgstr "Tschechisch"
 
-#: php-typography/lang/cy.php:81
+#: php-typography/lang/cy.php:46
 msgid "Welsh"
 msgstr "Walisisch"
 
-#: php-typography/lang/da.php:91
+#: php-typography/lang/da.php:96
 msgid "Danish"
 msgstr "Dänisch"
 
 #: php-typography/lang/de-1901.php:52
 msgid "German (Traditional)"
-msgstr "Deutsch (traditionelle Rechtschreibung)"
+msgstr "Deutsch (alte Rechtschreibung)"
 
-#: php-typography/lang/el-Mono.php:49
+#: php-typography/lang/el-Mono.php:56
 msgid "Greek (Modern Monotonic)"
 msgstr "Griechisch (monotonisch)"
 
-#: php-typography/lang/el-Poly.php:49
+#: php-typography/lang/el-Poly.php:57
 msgid "Greek (Modern Polytonic)"
 msgstr "Griechisch (polytonisch)"
 
-#: php-typography/lang/en-GB.php:77
+#: php-typography/lang/en-GB.php:76
 msgid "English (United Kingdom)"
 msgstr "Englisch (UK)"
 
-#: php-typography/lang/es.php:117
+#: php-typography/lang/es.php:62
 msgid "Spanish"
 msgstr "Spanisch"
 
-#: php-typography/lang/et.php:97
+#: php-typography/lang/et.php:99
 msgid "Estonian"
 msgstr "Estnisch"
 
-#: php-typography/lang/eu.php:63
+#: php-typography/lang/eu.php:64
 msgid "Basque"
 msgstr "Baskisch"
 
-#: php-typography/lang/fi.php:95
+#: php-typography/lang/fi.php:97
 msgid "Finnish"
 msgstr "Finnisch"
 
-#: php-typography/lang/fr.php:123
+#: php-typography/lang/fr.php:125
 msgid "French"
 msgstr "Französisch"
 
-#: php-typography/lang/ga.php:117
+#: php-typography/lang/ga.php:122
 msgid "Irish"
 msgstr "Irisch"
 
-#: php-typography/lang/gl.php:38
+#: php-typography/lang/gl.php:39
 msgid "Galician"
 msgstr "Galicisch"
 
-#: php-typography/lang/grc.php:52
+#: php-typography/lang/grc.php:61
 msgid "Greek (Ancient)"
 msgstr "Griechisch (Altgriechisch)"
 
-#: php-typography/lang/hr.php:88
+#: php-typography/lang/hr.php:39
 msgid "Croatian"
 msgstr "Kroatisch"
 
-#: php-typography/lang/hu.php:29
+#: php-typography/lang/hu.php:65
 msgid "Hungarian"
 msgstr "Ungarisch"
 
-#: php-typography/lang/ia.php:109
+#: php-typography/lang/hy.php:41
+msgid "Armenian"
+msgstr "Armenisch"
+
+#: php-typography/lang/ia.php:112
 msgid "Interlingua"
 msgstr "Interlingua"
 
-#: php-typography/lang/id.php:130
+#: php-typography/lang/id.php:133
 msgid "Indonesian"
 msgstr "Indonesisch"
 
-#: php-typography/lang/is.php:96
+#: php-typography/lang/is.php:97
 msgid "Icelandic"
 msgstr "Isländisch"
 
-#: php-typography/lang/it.php:158
+#: php-typography/lang/it.php:64
 msgid "Italian"
 msgstr "Italienisch"
 
-#: php-typography/lang/la.php:194
+#: php-typography/lang/ka.php:55
+msgid "Georgian"
+msgstr "Georgisch"
+
+#: php-typography/lang/la-classic.php:56
+msgid "Latin (Classical)"
+msgstr "Latein (klassisch)"
+
+#: php-typography/lang/la.php:127
 msgid "Latin"
 msgstr "Latein"
 
-#: php-typography/lang/lt.php:54
+#: php-typography/lang/lt.php:66
 msgid "Lithuanian"
 msgstr "Litauisch"
 
-#: php-typography/lang/mn-Cyrl.php:124
+#: php-typography/lang/lv.php:33
+msgid "Latvian"
+msgstr "Lettisch"
+
+#: php-typography/lang/mn-Cyrl.php:105
 msgid "Mongolian (Cyrillic)"
 msgstr "Mongolisch (Kyrillisch)"
 
-#: php-typography/lang/no.php:126
+#: php-typography/lang/nl.php:184
+msgid "Dutch"
+msgstr "Niederländisch"
+
+#: php-typography/lang/no.php:70
 msgid "Norwegian"
 msgstr "Norwegisch"
 
@@ -721,7 +745,7 @@ msgstr "Norwegisch"
 msgid "Polish"
 msgstr "Polnisch"
 
-#: php-typography/lang/pt.php:103
+#: php-typography/lang/pt.php:105
 msgid "Portuguese"
 msgstr "Portugiesisch"
 
@@ -729,47 +753,55 @@ msgstr "Portugiesisch"
 msgid "Romanian"
 msgstr "Rumänisch"
 
-#: php-typography/lang/ru.php:95
+#: php-typography/lang/ru.php:96
 msgid "Russian"
 msgstr "Russisch"
 
-#: php-typography/lang/sa.php:35
+#: php-typography/lang/sa.php:38
 msgid "Sanskrit"
 msgstr "Sanskrit"
 
-#: php-typography/lang/sh-Cyrl.php:73
+#: php-typography/lang/sh-Cyrl.php:80
 msgid "Serbocroatian (Cyrillic)"
 msgstr "Serbokroatisch (Kyrillisch)"
 
-#: php-typography/lang/sh-Latn.php:74
+#: php-typography/lang/sh-Latn.php:80
 msgid "Serbocroatian (Latin)"
 msgstr "Serbokroatisch (Lateinisch)"
 
-#: php-typography/lang/sk.php:99
+#: php-typography/lang/sk.php:107
 msgid "Slovak"
 msgstr "Slowakisch"
 
-#: php-typography/lang/sl.php:110
+#: php-typography/lang/sl.php:113
 msgid "Slovenian"
 msgstr "Slowenisch"
 
-#: php-typography/lang/sr-Cyrl.php:94
+#: php-typography/lang/sr-Cyrl.php:99
 msgid "Serbian (Cyrillic)"
 msgstr "Serbisch (Kyrillisch)"
 
-#: php-typography/lang/sv.php:128
+#: php-typography/lang/sv.php:131
 msgid "Swedish"
 msgstr "Schwedisch"
 
-#: php-typography/lang/tr.php:42
+#: php-typography/lang/th.php:40
+msgid "Thai"
+msgstr "Thai"
+
+#: php-typography/lang/tk.php:37
+msgid "Turkmen"
+msgstr "Turkmenisch"
+
+#: php-typography/lang/tr.php:55
 msgid "Turkish"
 msgstr "Türkisch"
 
-#: php-typography/lang/uk.php:87
+#: php-typography/lang/uk.php:89
 msgid "Ukrainian"
 msgstr "Ukrainisch"
 
-#: php-typography/lang/zh-Latn.php:105
+#: php-typography/lang/zh-Latn.php:107
 msgid "Chinese pinyin (Latin)"
 msgstr "Chinesisch (Pinyin)"
 
