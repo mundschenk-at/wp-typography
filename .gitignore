@@ -14,5 +14,8 @@ build/*
 # SASS
 .sass-cache/*
 
-# Ignore generated code coverage files
+# ignore generated code coverage files
 tests/coverage/*
+
+# ignore dummy PHP file for language names
+php-typography/_language_names.php
