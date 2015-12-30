@@ -2,7 +2,7 @@
 
 Improve your web typography with:
 
-* Hyphenation &mdash; [over 40 languages supported](https://code.mundschenk.at/wp-typography/frequently-asked-questions/#what-hyphenation-language-patterns-are-included)
+* Hyphenation &mdash; [over 50 languages supported](https://code.mundschenk.at/wp-typography/frequently-asked-questions/#what-hyphenation-language-patterns-are-included)
 
 * Space control, including:
     * widow protection
