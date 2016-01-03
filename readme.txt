@@ -35,8 +35,8 @@ Improve your web typography with:
 
 wp‐Typography has the following requirements:
 
-* the host server must run PHP 5.3 or later
-* your installation of PHP 5.3+ must include the [mbstring extension](http://us3.php.net/manual/en/mbstring.installation.php) (most do)
+* the host server must run PHP 5.3.4 or later
+* your installation of PHP 5.3.4+ must include the [mbstring extension](http://us3.php.net/manual/en/mbstring.installation.php) (most do)
 * text must be encoded UTF‐8
 
 wp-Typography can easily be ported to any other PHP based content management system. It is based on original work by Jeffrey D. King. More information can be found [original wp-Typography homepage](http://kingdesk.com/projects/wp-typography/ "wp-Typography Homepage").
@@ -88,7 +88,8 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 
 == Changelog ==
 
-= 3.1.0 - December xx, 2015 =
+= 3.1.0 - January 3, 2016 =
+* Minimum PHP version updated to 5.3.4 (from 5.3.0) to ensure consistent handling of UTF-8 regular expressions.
 * Added workaround for insane NextGEN Gallery filter priority (props Itsacon).
 * Added "Clear Cache" button.
 * Changed internal option names to conform to WordPress standards (no camel case).

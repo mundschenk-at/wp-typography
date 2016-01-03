@@ -26,13 +26,9 @@ Improve your web typography with:
 
 wp‐Typography has the following requirements:
 
-* the host server must run PHP 5 or later
-* your installation of PHP 5 must include the [mbstring extension](http://us3.php.net/manual/en/mbstring.installation.php) (most do)
+* the host server must run PHP 5.3.4 or later
+* your installation of PHP 5.3.4+ must include the [mbstring extension](http://us3.php.net/manual/en/mbstring.installation.php) (most do)
 * text must be encoded UTF‐8
-* all markup must be valid xHTML syntax, specifically:
-    * every element must be closed
-    * every attribute must have a value enclosed in quotes
-    * tag names and attributes must be lowercase
 
 wp-Typography can easily be ported to any other PHP based content management system. The subdirectory `php-typography` assembles all typographic functionality (without any WordPress specific code) in an object oriented format that is ready for WordPress independent use.
 
