@@ -88,6 +88,9 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 
 == Changelog ==
 
+= 3.1.1 - January 5, 2016 =
+* Fixed fatal error when running on PHP 5.3 (use of $this in anonymous function).
+
 = 3.1.0 - January 3, 2016 =
 * Minimum PHP version updated to 5.3.4 (from 5.3.0) to ensure consistent handling of UTF-8 regular expressions.
 * Added workaround for insane NextGEN Gallery filter priority (props Itsacon).

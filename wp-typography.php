@@ -6,13 +6,13 @@
 	Description: Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 	Author: Peter Putzer
 	Author URI: https://code.mundschenk.at
-	Version: 3.1.0
+	Version: 3.1.1
 	License: GNU General Public License v2 or later
 	License URI: https://www.gnu.org/licenses/gpl-2.0.html
 	Text Domain: wp-typography
 	Domain Path: /translations
 
- 	Copyright 2014-2015 Peter Putzer.
+ 	Copyright 2014-2016 Peter Putzer.
 	Copyright 2012-2013 Marie Hogebrandt.
 	Coypright 2009-2011 KINGdesk, LLC.
 
