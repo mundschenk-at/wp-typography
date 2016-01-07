@@ -226,14 +226,19 @@ class WP_Typography {
 	/**
 	 * Set a transient and store the key.
 	 *
-	 * @param string $transient The transient key. Maximum length depends on WordPress version (for WP < 4.4 it is 45 characters)
-	 * @param mixed  $value The value to store.
-	 * @param number $duration The duration in seconds. Optional. Default 1 second.
+	 * @param string  $transient The transient key. Maximum length depends on WordPress version (for WP < 4.4 it is 45 characters)
+	 * @param mixed   $value The value to store.
+	 * @param number  $duration The duration in seconds. Optional. Default 1 second.
+	 * @param boolean $force Set the transient even if 'Disable Caching' is set to true.
 	 * @return boolean True if the transient could be set successfully.
 	 */
-	public function set_transient( $transient, $value, $duration = 1 ) {
-		$result = false;
+	public function set_transient( $transient, $value, $duration = 1, $force = false ) {
+		if ( ! $force && ! empty( $this->settings['typo_disable_caching'] ) ) {
+			// caching is disabled and not forced for this transient, so we bail
+			return false;
+		}
 
+		$result = false;
 		if ( $result = set_transient( $transient, $value, $duration ) ) {
 			// store $transient as keys to prevent duplicates
 			$this->transients[ $transient ] = true;
@@ -260,7 +265,7 @@ class WP_Typography {
 				$this->init_php_typo();
 
 				// Try again next time
-				$this->set_transient( $transient, $this->php_typo->save_state(), WEEK_IN_SECONDS );
+				$this->set_transient( $transient, $this->php_typo->save_state(), WEEK_IN_SECONDS, true );
 			}
 
 			// Settings won't be touched again, so cache the hash

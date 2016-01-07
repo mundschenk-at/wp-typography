@@ -775,13 +775,13 @@ sub {
 		// dynamically generate the list of hyphenation language patterns
 		if ( false === ( $languages = get_transient( $this->transient_names['hyphenate_languages'] ) ) ) {
 			$languages = \PHP_Typography\PHP_Typography::get_hyphenation_languages();
-			$this->plugin->set_transient( $this->transient_names['hyphenate_languages'], $languages, WEEK_IN_SECONDS );
+			$this->plugin->set_transient( $this->transient_names['hyphenate_languages'], $languages, WEEK_IN_SECONDS, true );
 		}
 		$this->admin_form_controls['typo_hyphenate_languages']['option_values'] = $languages;
 
 		if ( false === ( $languages = get_transient( $this->transient_names['diacritic_languages'] ) ) ) {
 			$languages = \PHP_Typography\PHP_Typography::get_diacritic_languages();
-			$this->plugin->set_transient( $this->transient_names['diacritic_languages'], $languages, WEEK_IN_SECONDS );
+			$this->plugin->set_transient( $this->transient_names['diacritic_languages'], $languages, WEEK_IN_SECONDS, true );
 		}
 		$this->admin_form_controls['typo_diacritic_languages']['option_values'] = $languages;
 
