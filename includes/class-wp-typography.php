@@ -340,6 +340,7 @@ class WP_Typography {
 			$this->php_typo->set_hyphenate_headings( $this->settings['typo_hyphenate_headings'] );
 			$this->php_typo->set_hyphenate_all_caps( $this->settings['typo_hyphenate_caps'] );
 			$this->php_typo->set_hyphenate_title_case( $this->settings['typo_hyphenate_title_case'] );
+			$this->php_typo->set_hyphenate_compounds( $this->settings['typo_hyphenate_compounds'] );
 			$this->php_typo->set_hyphenation_language( $this->settings['typo_hyphenate_languages'] );
 			$this->php_typo->set_min_length_hyphenation( $this->settings['typo_hyphenate_min_length'] );
 			$this->php_typo->set_min_before_hyphenation( $this->settings['typo_hyphenate_min_before'] );
