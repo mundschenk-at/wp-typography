@@ -336,6 +336,14 @@ class WP_Typography_Admin {
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 1,
 			),
+			'typo_hyphenate_compounds' => array(
+				'section' 		=> 'hyphenation',
+				'label' 		=> __( "%1\$s Allow hyphenation of the components of hyphenated compound words.", 'wp-typography' ),
+				'help_text' 	=> __( "Uncheck to disallow the hyphenation of the words making up a hyphenated compound (e.g. <samp>editor-in-chief</samp>).", 'wp-typography' ),
+				'control' 		=> 'input',
+				'input_type' 	=> 'checkbox',
+				'default' 		=> 1,
+			),
 			'typo_hyphenate_caps' => array(
 				'section' 		=> 'hyphenation',
 				'label' 		=> __( "%1\$s Hyphenate words in ALL CAPS.", 'wp-typography' ),
