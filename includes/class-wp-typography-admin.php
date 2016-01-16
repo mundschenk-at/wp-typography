@@ -298,6 +298,14 @@ class WP_Typography_Admin {
 				'control' 		=> 'textarea',
 				'default' 		=> "",
 			),
+			'typo_caching_limit' => array(
+				'section' 		=> 'general-scope',
+				'label' 		=> __( "Limit number of cached fragments to %1\$s.", 'wp-typography' ),
+				'help_text' 	=> __( "Set limit to <samp>0</samp> for unrestricted caching. Only recommend when used with an in-memory object cache implementation.", 'wp-typography' ),
+				'control' 		=> 'input',
+				'input_type' 	=> 'number',
+				'default' 		=> '1000',
+			),
 			'typo_disable_caching' => array(
 				'section' 		=> 'general-scope',
 				'label' 		=> __( "%1\$s Disable caching", 'wp-typography' ),
