@@ -581,6 +581,14 @@ class WP_Typography_Admin {
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 0,
 			),
+			'typo_french_punctuation_spacing' => array(
+				'section'		=> 'space-control',
+				'label' 		=> __( "%1\$s Apply French punctuation rules.", 'wp-typography' ),
+				'help_text' 	=> __( "This option adds a thin non-breakable space before <samp>?!:;</samp>.", 'wp-typography' ),
+				'control' 		=> 'input',
+				'input_type' 	=> 'checkbox',
+				'default' 		=> 0,
+			),
 			'typo_unit_spacing' => array(
 				'section'		=> 'space-control',
 				'fieldset' 		=> "values-and-units",
