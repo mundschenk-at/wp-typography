@@ -277,6 +277,7 @@ class WP_Typography_Admin {
 			 	'help_text' 	=> string Help Text,		// OPTIONAL
 			 	'control' 		=> string Control,			// REQUIRED
 			 	'input_type' 	=> string Control Type,		// OPTIONAL
+			 	'attributes'    => array HTML attributes,   // OPTIONAL
 			 	'option_values'	=> array(value=>text, ... )	// OPTIONAL, only for controls of type 'select'
 			 	'default' 		=> string Default Value,	// REQUIRED (although it may be an empty string)
 			 ),
@@ -318,6 +319,9 @@ class WP_Typography_Admin {
 				'help_text' 	=> __( "Set limit to <samp>0</samp> for unrestricted caching. Only recommend when used with an in-memory object cache implementation.", 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'number',
+				'attributes'    => array(
+					'min' => 0,
+				),
 				'default' 		=> '1000',
 			),
 			'typo_enable_hyphenation' => array(
@@ -815,9 +819,12 @@ sub {
 	 * @param array  $option_values {
 	 * 		Optional. Array of values and display strings in the form ($value => $display). Default empty.
 	 * }
+	 * @param array  $attributes {
+	 * 		Optional. Array of additional HTML attributes. Default empty.
+	 * }
 	 * @return string The markup for the control.
 	 */
-	function get_admin_form_control( $id, $control = 'input', $input_type = 'text', $label = null, $help_text = null, $option_values = null ) {
+	function get_admin_form_control( $id, $control = 'input', $input_type = 'text', $label = null, $help_text = null, $option_values = null, $attributes = null ) {
 		$button_class  = null;
 		$control_begin = '<div class="control">';
 		$control_end   = '</div>';
@@ -847,21 +854,29 @@ sub {
 			$value = null;
 		}
 
+		// Flatten attributes to string
+		$html_attributes = '';
+		if ( ! empty( $attributes ) ) {
+			foreach ( $attributes as $attr => $val ) {
+				$html_attributes .= $attr . '="' . esc_attr( $val ) . '"';
+			}
+		}
+
 		switch ( $control ) {
 			case 'textarea':
-				$control_markup = $this->get_admin_form_textarea( $id, $value, $label, $help_text );
+				$control_markup = $this->get_admin_form_textarea( $id, $value, $label, $help_text, $html_attributes );
 				break;
 
 			case 'select':
-				$control_markup = $this->get_admin_form_select( $id, $value, $label, $help_text, $option_values );
+				$control_markup = $this->get_admin_form_select( $id, $value, $label, $help_text, $option_values, $html_attributes );
 				break;
 
 			case 'input':
-				$control_markup = $this->get_admin_form_input( $id, $value, $input_type, $label, $help_text, $button_class );
+				$control_markup = $this->get_admin_form_input( $id, $value, $input_type, $label, $help_text, $button_class, $html_attributes );
 				break;
 
 			default:
-				error_log("Unsupported control <$control>.");
+				trigger_error( "Unsupported control <$control>.", E_USER_WARNING );
 				return '';
 		}
 
@@ -875,8 +890,9 @@ sub {
 	 * @param string $value
 	 * @param string $label
 	 * @param string $help
+	 * @param string $attributes
 	 */
-	private function get_admin_form_textarea( $id, $value, $label, $help ) {
+	private function get_admin_form_textarea( $id, $value, $label, $help, $attributes = '' ) {
 		if ( ( $label || $help ) ) {
 			$control_markup = "<label for='$id'>";
 
@@ -891,7 +907,7 @@ sub {
 			$control_markup .= '</label>';
 		}
 
-		return $control_markup . "<textarea id='$id' name='$id'>" . ( ! empty( $value ) ? $value : '') . "</textarea>";
+		return $control_markup . "<textarea id='$id' name='$id' $attributes>" . ( ! empty( $value ) ? $value : '') . "</textarea>";
 	}
 
 	/**
@@ -902,8 +918,9 @@ sub {
 	 * @param string $label
 	 * @param string $help
 	 * @param array  $option_values
+	 * @param string $attributes
 	 */
-	private function get_admin_form_select( $id, $value, $label, $help, $option_values ) {
+	private function get_admin_form_select( $id, $value, $label, $help, $option_values, $attributes = '' ) {
 		$control_markup = '';
 
 		if ( ( $label || $help ) ) {
@@ -924,7 +941,7 @@ sub {
 			$control_markup .= '%1$s';
 		}
 
-		$select_markup = "<select id='$id' name='$id' >";
+		$select_markup = "<select id='$id' name='$id' $attributes>";
 		foreach ( $option_values as $option_value => $display ) {
 			$select_markup .= "<option value='$option_value' " . selected( $value, $option_value, false ) . ">" . __( $display, 'wp-typography' ) . "</option>";
 		}
@@ -942,11 +959,26 @@ sub {
 	 * @param string $label
 	 * @param string $help
 	 * @param string $button_class
+	 * @param string $attributes
 	 */
-	private function get_admin_form_input( $id, $value, $input_type, $label, $help, $button_class = null ) {
+	private function get_admin_form_input( $id, $value, $input_type, $label, $help, $button_class = null, $attributes = '' ) {
 		$id_and_class = "id='$id' name='$id' ";          // default ID & name, no class (except for submit buttons)
-		$value_markup = $value ? "value='$value' " : ''; // default except for checkbox;
 
+		// values
+		switch ( $input_type ) {
+			case 'number':
+				$value_markup = 'value="' . esc_attr( $value ) . '" ';
+				break;
+
+			case 'checkbox':
+				$value_markup = "value='1' " . checked( $value, true, false );
+				break;
+
+			default:
+				$value_markup = $value ? "value='$value' " : '';
+		}
+
+		// control markup
 		switch( $input_type ) {
 			case 'submit':
 				$id_and_class = "name='$id' class='$button_class'"; // to avoid duplicate ids and some pretty stylin'
@@ -954,8 +986,6 @@ sub {
 				$control_markup = '%1$s';
 				break;
 
-			case 'checkbox':
-				$value_markup = "value='1' " . checked( $value, true, false );
 			default:
 				if ( $label || $help ) {
 					$control_markup = "<label for='$id'>";
@@ -975,6 +1005,9 @@ sub {
 					$control_markup = '%1$s';
 				}
 		}
+
+		// add additional attributes
+		$id_and_class .= " $attributes";
 
 		return sprintf( $control_markup, "<input type='$input_type' $id_and_class $value_markup/>" );
 	}
