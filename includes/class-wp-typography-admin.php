@@ -800,14 +800,25 @@ sub {
 	function get_admin_page_content() {
 		// dynamically generate the list of hyphenation language patterns
 		if ( false === ( $languages = get_transient( $this->transient_names['hyphenate_languages'] ) ) ) {
+			/**
+			 * Filter the caching duration for the language plugin lists.
+			 *
+			 * @since 3.2.0
+			 *
+			 * @param number $duration The duration in seconds. Defaults to 1 week.
+			 * @param string $list     The name language plugin list.
+			 */
+			$duration = apply_filters( 'typo_language_list_caching_duration', WEEK_IN_SECONDS, 'hyphenate_languages' );
 			$languages = \PHP_Typography\PHP_Typography::get_hyphenation_languages();
-			$this->plugin->set_transient( $this->transient_names['hyphenate_languages'], $languages, WEEK_IN_SECONDS, true );
+			$this->plugin->set_transient( $this->transient_names['hyphenate_languages'], $languages, $duration, true );
 		}
 		$this->admin_form_controls['typo_hyphenate_languages']['option_values'] = $languages;
 
 		if ( false === ( $languages = get_transient( $this->transient_names['diacritic_languages'] ) ) ) {
+			/** This filter is documented in class-wp-typography-admin.php */
+			$duration = apply_filters( 'typo_language_list_caching_duration', WEEK_IN_SECONDS, 'diacritic_languages' );
 			$languages = \PHP_Typography\PHP_Typography::get_diacritic_languages();
-			$this->plugin->set_transient( $this->transient_names['diacritic_languages'], $languages, WEEK_IN_SECONDS, true );
+			$this->plugin->set_transient( $this->transient_names['diacritic_languages'], $languages, $duration, true );
 		}
 		$this->admin_form_controls['typo_diacritic_languages']['option_values'] = $languages;
 

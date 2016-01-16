@@ -165,17 +165,28 @@ class WP_Typography {
 
 		// apply our filters
 		if ( ! is_admin() ) {
+			/**
+			 * Filter the priority used for wp-Typography's text processing filters.
+			 *
+			 * When NextGen Gallery is detected, the priority is set to PHP_INT_MAX.
+			 *
+			 * @since 3.2.0
+			 *
+			 * @param number $priority The filter priority. Default 9999.
+			 */
+			$priority = apply_filters( 'typo_filter_priority', $this->filter_priority );
+
 			// removed because it caused issues for feeds
 			// add_filter( 'bloginfo', array($this, 'processBloginfo'), 9999);
 			// add_filter( 'wp_title', 'strip_tags', 9999);
 			// add_filter( 'single_post_title', 'strip_tags', 9999);
-			add_filter( 'comment_author', array( $this, 'process' ),       $this->filter_priority );
-			add_filter( 'comment_text',   array( $this, 'process' ),       $this->filter_priority );
-			add_filter( 'the_title',      array( $this, 'process_title' ), $this->filter_priority );
-			add_filter( 'the_content',    array( $this, 'process' ),       $this->filter_priority );
-			add_filter( 'the_excerpt',    array( $this, 'process' ),       $this->filter_priority );
-			add_filter( 'widget_text',    array( $this, 'process' ),       $this->filter_priority );
-			add_filter( 'widget_title',   array( $this, 'process_title' ), $this->filter_priority );
+			add_filter( 'comment_author', array( $this, 'process' ),       $priority );
+			add_filter( 'comment_text',   array( $this, 'process' ),       $priority );
+			add_filter( 'the_title',      array( $this, 'process_title' ), $priority );
+			add_filter( 'the_content',    array( $this, 'process' ),       $priority );
+			add_filter( 'the_excerpt',    array( $this, 'process' ),       $priority );
+			add_filter( 'widget_text',    array( $this, 'process' ),       $priority );
+			add_filter( 'widget_title',   array( $this, 'process_title' ), $priority );
 		}
 
 		// add IE6 zero-width-space removal CSS Hook styling
@@ -204,19 +215,28 @@ class WP_Typography {
 		$typo = $this->get_php_typo();
 		$transient = 'typo_' . base64_encode( md5( $text, true ) . $this->cached_settings_hash );
 
+		/**
+		 * Filter the caching duration for processed text fragments.
+		 *
+		 * @since 3.2.0
+		 *
+		 * @param number $duration The duration in seconds. Defaults to 1 day.
+		 */
+		$duration = apply_filters( 'typo_processed_text_caching_duration', DAY_IN_SECONDS );
+
 		if ( is_feed() ) { // feed readers can be pretty stupid
 			$transient .= 'f' . ( $is_title ? 't' : 's' ) . $this->version_hash;
 
 			if ( ! empty( $this->settings['typo_disable_caching'] ) || false === ( $processed_text = get_transient( $transient ) ) ) {
 				$processed_text = $typo->process_feed( $text, $is_title );
-				$this->set_transient( $transient, $processed_text, DAY_IN_SECONDS );
+				$this->set_transient( $transient, $processed_text, $duration );
 			}
 		} else {
 			$transient .= ( $is_title ? 't' : 's' ) . $this->version_hash;
 
 			if ( ! empty( $this->settings['typo_disable_caching'] ) || false === ( $processed_text = get_transient( $transient ) ) ) {
 				$processed_text = $typo->process( $text, $is_title );
-				$this->set_transient( $transient, $processed_text, DAY_IN_SECONDS );
+				$this->set_transient( $transient, $processed_text, $duration );
 			}
 		}
 
@@ -269,8 +289,17 @@ class WP_Typography {
 				// Load our settings into the instance
 				$this->init_php_typo();
 
+				/**
+				 * Filter the caching duration for the PHP_Typography engine state.
+				 *
+				 * @since 3.2.0
+				 *
+				 * @param number $duration The duration in seconds. Defaults to 1 week.
+				 */
+				$duration = apply_filters( 'typo_php_typography_caching_duration', WEEK_IN_SECONDS );
+
 				// Try again next time
-				$this->set_transient( $transient, $this->php_typo->save_state(), WEEK_IN_SECONDS, true );
+				$this->set_transient( $transient, $this->php_typo->save_state(), $duration, true );
 			}
 
 			// Settings won't be touched again, so cache the hash
