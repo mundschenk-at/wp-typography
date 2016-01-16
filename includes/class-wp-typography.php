@@ -238,6 +238,11 @@ class WP_Typography {
 			return false;
 		}
 
+		if ( ! empty( $this->settings['typo_caching_limit'] ) && count( $this->transients ) >= $this->settings['typo_caching_limit'] ) {
+			// too many cached entries - clean up transients
+			$this->clear_cache();
+		}
+
 		$result = false;
 		if ( $result = set_transient( $transient, $value, $duration ) ) {
 			// store $transient as keys to prevent duplicates

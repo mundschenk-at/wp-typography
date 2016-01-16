@@ -49,7 +49,8 @@
 																		isset( $admin_form_control['input_type'] )    ? $admin_form_control['input_type']    : null,
 																		isset( $admin_form_control['label'] )         ? $admin_form_control['label']         : null,
 																		isset( $admin_form_control['help_text'] )     ? $admin_form_control['help_text']     : null,
-																		isset( $admin_form_control['option_values'] ) ? $admin_form_control['option_values'] : null );
+																		isset( $admin_form_control['option_values'] ) ? $admin_form_control['option_values'] : null,
+																		isset( $admin_form_control['attributes'] )    ? $admin_form_control['attributes']    : null );
 								}
 							}
 							if ( ! empty( $fieldset_id ) ) { // we have an unclosed fieldset
