@@ -696,6 +696,14 @@ class WP_Typography_Admin {
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 0,
 			),
+			'typo_style_hanging_punctuation' => array(
+				'section' 		=> 'css-hooks',
+				'label' 		=> __( "%1\$s Wrap punctuation [ <samp>\"&ldquo;&rdquo;&Prime;'&lquo;&squo;&apos;&prime;</samp> ] with <samp>&lt;span class=\"push-(single|double)\"&gt;&lt;span class=\"pull-(single|double)\"&gt;</samp>.", 'wp-typography' ),
+				'help_text'     => __( 'Note: The amount of push/pull should be adjusted for your selected font in the stylesheet.', 'wp-typography' ),
+				'control' 		=> 'input',
+				'input_type' 	=> 'checkbox',
+				'default' 		=> 0,
+			),
 			'typo_style_initial_quotes' => array(
 				'section' 		=> 'css-hooks',
 				'label' 		=> __( "%1\$s Wrap initial quotes", 'wp-typography' ),
@@ -750,6 +758,14 @@ sub {
 .quo {
 	margin-left:-.2em;
 }
+/* Double quote (") marks */
+.pull-double{ margin-left:-.38em }
+.push-double{ margin-right:.38em }
+
+/* Single quote (\') marks */
+.pull-single{ margin-left:-.15em }
+.push-single{ margin-right:.15em }
+
 /* because formatting .numbers should consider your current font settings, we will not style it here */
 '
 			),

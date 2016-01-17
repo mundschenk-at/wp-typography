@@ -367,6 +367,7 @@ class WP_Typography {
 		$this->php_typo->set_style_ampersands( $this->settings['typo_style_amps'] );
 		$this->php_typo->set_style_caps( $this->settings['typo_style_caps'] );
 		$this->php_typo->set_style_numbers( $this->settings['typo_style_numbers'] );
+		$this->php_typo->set_style_hanging_punctuation( $this->settings['typo_style_hanging_punctuation'] );
 		$this->php_typo->set_style_initial_quotes( $this->settings['typo_style_initial_quotes'] );
 		$this->php_typo->set_initial_quote_tags( $this->settings['typo_initial_quote_tags'] );
 
