@@ -698,8 +698,8 @@ class WP_Typography_Admin {
 			),
 			'typo_style_hanging_punctuation' => array(
 				'section' 		=> 'css-hooks',
-				'label' 		=> __( "%1\$s Wrap punctuation [ <samp>\"&ldquo;&rdquo;&Prime;'&lquo;&squo;&apos;&prime;</samp> ] with <samp>&lt;span class=\"push-(single|double)\"&gt;&lt;span class=\"pull-(single|double)\"&gt;</samp>.", 'wp-typography' ),
-				'help_text'     => __( 'Note: The amount of push/pull should be adjusted for your selected font in the stylesheet.', 'wp-typography' ),
+				'label' 		=> __( "%1\$s Wrap small punctuation marks", 'wp-typography' ),
+				'help_text' 	=> __( "Note: The amount of push/pull should be adjusted for your selected font in the stylesheet. <br />Single quote-like marks [ <samp>&#8218;&lsquo;&apos;&prime;'</samp> ] are wrapped with <samp>&lt;span class=\"pull-single\"&gt;</samp>. <br />Double quote-like marks [ <samp>&#8222;&ldquo;&Prime;\"</samp> ] are wrapped with <samp>&lt;span class=\"pull-double\"&gt;</samp>. <br/>For punctuation marks that do not begin a block of text, a corresponding empty <samp>&lt;span class=\"push-&hellip;\"&gt;</samp> ensures proper alignment within the line.", 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 0,
