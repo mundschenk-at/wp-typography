@@ -133,6 +133,8 @@ class WP_Typography {
 	public static function _get_instance( $version, $basename = 'wp-typography/wp-typography.php' ) {
 		if ( ! self::$_instance ) {
 			self::$_instance = new self( $version, $basename );
+		} else {
+			_doing_it_wrong( __FUNCTION__, 'WP_Typography::_get_instance called more than once.', '3.2.0' );
 		}
 
 		return self::$_instance;
