@@ -102,7 +102,7 @@ class WP_Typography_Setup {
 
 		// Each version should get it's own if-block
 		if ( version_compare( $previous_version, '3.1.0-beta.2', '<' ) ) {
-			error_log( "Uppgrading wp-Typography from " . ( $previous_version ? $previous_version : '< 3.1.0') );
+			error_log( "Upgrading wp-Typography from " . ( $previous_version ? $previous_version : '< 3.1.0') );
 
 			foreach( $this->plugin->get_default_options() as $option_name => $option ) {
 				$old_option = $this->get_old_option_name( $option_name );
@@ -118,6 +118,9 @@ class WP_Typography_Setup {
 					}
 				}
 			}
+		}
+		if ( version_compare( $previous_version, '3.2.0-beta.1', '<' ) ) {
+			delete_option( 'typo_disable_caching' );
 		}
 
 		update_option( 'typo_installed_version', $this->plugin->get_version() );

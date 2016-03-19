@@ -303,11 +303,11 @@ class WP_Typography_Admin {
 				'control' 		=> 'textarea',
 				'default' 		=> "",
 			),
-			'typo_disable_caching' => array(
+			'typo_enable_caching' => array(
 				'section' 		=> 'general-scope',
 				'fieldset'      => 'caching',
-				'label' 		=> __( "%1\$s Disable caching", 'wp-typography' ),
-				'help_text' 	=> __( "Prevents processed text from being cached (normally only needed for debugging purposes).", 'wp-typography' ),
+				'label' 		=> __( "%1\$s Enable caching", 'wp-typography' ),
+				'help_text' 	=> __( "Caches processed text fragments. Can cause major database growth when used without a separate object cache implementation.", 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 0,

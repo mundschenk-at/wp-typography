@@ -262,14 +262,14 @@ class WP_Typography {
 		if ( is_feed() ) { // feed readers can be pretty stupid
 			$transient .= 'f' . ( $is_title ? 't' : 's' ) . $this->version_hash;
 
-			if ( ! empty( $this->settings['typo_disable_caching'] ) || false === ( $processed_text = get_transient( $transient ) ) ) {
+			if ( empty( $this->settings['typo_enable_caching'] ) || false === ( $processed_text = get_transient( $transient ) ) ) {
 				$processed_text = $typo->process_feed( $text, $is_title );
 				$this->set_transient( $transient, $processed_text, $duration );
 			}
 		} else {
 			$transient .= ( $is_title ? 't' : 's' ) . $this->version_hash;
 
-			if ( ! empty( $this->settings['typo_disable_caching'] ) || false === ( $processed_text = get_transient( $transient ) ) ) {
+			if ( empty( $this->settings['typo_enable_caching'] ) || false === ( $processed_text = get_transient( $transient ) ) ) {
 				$processed_text = $typo->process( $text, $is_title );
 				$this->set_transient( $transient, $processed_text, $duration );
 			}
@@ -288,7 +288,7 @@ class WP_Typography {
 	 * @return boolean True if the transient could be set successfully.
 	 */
 	public function set_transient( $transient, $value, $duration = 1, $force = false ) {
-		if ( ! $force && ! empty( $this->settings['typo_disable_caching'] ) ) {
+		if ( ! $force && empty( $this->settings['typo_enable_caching'] ) ) {
 			// caching is disabled and not forced for this transient, so we bail
 			return false;
 		}
