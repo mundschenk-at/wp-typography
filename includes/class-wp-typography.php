@@ -100,12 +100,19 @@ class WP_Typography {
 	private $filter_priority = 9999;
 
 	/**
-	 * Sets up a new wpTypography object.
+	 * The singleton instance.
+	 *
+	 * @var WP_Typography
+	 */
+	private static $_instance;
+
+	/**
+	 * Sets up a new WP_Typography object.
 	 *
 	 * @param string $version  The full plugin version string (e.g. "3.0.0-beta.2")
 	 * @param string $basename The result of plugin_basename() for the main plugin file.
 	 */
-	function __construct( $version, $basename = 'wp-typography/wp-typography.php' ) {
+	private function __construct( $version, $basename = 'wp-typography/wp-typography.php' ) {
 		// basic set-up
 		$this->version           = $version;
 		$this->version_hash      = $this->hash_version_string( $version );
@@ -115,6 +122,32 @@ class WP_Typography {
 		// admin handler
 		$this->admin             = new WP_Typography_Admin( $basename, $this );
 		$this->default_settings  = $this->admin->get_default_settings();
+	}
+
+	/**
+	 * Create & retrieve the WP_Typography instance. Should not be called outside of plugin set-up.
+	 *
+	 * @param string $version  The full plugin version string (e.g. "3.0.0-beta.2")
+	 * @param string $basename The result of plugin_basename() for the main plugin file.
+	 */
+	public static function _get_instance( $version, $basename = 'wp-typography/wp-typography.php' ) {
+		if ( ! self::$_instance ) {
+			self::$_instance = new self( $version, $basename );
+		}
+
+		return self::$_instance;
+	}
+
+	/**
+	 * Retrieve the plugin instance.
+	 */
+	public static function get_instance() {
+    	if ( ! self::$_instance ) {
+    		_doing_it_wrong( __FUNCTION__, 'WP_Typography::get_instance called without plugin intialization.', '3.2.0' );
+			return self::_get_instance( '0.0.0' ); // fallback with invalid version
+		}
+
+		return self::$_instance;
 	}
 
 	/**

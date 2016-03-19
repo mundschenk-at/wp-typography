@@ -62,7 +62,7 @@ function run_wp_typography() {
 		$version = $plugin_data['Version'];
 
 		// create the plugin
-		$plugin = new WP_Typography( $version, plugin_basename( __FILE__ ) );
+		$plugin = WP_Typography::_get_instance( $version, plugin_basename( __FILE__ ) );
 
 		// register activation & deactivation hooks
 		$setup = new WP_Typography_Setup( 'wp-typography', $plugin );
