@@ -210,6 +210,7 @@ class WP_Typography {
 			add_filter( 'comment_author',    array( $this, 'process' ),       $priority );
 			add_filter( 'comment_text',      array( $this, 'process' ),       $priority );
 			add_filter( 'comment_text',      array( $this, 'process' ),       $priority );
+			add_filter( 'the_content',       array( $this, 'process' ),       $priority );
 			add_filter( 'term_name',         array( $this, 'process' ),       $priority );
 			add_filter( 'term_description',  array( $this, 'process' ),       $priority );
 			add_filter( 'link_name',         array( $this, 'process' ),       $priority );
