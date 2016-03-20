@@ -209,12 +209,25 @@ class WP_Typography {
 			// add_filter( 'single_post_title', 'strip_tags', 9999);
 			add_filter( 'comment_author',    array( $this, 'process' ),       $priority );
 			add_filter( 'comment_text',      array( $this, 'process' ),       $priority );
-			add_filter( 'the_content',       array( $this, 'process' ),       $priority );
+			add_filter( 'comment_text',      array( $this, 'process' ),       $priority );
+			add_filter( 'term_name',         array( $this, 'process' ),       $priority );
+			add_filter( 'term_description',  array( $this, 'process' ),       $priority );
+			add_filter( 'link_name',         array( $this, 'process' ),       $priority );
+			add_filter( 'wp_title',          array( $this, 'process' ),       $priority );
 			add_filter( 'the_excerpt',       array( $this, 'process' ),       $priority );
+			add_filter( 'the_excerpt_embed', array( $this, 'process' ),       $priority );
 			add_filter( 'widget_text',       array( $this, 'process' ),       $priority );
-			add_filter( 'the_title',         array( $this, 'process_title' ), $priority );
-			add_filter( 'single_post_title', array( $this, 'process_title' ), $priority );
-			add_filter( 'widget_title',      array( $this, 'process_title' ), $priority );
+
+			add_filter( 'the_title',            array( $this, 'process_title' ), $priority );
+			add_filter( 'single_post_title',    array( $this, 'process_title' ), $priority );
+			add_filter( 'single_cat_title',     array( $this, 'process_title' ), $priority );
+			add_filter( 'single_tag_title',     array( $this, 'process_title' ), $priority );
+			add_filter( 'single_month_title',   array( $this, 'process_title' ), $priority );
+			add_filter( 'single_month_title',   array( $this, 'process_title' ), $priority );
+			add_filter( 'nav_menu_attr_title',  array( $this, 'process_title' ), $priority );
+			add_filter( 'nav_menu_description', array( $this, 'process_title' ), $priority );
+			add_filter( 'widget_title',         array( $this, 'process_title' ), $priority );
+			add_filter( 'list_cats',            array( $this, 'process_title' ), $priority );
 		}
 
 		// add IE6 zero-width-space removal CSS Hook styling
