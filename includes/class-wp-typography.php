@@ -185,17 +185,9 @@ class WP_Typography {
 			$this->settings[ $key ] = get_option( $key );
 		}
 
-		// Remove default Texturize filter if it conflicts.
+		// disable wptexturize filter if it conflicts with our settings
 		if ( $this->settings['typo_smart_characters'] && ! is_admin() ) {
-			remove_filter( 'category_description', 'wptexturize' ); // TODO: necessary?
-			remove_filter( 'single_post_title',    'wptexturize' ); // TODO: necessary?
-			remove_filter( 'comment_author',       'wptexturize' );
-			remove_filter( 'comment_text',         'wptexturize' );
-			remove_filter( 'the_title',            'wptexturize' );
-			remove_filter( 'the_content',          'wptexturize' );
-			remove_filter( 'the_excerpt',          'wptexturize' );
-			remove_filter( 'widget_text',          'wptexturize' );
-			remove_filter( 'widget_title',         'wptexturize' );
+			add_filter( 'run_wptexturize', '__return_false' );
 		}
 
 		// apply our filters
@@ -215,13 +207,14 @@ class WP_Typography {
 			// add_filter( 'bloginfo', array($this, 'processBloginfo'), 9999);
 			// add_filter( 'wp_title', 'strip_tags', 9999);
 			// add_filter( 'single_post_title', 'strip_tags', 9999);
-			add_filter( 'comment_author', array( $this, 'process' ),       $priority );
-			add_filter( 'comment_text',   array( $this, 'process' ),       $priority );
-			add_filter( 'the_title',      array( $this, 'process_title' ), $priority );
-			add_filter( 'the_content',    array( $this, 'process' ),       $priority );
-			add_filter( 'the_excerpt',    array( $this, 'process' ),       $priority );
-			add_filter( 'widget_text',    array( $this, 'process' ),       $priority );
-			add_filter( 'widget_title',   array( $this, 'process_title' ), $priority );
+			add_filter( 'comment_author',    array( $this, 'process' ),       $priority );
+			add_filter( 'comment_text',      array( $this, 'process' ),       $priority );
+			add_filter( 'the_content',       array( $this, 'process' ),       $priority );
+			add_filter( 'the_excerpt',       array( $this, 'process' ),       $priority );
+			add_filter( 'widget_text',       array( $this, 'process' ),       $priority );
+			add_filter( 'the_title',         array( $this, 'process_title' ), $priority );
+			add_filter( 'single_post_title', array( $this, 'process_title' ), $priority );
+			add_filter( 'widget_title',      array( $this, 'process_title' ), $priority );
 		}
 
 		// add IE6 zero-width-space removal CSS Hook styling
