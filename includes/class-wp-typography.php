@@ -493,7 +493,7 @@ class WP_Typography {
 		}
 
 		if ( $this->settings['typo_hyphenate_safari_font_workaround'] ) {
-			echo "<style type=\"text/css\">body {-webkit-font-feature-settings: \"liga\", \"dlig\";font-feature-settings: \"liga\", \"dlig\";}</style>\r\n";
+			echo "<style type=\"text/css\">body {-webkit-font-feature-settings: \"liga\";font-feature-settings: \"liga\";}</style>\r\n";
 		}
 	}
 

@@ -88,6 +88,9 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 
 == Changelog ==
 
+= 3.2.3 - unreleased =
+* Made Safari rendering bug workaround less aggressive by not enabling discretionary ligatures.
+
 = 3.2.2 - March 22, 2016 =
 * Fixed Safari rendering bug workaround on Safari 9.1 (Mac OS X 10.11.4).
 
