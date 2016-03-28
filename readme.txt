@@ -3,7 +3,7 @@ Contributors: pputzer
 Tags: typography, hyphenation, smart quotes, quote marks, smartypants, typogrify, quotes, prettify, widows, orphans, small caps, diacritics
 Requires at least: 4.0
 Tested up to: 4.5
-Stable tag: 3.2.2
+Stable tag: 3.2.3
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
@@ -88,7 +88,7 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 
 == Changelog ==
 
-= 3.2.3 - unreleased =
+= 3.2.3 - March 28, 2016 =
 * Made Safari rendering bug workaround less aggressive by not enabling discretionary ligatures.
 
 = 3.2.2 - March 22, 2016 =
