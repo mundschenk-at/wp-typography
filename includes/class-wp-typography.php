@@ -207,6 +207,8 @@ class WP_Typography {
 			// add_filter( 'bloginfo', array($this, 'processBloginfo'), 9999);
 			// add_filter( 'wp_title', 'strip_tags', 9999);
 			// add_filter( 'single_post_title', 'strip_tags', 9999);
+
+			// "full" content
 			add_filter( 'comment_author',    array( $this, 'process' ),       $priority );
 			add_filter( 'comment_text',      array( $this, 'process' ),       $priority );
 			add_filter( 'comment_text',      array( $this, 'process' ),       $priority );
@@ -214,11 +216,11 @@ class WP_Typography {
 			add_filter( 'term_name',         array( $this, 'process' ),       $priority );
 			add_filter( 'term_description',  array( $this, 'process' ),       $priority );
 			add_filter( 'link_name',         array( $this, 'process' ),       $priority );
-			add_filter( 'wp_title',          array( $this, 'process' ),       $priority );
 			add_filter( 'the_excerpt',       array( $this, 'process' ),       $priority );
 			add_filter( 'the_excerpt_embed', array( $this, 'process' ),       $priority );
 			add_filter( 'widget_text',       array( $this, 'process' ),       $priority );
 
+			// headings
 			add_filter( 'the_title',            array( $this, 'process_title' ), $priority );
 			add_filter( 'single_post_title',    array( $this, 'process_title' ), $priority );
 			add_filter( 'single_cat_title',     array( $this, 'process_title' ), $priority );
@@ -229,6 +231,9 @@ class WP_Typography {
 			add_filter( 'nav_menu_description', array( $this, 'process_title' ), $priority );
 			add_filter( 'widget_title',         array( $this, 'process_title' ), $priority );
 			add_filter( 'list_cats',            array( $this, 'process_title' ), $priority );
+
+			// extra care needs to be taken with the <title> tag
+			add_filter( 'wp_title', array( $this, 'process_feed' ), $priority );
 		}
 
 		// add IE6 zero-width-space removal CSS Hook styling
@@ -237,7 +242,7 @@ class WP_Typography {
 
 
 	/**
-	 * Process title text fragment.
+	 * Process heading text fragment.
 	 *
 	 * Calls `process( $text, true )`.
 	 *
@@ -248,12 +253,27 @@ class WP_Typography {
 	}
 
 	/**
+	 * Process text as feed.
+	 *
+	 * Calls `process( $text, $is_title, true )`.
+	 *
+	 * @since 3.2.4
+	 *
+	 * @param string $text
+	 * @param boolean $is_heading Default false.
+	 */
+	function process_feed( $text, $is_heading = false ) {
+		return $this->process( $text, $is_heading, true );
+	}
+
+	/**
 	 * Process text fragment.
 	 *
 	 * @param string $text
-	 * @param boolean $is_title Default false.
+	 * @param boolean $is_heading Default false.
+	 * @param boolean $force_feed Default false. @since 3.2.4
 	 */
-	function process( $text, $is_title = false ) {
+	function process( $text, $is_heading = false, $force_feed = false ) {
 		$typo = $this->get_php_typo();
 		$transient = 'typo_' . base64_encode( md5( $text, true ) . $this->cached_settings_hash );
 
@@ -266,18 +286,18 @@ class WP_Typography {
 		 */
 		$duration = apply_filters( 'typo_processed_text_caching_duration', DAY_IN_SECONDS );
 
-		if ( is_feed() ) { // feed readers can be pretty stupid
-			$transient .= 'f' . ( $is_title ? 't' : 's' ) . $this->version_hash;
+		if ( is_feed() || $force_feed ) { // feed readers can be pretty stupid
+			$transient .= 'f' . ( $is_heading ? 't' : 's' ) . $this->version_hash;
 
 			if ( empty( $this->settings['typo_enable_caching'] ) || false === ( $processed_text = get_transient( $transient ) ) ) {
-				$processed_text = $typo->process_feed( $text, $is_title );
+				$processed_text = $typo->process_feed( $text, $is_heading );
 				$this->set_transient( $transient, $processed_text, $duration );
 			}
 		} else {
-			$transient .= ( $is_title ? 't' : 's' ) . $this->version_hash;
+			$transient .= ( $is_heading ? 't' : 's' ) . $this->version_hash;
 
 			if ( empty( $this->settings['typo_enable_caching'] ) || false === ( $processed_text = get_transient( $transient ) ) ) {
-				$processed_text = $typo->process( $text, $is_title );
+				$processed_text = $typo->process( $text, $is_heading );
 				$this->set_transient( $transient, $processed_text, $duration );
 			}
 		}
