@@ -3,7 +3,7 @@ Contributors: pputzer
 Tags: typography, hyphenation, smart quotes, quote marks, smartypants, typogrify, quotes, prettify, widows, orphans, small caps, diacritics
 Requires at least: 4.0
 Tested up to: 4.5
-Stable tag: 3.2.2
+Stable tag: 3.2.4
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
@@ -88,7 +88,10 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 
 == Changelog ==
 
-= 3.2.3 - unreleased =
+= 3.2.4 - April 04, 2016 =
+* Fixed filtering of `<title>` tag (do only smart character replacement).
+
+= 3.2.3 - March 28, 2016 =
 * Made Safari rendering bug workaround less aggressive by not enabling discretionary ligatures.
 
 = 3.2.2 - March 22, 2016 =
@@ -98,8 +101,8 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 * Accidentally, the filter for `the_content` was dropped in the version 3.2.0.
 
 = 3.2.0 - March 20, 2016 =
-* Added support for the French punctuation style (thin non-breakable space before ;:?!).
-* Added proper hyphenation of hyphenated compound words (e.g. editor-in-chief).
+* Added support for the French punctuation style (thin non-breakable space before `;:?!`).
+* Added proper hyphenation of hyphenated compound words (e.g. `editor-in-chief`).
 * Added partial support for styling hanging punctuation.
 * Added adjustable limit for the number of cached text fragments.
 * Changed behavior of caching setting: it needs to be explicitely enabled. Having it on by default caused too many problems on shared hosting environments.
