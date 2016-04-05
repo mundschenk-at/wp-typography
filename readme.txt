@@ -3,7 +3,7 @@ Contributors: pputzer
 Tags: typography, hyphenation, smart quotes, quote marks, smartypants, typogrify, quotes, prettify, widows, orphans, small caps, diacritics
 Requires at least: 4.0
 Tested up to: 4.5
-Stable tag: 3.2.5
+Stable tag: 3.2.6
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
@@ -87,6 +87,9 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 1. wp-Typography administrative settings page
 
 == Changelog ==
+
+= 3.2.6 - April 05, 2016 =
+* Fixed autoloading issue on frontpage. Sorry!
 
 = 3.2.5 - April 05, 2016 =
 * Properly handle `<title>` in WordPress 4.4 or higher (props TimThemann).
