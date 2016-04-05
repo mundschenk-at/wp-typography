@@ -233,7 +233,8 @@ class WP_Typography {
 			add_filter( 'list_cats',            array( $this, 'process_title' ), $priority );
 
 			// extra care needs to be taken with the <title> tag
-			add_filter( 'wp_title', array( $this, 'process_feed' ), $priority );
+			add_filter( 'wp_title',             array( $this, 'process_feed' ),        $priority ); // WP < 4.4
+			add_filter( 'document_title_parts', array( $this, 'process_title_parts' ), $priority );
 		}
 
 		// add IE6 zero-width-space removal CSS Hook styling
@@ -260,20 +261,36 @@ class WP_Typography {
 	 * @since 3.2.4
 	 *
 	 * @param string $text
-	 * @param boolean $is_heading Default false.
+	 * @param boolean $is_title Default false.
 	 */
-	function process_feed( $text, $is_heading = false ) {
-		return $this->process( $text, $is_heading, true );
+	function process_feed( $text, $is_title = false ) {
+		return $this->process( $text, $is_title, true );
+	}
+
+	/**
+	 * Process title parts and strip &shy; and zero-width space.
+	 *
+	 * @since 3.2.5
+	 *
+	 * @param array $title_parts An array of strings.
+	 */
+	function process_title_parts( $title_parts ) {
+		foreach ( $title_parts as $index => $part ) {
+			// &shy; and &#8203; after processing title part
+			$title_parts[ $index ] = str_replace( array( \PHP_Typography\uchr(173), \PHP_Typography\uchr(8203) ), '', $this->process( $part, true, true ) );
+		}
+
+		return $title_parts;
 	}
 
 	/**
 	 * Process text fragment.
 	 *
 	 * @param string $text
-	 * @param boolean $is_heading Default false.
+	 * @param boolean $is_title Default false.
 	 * @param boolean $force_feed Default false. @since 3.2.4
 	 */
-	function process( $text, $is_heading = false, $force_feed = false ) {
+	function process( $text, $is_title = false, $force_feed = false ) {
 		$typo = $this->get_php_typo();
 		$transient = 'typo_' . base64_encode( md5( $text, true ) . $this->cached_settings_hash );
 
@@ -287,17 +304,17 @@ class WP_Typography {
 		$duration = apply_filters( 'typo_processed_text_caching_duration', DAY_IN_SECONDS );
 
 		if ( is_feed() || $force_feed ) { // feed readers can be pretty stupid
-			$transient .= 'f' . ( $is_heading ? 't' : 's' ) . $this->version_hash;
+			$transient .= 'f' . ( $is_title ? 't' : 's' ) . $this->version_hash;
 
 			if ( empty( $this->settings['typo_enable_caching'] ) || false === ( $processed_text = get_transient( $transient ) ) ) {
-				$processed_text = $typo->process_feed( $text, $is_heading );
+				$processed_text = $typo->process_feed( $text, $is_title );
 				$this->set_transient( $transient, $processed_text, $duration );
 			}
 		} else {
-			$transient .= ( $is_heading ? 't' : 's' ) . $this->version_hash;
+			$transient .= ( $is_title ? 't' : 's' ) . $this->version_hash;
 
 			if ( empty( $this->settings['typo_enable_caching'] ) || false === ( $processed_text = get_transient( $transient ) ) ) {
-				$processed_text = $typo->process( $text, $is_heading );
+				$processed_text = $typo->process( $text, $is_title );
 				$this->set_transient( $transient, $processed_text, $duration );
 			}
 		}
