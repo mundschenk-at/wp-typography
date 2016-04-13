@@ -275,6 +275,11 @@ class WP_Typography {
 	 * @param array $title_parts An array of strings.
 	 */
 	function process_title_parts( $title_parts ) {
+		/**
+		 * We need a utility function that's not autoloaded.
+		 */
+		require_once dirname( __DIR__ ) . '/php-typography/php-typography-functions.php'; // @codeCoverageIgnore
+
 		foreach ( $title_parts as $index => $part ) {
 			// &shy; and &#8203; after processing title part
 			$title_parts[ $index ] = str_replace( array( \PHP_Typography\uchr(173), \PHP_Typography\uchr(8203) ), '', $this->process( $part, true, true ) );
