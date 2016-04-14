@@ -122,6 +122,9 @@ class WP_Typography_Setup {
 		if ( version_compare( $previous_version, '3.2.0-beta.1', '<' ) ) {
 			delete_option( 'typo_disable_caching' );
 		}
+		if ( version_compare( $previous_version, '3.3.0-alpha.2', '<' ) ) {
+			delete_option( 'typo_remove_ie6' );
+		}
 
 		update_option( 'typo_installed_version', $this->plugin->get_version() );
 	}

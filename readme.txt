@@ -88,6 +88,9 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 
 == Changelog ==
 
+= 3.3.0 - unreleased =
+* Removed IE6 references and workarounds. He's dead, Jim.
+
 = 3.2.6 - April 05, 2016 =
 * Fixed autoloading issue on frontpage. Sorry!
 

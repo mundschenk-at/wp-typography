@@ -525,15 +525,6 @@ class WP_Typography {
 			echo "</style>\r\n";
 		}
 
-		if ( $this->settings['typo_remove_ie6'] ) {
-			echo "<!--[if lt IE 7]>\r\n";
-			echo "<script type='text/javascript'>";
-			echo "function stripZWS() { document.body.innerHTML = document.body.innerHTML.replace(/\u200b/gi,''); }";
-			echo "window.onload = stripZWS;";
-			echo "</script>\r\n";
-			echo "<![endif]-->\r\n";
-		}
-
 		if ( $this->settings['typo_hyphenate_safari_font_workaround'] ) {
 			echo "<style type=\"text/css\">body {-webkit-font-feature-settings: \"liga\";font-feature-settings: \"liga\";}</style>\r\n";
 		}

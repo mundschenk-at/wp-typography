@@ -560,7 +560,7 @@ class WP_Typography_Admin {
 			),
 			'typo_dash_spacing' => array(
 				'section'		=> 'space-control',
-				'label' 		=> __( "%1\$s Force thin spaces between em &amp; en dashes and adjoining words.  This will display poorly in IE6 with some fonts (like Tahoma) and in rare instances in WebKit browsers (Safari and Chrome).", 'wp-typography' ),
+				'label' 		=> __( "%1\$s Force thin spaces between em &amp; en dashes and adjoining words.", 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 0,
@@ -665,15 +665,6 @@ class WP_Typography_Admin {
 				'control' 		=> 'select',
 				'option_values'	=> array(3=>3,4=>4,5=>5,6=>6,7=>7,8=>8,9=>9,10=>10),
 				'default' 		=> 3,
-			),
-			'typo_remove_ie6' => array(
-				'section'		=> 'space-control',
-				'fieldset' 		=> 'enable-wrapping',
-				'label' 		=> __( "%1\$s Remove zero-width spaces from IE6.", 'wp-typography' ),
-				'help_text' 	=> __( "IE6 displays mangles zero-width spaces with some fonts like Tahoma (uses JavaScript).", 'wp-typography' ),
-				'control' 		=> 'input',
-				'input_type' 	=> 'checkbox',
-				'default' 		=> 0,
 			),
 			'typo_style_amps' => array(
 				'section' 		=> 'css-hooks',
