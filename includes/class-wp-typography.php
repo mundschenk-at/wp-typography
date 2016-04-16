@@ -127,8 +127,11 @@ class WP_Typography {
 	/**
 	 * Create & retrieve the WP_Typography instance. Should not be called outside of plugin set-up.
 	 *
+	 * @since 3.2.0
+	 *
 	 * @param string $version  The full plugin version string (e.g. "3.0.0-beta.2")
 	 * @param string $basename The result of plugin_basename() for the main plugin file.
+	 * @return WP_Typography
 	 */
 	public static function _get_instance( $version, $basename = 'wp-typography/wp-typography.php' ) {
 		if ( ! self::$_instance ) {
@@ -142,6 +145,10 @@ class WP_Typography {
 
 	/**
 	 * Retrieve the plugin instance.
+	 *
+	 * @since 3.2.0
+	 *
+	 * @return WP_Typography
 	 */
 	public static function get_instance() {
     	if ( ! self::$_instance ) {
@@ -291,11 +298,13 @@ class WP_Typography {
 	/**
 	 * Process text fragment.
 	 *
+	 * @since 3.2.4 Parameter $force_feed added.
+	 *
 	 * @param string $text
 	 * @param boolean $is_title Default false.
-	 * @param boolean $force_feed Default false. @since 3.2.4
+	 * @param boolean $force_feed Default false.
 	 */
-	function process( $text, $is_title = false, $force_feed = false ) {
+	public function process( $text, $is_title = false, $force_feed = false ) {
 		$typo = $this->get_php_typo();
 		$transient = 'typo_' . base64_encode( md5( $text, true ) . $this->cached_settings_hash );
 
