@@ -396,7 +396,7 @@ class WP_Typography {
 			}
 
 			// Settings won't be touched again, so cache the hash
-			$this->cached_settings_hash = $this->php_typo->get_settings_hash( 11 );
+			$this->cached_settings_hash = $this->php_typo->get_settings_hash( 32 );
 		}
 
 		return $this->php_typo;
