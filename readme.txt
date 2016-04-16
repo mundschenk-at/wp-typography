@@ -89,6 +89,8 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 == Changelog ==
 
 = 3.3.0 - unreleased =
+* Updated HTML parser (html5-php) to 2.2.0.
+* Updated list of valid top-level domains.
 * Removed IE6 references and workarounds. He's dead, Jim.
 
 = 3.2.6 - April 05, 2016 =
