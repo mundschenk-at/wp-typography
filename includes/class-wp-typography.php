@@ -237,7 +237,7 @@ class WP_Typography {
 			add_filter( 'document_title_parts', array( $this, 'process_title_parts' ), $priority );
 		}
 
-		// add IE6 zero-width-space removal CSS Hook styling
+		// add CSS Hook styling
 		add_action( 'wp_head', array( $this, 'add_wp_head' ) );
 	}
 
