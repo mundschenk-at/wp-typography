@@ -2,7 +2,7 @@
 # This file is distributed under the GNU General Public License v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: wp-Typography 3.3.0-alpha\n"
+"Project-Id-Version: wp-Typography 3.3.0-alpha.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-typography\n"
 "POT-Creation-Date: 2016-01-16 16:03:50+00:00\n"
 "MIME-Version: 1.0\n"
@@ -86,7 +86,7 @@ msgid "Do not process the content of these <strong>HTML elements</strong>:"
 msgstr ""
 
 #: includes/class-wp-typography-admin.php:288
-#: includes/class-wp-typography-admin.php:718
+#: includes/class-wp-typography-admin.php:709
 msgid ""
 "Separate tag names with spaces; do not include the <samp>&lt;</samp> or "
 "<samp>&gt;</samp>."
@@ -324,10 +324,7 @@ msgid ""
 msgstr ""
 
 #: includes/class-wp-typography-admin.php:563
-msgid ""
-"%1$s Force thin spaces between em &amp; en dashes and adjoining words.  "
-"This will display poorly in IE6 with some fonts (like Tahoma) and in rare "
-"instances in WebKit browsers (Safari and Chrome)."
+msgid "%1$s Force thin spaces between em &amp; en dashes and adjoining words."
 msgstr ""
 
 #: includes/class-wp-typography-admin.php:570
@@ -421,39 +418,29 @@ msgstr ""
 msgid "Keep at least the last %1$s characters of a URL together."
 msgstr ""
 
-#: includes/class-wp-typography-admin.php:672
-msgid "%1$s Remove zero-width spaces from IE6."
-msgstr ""
-
-#: includes/class-wp-typography-admin.php:673
-msgid ""
-"IE6 displays mangles zero-width spaces with some fonts like Tahoma (uses "
-"JavaScript)."
-msgstr ""
-
-#: includes/class-wp-typography-admin.php:680
+#: includes/class-wp-typography-admin.php:671
 msgid ""
 "%1$s Wrap ampersands [ <samp>&amp;</samp> ] with <samp>&lt;span "
 "class=\"amp\"&gt;</samp>."
 msgstr ""
 
-#: includes/class-wp-typography-admin.php:687
+#: includes/class-wp-typography-admin.php:678
 msgid ""
 "%1$s Wrap acronyms (all capitals) with <samp>&lt;span "
 "class=\"caps\"&gt;</samp>."
 msgstr ""
 
-#: includes/class-wp-typography-admin.php:694
+#: includes/class-wp-typography-admin.php:685
 msgid ""
 "%1$s Wrap digits [ <samp>0123456789</samp> ] with <samp>&lt;span "
 "class=\"numbers\"&gt;</samp>."
 msgstr ""
 
-#: includes/class-wp-typography-admin.php:701
+#: includes/class-wp-typography-admin.php:692
 msgid "%1$s Wrap small punctuation marks"
 msgstr ""
 
-#: includes/class-wp-typography-admin.php:702
+#: includes/class-wp-typography-admin.php:693
 msgid ""
 "Note: The amount of push/pull should be adjusted for your selected font in "
 "the stylesheet. <br />Single quote-like marks [ "
@@ -465,11 +452,11 @@ msgid ""
 "class=\"push-&hellip;\"&gt;</samp> ensures proper alignment within the line."
 msgstr ""
 
-#: includes/class-wp-typography-admin.php:709
+#: includes/class-wp-typography-admin.php:700
 msgid "%1$s Wrap initial quotes"
 msgstr ""
 
-#: includes/class-wp-typography-admin.php:710
+#: includes/class-wp-typography-admin.php:701
 msgid ""
 "Note: matches quotemarks at the beginning of blocks of text, "
 "<strong>not</strong> all opening quotemarks. <br />Single quotes [ "
@@ -481,42 +468,42 @@ msgid ""
 "class=\"dquo\"&gt;</samp>."
 msgstr ""
 
-#: includes/class-wp-typography-admin.php:717
+#: includes/class-wp-typography-admin.php:708
 msgid "Limit styling of initial quotes to these <strong>HTML elements</strong>:"
 msgstr ""
 
-#: includes/class-wp-typography-admin.php:724
+#: includes/class-wp-typography-admin.php:715
 msgid "%1$s Include Styling for CSS Hooks"
 msgstr ""
 
-#: includes/class-wp-typography-admin.php:725
+#: includes/class-wp-typography-admin.php:716
 msgid ""
 "Attempts to inject the CSS specified below.  If you are familiar with CSS, "
 "it is recommended you not use this option, and maintain all styles in your "
 "main stylesheet."
 msgstr ""
 
-#: includes/class-wp-typography-admin.php:732
+#: includes/class-wp-typography-admin.php:723
 msgid "Styling for CSS Hooks:"
 msgstr ""
 
-#: includes/class-wp-typography-admin.php:733
+#: includes/class-wp-typography-admin.php:724
 msgid "This will only be applied if explicitly selected with the preceding option."
 msgstr ""
 
-#: includes/class-wp-typography-admin.php:815
+#: includes/class-wp-typography-admin.php:806
 msgid "Settings"
 msgstr ""
 
-#: includes/class-wp-typography-admin.php:882
+#: includes/class-wp-typography-admin.php:873
 msgid "Restore Defaults"
 msgstr ""
 
-#: includes/class-wp-typography-admin.php:886
+#: includes/class-wp-typography-admin.php:877
 msgid "Clear Cache"
 msgstr ""
 
-#: includes/class-wp-typography-admin.php:890
+#: includes/class-wp-typography-admin.php:881
 msgid "Save Changes"
 msgstr ""
 
