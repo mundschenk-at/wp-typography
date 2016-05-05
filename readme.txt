@@ -93,6 +93,7 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 * Updated list of valid top-level domains.
 * Removed IE6 references and workarounds. He's dead, Jim.
 * Prevent references to US non-profit organizations like `501(c)(3)` being replaced with the copyright symbol (props randybruder).
+* Added optional clean up of text copied to clipboard to prevent stray hyphens from showing on paste.
 
 = 3.2.7 - April 14, 2016 =
 * "Duplicate ID" warnings should be gone now, regardless of the installed libXML version.

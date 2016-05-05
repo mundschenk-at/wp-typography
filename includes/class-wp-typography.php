@@ -246,6 +246,9 @@ class WP_Typography {
 
 		// add CSS Hook styling
 		add_action( 'wp_head', array( $this, 'add_wp_head' ) );
+
+		// optionally enable clipboard clean-up
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 	}
 
 
@@ -595,5 +598,15 @@ class WP_Typography {
 	 */
 	public function get_version_hash() {
 		return $this->version_hash;
+	}
+
+	/**
+	 * Enqueue frontend javascript.
+	 */
+	public function enqueue_scripts() {
+		if ( $this->settings['typo_hyphenate_clean_clipboard'] ) {
+			wp_enqueue_script( 'jquery-selection', plugin_dir_url( $this->local_plugin_path ) . 'js/jquery.selection.js', array( 'jquery' ), $this->version, true );
+			wp_enqueue_script( 'wp-typography-cleanup-clipboard', plugin_dir_url( $this->local_plugin_path ) . 'js/clean_clipboard.js', array( 'jquery', 'jquery-selection' ), $this->version, true );
+		}
 	}
 }

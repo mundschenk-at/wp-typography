@@ -397,6 +397,21 @@ class WP_Typography_Admin {
 				'control' 		=> 'textarea',
 				'default' 		=> "Mund-schenk",
 			),
+			'typo_hyphenate_exceptions' => array(
+				'section' 		=> 'hyphenation',
+				'label' 		=> __( "Exception List:", 'wp-typography' ),
+				'help_text' 	=> __( "Mark allowed hyphenations with \"-\"; separate words with spaces.", 'wp-typography' ),
+				'control' 		=> 'textarea',
+				'default' 		=> "Mund-schenk",
+			),
+			'typo_hyphenate_clean_clipboard' => array(
+				'section' 		=> 'hyphenation',
+				'label' 		=> __( '%1$s Remove hyphenation when copying to clipboard', 'wp-typography' ),
+				'help_text' 	=> __( 'To prevent legacy applications from displaying inappropriate hyphens, all soft hyphens and zero-width spaces are removed from the clipboard selection. Requires JavaScript.', 'wp-typography' ),
+				'control' 		=> 'input',
+				'input_type' 	=> 'checkbox',
+				'default' 		=> 1,
+			),
 			'typo_hyphenate_safari_font_workaround' => array(
 				'section' 		=> 'hyphenation',
 				'label' 		=> __( '%1$s Add workaround for Safari hyphenation bug', 'wp-typography' ),
