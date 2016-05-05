@@ -390,6 +390,13 @@ class WP_Typography_Admin {
 				'option_values'	=> array(2=>2,3=>3,4=>4,5=>5),
 				'default' 		=> 2,
 			),
+			'typo_hyphenate_exceptions' => array(
+				'section' 		=> 'hyphenation',
+				'label' 		=> __( "Exception List:", 'wp-typography' ),
+				'help_text' 	=> __( "Mark allowed hyphenations with \"-\"; separate words with spaces.", 'wp-typography' ),
+				'control' 		=> 'textarea',
+				'default' 		=> "Mund-schenk",
+			),
 			'typo_hyphenate_safari_font_workaround' => array(
 				'section' 		=> 'hyphenation',
 				'label' 		=> __( '%1$s Add workaround for Safari hyphenation bug', 'wp-typography' ),
@@ -397,13 +404,6 @@ class WP_Typography_Admin {
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 1,
-			),
-			'typo_hyphenate_exceptions' => array(
-				'section' 		=> 'hyphenation',
-				'label' 		=> __( "Exception List:", 'wp-typography' ),
-				'help_text' 	=> __( "Mark allowed hyphenations with \"-\"; separate words with spaces.", 'wp-typography' ),
-				'control' 		=> 'textarea',
-				'default' 		=> "Mund-schenk",
 			),
 			'typo_smart_characters' => array(
 				'section'		=> 'character-replacement',
