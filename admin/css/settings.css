@@ -81,6 +81,10 @@ input {
   margin-top: -.1em;
 }
 
+input[type=number] {
+  width: 5em;
+}
+
 .control {
   margin: 0 1em;
 }
