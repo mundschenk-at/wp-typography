@@ -604,7 +604,9 @@ class WP_Typography {
 	 * Enqueue frontend javascript.
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( 'jquery-selection', plugin_dir_url( $this->local_plugin_path ) . 'js/jquery.selection.js', array( 'jquery' ), $this->version, true );
-		wp_enqueue_script( 'wp-typography-cleanup-clipboard', plugin_dir_url( $this->local_plugin_path ) . 'js/clean_clipboard.js', array( 'jquery', 'jquery-selection' ), $this->version, true );
+		if ( $this->settings['typo_hyphenate_clean_clipboard'] ) {
+			wp_enqueue_script( 'jquery-selection', plugin_dir_url( $this->local_plugin_path ) . 'js/jquery.selection.js', array( 'jquery' ), $this->version, true );
+			wp_enqueue_script( 'wp-typography-cleanup-clipboard', plugin_dir_url( $this->local_plugin_path ) . 'js/clean_clipboard.js', array( 'jquery', 'jquery-selection' ), $this->version, true );
+		}
 	}
 }
