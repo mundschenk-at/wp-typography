@@ -53,7 +53,7 @@ class WP_Typography_Requirements {
 	 */
 	private $install_requirements = array(
 		'PHP Version' 		=> '5.3.4',
-		'WordPress Version'	=> '4.0',
+		'WordPress Version'	=> '4.4',
 		'Multibyte' 		=> true,
 		'UTF-8'				=> true,
 	 );

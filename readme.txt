@@ -1,7 +1,7 @@
 === wp-Typography ===
 Contributors: pputzer
 Tags: typography, hyphenation, smart quotes, quote marks, smartypants, typogrify, quotes, prettify, widows, orphans, small caps, diacritics
-Requires at least: 4.0
+Requires at least: 4.4
 Tested up to: 4.5
 Stable tag: 3.2.7
 
