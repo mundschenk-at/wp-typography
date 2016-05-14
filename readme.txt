@@ -89,7 +89,7 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 == Changelog ==
 
 = 3.3.0 - unreleased =
-* Updated HTML parser (html5-php) to 2.2.0.
+* Updated HTML parser (html5-php) to 2.2.1.
 * Updated list of valid top-level domains.
 * Removed IE6 references and workarounds. He's dead, Jim.
 * Prevent references to US non-profit organizations like `501(c)(3)` being replaced with the copyright symbol (props randybruder).
