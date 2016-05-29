@@ -94,6 +94,8 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 * Removed IE6 references and workarounds. He's dead, Jim.
 * Prevent references to US non-profit organizations like `501(c)(3)` being replaced with the copyright symbol (props randybruder).
 * Added optional clean up of text copied to clipboard to prevent stray hyphens from showing on paste.
+* Added CSS classes for smart fractions ("fraction-num", "fraction-denom") and ordinal suffixes ("ordinal").
+* Fixed « and » spacing when French punctuation style is enabled.
 
 = 3.2.7 - April 14, 2016 =
 * "Duplicate ID" warnings should be gone now, regardless of the installed libXML version.
