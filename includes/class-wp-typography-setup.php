@@ -60,7 +60,7 @@ class WP_Typography_Setup {
 	/**
 	 * Create a new instace of WP_Typography_Setup.
 	 *
-	 * @param string $slug
+	 * @param string        $slug
 	 * @param WP_Typography $plugin
 	 */
 	function __construct( $slug, WP_Typography $plugin ) {
@@ -74,9 +74,9 @@ class WP_Typography_Setup {
 	 * @param string $plugin_file The full path and filename to the main plugin file.
 	 */
 	public function register( $plugin_file ) {
-		register_activation_hook(   $plugin_file, array( $this, 'activate' ) );
+		register_activation_hook( $plugin_file, array( $this, 'activate' ) );
 		register_deactivation_hook( $plugin_file, array( $this, 'deactivate' ) );
-		register_uninstall_hook(    $plugin_file, __CLASS__ . '::uninstall' );
+		register_uninstall_hook( $plugin_file, __CLASS__ . '::uninstall' );
 	}
 
 	/**
@@ -102,9 +102,9 @@ class WP_Typography_Setup {
 
 		// Each version should get it's own if-block
 		if ( version_compare( $previous_version, '3.1.0-beta.2', '<' ) ) {
-			error_log( "Upgrading wp-Typography from " . ( $previous_version ? $previous_version : '< 3.1.0') );
+			error_log( 'Upgrading wp-Typography from ' . ( $previous_version ? $previous_version : '< 3.1.0') );
 
-			foreach( $this->plugin->get_default_options() as $option_name => $option ) {
+			foreach ( $this->plugin->get_default_options() as $option_name => $option ) {
 				$old_option = $this->get_old_option_name( $option_name );
 				$old_value = get_option( $old_option, 'UPGRADING_WP_TYPOGRAPHY' );
 
@@ -135,7 +135,7 @@ class WP_Typography_Setup {
 
 		// Does not really seem to matter, but try
 		// to match the correct case.
-		foreach( $parts as $part ) {
+		foreach ( $parts as $part ) {
 			if ( 'ie6' === $part ) {
 				$oldname .= 'IE6';
 			} elseif ( 'css' === $part ) {
@@ -170,7 +170,7 @@ class WP_Typography_Setup {
 		$transient_list = get_option( 'typo_transient_keys' );
 
 		// delete all our transients
-		foreach( $transient_list as $transient => $true ) {
+		foreach ( $transient_list as $transient => $true ) {
 			delete_transient( $transient );
 		}
 
