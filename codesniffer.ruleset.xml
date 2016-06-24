@@ -12,6 +12,9 @@
 		<exclude name="Generic.WhiteSpace.ScopeIndent.Incorrect" />
 		<exclude name="PEAR.Functions.FunctionCallSignature.Indent" />
 	</rule>
+	<rule ref="WordPress-VIP">
+		<exclude name="WordPress.VIP.RestrictedFunctions.error_log" />
+	</rule>
 
 	<!-- Include sniffs for PHP cross-version compatibility. -->
 	<rule ref="PHPCompatibility"/>
