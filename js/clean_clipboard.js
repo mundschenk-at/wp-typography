@@ -25,40 +25,44 @@
  *  @author Peter Putzer <github@mundschenk.at>
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
-
-jQuery(document).ready(function($) {
+jQuery( document ).ready( function( $ ) {
 	
 	function cleanUpSelection()	{
-		// store selection and ranges
+		
+		// Store selection and ranges
 		var sel = window.getSelection();
 		var ranges = [];
-		var origRangeCount = sel.rangeCount; 
-		for( var i = 0; i < origRangeCount; i++ ) {
+		var origRangeCount = sel.rangeCount;
+		var i;
+		
+		for ( i = 0; i < origRangeCount; i++ ) {
 			 ranges[i] = sel.getRangeAt( i );
 		}
 		
-		// create new div containing cleaned HTML content
+		// Create new div containing cleaned HTML content
 		var div = $( '<div>', { style: { position: 'absolute', left: '-99999px' }, 
-							    html:  $.selection( 'html' ).replace(/\u00AD/gi,'').replace(/\u200B/gi, '') } );
+							    html:  $.selection( 'html' ).replace( /\u00AD/gi, '' ).replace( /\u200B/gi, '' ) } );
 		
-		// append to DOM
+		// Append to DOM
 		$( 'body' ).append( div );
 		
 		// select the children of our "clean" div
 		sel.selectAllChildren( div[0] );
 		
-		// clean-up after copy
+		// Clean up after copy
 		window.setTimeout( function() {
-			// remove div
+			var i;
+			
+			// Remove div
 			div.remove();
 			
-			// restore selection
+			// Restore selection
 			sel.removeAllRanges();
-			for( var i = 0; i < origRangeCount; i++ ) {
+			for ( i = 0; i < origRangeCount; i++ ) {
 				 sel.addRange( ranges[i] );
 			}
 		}, 1 );
 	}
 
 	document.oncopy = cleanUpSelection;
-});
+} );
