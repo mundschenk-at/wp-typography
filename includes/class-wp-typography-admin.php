@@ -1,5 +1,4 @@
 <?php
-
 /**
  *  This file is part of wp-Typography.
  *
@@ -24,8 +23,6 @@
  *  ***
  *
  *  @package wpTypography
- *  @author Jeffrey D. King <jeff@kingdesk.com>
- *  @author Peter Putzer <github@mundschenk.at>
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
@@ -34,7 +31,7 @@
  *
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
-  *
+ *
  * @since      3.1.0
  * @package    wpTypography
  * @subpackage wpTypography/includes
@@ -45,33 +42,42 @@ class WP_Typography_Admin {
 	/**
 	 * The user-visible name of the plugin.
 	 *
-	 * // FIXME Translate?
+	 * @todo Maybe we should translate the name?
 	 * @var string $plugin_name
 	 */
 	private $plugin_name = 'wp-Typography';
 
 	/**
 	 * The group name used for registering the plugin options.
+	 *
+	 * @var string $option_group
 	 */
 	private $option_group = 'typo_options';
 
 	/**
 	 * The result of plugin_basename() for the main plugin file (relative from plugins folder).
+	 *
+	 * @var string $local_plugin_path
 	 */
 	private $local_plugin_path;
 
 	/**
 	 * The absolute path to top-level directory for the plugin.
+	 *
+	 * @var string $plugin_path
 	 */
 	private $plugin_path;
 
 	/**
 	 * The full version string of the plugin.
+	 *
+	 * @var string $version;
 	 */
 	private $version;
 
 	/**
 	 * Links to add the settings page.
+	 *
 	 * @var array $adminResourceLinks An array in the form of 'anchor text' => 'URL'.
 	 */
 	private $admin_resource_links;
@@ -136,8 +142,8 @@ class WP_Typography_Admin {
 	/**
 	 * Create a new instace of WP_Typography_Setup.
 	 *
-	 * @param string $slug
-	 * @param WP_Typography $plugin
+	 * @param string        $basename The plugin slug.
+	 * @param WP_Typography $plugin   The plugin object.
 	 */
 	function __construct( $basename, WP_Typography $plugin ) {
 		$this->local_plugin_path = $basename;
@@ -147,7 +153,7 @@ class WP_Typography_Admin {
 		$this->transient_names['diacritic_languages'] = 'typo_diacritic_languages_' . $plugin->get_version_hash();
 		$this->plugin = $plugin;
 
-		// initialize admin form
+		// Initialize admin form.
 		$this->admin_resource_links         = $this->initialize_resource_links();
 		$this->admin_form_sections          = $this->initialize_form_sections();
 		$this->admin_form_section_fieldsets = $this->initialize_fieldsets();
@@ -158,11 +164,11 @@ class WP_Typography_Admin {
 	 * Set up the various hooks for the admin side.
 	 */
 	public function run() {
-		// actions
-		add_action( 'admin_menu', array( $this, 'add_options_page') );
-		add_action( 'admin_init', array( $this, 'register_the_settings') );
+		// Add action hooks.
+		add_action( 'admin_menu', array( $this, 'add_options_page' ) );
+		add_action( 'admin_init', array( $this, 'register_the_settings' ) );
 
-		// filters
+		// Add filter hooks.
 		add_filter( 'plugin_action_links_' . $this->local_plugin_path, array( $this, 'plugin_action_links' ) );
 	}
 
@@ -190,12 +196,13 @@ class WP_Typography_Admin {
 
 	/**
 	 * Initialize displayable strings for the plugin settings page.
+	 *
+	 * @return array(
+	 *  	'translated anchor text' => 'URL'
+	 * )
 	 */
 	function initialize_resource_links() {
 		return array(
-			/*
-				 'anchor text' => 'URL', 		// REQUIRED
-			*/
 			__( 'Plugin Home', 'wp-typography' ) => 'https://code.mundschenk.at/wp-typography/',
 			__( 'FAQs',        'wp-typography' ) => 'https://code.mundschenk.at/wp-typography/frequently-asked-questions/',
 			__( 'Changelog',   'wp-typography' ) => 'https://code.mundschenk.at/wp-typography/changes/',
@@ -205,13 +212,15 @@ class WP_Typography_Admin {
 
 	/**
 	 * Initialize displayable strings for the plugin settings page.
+	 *
+	 * @return array(
+	 * 		'id' => 'translated heading'
+	 * )
 	 */
 	function initialize_form_sections() {
-		// sections will be displayed in the order included
+
+		// Sections will be displayed in the order included.
 		return array(
-			/*
-			'id' 					=> string heading,		// REQUIRED
-			*/
 			'general-scope' 		=> __( 'General Scope',                     'wp-typography' ),
 			'hyphenation' 			=> __( 'Hyphenation',                       'wp-typography' ),
 			'character-replacement'	=> __( 'Intelligent Character Replacement', 'wp-typography' ),
@@ -222,16 +231,18 @@ class WP_Typography_Admin {
 
 	/**
 	 * Initialize displayable strings for the plugin settings page.
+	 *
+	 * @return array(
+	 *	'id' => array(
+	 *		 	'heading' 	   => string Fieldset Name,     // REQUIRED
+	 *		 	'sectionID'    => string Parent Section ID, // REQUIRED
+	 *		),
+	 * )
 	 */
 	function initialize_fieldsets() {
-		// fieldsets will be displayed in the order included
+
+		// Fieldsets will be displayed in the order included.
 		return array(
-			/*
-			'id' => array(
-			 	'heading' 	   => string Fieldset Name,     // REQUIRED
-			 	'sectionID'    => string Parent Section ID, // REQUIRED
-			),
-			*/
 			'caching'          => array(
 				'heading'      => __( 'Caching', 'wp-typography' ),
 				'section'      => 'caching',
@@ -265,49 +276,50 @@ class WP_Typography_Admin {
 
 	/**
 	 * Initialize displayable strings for the plugin settings page.
+	 *
+	 * @return array(
+	 *		 "id" => array(
+	 *		 	'section' 		=> string Section ID, 		// REQUIRED
+	 *		 	'fieldset' 		=> string Fieldset ID,		// OPTIONAL
+	 *		 	'label'     	=> string Label Content,	// OPTIONAL
+	 *		 	'help_text' 	=> string Help Text,		// OPTIONAL
+	 *		 	'control' 		=> string Control,			// REQUIRED
+	 * 		 	'input_type' 	=> string Control Type,		// OPTIONAL
+	 * 		 	'attributes'    => array HTML attributes,   // OPTIONAL
+	 *		 	'option_values'	=> array(value=>text, ... )	// OPTIONAL, only for controls of type 'select'
+	 *		 	'default' 		=> string Default Value,	// REQUIRED (although it may be an empty string)
+	 *		 ),
+	 * )
 	 */
 	function initialize_controls() {
 
 		return array(
-			/*
-			 "id" => array(
-			 	'section' 		=> string Section ID, 		// REQUIRED
-			 	'fieldset' 		=> string Fieldset ID,		// OPTIONAL
-			 	'label'     	=> string Label Content,	// OPTIONAL
-			 	'help_text' 	=> string Help Text,		// OPTIONAL
-			 	'control' 		=> string Control,			// REQUIRED
-			 	'input_type' 	=> string Control Type,		// OPTIONAL
-			 	'attributes'    => array HTML attributes,   // OPTIONAL
-			 	'option_values'	=> array(value=>text, ... )	// OPTIONAL, only for controls of type 'select'
-			 	'default' 		=> string Default Value,	// REQUIRED (although it may be an empty string)
-			 ),
-			*/
 			'typo_ignore_tags' => array(
 				'section'		=> 'general-scope',
-				'label' 		=> __( "Do not process the content of these <strong>HTML elements</strong>:", 'wp-typography' ),
-				'help_text' 	=> __( "Separate tag names with spaces; do not include the <samp>&lt;</samp> or <samp>&gt;</samp>.", 'wp-typography' ),
+				'label' 		=> __( 'Do not process the content of these <strong>HTML elements</strong>:', 'wp-typography' ),
+				'help_text' 	=> __( 'Separate tag names with spaces; do not include the <samp>&lt;</samp> or <samp>&gt;</samp>.', 'wp-typography' ),
 				'control' 		=> 'textarea',
-				'default' 		=> "code head kbd object option pre samp script style textarea title var math",
+				'default' 		=> 'code head kbd object option pre samp script style textarea title var math',
 			),
 			'typo_ignore_classes' => array(
 				'section' 		=> 'general-scope',
-				'label' 		=> __( "Do not process elements of <strong>class</strong>:", 'wp-typography' ),
-				'help_text' 	=> __( "Separate class names with spaces.", 'wp-typography' ),
+				'label' 		=> __( 'Do not process elements of <strong>class</strong>:', 'wp-typography' ),
+				'help_text' 	=> __( 'Separate class names with spaces.', 'wp-typography' ),
 				'control' 		=> 'textarea',
-				'default' 		=> "vcard noTypo",
+				'default' 		=> 'vcard noTypo',
 			),
 			'typo_ignore_ids' => array(
 				'section' 		=> 'general-scope',
-				'label' 		=> __( "Do not process elements of <strong>ID</strong>:", 'wp-typography' ),
-				'help_text' 	=> __( "Separate ID names with spaces.", 'wp-typography' ),
+				'label' 		=> __( 'Do not process elements of <strong>ID</strong>:', 'wp-typography' ),
+				'help_text' 	=> __( 'Separate ID names with spaces.', 'wp-typography' ),
 				'control' 		=> 'textarea',
-				'default' 		=> "",
+				'default' 		=> '',
 			),
 			'typo_enable_caching' => array(
 				'section' 		=> 'general-scope',
 				'fieldset'      => 'caching',
-				'label' 		=> __( "%1\$s Enable caching", 'wp-typography' ),
-				'help_text' 	=> __( "Caches processed text fragments. Can cause major database growth when used without a separate object cache implementation.", 'wp-typography' ),
+				'label' 		=> __( '%1\$s Enable caching', 'wp-typography' ),
+				'help_text' 	=> __( 'Caches processed text fragments. Can cause major database growth when used without a separate object cache implementation.', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 0,
@@ -315,8 +327,8 @@ class WP_Typography_Admin {
 			'typo_caching_limit' => array(
 				'section' 		=> 'general-scope',
 				'fieldset'      => 'caching',
-				'label' 		=> __( "Limit number of cached fragments to %1\$s.", 'wp-typography' ),
-				'help_text' 	=> __( "Set limit to <samp>0</samp> for unrestricted caching. Only recommend when used with an in-memory object cache implementation.", 'wp-typography' ),
+				'label' 		=> __( 'Limit number of cached fragments to %1\$s.', 'wp-typography' ),
+				'help_text' 	=> __( 'Set limit to <samp>0</samp> for unrestricted caching. Only recommend when used with an in-memory object cache implementation.', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'number',
 				'attributes'    => array(
@@ -326,83 +338,83 @@ class WP_Typography_Admin {
 			),
 			'typo_enable_hyphenation' => array(
 				'section' 		=> 'hyphenation',
-				'label' 		=> __( "%1\$s Enable hyphenation.", 'wp-typography' ),
+				'label' 		=> __( '%1\$s Enable hyphenation.', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 1,
 			),
 			'typo_hyphenate_languages' => array(
 				'section'		=> 'hyphenation',
-				'label' 		=> __( "Language for hyphenation rules: %1\$s", 'wp-typography' ),
+				'label' 		=> __( 'Language for hyphenation rules: %1\$s', 'wp-typography' ),
 				'control' 		=> 'select',
-				'option_values'	=> array(), // automatically detected and listed in __construct
-				'default' 		=> "en-US",
+				'option_values'	=> array(), // Automatically detected and listed in __construct.
+				'default' 		=> 'en-US',
 			),
 			'typo_hyphenate_headings' => array(
 				'section' 		=> 'hyphenation',
-				'label' 		=> __( "%1\$s Hyphenate headings.", 'wp-typography' ),
-				'help_text' 	=> __( "Unchecking will disallow hyphenation of headings, even if allowed in the general scope.", 'wp-typography' ),
+				'label' 		=> __( '%1\$s Hyphenate headings.', 'wp-typography' ),
+				'help_text' 	=> __( 'Unchecking will disallow hyphenation of headings, even if allowed in the general scope.', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 0,
 			),
 			'typo_hyphenate_title_case' => array(
 				'section' 		=> 'hyphenation',
-				'label' 		=> __( "%1\$s Allow hyphenation of words that begin with a capital letter.", 'wp-typography' ),
-				'help_text' 	=> __( "Uncheck to avoid hyphenation of proper nouns.", 'wp-typography' ),
+				'label' 		=> __( '%1\$s Allow hyphenation of words that begin with a capital letter.', 'wp-typography' ),
+				'help_text' 	=> __( 'Uncheck to avoid hyphenation of proper nouns.', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 1,
 			),
 			'typo_hyphenate_compounds' => array(
 				'section' 		=> 'hyphenation',
-				'label' 		=> __( "%1\$s Allow hyphenation of the components of hyphenated compound words.", 'wp-typography' ),
-				'help_text' 	=> __( "Uncheck to disallow the hyphenation of the words making up a hyphenated compound (e.g. <samp>editor-in-chief</samp>).", 'wp-typography' ),
+				'label' 		=> __( '%1\$s Allow hyphenation of the components of hyphenated compound words.', 'wp-typography' ),
+				'help_text' 	=> __( 'Uncheck to disallow the hyphenation of the words making up a hyphenated compound (e.g. <samp>editor-in-chief</samp>).', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 1,
 			),
 			'typo_hyphenate_caps' => array(
 				'section' 		=> 'hyphenation',
-				'label' 		=> __( "%1\$s Hyphenate words in ALL CAPS.", 'wp-typography' ),
+				'label' 		=> __( '%1\$s Hyphenate words in ALL CAPS.', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 0,
 			),
 			'typo_hyphenate_min_length' => array(
 				'section'		=> 'hyphenation',
-				'label' 		=> __( "Do not hyphenate words with less than %1\$s letters.", 'wp-typography' ),
+				'label' 		=> __( 'Do not hyphenate words with less than %1\$s letters.', 'wp-typography' ),
 				'control' 		=> 'select',
-				'option_values'	=> array(4=>4,5=>5,6=>6,7=>7,8=>8,9=>9,10=>10),
+				'option_values'	=> array( 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10 ),
 				'default' 		=> 5,
 			),
 			'typo_hyphenate_min_before' => array(
 				'section'		=> 'hyphenation',
-				'label' 		=> __( "Keep at least %1\$s letters before hyphenation.", 'wp-typography' ),
+				'label' 		=> __( 'Keep at least %1\$s letters before hyphenation.', 'wp-typography' ),
 				'control' 		=> 'select',
-				'option_values'	=> array(2=>2,3=>3,4=>4,5=>5),
+				'option_values'	=> array( 2 => 2, 3 => 3, 4 => 4, 5 => 5 ),
 				'default' 		=> 3,
 			),
 			'typo_hyphenate_min_after' => array(
 				'section'		=> 'hyphenation',
-				'label' 		=> __( "Keep at least %1\$s letters after hyphenation.", 'wp-typography' ),
+				'label' 		=> __( 'Keep at least %1\$s letters after hyphenation.', 'wp-typography' ),
 				'control' 		=> 'select',
-				'option_values'	=> array(2=>2,3=>3,4=>4,5=>5),
+				'option_values'	=> array( 2 => 2, 3 => 3,4 => 4, 5 => 5 ),
 				'default' 		=> 2,
 			),
 			'typo_hyphenate_exceptions' => array(
 				'section' 		=> 'hyphenation',
-				'label' 		=> __( "Exception List:", 'wp-typography' ),
-				'help_text' 	=> __( "Mark allowed hyphenations with \"-\"; separate words with spaces.", 'wp-typography' ),
+				'label' 		=> __( 'Exception List:', 'wp-typography' ),
+				'help_text' 	=> __( 'Mark allowed hyphenations with "-"; separate words with spaces.', 'wp-typography' ),
 				'control' 		=> 'textarea',
-				'default' 		=> "Mund-schenk",
+				'default' 		=> 'Mund-schenk',
 			),
 			'typo_hyphenate_exceptions' => array(
 				'section' 		=> 'hyphenation',
-				'label' 		=> __( "Exception List:", 'wp-typography' ),
-				'help_text' 	=> __( "Mark allowed hyphenations with \"-\"; separate words with spaces.", 'wp-typography' ),
+				'label' 		=> __( 'Exception List:', 'wp-typography' ),
+				'help_text' 	=> __( 'Mark allowed hyphenations with "-"; separate words with spaces.', 'wp-typography' ),
 				'control' 		=> 'textarea',
-				'default' 		=> "Mund-schenk",
+				'default' 		=> 'Mund-schenk',
 			),
 			'typo_hyphenate_clean_clipboard' => array(
 				'section' 		=> 'hyphenation',
@@ -439,25 +451,25 @@ class WP_Typography_Admin {
 			'typo_smart_quotes_primary' => array(
 				'section'		=> 'character-replacement',
 				'fieldset' 		=> 'smart-quotes',
-				'label' 		=> __( "Convert <samp>\"foo\"</samp> to: %1\$s", 'wp-typography' ),
-				'help_text' 	=> __( "Primary quotation style.", 'wp-typography' ),
+				'label' 		=> __( 'Convert <samp>"foo"</samp> to: %1\$s', 'wp-typography' ),
+				'help_text' 	=> __( 'Primary quotation style.', 'wp-typography' ),
 				'control' 		=> 'select',
 				'option_values'	=> array(
-					'doubleCurled'             => "&ldquo;foo&rdquo;",
-					'doubleCurledReversed'     => "&rdquo;foo&rdquo;",
-					'doubleLow9'               => "&bdquo;foo&rdquo;",
-					'doubleLow9Reversed'       => "&bdquo;foo&ldquo;",
-					'singleCurled'             => "&lsquo;foo&rsquo;",
-					'singleCurledReversed'     => "&rsquo;foo&rsquo;",
-					'singleLow9'               => "&sbquo;foo&rsquo;",
-					'singleLow9Reversed'       => "&sbquo;foo&lsquo;",
-					'doubleGuillemetsFrench'   => "&laquo;&nbsp;foo&nbsp;&raquo;",
-					'doubleGuillemets'         => "&laquo;foo&raquo;",
-					'doubleGuillemetsReversed' => "&raquo;foo&laquo;",
-					'singleGuillemets'         => "&lsaquo;foo&rsaquo;",
-					'singleGuillemetsReversed' => "&rsaquo;foo&lsaquo;",
-					'cornerBrackets'           => "&#x300c;foo&#x300d;",
-					'whiteCornerBracket'       => "&#x300e;foo&#x300f;",
+					'doubleCurled'             => '&ldquo;foo&rdquo;',
+					'doubleCurledReversed'     => '&rdquo;foo&rdquo;',
+					'doubleLow9'               => '&bdquo;foo&rdquo;',
+					'doubleLow9Reversed'       => '&bdquo;foo&ldquo;',
+					'singleCurled'             => '&lsquo;foo&rsquo;',
+					'singleCurledReversed'     => '&rsquo;foo&rsquo;',
+					'singleLow9'               => '&sbquo;foo&rsquo;',
+					'singleLow9Reversed'       => '&sbquo;foo&lsquo;',
+					'doubleGuillemetsFrench'   => '&laquo;&nbsp;foo&nbsp;&raquo;',
+					'doubleGuillemets'         => '&laquo;foo&raquo;',
+					'doubleGuillemetsReversed' => '&raquo;foo&laquo;',
+					'singleGuillemets'         => '&lsaquo;foo&rsaquo;',
+					'singleGuillemetsReversed' => '&rsaquo;foo&lsaquo;',
+					'cornerBrackets'           => '&#x300c;foo&#x300d;',
+					'whiteCornerBracket'       => '&#x300e;foo&#x300f;',
 				),
 				'default' 		=> 'doubleCurled',
 			),
@@ -465,24 +477,24 @@ class WP_Typography_Admin {
 				'section'		=> 'character-replacement',
 				'fieldset' 		=> 'smart-quotes',
 				'label' 		=> __( "Convert <samp>'foo'</samp> to: %1\$s", 'wp-typography' ),
-				'help_text' 	=> __( "Secondary quotation style.", 'wp-typography' ),
+				'help_text' 	=> __( 'Secondary quotation style.', 'wp-typography' ),
 				'control' 		=> 'select',
 				'option_values'	=> array(
-					'doubleCurled'             => "&ldquo;foo&rdquo;",
-					'doubleCurledReversed'     => "&rdquo;foo&rdquo;",
-					'doubleLow9'               => "&bdquo;foo&rdquo;",
-					'doubleLow9Reversed'       => "&bdquo;foo&ldquo;",
-					'singleCurled'             => "&lsquo;foo&rsquo;",
-					'singleCurledReversed'     => "&rsquo;foo&rsquo;",
-					'singleLow9'               => "&sbquo;foo&rsquo;",
-					'singleLow9Reversed'       => "&sbquo;foo&lsquo;",
-					'doubleGuillemetsFrench'   => "&laquo;&nbsp;foo&nbsp;&raquo;",
-					'doubleGuillemets'         => "&laquo;foo&raquo;",
-					'doubleGuillemetsReversed' => "&raquo;foo&laquo;",
-					'singleGuillemets'         => "&lsaquo;foo&rsaquo;",
-					'singleGuillemetsReversed' => "&rsaquo;foo&lsaquo;",
-					'cornerBrackets'           => "&#x300c;foo&#x300d;",
-					'whiteCornerBracket'       => "&#x300e;foo&#x300f;",
+					'doubleCurled'             => '&ldquo;foo&rdquo;',
+					'doubleCurledReversed'     => '&rdquo;foo&rdquo;',
+					'doubleLow9'               => '&bdquo;foo&rdquo;',
+					'doubleLow9Reversed'       => '&bdquo;foo&ldquo;',
+					'singleCurled'             => '&lsquo;foo&rsquo;',
+					'singleCurledReversed'     => '&rsquo;foo&rsquo;',
+					'singleLow9'               => '&sbquo;foo&rsquo;',
+					'singleLow9Reversed'       => '&sbquo;foo&lsquo;',
+					'doubleGuillemetsFrench'   => '&laquo;&nbsp;foo&nbsp;&raquo;',
+					'doubleGuillemets'         => '&laquo;foo&raquo;',
+					'doubleGuillemetsReversed' => '&raquo;foo&laquo;',
+					'singleGuillemets'         => '&lsaquo;foo&rsaquo;',
+					'singleGuillemetsReversed' => '&rsaquo;foo&lsaquo;',
+					'cornerBrackets'           => '&#x300c;foo&#x300d;',
+					'whiteCornerBracket'       => '&#x300e;foo&#x300f;',
 				),
 				'default' 		=> 'singleCurled',
 			),
@@ -490,7 +502,7 @@ class WP_Typography_Admin {
 			'typo_smart_dashes' => array(
 				'section'		=> 'character-replacement',
 				'fieldset' 		=> 'dashes',
-				'label' 		=> __( "%1\$s Transform minus-hyphens [ <samp>-</samp> <samp>--</samp> ] to contextually appropriate dashes, minus signs, and hyphens [ <samp>&ndash;</samp> <samp>&mdash;</samp> <samp>&#8722;</samp> <samp>&#8208;</samp> ].", 'wp-typography' ),
+				'label' 		=> __( '%1\$s Transform minus-hyphens [ <samp>-</samp> <samp>--</samp> ] to contextually appropriate dashes, minus signs, and hyphens [ <samp>&ndash;</samp> <samp>&mdash;</samp> <samp>&#8722;</samp> <samp>&#8208;</samp> ].', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 1,
@@ -498,7 +510,7 @@ class WP_Typography_Admin {
 			'typo_smart_dashes_style' => array(
 				'section'		=> 'character-replacement',
 				'fieldset' 		=> 'dashes',
-				'label' 		=> __( "Use the %1\$s style for dashes. In the US, the em dash&#8202;&mdash;&#8202;with no or very little spacing&#8202;&mdash;&#8202;is used for parenthetical expressions, while internationally, the en dash &ndash; with spaces &ndash; is more prevalent.", 'wp-typography' ),
+				'label' 		=> __( 'Use the %1\$s style for dashes. In the US, the em dash&#8202;&mdash;&#8202;with no or very little spacing&#8202;&mdash;&#8202;is used for parenthetical expressions, while internationally, the en dash &ndash; with spaces &ndash; is more prevalent.', 'wp-typography' ),
 				'control' 		=> 'select',
 				'option_values' => array( 'traditionalUS' => __( 'Traditional US' ), 'international' => __( 'International' ) ),
 				'default' 		=> 'traditionalUS',
@@ -507,8 +519,8 @@ class WP_Typography_Admin {
 			'typo_smart_diacritics' => array(
 				'section'		=> 'character-replacement',
 				'fieldset' 		=> 'diacritics',
-				'label' 		=> __( "%1\$s Force diacritics where appropriate.", 'wp-typography' ),
-				'help_text' 	=> __( "i.e. <samp>creme brulee</samp> becomes <samp>crème brûlée</samp>", 'wp-typography' ),
+				'label' 		=> __( '%1\$s Force diacritics where appropriate.', 'wp-typography' ),
+				'help_text' 	=> __( 'i.e. <samp>creme brulee</samp> becomes <samp>crème brûlée</samp>', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 0,
@@ -516,116 +528,116 @@ class WP_Typography_Admin {
 			'typo_diacritic_languages' => array(
 				'section'		=> 'character-replacement',
 				'fieldset' 		=> 'diacritics',
-				'label' 		=> __( "Language for diacritic replacements: %1\$s", 'wp-typography' ),
-				'help_text' 	=> __( "Language definitions will purposefully <strong>not</strong> process words that have alternate meaning without diacritics like <samp>resume &amp; résumé</samp>, <samp>divorce &amp; divorcé</samp>, and <samp>expose &amp; exposé</samp>.", 'wp-typography' ),
+				'label' 		=> __( 'Language for diacritic replacements: %1\$s', 'wp-typography' ),
+				'help_text' 	=> __( 'Language definitions will purposefully <strong>not</strong> process words that have alternate meaning without diacritics like <samp>resume &amp; résumé</samp>, <samp>divorce &amp; divorcé</samp>, and <samp>expose &amp; exposé</samp>.', 'wp-typography' ),
 				'control' 		=> 'select',
-				'option_values'	=> array(), // automatically detected and listed in __construct
-				'default' 		=> "en-US",
+				'option_values'	=> array(), // Automatically detected and listed in __construct.
+				'default' 		=> 'en-US',
 			),
 			'typo_diacritic_custom_replacements' => array(
 				'section' 		=> 'character-replacement',
 				'fieldset' 		=> 'diacritics',
-				'label' 		=> __( "Custom diacritic word replacements:", 'wp-typography' ),
-				'help_text' 	=> __( "Must be formatted <samp>\"word to replace\"=>\"replacement word\",</samp>; This is case-sensitive.", 'wp-typography' ),
+				'label' 		=> __( 'Custom diacritic word replacements:', 'wp-typography' ),
+				'help_text' 	=> __( 'Must be formatted <samp>"word to replace"=>"replacement word",</samp>; This is case-sensitive.', 'wp-typography' ),
 				'control' 		=> 'textarea',
 				'default' 		=> '"cooperate"=>"coöperate", "Cooperate"=>"Coöperate", "cooperation"=>"coöperation", "Cooperation"=>"Coöperation", "cooperative"=>"coöperative", "Cooperative"=>"Coöperative", "coordinate"=>"coördinate", "Coordinate"=>"Coördinate", "coordinated"=>"coördinated", "Coordinated"=>"Coördinated", "coordinating"=>"coördinating", "Coordinating"=>"Coördinating", "coordination"=>"coördination", "Coordination"=>"Coördination", "coordinator"=>"coördinator", "Coordinator"=>"Coördinator", "coordinators"=>"coördinators", "Coordinators"=>"Coördinators", "continuum"=>"continuüm", "Continuum"=>"Continuüm", "debacle"=>"débâcle", "Debacle"=>"Débâcle", "elite"=>"élite", "Elite"=>"Élite",',
 			),
 
 			'typo_smart_ellipses' => array(
 				'section'		=> 'character-replacement',
-				'label' 		=> __( "%1\$s Transform three periods [ <samp>...</samp> ] to  ellipses [ <samp>&hellip;</samp> ].", 'wp-typography' ),
+				'label' 		=> __( '%1\$s Transform three periods [ <samp>...</samp> ] to  ellipses [ <samp>&hellip;</samp> ].', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 1,
 			),
 			'typo_smart_marks' => array(
 				'section'		=> 'character-replacement',
-				'label' 		=> __( "%1\$s Transform registration marks [ <samp>(c)</samp> <samp>(r)</samp> <samp>(tm)</samp> <samp>(sm)</samp> <samp>(p)</samp> ] to  proper characters [ <samp>©</samp> <samp>®</samp> <samp>™</samp> <samp>℠</samp> <samp>℗</samp> ].", 'wp-typography' ),
+				'label' 		=> __( '%1\$s Transform registration marks [ <samp>(c)</samp> <samp>(r)</samp> <samp>(tm)</samp> <samp>(sm)</samp> <samp>(p)</samp> ] to  proper characters [ <samp>©</samp> <samp>®</samp> <samp>™</samp> <samp>℠</samp> <samp>℗</samp> ].', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 1,
 			),
 			'typo_smart_math' => array(
 				'section'		=> 'character-replacement',
-				'label' 		=> __( "%1\$s Transform exponents [ <samp>3^2</samp> ] to pretty exponents [ <samp>3<sup>2</sup></samp> ] and math symbols [ <samp>(2x6)/3=4</samp> ] to correct symbols [ <samp>(2&#215;6)&#247;3=4</samp> ].", 'wp-typography' ),
+				'label' 		=> __( '%1\$s Transform exponents [ <samp>3^2</samp> ] to pretty exponents [ <samp>3<sup>2</sup></samp> ] and math symbols [ <samp>(2x6)/3=4</samp> ] to correct symbols [ <samp>(2&#215;6)&#247;3=4</samp> ].', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 0,
 			),
 			'typo_smart_fractions' => array(
 				'section'		=> 'character-replacement',
-				'label' 		=> __( "%1\$s Transform fractions [ <samp>1/2</samp> ] to  pretty fractions [ <samp><sup>1</sup>&#8260;<sub>2</sub></samp> ].<br>WARNING: If you use a font (like Lucida Grande) that does not have a fraction-slash character, this may cause a missing line between the numerator and denominator.", 'wp-typography' ),
+				'label' 		=> __( '%1\$s Transform fractions [ <samp>1/2</samp> ] to  pretty fractions [ <samp><sup>1</sup>&#8260;<sub>2</sub></samp> ].<br>WARNING: If you use a font (like Lucida Grande) that does not have a fraction-slash character, this may cause a missing line between the numerator and denominator.', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 0,
 			),
 			'typo_smart_ordinals' => array(
 				'section'		=> 'character-replacement',
-				'label' 		=> __( "%1\$s Transform ordinal suffixes [ <samp>1st</samp> ] to  pretty ordinals [ <samp>1<sup>st</sup></samp> ].", 'wp-typography' ),
+				'label' 		=> __( '%1\$s Transform ordinal suffixes [ <samp>1st</samp> ] to  pretty ordinals [ <samp>1<sup>st</sup></samp> ].', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 0,
 			),
 			'typo_single_character_word_spacing' => array(
 				'section'		=> 'space-control',
-				'label' 		=> __( "%1\$s Prevent single character words from residing at the end of a line of text (unless it is a widow).", 'wp-typography' ),
+				'label' 		=> __( '%1\$s Prevent single character words from residing at the end of a line of text (unless it is a widow).', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 0,
 			),
 			'typo_dash_spacing' => array(
 				'section'		=> 'space-control',
-				'label' 		=> __( "%1\$s Force thin spaces between em &amp; en dashes and adjoining words.", 'wp-typography' ),
+				'label' 		=> __( '%1\$s Force thin spaces between em &amp; en dashes and adjoining words.', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 0,
 			),
 			'typo_fraction_spacing' => array(
 				'section'		=> 'space-control',
-				'label' 		=> __( "%1\$s Keep integers with adjoining fractions.", 'wp-typography' ),
-				'help_text' 	=> __( "i.e. <samp>1 1/2</samp> or <samp>1 <sup>1</sup>&#8260;<sub>2</sub></samp>", 'wp-typography' ),
+				'label' 		=> __( '%1\$s Keep integers with adjoining fractions.', 'wp-typography' ),
+				'help_text' 	=> __( 'i.e. <samp>1 1/2</samp> or <samp>1 <sup>1</sup>&#8260;<sub>2</sub></samp>', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 0,
 			),
 			'typo_space_collapse' => array(
 				'section'		=> 'space-control',
-				'label' 		=> __( "%1\$s Collapse adjacent spacing to a single character.", 'wp-typography' ),
-				'help_text' 	=> __( "Normal HTML processing collapses basic spaces.  This option will additionally collapse no-break spaces, zero-width spaces, figure spaces, etc.", 'wp-typography' ),
+				'label' 		=> __( '%1\$s Collapse adjacent spacing to a single character.', 'wp-typography' ),
+				'help_text' 	=> __( 'Normal HTML processing collapses basic spaces.  This option will additionally collapse no-break spaces, zero-width spaces, figure spaces, etc.', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 0,
 			),
 			'typo_french_punctuation_spacing' => array(
 				'section'		=> 'space-control',
-				'label' 		=> __( "%1\$s Apply French punctuation rules.", 'wp-typography' ),
-				'help_text' 	=> __( "This option adds a thin non-breakable space before <samp>?!:;</samp>.", 'wp-typography' ),
+				'label' 		=> __( '%1\$s Apply French punctuation rules.', 'wp-typography' ),
+				'help_text' 	=> __( 'This option adds a thin non-breakable space before <samp>?!:;</samp>.', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 0,
 			),
 			'typo_unit_spacing' => array(
 				'section'		=> 'space-control',
-				'fieldset' 		=> "values-and-units",
-				'label' 		=> __( "%1\$s Keep values and units together.", 'wp-typography' ),
-				'help_text' 	=> __( "i.e. <samp>1 in.</samp> or <samp>10 m<sup>2</sup></samp>", 'wp-typography' ),
+				'fieldset' 		=> 'values-and-units',
+				'label' 		=> __( '%1\$s Keep values and units together.', 'wp-typography' ),
+				'help_text' 	=> __( 'i.e. <samp>1 in.</samp> or <samp>10 m<sup>2</sup></samp>', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 0,
 			),
 			'typo_units' => array(
 				'section'		=> 'space-control',
-				'fieldset' 		=> "values-and-units",
-				'label' 		=> __( "Unit names:", 'wp-typography' ),
-				'help_text' 	=> __( "Separate unit names with spaces. We already look for a large list; fill in any holes here.", 'wp-typography' ),
+				'fieldset' 		=> 'values-and-units',
+				'label' 		=> __( 'Unit names:', 'wp-typography' ),
+				'help_text' 	=> __( 'Separate unit names with spaces. We already look for a large list; fill in any holes here.', 'wp-typography' ),
 				'control' 		=> 'textarea',
-				'default' 		=> "hectare fortnight",
+				'default' 		=> 'hectare fortnight',
 			),
 			'typo_prevent_widows' => array(
 				'section'		=> 'space-control',
 				'fieldset' 		=> 'widows',
-				'label' 		=> __( "%1\$s Prevent widows", 'wp-typography' ),
-				'help_text' 	=> __( "Widows are the last word in a block of text that wraps to its own line.", 'wp-typography' ),
+				'label' 		=> __( '%1\$s Prevent widows', 'wp-typography' ),
+				'help_text' 	=> __( 'Widows are the last word in a block of text that wraps to its own line.', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 1,
@@ -633,24 +645,24 @@ class WP_Typography_Admin {
 			'typo_widow_min_length' => array(
 				'section'		=> 'space-control',
 				'fieldset' 		=> 'widows',
-				'label' 		=> __( "Only protect widows with %1\$s or fewer letters.", 'wp-typography' ),
+				'label' 		=> __( 'Only protect widows with %1\$s or fewer letters.', 'wp-typography' ),
 				'control' 		=> 'select',
-				'option_values'	=> array(4=>4,5=>5,6=>6,7=>7,8=>8,9=>9,10=>10,100=>100),
+				'option_values'	=> array( 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10, 100 => 100 ),
 				'default' 		=> 5,
 			),
 			'typo_widow_max_pull' => array(
 				'section'		=> 'space-control',
 				'fieldset' 		=> 'widows',
-				'label' 		=> __( "Pull at most %1\$s letters from the previous line to keep the widow company.", 'wp-typography' ),
+				'label' 		=> __( 'Pull at most %1\$s letters from the previous line to keep the widow company.', 'wp-typography' ),
 				'control' 		=> 'select',
-				'option_values'	=> array(4=>4,5=>5,6=>6,7=>7,8=>8,9=>9,10=>10,100=>100),
+				'option_values'	=> array( 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10, 100 => 100 ),
 				'default' 		=> 5,
 			),
 			'typo_wrap_hyphens' => array(
 				'section'		=> 'space-control',
 				'fieldset' 		=> 'enable-wrapping',
-				'label' 		=> __( "%1\$s Enable wrapping after hard hyphens.", 'wp-typography' ),
-				'help_text' 	=> __( "Adds zero-width spaces after hard hyphens (like in &ldquo;zero-width&rdquo;).", 'wp-typography' ),
+				'label' 		=> __( '%1\$s Enable wrapping after hard hyphens.', 'wp-typography' ),
+				'help_text' 	=> __( 'Adds zero-width spaces after hard hyphens (like in &ldquo;zero-width&rdquo;).', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 0,
@@ -658,8 +670,8 @@ class WP_Typography_Admin {
 			'typo_wrap_emails' => array(
 				'section'		=> 'space-control',
 				'fieldset' 		=> 'enable-wrapping',
-				'label' 		=> __( "%1\$s Enable wrapping of long emails.", 'wp-typography' ),
-				'help_text' 	=> __( "Adds zero-width spaces throughout the email.", 'wp-typography' ),
+				'label' 		=> __( '%1\$s Enable wrapping of long emails.', 'wp-typography' ),
+				'help_text' 	=> __( 'Adds zero-width spaces throughout the email.', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 0,
@@ -667,8 +679,8 @@ class WP_Typography_Admin {
 			'typo_wrap_urls' => array(
 				'section'		=> 'space-control',
 				'fieldset' 		=> 'enable-wrapping',
-				'label' 		=> __( "%1\$s Enable wrapping of long URLs.", 'wp-typography' ),
-				'help_text' 	=> __( "Adds zero-width spaces throughout the URL.", 'wp-typography' ),
+				'label' 		=> __( '%1\$s Enable wrapping of long URLs.', 'wp-typography' ),
+				'help_text' 	=> __( 'Adds zero-width spaces throughout the URL.', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 0,
@@ -676,35 +688,35 @@ class WP_Typography_Admin {
 			'typo_wrap_min_after' => array(
 				'section'		=> 'space-control',
 				'fieldset' 		=> 'enable-wrapping',
-				'label' 		=> __( "Keep at least the last %1\$s characters of a URL together.", 'wp-typography' ),
+				'label' 		=> __( 'Keep at least the last %1\$s characters of a URL together.', 'wp-typography' ),
 				'control' 		=> 'select',
-				'option_values'	=> array(3=>3,4=>4,5=>5,6=>6,7=>7,8=>8,9=>9,10=>10),
+				'option_values'	=> array( 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10 ),
 				'default' 		=> 3,
 			),
 			'typo_style_amps' => array(
 				'section' 		=> 'css-hooks',
-				'label' 		=> __( "%1\$s Wrap ampersands [ <samp>&amp;</samp> ] with <samp>&lt;span class=\"amp\"&gt;</samp>.", 'wp-typography' ),
+				'label' 		=> __( '%1\$s Wrap ampersands [ <samp>&amp;</samp> ] with <samp>&lt;span class="amp"&gt;</samp>.', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 1,
 			),
 			'typo_style_caps' => array(
 				'section' 		=> 'css-hooks',
-				'label' 		=> __( "%1\$s Wrap acronyms (all capitals) with <samp>&lt;span class=\"caps\"&gt;</samp>.", 'wp-typography' ),
+				'label' 		=> __( '%1\$s Wrap acronyms (all capitals) with <samp>&lt;span class="caps"&gt;</samp>.', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 1,
 			),
 			'typo_style_numbers' => array(
 				'section' 		=> 'css-hooks',
-				'label' 		=> __( "%1\$s Wrap digits [ <samp>0123456789</samp> ] with <samp>&lt;span class=\"numbers\"&gt;</samp>.", 'wp-typography' ),
+				'label' 		=> __( '%1\$s Wrap digits [ <samp>0123456789</samp> ] with <samp>&lt;span class="numbers"&gt;</samp>.', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 0,
 			),
 			'typo_style_hanging_punctuation' => array(
 				'section' 		=> 'css-hooks',
-				'label' 		=> __( "%1\$s Wrap small punctuation marks", 'wp-typography' ),
+				'label' 		=> __( '%1\$s Wrap small punctuation marks', 'wp-typography' ),
 				'help_text' 	=> __( "Note: The amount of push/pull should be adjusted for your selected font in the stylesheet. <br />Single quote-like marks [ <samp>&#8218;&lsquo;&apos;&prime;'</samp> ] are wrapped with <samp>&lt;span class=\"pull-single\"&gt;</samp>. <br />Double quote-like marks [ <samp>&#8222;&ldquo;&Prime;\"</samp> ] are wrapped with <samp>&lt;span class=\"pull-double\"&gt;</samp>. <br/>For punctuation marks that do not begin a block of text, a corresponding empty <samp>&lt;span class=\"push-&hellip;\"&gt;</samp> ensures proper alignment within the line.", 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
@@ -712,31 +724,31 @@ class WP_Typography_Admin {
 			),
 			'typo_style_initial_quotes' => array(
 				'section' 		=> 'css-hooks',
-				'label' 		=> __( "%1\$s Wrap initial quotes", 'wp-typography' ),
-				'help_text' 	=> __( "Note: matches quotemarks at the beginning of blocks of text, <strong>not</strong> all opening quotemarks. <br />Single quotes [ <samp>&lsquo;</samp> <samp>&#8218;</samp> ] are wrapped with <samp>&lt;span class=\"quo\"&gt;</samp>. <br />Double quotes [ <samp>&ldquo;</samp> <samp>&#8222;</samp> ] are wrapped with <samp>&lt;span class=\"dquo\"&gt;</samp>. <br />Guillemets [ <samp>&laquo;</samp> <samp>&raquo;</samp> ] are wrapped with <samp>&lt;span class=\"dquo\"&gt;</samp>.", 'wp-typography' ),
+				'label' 		=> __( '%1\$s Wrap initial quotes', 'wp-typography' ),
+				'help_text' 	=> __( 'Note: matches quotemarks at the beginning of blocks of text, <strong>not</strong> all opening quotemarks. <br />Single quotes [ <samp>&lsquo;</samp> <samp>&#8218;</samp> ] are wrapped with <samp>&lt;span class="quo"&gt;</samp>. <br />Double quotes [ <samp>&ldquo;</samp> <samp>&#8222;</samp> ] are wrapped with <samp>&lt;span class="dquo"&gt;</samp>. <br />Guillemets [ <samp>&laquo;</samp> <samp>&raquo;</samp> ] are wrapped with <samp>&lt;span class="dquo"&gt;</samp>.', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 1,
 			),
 			'typo_initial_quote_tags' => array(
 				'section' 		=> 'css-hooks',
-				'label' 		=> __( "Limit styling of initial quotes to these <strong>HTML elements</strong>:", 'wp-typography' ),
-				'help_text' 	=> __( "Separate tag names with spaces; do not include the <samp>&lt;</samp> or <samp>&gt;</samp>.", 'wp-typography' ),
+				'label' 		=> __( 'Limit styling of initial quotes to these <strong>HTML elements</strong>:', 'wp-typography' ),
+				'help_text' 	=> __( 'Separate tag names with spaces; do not include the <samp>&lt;</samp> or <samp>&gt;</samp>.', 'wp-typography' ),
 				'control' 		=> 'textarea',
-				'default' 		=> "p h1 h2 h3 h4 h5 h6 blockquote li dd dt",
+				'default' 		=> 'p h1 h2 h3 h4 h5 h6 blockquote li dd dt',
 			),
 			'typo_style_css_include' => array(
 				'section' 		=> 'css-hooks',
-				'label' 		=> __( "%1\$s Include Styling for CSS Hooks", 'wp-typography' ),
-				'help_text' 	=> __( "Attempts to inject the CSS specified below.  If you are familiar with CSS, it is recommended you not use this option, and maintain all styles in your main stylesheet.", 'wp-typography' ),
+				'label' 		=> __( '%1\$s Include Styling for CSS Hooks', 'wp-typography' ),
+				'help_text' 	=> __( 'Attempts to inject the CSS specified below.  If you are familiar with CSS, it is recommended you not use this option, and maintain all styles in your main stylesheet.', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 1,
 			),
 			'typo_style_css' => array(
 				'section'		=> 'css-hooks',
-				'label' 		=> __( "Styling for CSS Hooks:", 'wp-typography' ),
-				'help_text' 	=> __( "This will only be applied if explicitly selected with the preceding option.", 'wp-typography' ),
+				'label' 		=> __( 'Styling for CSS Hooks:', 'wp-typography' ),
+				'help_text' 	=> __( 'This will only be applied if explicitly selected with the preceding option.', 'wp-typography' ),
 				'control' 		=> 'textarea',
 				'default' 		=> 'sup {
 	vertical-align: 60%;
@@ -773,7 +785,7 @@ sub {
 .push-single{ margin-right:.15em }
 
 /* because formatting .numbers should consider your current font settings, we will not style it here */
-'
+',
 			),
 
 		);
@@ -794,10 +806,10 @@ sub {
 	/**
 	 * Add an options page for the plugin settings.
 	 */
-	function add_options_page()	{
+	function add_options_page() {
 		$page = add_options_page( $this->plugin_name, $this->plugin_name, 'manage_options', strtolower( $this->plugin_name ), array( $this, 'get_admin_page_content' ) );
 
-		// Using registered $page handle to hook stylesheet loading
+		// Using registered $page handle to hook stylesheet loading.
 		add_action( 'admin_print_styles-' . $page, array( $this, 'print_admin_styles' ) );
 	}
 
@@ -817,8 +829,8 @@ sub {
 	function plugin_action_links( $links ) {
 		$adminurl = trailingslashit( admin_url() );
 
-		// Add link "Settings" to the plugin in /wp-admin/plugins.php
-		$settings_link = '<a href="'.$adminurl.'options-general.php?page='.strtolower( $this->plugin_name ).'">' . __( 'Settings' , 'wp-typography') . '</a>';
+		// Add link "Settings" to the plugin in /wp-admin/plugins.php.
+		$settings_link = '<a href="' . $adminurl . 'options-general.php?page=' . strtolower( $this->plugin_name ) . '">' . __( 'Settings' , 'wp-typography' ) . '</a>';
 		array_unshift( $links, $settings_link );
 
 		return $links;
@@ -828,7 +840,8 @@ sub {
 	 * Display the plugin options page.
 	 */
 	function get_admin_page_content() {
-		// dynamically generate the list of hyphenation language patterns
+
+		// Dynamically generate the list of hyphenation language patterns.
 		if ( false === ( $languages = get_transient( $this->transient_names['hyphenate_languages'] ) ) ) {
 			/**
 			 * Filter the caching duration for the language plugin lists.
@@ -852,25 +865,25 @@ sub {
 		}
 		$this->admin_form_controls['typo_diacritic_languages']['option_values'] = $languages;
 
-		// load the settings page HTML
+		// Load the settings page HTML.
 		include_once dirname( __DIR__ ) . '/admin/partials/settings.php';
 	}
 
 	/**
 	 * Create the markup for a plugin setting.
 	 *
-	 * @param string $id Required. The control/option ID.
-	 * @param string $control Required. Accepts: 'input', 'select', or 'textarea'; not implemented: 'button'. Default 'input'.
+	 * @param string $id         Required. The control/option ID.
+	 * @param string $control    Required. Accepts: 'input', 'select', or 'textarea'; not implemented: 'button'. Default 'input'.
 	 * @param string $input_type Optional. Used when $control is set to 'input'. Accepts: 'text', 'password', 'checkbox', 'submit', 'hidden';
-	 *               not implemented: 'radio', 'image', 'reset', 'button', 'file'. Default 'text'.
-	 * @param string $label_before Optional. Text displayed before the control. Default empty.
-	 * @param string $help_text Optional. Requires an accompanying label. Default empty.
+	 *                           not implemented: 'radio', 'image', 'reset', 'button', 'file'. Default 'text'.
+	 * @param string $label      Optional. Text displayed before the control. Default empty.
+	 * @param string $help_text  Optional. Requires an accompanying label. Default empty.
 	 * @param array  $option_values {
 	 * 		Optional. Array of values and display strings in the form ($value => $display). Default empty.
-	 * }
+	 * }.
 	 * @param array  $attributes {
 	 * 		Optional. Array of additional HTML attributes. Default empty.
-	 * }
+	 * }.
 	 * @return string The markup for the control.
 	 */
 	function get_admin_form_control( $id, $control = 'input', $input_type = 'text', $label = null, $help_text = null, $option_values = null, $attributes = null ) {
@@ -878,9 +891,9 @@ sub {
 		$control_begin = '<div class="control">';
 		$control_end   = '</div>';
 
-		// translate $label & $help_text
-		$label     = __( $label,     'wp-typography' );
-		$help_text = __( $help_text, 'wp-typography' );
+		// Translate $label & $help_text.
+		$label     = __( $label,     'wp-typography' ); // @codingStandardsIgnoreLine.
+		$help_text = __( $help_text, 'wp-typography' ); // @codingStandardsIgnoreLine.
 
 		if ( 'submit' !== $input_type ) {
 			$value = get_option( $id );
@@ -898,12 +911,12 @@ sub {
 			$button_class  = 'button button-primary';
 		}
 
-		// Make sure $value is in $option_values if $option_values is set
+		// Make sure $value is in $option_values if $option_values is set.
 		if ( $option_values && ! isset( $option_values[ $value ] ) ) {
 			$value = null;
 		}
 
-		// Flatten attributes to string
+		// Flatten attributes to string.
 		$html_attributes = '';
 		if ( ! empty( $attributes ) ) {
 			foreach ( $attributes as $attr => $val ) {
@@ -925,7 +938,7 @@ sub {
 				break;
 
 			default:
-				trigger_error( "Unsupported control <$control>.", E_USER_WARNING );
+				trigger_error( "Unsupported control <$control>.", E_USER_WARNING ); // WPCS: XSS OK.
 				return '';
 		}
 
@@ -935,11 +948,11 @@ sub {
 	/**
 	 * Retrieve markup for <textarea>.
 	 *
-	 * @param string $id
-	 * @param string $value
-	 * @param string $label
-	 * @param string $help
-	 * @param string $attributes
+	 * @param string $id         Required. The textarea element ID.
+	 * @param string $value      Required. The textarea element value.
+	 * @param string $label      Required. The label for the textarea element.
+	 * @param string $help       Required. The help text.
+	 * @param string $attributes    Optional. Additional HTML attributes. Default ''.
 	 */
 	private function get_admin_form_textarea( $id, $value, $label, $help, $attributes = '' ) {
 		if ( ( $label || $help ) ) {
@@ -956,18 +969,18 @@ sub {
 			$control_markup .= '</label>';
 		}
 
-		return $control_markup . "<textarea id='$id' name='$id' $attributes>" . ( ! empty( $value ) ? $value : '') . "</textarea>";
+		return $control_markup . "<textarea id='$id' name='$id' $attributes>" . ( ! empty( $value ) ? $value : '') . '</textarea>';
 	}
 
 	/**
 	 * Retrieve markup for <select>.
 	 *
-	 * @param string $id
-	 * @param string $value
-	 * @param string $label
-	 * @param string $help
-	 * @param array  $option_values
-	 * @param string $attributes
+	 * @param string $id            Required. The select element ID.
+	 * @param string $value         Required. The select element value.
+	 * @param string $label         Required. The label for the select element.
+	 * @param string $help          Required. The help text.
+	 * @param array  $option_values Required. The allowed option values.
+	 * @param string $attributes    Optional. Additional HTML attributes. Default ''.
 	 */
 	private function get_admin_form_select( $id, $value, $label, $help, $option_values, $attributes = '' ) {
 		$control_markup = '';
@@ -992,7 +1005,8 @@ sub {
 
 		$select_markup = "<select id='$id' name='$id' $attributes>";
 		foreach ( $option_values as $option_value => $display ) {
-			$select_markup .= "<option value='$option_value' " . selected( $value, $option_value, false ) . ">" . __( $display, 'wp-typography' ) . "</option>";
+			$translated_display = __( $display, 'wp-typography' ); // @codingStandardsIgnoreLine.
+			$select_markup .= "<option value='$option_value' " . selected( $value, $option_value, false ) . '>' . $translated_display . '</option>';
 		}
 		$select_markup .= '</select>';
 
@@ -1002,18 +1016,20 @@ sub {
 	/**
 	 * Retrieve markup for <input>.
 	 *
-	 * @param string $id
-	 * @param string $value
-	 * @param string $input_type
-	 * @param string $label
-	 * @param string $help
-	 * @param string $button_class
-	 * @param string $attributes
+	 * @param string $id            Required. The input element ID.
+	 * @param string $value         Required. The input element value.
+	 * @param string $input_type    Required. The input type for the element.
+	 * @param string $label         Required. The label for the input element.
+	 * @param string $help          Required. The help text.
+	 * @param string $button_class  Optional. The CSS class of the input element. Default null.
+	 * @param string $attributes    Optional. Additional HTML attributes. Default ''.
 	 */
 	private function get_admin_form_input( $id, $value, $input_type, $label, $help, $button_class = null, $attributes = '' ) {
-		$id_and_class = "id='$id' name='$id' ";          // default ID & name, no class (except for submit buttons)
 
-		// values
+		// Set default ID & name, no class (except for submit buttons).
+		$id_and_class = "id='$id' name='$id' ";
+
+		// Determine input values.
 		switch ( $input_type ) {
 			case 'number':
 				$value_markup = 'value="' . esc_attr( $value ) . '" ';
@@ -1027,10 +1043,10 @@ sub {
 				$value_markup = $value ? "value='$value' " : '';
 		}
 
-		// control markup
-		switch( $input_type ) {
+		// Generate control markup.
+		switch ( $input_type ) {
 			case 'submit':
-				$id_and_class = "name='$id' class='$button_class'"; // to avoid duplicate ids and some pretty stylin'
+				$id_and_class = "name='$id' class='$button_class'"; // to avoid duplicate IDs and add some pretty styling.
 			case 'hidden':
 				$control_markup = '%1$s';
 				break;
@@ -1055,7 +1071,7 @@ sub {
 				}
 		}
 
-		// add additional attributes
+		// Add any additional attributes.
 		$id_and_class .= " $attributes";
 
 		return sprintf( $control_markup, "<input type='$input_type' $id_and_class $value_markup/>" );
