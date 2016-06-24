@@ -72,8 +72,7 @@ before_script:
 # All commands must exit with code 0 on success. Anything else is considered failure.
 script:
     # Search for PHP syntax errors.
-    - if [[ "$CHECKING_PHP52" == "1" ]]; find -L . -name 'wp-typography.php' -o -name 'class-wp-typography-requirements.php' -print0 | xargs -0 -n 1 -P 4 php -l;
-      else find -L . -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l; fi
+    - if [[ "$CHECKING_PHP52" == "1" ]]; find -L . -name 'wp-typography.php' -o -name 'class-wp-typography-requirements.php' -print0 | xargs -0 -n 1 -P 4 php -l; else find -L . -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l; fi
     # Run the theme through JSHint.
     - if [[ "$SNIFF" == "1" ]]; then jshint .; fi
     # Run the theme through JavaScript Code Style checker.
