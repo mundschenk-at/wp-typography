@@ -42,7 +42,7 @@ jQuery(document).ready(function($) {
 							    html:  $.selection( 'html' ).replace(/\u00AD/gi,'').replace(/\u200B/gi, '') } );
 		
 		// append to DOM
-		$( 'body' ).append( div )
+		$( 'body' ).append( div );
 		
 		// select the children of our "clean" div
 		sel.selectAllChildren( div[0] );

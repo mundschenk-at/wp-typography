@@ -120,7 +120,7 @@
                 if (element.createTextRange) {
                     var range = element.createTextRange();
 
-                    if (win.navigator.userAgent.toLowerCase().indexOf("msie") >= 0) {
+                    if (win.navigator.userAgent.toLowerCase().indexOf('msie') >= 0) {
                         toRange.start = element.value.substr(0, toRange.start).replace(/\r/g, '').length;
                         toRange.end = element.value.substr(0, toRange.end).replace(/\r/g, '').length;
                     }
@@ -155,7 +155,7 @@
          * @return  {String}    return          any of the following: "keep" | "start" | "end"
          */
         _caretMode: function(caret) {
-            caret = caret || "keep";
+            caret = caret || 'keep';
             if (caret === false) {
                 caret = 'end';
             }
