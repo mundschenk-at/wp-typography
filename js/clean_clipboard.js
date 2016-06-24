@@ -1,6 +1,6 @@
 /**
  *  Clean up clipboard content on cut & copy. Removes &shy; and zero-width space.
- * 
+ *
  *  This file is part of wp-Typography.
  *
  *	Copyright 2016 Peter Putzer.
@@ -34,28 +34,28 @@ jQuery( document ).ready( function( $ ) {
 		var ranges = [];
 		var origRangeCount = sel.rangeCount;
 		var i;
-		
+
 		for ( i = 0; i < origRangeCount; i++ ) {
 			 ranges[i] = sel.getRangeAt( i );
 		}
-		
+
 		// Create new div containing cleaned HTML content
 		var div = $( '<div>', { style: { position: 'absolute', left: '-99999px' }, 
 							    html:  $.selection( 'html' ).replace( /\u00AD/gi, '' ).replace( /\u200B/gi, '' ) } );
-		
+
 		// Append to DOM
 		$( 'body' ).append( div );
-		
+
 		// select the children of our "clean" div
 		sel.selectAllChildren( div[0] );
-		
+
 		// Clean up after copy
 		window.setTimeout( function() {
 			var i;
-			
+
 			// Remove div
 			div.remove();
-			
+
 			// Restore selection
 			sel.removeAllRanges();
 			for ( i = 0; i < origRangeCount; i++ ) {
