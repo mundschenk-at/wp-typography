@@ -357,9 +357,9 @@
                  *
                  * @return  {String}    return
                  */
-                case 'get':
+                case 'get': // jshint -W086
                     /* Falls through */
-                default:
+                default: // jshint +W086
                     return _CaretOperation.getText( this[0] );
             }
 
