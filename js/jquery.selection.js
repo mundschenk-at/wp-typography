@@ -251,7 +251,7 @@
          */
         selection: function( mode ) {
             var getText = ( 'text' === ( mode || 'text' ).toLowerCase() );
-            var sel;
+            var sel, range;
 
             try {
                 if ( win.getSelection ) {
@@ -262,7 +262,7 @@
                     } else {
 
                         // Get html
-                        sel = win.getSelection(), range;
+                        sel = win.getSelection();
 
                         if ( sel.getRangeAt ) {
                             range = sel.getRangeAt( 0 );
@@ -358,8 +358,7 @@
                  * @return  {String}    return
                  */
                 case 'get':
-
-                    // Falls through
+                    /* Falls through */
                 default:
                     return _CaretOperation.getText( this[0] );
             }
