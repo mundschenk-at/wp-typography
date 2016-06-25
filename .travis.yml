@@ -89,7 +89,7 @@ script:
     # --standard: Use WordPress as the standard.
     # --extensions: Only sniff PHP files.
     # --ignore: Don't check non-WP files
-    - if [[ "$SNIFF" == "1" ]]; then $PHPCS_DIR/scripts/phpcs -p -s -v -n . --standard=./codesniffer.ruleset.xml --extensions=php --ignore=tests/*,vendor/*,php-typography/*/*,php-typography/_language_names.php; fi
+    - if [[ "$SNIFF" == "1" ]]; then $PHPCS_DIR/scripts/phpcs -p -s -v -n . --standard=./codesniffer.ruleset.xml --extensions=php --ignore=build/*,node_modules/*,tests/*,vendor/*,php-typography/*/*,php-typography/_language_names.php; fi
 
 # Receive notifications for build results.
 # @link http://docs.travis-ci.com/user/notifications/#Email-notifications
