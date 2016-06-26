@@ -295,7 +295,7 @@ class WP_Typography {
 
 		foreach ( $title_parts as $index => $part ) {
 			// Remove &shy; and &#8203; after processing title part.
-			$title_parts[ $index ] = str_replace( array( \PHP_Typography\uchr( 173 ), \PHP_Typography\uchr( 8203 ) ), '', $this->process( $part, true, true ) );
+			$title_parts[ $index ] = strip_tags( str_replace( array( \PHP_Typography\uchr( 173 ), \PHP_Typography\uchr( 8203 ) ), '', $this->process( $part, true, true ) ) );
 		}
 
 		return $title_parts;
