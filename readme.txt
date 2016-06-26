@@ -96,7 +96,7 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 * Added optional clean up of text copied to clipboard to prevent stray hyphens from showing on paste.
 * Added CSS classes for smart fractions ("numerator", "denominator") and ordinal suffixes ("ordinal").
 * Fixed « and » spacing when French punctuation style is enabled.
-* Fixed `<title>` tag handling (no more `&shy;` and `<span>`tags).
+* Fixed `<title>` tag handling (no more `&shy;` and `<span>`tags, props mpcube).
 * [Preliminary API documentation](https://code.mundschenk.at/wp-typography/api/) has been added to the plugin website.
 
 = 3.2.7 - April 14, 2016 =
