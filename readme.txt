@@ -3,7 +3,7 @@ Contributors: pputzer
 Tags: typography, hyphenation, smart quotes, quote marks, smartypants, typogrify, quotes, prettify, widows, orphans, small caps, diacritics
 Requires at least: 4.4
 Tested up to: 4.5
-Stable tag: 3.2.7
+Stable tag: 3.3.0
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
@@ -88,7 +88,7 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 
 == Changelog ==
 
-= 3.3.0 - unreleased =
+= 3.3.0 - June 27, 2016 =
 * Updated HTML parser (html5-php) to 2.2.1.
 * Updated list of valid top-level domains.
 * Removed IE6 references and workarounds. He's dead, Jim.
@@ -97,6 +97,7 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 * Added CSS classes for smart fractions ("numerator", "denominator") and ordinal suffixes ("ordinal").
 * Fixed « and » spacing when French punctuation style is enabled.
 * Fixed `<title>` tag handling (no more `&shy;` and `<span>`tags).
+* [Preliminary API documentation](https://code.mundschenk.at/wp-typography/api/) has been added to the plugin website.
 
 = 3.2.7 - April 14, 2016 =
 * "Duplicate ID" warnings should be gone now, regardless of the installed libXML version.
