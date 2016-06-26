@@ -1,5 +1,4 @@
 <?php
-
 /**
  *  This file is part of wp-Typography.
  *
@@ -24,8 +23,6 @@
  *  ***
  *
  *  @package wpTypography
- *  @author Jeffrey D. King <jeff@kingdesk.com>
- *  @author Peter Putzer <github@mundschenk.at>
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
@@ -37,7 +34,7 @@ class WP_Typography_Requirements {
 	/**
 	 * The user-visible name of the plugin.
 	 *
-	 * // FIXME Translate?
+	 * @todo Should the plugin name be translated?
 	 * @var string $plugin_name
 	 */
 	private $plugin_name = 'wp-Typography';
@@ -62,12 +59,15 @@ class WP_Typography_Requirements {
 	/**
 	 * The result of plugin_basename() for the main plugin file.
 	 * (Relative from plugins folder.)
+	 *
+	 * @var string $local_plugin_path
 	 */
 	private $local_plugin_path;
 
 	/**
 	 * Sets up a new WP_Typography_Requirements object.
 	 *
+	 * @param string $name     The plugin name.
 	 * @param string $basename The result of plugin_basename() for the main plugin file.
 	 */
 	function __construct( $name, $basename = 'wp-typography/wp-typography.php' ) {
@@ -90,12 +90,12 @@ class WP_Typography_Requirements {
 			}
 			$requirements_met = false;
 		} elseif ( version_compare( PHP_VERSION, $this->install_requirements['PHP Version'], '<' ) ) {
-			if( is_admin() ) {
+			if ( is_admin() ) {
 				add_action( 'admin_notices', array( $this, 'admin_notices_php_version_incompatible' ) );
 			}
 			$requirements_met = false;
 		} elseif ( $this->install_requirements['Multibyte'] && ! $this->check_multibyte_support() ) {
-			if( is_admin() ) {
+			if ( is_admin() ) {
 				add_action( 'admin_notices', array( $this, 'admin_notices_mbstring_incompatible' ) );
 			}
 			$requirements_met = false;
@@ -107,9 +107,9 @@ class WP_Typography_Requirements {
 		}
 
 		if ( ! $requirements_met && is_admin() ) {
-			// load text domain to ensure translated admin notices
+			// Load text domain to ensure translated admin notices.
 			load_plugin_textdomain( 'wp-typography', false, dirname( $this->local_plugin_path ) . '/translations/' );
-			// add_action( 'admin_init', array( $this, 'deactivate_plugin' ) );
+			/* add_action( 'admin_init', array( $this, 'deactivate_plugin' ) ); */
 		}
 
 		return $requirements_met;
@@ -118,9 +118,9 @@ class WP_Typography_Requirements {
 	/**
 	 * Deactivate the plugin.
 	 */
- 	function deactivate_plugin() {
- 		deactivate_plugins( plugin_basename( $this->local_plugin_path ) );
- 	}
+	function deactivate_plugin() {
+		deactivate_plugins( plugin_basename( $this->local_plugin_path ) );
+		}
 
 	/**
 	 * Check if multibyte functions are supported.
@@ -130,7 +130,7 @@ class WP_Typography_Requirements {
 	private function check_multibyte_support() {
 		if ( function_exists( 'mb_strlen' )     &&
 			 function_exists( 'mb_strtolower' ) &&
-			 function_exists( 'mb_substr')      &&
+			 function_exists( 'mb_substr' )      &&
 			 function_exists( 'mb_detect_encoding' ) ) {
 			return true;
 		 } else {
@@ -191,17 +191,17 @@ class WP_Typography_Requirements {
 	/**
 	 * Show an error message in the admin area.
 	 *
-	 * @param string $format    An `sprintf` format string.
-	 * @param mixed  $param1... An optional number of parameters for sprintf.
+	 * @param string $format     An `sprintf` format string.
+	 * @param mixed  $param1,... An optional number of parameters for sprintf.
 	 */
 	private function display_error_notice( $format ) {
 		if ( func_num_args() < 1 ) {
-			return; // abort
+			return; // abort.
 		}
 
 		$args = func_get_args();
 		$format = array_shift( $args );
 
-		echo '<div class="error"><p>' . vsprintf( $format, $args ) . '</p></div>';
+		echo '<div class="error"><p>' . vsprintf( $format, $args ) . '</p></div>'; // WPCS: XSS OK.
 	}
 }

@@ -1,5 +1,4 @@
 <?php
-
 /**
  *  This file is part of wp-Typography.
  *
@@ -29,11 +28,11 @@
 /**
  * An autoloader implementation for the WP_Typography classes.
  *
- * @param string $class_name
+ * @param string $class_name Required.
  */
 function wp_typography_autoloader( $class_name ) {
 	if ( false === strpos( $class_name, 'WP_Typography' ) ) {
-		return; // abort
+		return; // abort early.
 	}
 
 	static $classes_dir;

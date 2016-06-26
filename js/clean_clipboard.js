@@ -1,6 +1,6 @@
 /**
  *  Clean up clipboard content on cut & copy. Removes &shy; and zero-width space.
- * 
+ *
  *  This file is part of wp-Typography.
  *
  *	Copyright 2016 Peter Putzer.
@@ -25,40 +25,45 @@
  *  @author Peter Putzer <github@mundschenk.at>
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
+jQuery( document ).ready( function( $ ) {
 
-jQuery(document).ready(function($) {
-	
 	function cleanUpSelection()	{
-		// store selection and ranges
+
+		// Store selection and ranges
 		var sel = window.getSelection();
 		var ranges = [];
-		var origRangeCount = sel.rangeCount; 
-		for( var i = 0; i < origRangeCount; i++ ) {
+		var origRangeCount = sel.rangeCount;
+		var i;
+		var div;
+
+		for ( i = 0; i < origRangeCount; i++ ) {
 			 ranges[i] = sel.getRangeAt( i );
 		}
-		
-		// create new div containing cleaned HTML content
-		var div = $( '<div>', { style: { position: 'absolute', left: '-99999px' }, 
-							    html:  $.selection( 'html' ).replace(/\u00AD/gi,'').replace(/\u200B/gi, '') } );
-		
-		// append to DOM
-		$( 'body' ).append( div )
-		
-		// select the children of our "clean" div
+
+		// Create new div containing cleaned HTML content
+		div = $( '<div>', { style: { position: 'absolute', left: '-99999px' },
+							    html:  $.selection( 'html' ).replace( /\u00AD/gi, '' ).replace( /\u200B/gi, '' ) } );
+
+		// Append to DOM
+		$( 'body' ).append( div );
+
+		// Select the children of our "clean" div
 		sel.selectAllChildren( div[0] );
-		
-		// clean-up after copy
+
+		// Clean up after copy
 		window.setTimeout( function() {
-			// remove div
+			var i;
+
+			// Remove div
 			div.remove();
-			
-			// restore selection
+
+			// Restore selection
 			sel.removeAllRanges();
-			for( var i = 0; i < origRangeCount; i++ ) {
+			for ( i = 0; i < origRangeCount; i++ ) {
 				 sel.addRange( ranges[i] );
 			}
 		}, 1 );
 	}
 
 	document.oncopy = cleanUpSelection;
-});
+} );

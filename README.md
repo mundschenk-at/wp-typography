@@ -34,6 +34,8 @@ wp-Typography can easily be ported to any other PHP based content management sys
 
 View the [wp-Typography homepage](https://code.mundschenk.at/wp-typography/ "wp-Typography Homepage") for more information.
 
+[![Build Status](https://travis-ci.org/mundschenk-at/wp-typography.svg?branch=master)](https://travis-ci.org/mundschenk-at/wp-typography)
+
 ## Installation ##
 
 1. Log in to WordPress as an administrator
