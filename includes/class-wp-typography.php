@@ -217,13 +217,6 @@ class WP_Typography {
 			 */
 			$priority = apply_filters( 'typo_filter_priority', $this->filter_priority );
 
-			/*
-			   // Removed because it caused issues for feeds.
-			   add_filter( 'bloginfo', array($this, 'processBloginfo'), 9999);
-			   add_filter( 'wp_title', 'strip_tags', 9999);
-			   add_filter( 'single_post_title', 'strip_tags', 9999);
-			 */
-
 			// Add filters for "full" content.
 			add_filter( 'comment_author',    array( $this, 'process' ),       $priority );
 			add_filter( 'comment_text',      array( $this, 'process' ),       $priority );
@@ -251,6 +244,7 @@ class WP_Typography {
 			// Extra care needs to be taken with the <title> tag.
 			add_filter( 'wp_title',             array( $this, 'process_feed' ),        $priority ); // WP < 4.4.
 			add_filter( 'document_title_parts', array( $this, 'process_title_parts' ), $priority );
+			add_filter( 'wp_title_parts',       array( $this, 'process_title_parts' ), $priority ); // WP < 4.4.
 		}
 
 		// Add CSS Hook styling.
@@ -301,7 +295,7 @@ class WP_Typography {
 
 		foreach ( $title_parts as $index => $part ) {
 			// Remove &shy; and &#8203; after processing title part.
-			$title_parts[ $index ] = str_replace( array( \PHP_Typography\uchr( 173 ), \PHP_Typography\uchr( 8203 ) ), '', $this->process( $part, true, true ) );
+			$title_parts[ $index ] = strip_tags( str_replace( array( \PHP_Typography\uchr( 173 ), \PHP_Typography\uchr( 8203 ) ), '', $this->process( $part, true, true ) ) );
 		}
 
 		return $title_parts;
