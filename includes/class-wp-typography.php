@@ -481,6 +481,8 @@ class WP_Typography {
 			$this->php_typo->set_min_before_hyphenation( $this->settings['typo_hyphenate_min_before'] );
 			$this->php_typo->set_min_after_hyphenation( $this->settings['typo_hyphenate_min_after'] );
 			$this->php_typo->set_hyphenation_exceptions( $this->settings['typo_hyphenate_exceptions'] );
+			// Merge language and custom hyphenation exceptions and pregenerate patterns
+			$this->php_typo->merge_hyphenation_exceptions();
 		} else { // save some cycles.
 			$this->php_typo->set_hyphenation( $this->settings['typo_enable_hyphenation'] );
 		}
