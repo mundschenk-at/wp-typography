@@ -31,13 +31,14 @@
  *  Description: Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
  *  Author: Peter Putzer
  *  Author URI: https://code.mundschenk.at
- *  Version: 3.3.0
+ *  Version: 3.3.1
  *  License: GNU General Public License v2 or later
  *  License URI: https://www.gnu.org/licenses/gpl-2.0.html
  *  Text Domain: wp-typography
  *  Domain Path: /translations
  *
  *  ***
+ *
  *  Portions of this plugin are inspired by:
  *	   Christian Metts - href="http://code.google.com/p/typogrify/
  *     Hamish Macpherson - http://www.hamstu.com/
