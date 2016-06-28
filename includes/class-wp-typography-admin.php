@@ -434,7 +434,7 @@ class WP_Typography_Admin {
 			),
 			'typo_smart_characters' => array(
 				'section'		=> 'character-replacement',
-				'label' 		=> __( '%1$s Override WordPres\' automatic character handling with your preferences here.', 'wp-typography' ),
+				'label' 		=> __( '%1$s Override WordPress\' automatic character handling with your preferences here.', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
 				'default' 		=> 1,
