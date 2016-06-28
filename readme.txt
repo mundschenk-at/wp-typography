@@ -33,31 +33,15 @@ Improve your web typography with:
     * numbers,
     * initial quotes & guillemets.
 
+== Installation ==
+
+=== Requirements ===
+
 wp‐Typography has the following requirements:
 
 * the host server must run PHP 5.3.4 or later
 * your installation of PHP 5.3.4+ must include the [mbstring extension](http://us3.php.net/manual/en/mbstring.installation.php) (most do)
 * text must be encoded UTF‐8
-
-wp-Typography can easily be ported to any other PHP based content management system. It is based on original work by Jeffrey D. King. More information can be found [original wp-Typography homepage](http://kingdesk.com/projects/wp-typography/ "wp-Typography Homepage").
-
-== Installation ==
-
-1. Log in to WordPress as an administrator
-2. Go to `Plugins > Add New` and search for `wp-Typography`
-3. Click `install` next to the wp-Typography plugin description
-4. Click the `Install Now` button in the pop-up window
-5. After the plugin is installed, click the `Activate Plugin` link
-6. Go to `Settings > wp-Typography` to set your preferences
-
-Alternately, you may manually upload the plugin by following the following instructions:
-
-1. Go to [http://wordpress.org/extend/plugins/wp-typography/](http://wordpress.org/extend/plugins/wp-typography/), and click the `Download` button
-2. Unzip the `wp-Typography.x.x.zip` file
-3. Using your favored FTP client, upload the `wp-typography` folder to the `/wp-content/plugins/` directory
-4. Log in to WordPress as an administrator
-5. Go to `Plugins > Installed`, locate the plugin and click the related `Activate` link.
-6. Go to `Settings > wp-Typography` to set your preferences
 
 == Frequently Asked Questions ==
 
