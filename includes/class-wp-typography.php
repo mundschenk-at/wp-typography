@@ -378,12 +378,11 @@ class WP_Typography {
 	private function get_php_typo() {
 
 		if ( empty( $this->php_typo ) ) {
-			$this->php_typo = new \PHP_Typography\PHP_Typography( false, 'lazy' );
 			$transient = 'typo_php_' . md5( json_encode( $this->settings ) ) . '_' . $this->version_hash;
 
-			if ( ! $this->php_typo->load_state( get_transient( $transient ) ) ) {
+			if ( ! $this->php_typo = ( get_transient( $transient ) ) ) {
 				// OK, we have to initialize the PHP_Typography instance manually.
-				$this->php_typo->init( false );
+				$this->php_typo = new \PHP_Typography\PHP_Typography( false, 'now' );
 
 				// Load our settings into the instance.
 				$this->init_php_typo();
@@ -398,7 +397,7 @@ class WP_Typography {
 				$duration = apply_filters( 'typo_php_typography_caching_duration', WEEK_IN_SECONDS );
 
 				// Try again next time.
-				$this->set_transient( $transient, $this->php_typo->save_state(), $duration, true );
+				$this->set_transient( $transient, $this->php_typo, $duration, true );
 			}
 
 			// Settings won't be touched again, so cache the hash.
@@ -481,8 +480,6 @@ class WP_Typography {
 			$this->php_typo->set_min_before_hyphenation( $this->settings['typo_hyphenate_min_before'] );
 			$this->php_typo->set_min_after_hyphenation( $this->settings['typo_hyphenate_min_after'] );
 			$this->php_typo->set_hyphenation_exceptions( $this->settings['typo_hyphenate_exceptions'] );
-			// Merge language and custom hyphenation exceptions and pregenerate patterns.
-			$this->php_typo->merge_hyphenation_exceptions();
 		} else { // save some cycles.
 			$this->php_typo->set_hyphenation( $this->settings['typo_enable_hyphenation'] );
 		}
