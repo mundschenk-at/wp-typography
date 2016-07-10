@@ -33,15 +33,17 @@ Improve your web typography with:
     * numbers,
     * initial quotes & guillemets.
 
+
 == Installation ==
 
-=== Requirements ===
+= Requirements =
 
 wp‐Typography has the following requirements:
 
 * the host server must run PHP 5.3.4 or later
 * your installation of PHP 5.3.4+ must include the [mbstring extension](http://us3.php.net/manual/en/mbstring.installation.php) (most do)
 * text must be encoded UTF‐8
+
 
 == Frequently Asked Questions ==
 
