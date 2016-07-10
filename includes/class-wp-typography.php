@@ -245,6 +245,13 @@ class WP_Typography {
 			add_filter( 'wp_title',             array( $this, 'process_feed' ),        $priority ); // WP < 4.4.
 			add_filter( 'document_title_parts', array( $this, 'process_title_parts' ), $priority );
 			add_filter( 'wp_title_parts',       array( $this, 'process_title_parts' ), $priority ); // WP < 4.4.
+
+			// 3rd-party plugins
+			if ( class_exists( 'acf' ) ) {
+				add_filter( 'acf/format_value_for_api/type=wysiwyg',  array( $this, 'process' ),       $priority );
+				add_filter( 'acf/format_value_for_api/type=textarea', array( $this, 'process' ),       $priority );
+				add_filter( 'acf/format_value_for_api/type=text',     array( $this, 'process_title' ), $priority );
+			}
 		}
 
 		// Add CSS Hook styling.
