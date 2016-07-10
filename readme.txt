@@ -3,7 +3,7 @@ Contributors: pputzer
 Tags: typography, hyphenation, smart quotes, quote marks, smartypants, typogrify, quotes, prettify, widows, orphans, small caps, diacritics
 Requires at least: 4.4
 Tested up to: 4.6
-Stable tag: 3.3.1
+Stable tag: 3.4.0
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
@@ -74,7 +74,9 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 
 == Changelog ==
 
-= 3.4.0 - unreleased = 
+= 3.4.0 - July 10, 2016 = 
+* Store hyphenation patterns as JSON files instead of PHP to work around a GlotPress bug that prevents timely language pack updates. 
+* Out-of-the box support for Advanced Custom Fields (specifically for fields of the types `text`, `textarea` and `wysiwyg`).
 * Updated list of valid top-level domains.
 
 = 3.3.1 - June 27, 2016 =
