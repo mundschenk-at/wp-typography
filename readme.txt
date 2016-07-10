@@ -2,7 +2,7 @@
 Contributors: pputzer
 Tags: typography, hyphenation, smart quotes, quote marks, smartypants, typogrify, quotes, prettify, widows, orphans, small caps, diacritics
 Requires at least: 4.4
-Tested up to: 4.5
+Tested up to: 4.6
 Stable tag: 3.3.1
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
@@ -71,6 +71,9 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 1. wp-Typography administrative settings page
 
 == Changelog ==
+
+= 3.4.0 - unreleased = 
+* Updated list of valid top-level domains.
 
 = 3.3.1 - June 27, 2016 =
 * The JavaScript files for `Remove hyphenation when copying to clipboard` were missing from the build.
