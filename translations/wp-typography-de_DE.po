@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: wp-Typography 3.0.0-beta1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-typography\n"
 "POT-Creation-Date: 2016-01-16 16:03:50+00:00\n"
-"PO-Revision-Date: 2016-05-07 15:50+0100\n"
+"PO-Revision-Date: 2016-07-12 19:13+0100\n"
 "Last-Translator: Peter Putzer <github@mundschenk.at>\n"
 "Language-Team: Peter Putzer <github@mundschenk.at>\n"
 "Language: de_DE\n"
@@ -116,15 +116,17 @@ msgid "Separate ID names with spaces."
 msgstr "IDs durch Leerzeichen trennen."
 
 #: includes/class-wp-typography-admin.php:321
-#, fuzzy
 msgid "%1$s Enable caching"
-msgstr "%1$s Caching deaktivieren"
+msgstr "%1$s Caching aktivieren"
 
 #: includes/class-wp-typography-admin.php:322
 msgid ""
 "Caches processed text fragments. Can cause major database growth when used "
 "without a separate object cache implementation."
 msgstr ""
+"Legt verarbeitete Textfragmente im WordPress-Cache ab. Wenn keine eigene "
+"Object-Cache-Implementierung verwendet wird, kann dies zu einem starken "
+"Anwachsen der Datenbankgröße führen."
 
 #: includes/class-wp-typography-admin.php:330
 msgid "Limit number of cached fragments to %1$s."
@@ -212,6 +214,7 @@ msgstr "Trennstellen mit \"-\" markieren, Wörter durch Leerzeichen trennen."
 #: includes/class-wp-typography-admin.php:421
 msgid "%1$s Remove hyphenation when copying to clipboard"
 msgstr ""
+"%1$s Bedingte Trennstriche beim Kopieren in die Zwischenablage entfernen"
 
 #: includes/class-wp-typography-admin.php:422
 msgid ""
@@ -219,6 +222,9 @@ msgid ""
 "soft hyphens and zero-width spaces are removed from the clipboard selection. "
 "Requires JavaScript."
 msgstr ""
+"Um eine fehlerhafte Darstellung in älteren Anwendungen zu verhindern, werden "
+"alle bedingten Trennstriche und breitenlose Leerzeichen aus der in die "
+"Zwischenablage kopierten Auswahl entfernt. Erfordert JavaScript."
 
 #: includes/class-wp-typography-admin.php:429
 msgid "%1$s Add workaround for Safari hyphenation bug"
@@ -236,22 +242,20 @@ msgstr ""
 "</code> als Inline-Style hinzu."
 
 #: includes/class-wp-typography-admin.php:437
-#, fuzzy
 msgid ""
-"%1$s Override WordPres' automatic character handling with your preferences "
+"%1$s Override WordPress' automatic character handling with your preferences "
 "here."
 msgstr ""
 "%1$s Die automatische Zeichenersetzung von WordPress durch diese "
 "Einstellungen überschreiben."
 
 #: includes/class-wp-typography-admin.php:445
-#, fuzzy
 msgid ""
 "%1$s Transform straight quotes [ <samp>'</samp> <samp>\\\"</samp> ] to "
 "typographically correct characters as detailed below."
 msgstr ""
 "%1$s Fuß- und Zollzeichen [ <samp>'</samp> <samp>\"</samp> ] durch "
-"typographisch korrekte Anführungszeichen ersetzen. "
+"typographisch korrekte Anführungszeichen ersetzen."
 
 #: includes/class-wp-typography-admin.php:454
 msgid "Convert <samp>\"foo\"</samp> to: %1$s"
@@ -346,15 +350,15 @@ msgstr ""
 
 #: includes/class-wp-typography-admin.php:555
 msgid ""
-"%1$s Transform registration marks [ <samp>(c)</samp> <samp>(r)</samp> "
-"<samp>(tm)</samp> <samp>(sm)</samp> <samp>(p)</samp> ] to  proper characters "
+"%1$s Transform registration marks [ <samp>(c)</samp> <samp>(r)</samp> <samp>"
+"(tm)</samp> <samp>(sm)</samp> <samp>(p)</samp> ] to  proper characters "
 "[ <samp>©</samp> <samp>®</samp> <samp>™</samp> <samp>℠</samp> <samp>℗</"
 "samp> ]."
 msgstr ""
-"%1$s Registrierungs- und Warenzeichen [ <samp>©</samp> <samp>®</samp> "
-"<samp>(™)</samp> <samp>(sm)</samp> <samp>℗</samp> ] durch passende "
-"Einzelzeichen [ <samp>©</samp> <samp>®</samp> <samp>™</samp> <samp>℠</samp> "
-"<samp>℗</samp> ] ersetzen."
+"%1$s Registrierungs- und Warenzeichen [ <samp>©</samp> <samp>®</samp> <samp>"
+"(™)</samp> <samp>(sm)</samp> <samp>℗</samp> ] durch passende Einzelzeichen "
+"[ <samp>©</samp> <samp>®</samp> <samp>™</samp> <samp>℠</samp> <samp>℗</"
+"samp> ] ersetzen."
 
 #: includes/class-wp-typography-admin.php:562
 msgid ""
@@ -398,6 +402,8 @@ msgstr ""
 #: includes/class-wp-typography-admin.php:590
 msgid "%1$s Force thin spaces between em &amp; en dashes and adjoining words."
 msgstr ""
+"%1$s Schmale Leerzeichen zwischen Geviert- & Halbgeviertstrichen und "
+"angrenzenden Wörtern erzwingen."
 
 #: includes/class-wp-typography-admin.php:597
 msgid "%1$s Keep integers with adjoining fractions."
@@ -424,11 +430,13 @@ msgstr ""
 
 #: includes/class-wp-typography-admin.php:613
 msgid "%1$s Apply French punctuation rules."
-msgstr ""
+msgstr "%1$s Französische Interpunktionsregeln anwenden."
 
 #: includes/class-wp-typography-admin.php:614
 msgid "This option adds a thin non-breakable space before <samp>?!:;</samp>."
 msgstr ""
+"Diese Einstellung fügt vor <samp>?!:;</samp> ein schmales geschütztes "
+"Leerzeichen ein."
 
 #: includes/class-wp-typography-admin.php:622
 msgid "%1$s Keep values and units together."
@@ -528,10 +536,9 @@ msgstr ""
 
 #: includes/class-wp-typography-admin.php:719
 msgid "%1$s Wrap small punctuation marks"
-msgstr ""
+msgstr "%1$s Kleine Interpunktionszeichen mit CSS-Klassen umgeben"
 
 #: includes/class-wp-typography-admin.php:720
-#, fuzzy
 msgid ""
 "Note: The amount of push/pull should be adjusted for your selected font in "
 "the stylesheet. <br />Single quote-like marks [ <samp>&#8218;&lsquo;&apos;"
@@ -544,7 +551,7 @@ msgid ""
 msgstr ""
 "Anmerkung: Erkennt Anführungszeichen am Beginn von Textblöcken, "
 "<strong>nicht</strong> alle öffnenden Anführungszeichen. <br />Einfache "
-"Anfürhungszeichen [ <samp>&lsquo;</samp> <samp>&#8218;</samp> ] werden mit "
+"Anführungszeichen [ <samp>&lsquo;</samp> <samp>&#8218;</samp> ] werden mit "
 "<samp>&lt;span class=\"quo\"&gt;</samp> umgeben. <br />Doppelte "
 "Anführungszeichen [ <samp>&ldquo;</samp> <samp>&#8222;</samp> ] werden mit "
 "<samp>&lt;span class=\"dquo\"&gt;</samp> umgeben. <br />Guillemets "
@@ -660,210 +667,6 @@ msgstr ""
 "die Kodierung PHP %2$s verwendet. Bitte das Plugin deaktivieren oder <a href="
 "\"%3$s\">die Zeichenkodierung auf UTF-8 ändern</a>."
 
-#: php-typography/_language_names.php:1
-msgid "Afrikaans"
-msgstr "Afrikaans"
-
-#: php-typography/_language_names.php:2
-msgid "Bulgarian"
-msgstr "Bulgarisch"
-
-#: php-typography/_language_names.php:3
-msgid "Catalan"
-msgstr "Katalanisch"
-
-#: php-typography/_language_names.php:4
-msgid "Czech"
-msgstr "Tschechisch"
-
-#: php-typography/_language_names.php:5
-msgid "Welsh"
-msgstr "Walisisch"
-
-#: php-typography/_language_names.php:6
-msgid "Danish"
-msgstr "Dänisch"
-
-#: php-typography/_language_names.php:7
-msgid "German (Traditional)"
-msgstr "Deutsch (alte Rechtschreibung)"
-
-#: php-typography/_language_names.php:8 php-typography/_language_names.php:52
-msgid "German"
-msgstr "Deutsch"
-
-#: php-typography/_language_names.php:9
-msgid "Greek (Modern Monotonic)"
-msgstr "Griechisch (monotonisch)"
-
-#: php-typography/_language_names.php:10
-msgid "Greek (Modern Polytonic)"
-msgstr "Griechisch (polytonisch)"
-
-#: php-typography/_language_names.php:11
-msgid "English (United Kingdom)"
-msgstr "Englisch (UK)"
-
-#: php-typography/_language_names.php:12 php-typography/_language_names.php:53
-msgid "English (United States)"
-msgstr "Englisch (USA)"
-
-#: php-typography/_language_names.php:13
-msgid "Spanish"
-msgstr "Spanisch"
-
-#: php-typography/_language_names.php:14
-msgid "Estonian"
-msgstr "Estnisch"
-
-#: php-typography/_language_names.php:15
-msgid "Basque"
-msgstr "Baskisch"
-
-#: php-typography/_language_names.php:16
-msgid "Finnish"
-msgstr "Finnisch"
-
-#: php-typography/_language_names.php:17
-msgid "French"
-msgstr "Französisch"
-
-#: php-typography/_language_names.php:18
-msgid "Irish"
-msgstr "Irisch"
-
-#: php-typography/_language_names.php:19
-msgid "Galician"
-msgstr "Galicisch"
-
-#: php-typography/_language_names.php:20
-msgid "Greek (Ancient)"
-msgstr "Griechisch (Altgriechisch)"
-
-#: php-typography/_language_names.php:21
-msgid "Croatian"
-msgstr "Kroatisch"
-
-#: php-typography/_language_names.php:22
-msgid "Hungarian"
-msgstr "Ungarisch"
-
-#: php-typography/_language_names.php:23
-msgid "Armenian"
-msgstr "Armenisch"
-
-#: php-typography/_language_names.php:24
-msgid "Interlingua"
-msgstr "Interlingua"
-
-#: php-typography/_language_names.php:25
-msgid "Indonesian"
-msgstr "Indonesisch"
-
-#: php-typography/_language_names.php:26
-msgid "Icelandic"
-msgstr "Isländisch"
-
-#: php-typography/_language_names.php:27
-msgid "Italian"
-msgstr "Italienisch"
-
-#: php-typography/_language_names.php:28
-msgid "Georgian"
-msgstr "Georgisch"
-
-#: php-typography/_language_names.php:29
-msgid "Latin (Classical)"
-msgstr "Latein (klassisch)"
-
-#: php-typography/_language_names.php:30
-msgid "Latin"
-msgstr "Latein"
-
-#: php-typography/_language_names.php:31
-msgid "Lithuanian"
-msgstr "Litauisch"
-
-#: php-typography/_language_names.php:32
-msgid "Latvian"
-msgstr "Lettisch"
-
-#: php-typography/_language_names.php:33
-msgid "Mongolian (Cyrillic)"
-msgstr "Mongolisch (Kyrillisch)"
-
-#: php-typography/_language_names.php:34
-msgid "Dutch"
-msgstr "Niederländisch"
-
-#: php-typography/_language_names.php:35
-msgid "Norwegian"
-msgstr "Norwegisch"
-
-#: php-typography/_language_names.php:36
-msgid "Polish"
-msgstr "Polnisch"
-
-#: php-typography/_language_names.php:37
-msgid "Portuguese"
-msgstr "Portugiesisch"
-
-#: php-typography/_language_names.php:38
-msgid "Romanian"
-msgstr "Rumänisch"
-
-#: php-typography/_language_names.php:39
-msgid "Russian"
-msgstr "Russisch"
-
-#: php-typography/_language_names.php:40
-msgid "Sanskrit"
-msgstr "Sanskrit"
-
-#: php-typography/_language_names.php:41
-msgid "Serbocroatian (Cyrillic)"
-msgstr "Serbokroatisch (Kyrillisch)"
-
-#: php-typography/_language_names.php:42
-msgid "Serbocroatian (Latin)"
-msgstr "Serbokroatisch (Lateinschrift)"
-
-#: php-typography/_language_names.php:43
-msgid "Slovak"
-msgstr "Slowakisch"
-
-#: php-typography/_language_names.php:44
-msgid "Slovenian"
-msgstr "Slowenisch"
-
-#: php-typography/_language_names.php:45
-msgid "Serbian (Cyrillic)"
-msgstr "Serbisch (Kyrillisch)"
-
-#: php-typography/_language_names.php:46
-msgid "Swedish"
-msgstr "Schwedisch"
-
-#: php-typography/_language_names.php:47
-msgid "Thai"
-msgstr "Thai"
-
-#: php-typography/_language_names.php:48
-msgid "Turkmen"
-msgstr "Turkmenisch"
-
-#: php-typography/_language_names.php:49
-msgid "Turkish"
-msgstr "Türkisch"
-
-#: php-typography/_language_names.php:50
-msgid "Ukrainian"
-msgstr "Ukrainisch"
-
-#: php-typography/_language_names.php:51
-msgid "Chinese pinyin (Latin)"
-msgstr "Chinesisch (Pinyin)"
-
 #. Plugin Name of the plugin/theme
 msgid "wp-Typography"
 msgstr "wp-Typography"
@@ -871,6 +674,266 @@ msgstr "wp-Typography"
 #. Plugin URI of the plugin/theme
 msgid "https://code.mundschenk.at/wp-typography/"
 msgstr "https://code.mundschenk.at/wp-typography/"
+
+#: php-typography/_language_names.php:1
+msgctxt "language name"
+msgid "Afrikaans"
+msgstr "Afrikaans"
+
+#: php-typography/_language_names.php:2
+msgctxt "language name"
+msgid "Bulgarian"
+msgstr "Bulgarisch"
+
+#: php-typography/_language_names.php:3
+msgctxt "language name"
+msgid "Catalan"
+msgstr "Katalanisch"
+
+#: php-typography/_language_names.php:4
+msgctxt "language name"
+msgid "Czech"
+msgstr "Tschechisch"
+
+#: php-typography/_language_names.php:5
+msgctxt "language name"
+msgid "Welsh"
+msgstr "Walisisch"
+
+#: php-typography/_language_names.php:6
+msgctxt "language name"
+msgid "Danish"
+msgstr "Dänisch"
+
+#: php-typography/_language_names.php:7
+msgctxt "language name"
+msgid "German (Traditional)"
+msgstr "Deutsch (alte Rechtschreibung)"
+
+#: php-typography/_language_names.php:8 php-typography/_language_names.php:53
+msgctxt "language name"
+msgid "German"
+msgstr "Deutsch"
+
+#: php-typography/_language_names.php:9
+msgctxt "language name"
+msgid "Greek (Modern Monotonic)"
+msgstr "Griechisch (monotonisch)"
+
+#: php-typography/_language_names.php:10
+msgctxt "language name"
+msgid "Greek (Modern Polytonic)"
+msgstr "Griechisch (polytonisch)"
+
+#: php-typography/_language_names.php:11
+msgctxt "language name"
+msgid "English (United Kingdom)"
+msgstr "Englisch (UK)"
+
+#: php-typography/_language_names.php:12 php-typography/_language_names.php:54
+msgctxt "language name"
+msgid "English (United States)"
+msgstr "Englisch (USA)"
+
+#: php-typography/_language_names.php:13
+msgctxt "language name"
+msgid "Spanish"
+msgstr "Spanisch"
+
+#: php-typography/_language_names.php:14
+msgctxt "language name"
+msgid "Estonian"
+msgstr "Estnisch"
+
+#: php-typography/_language_names.php:15
+msgctxt "language name"
+msgid "Basque"
+msgstr "Baskisch"
+
+#: php-typography/_language_names.php:16
+msgctxt "language name"
+msgid "Finnish"
+msgstr "Finnisch"
+
+#: php-typography/_language_names.php:17
+msgctxt "language name"
+msgid "French"
+msgstr "Französisch"
+
+#: php-typography/_language_names.php:18
+msgctxt "language name"
+msgid "Irish"
+msgstr "Irisch"
+
+#: php-typography/_language_names.php:19
+msgctxt "language name"
+msgid "Galician"
+msgstr "Galicisch"
+
+#: php-typography/_language_names.php:20
+msgctxt "language name"
+msgid "Greek (Ancient)"
+msgstr "Griechisch (Altgriechisch)"
+
+#: php-typography/_language_names.php:21
+msgctxt "language name"
+msgid "Croatian"
+msgstr "Kroatisch"
+
+#: php-typography/_language_names.php:22
+msgctxt "language name"
+msgid "Hungarian"
+msgstr "Ungarisch"
+
+#: php-typography/_language_names.php:23
+msgctxt "language name"
+msgid "Armenian"
+msgstr "Armenisch"
+
+#: php-typography/_language_names.php:24
+msgctxt "language name"
+msgid "Interlingua"
+msgstr "Interlingua"
+
+#: php-typography/_language_names.php:25
+msgctxt "language name"
+msgid "Indonesian"
+msgstr "Indonesisch"
+
+#: php-typography/_language_names.php:26
+msgctxt "language name"
+msgid "Icelandic"
+msgstr "Isländisch"
+
+#: php-typography/_language_names.php:27
+msgctxt "language name"
+msgid "Italian"
+msgstr "Italienisch"
+
+#: php-typography/_language_names.php:28
+msgctxt "language name"
+msgid "Georgian"
+msgstr "Georgisch"
+
+#: php-typography/_language_names.php:29
+msgctxt "language name"
+msgid "Latin (Classical)"
+msgstr "Latein (klassisch)"
+
+#: php-typography/_language_names.php:30
+msgctxt "language name"
+msgid "Latin (Liturgical)"
+msgstr "Latein (Kirchenlatein)"
+
+#: php-typography/_language_names.php:31
+msgctxt "language name"
+msgid "Latin"
+msgstr "Latein"
+
+#: php-typography/_language_names.php:32
+msgctxt "language name"
+msgid "Lithuanian"
+msgstr "Litauisch"
+
+#: php-typography/_language_names.php:33
+msgctxt "language name"
+msgid "Latvian"
+msgstr "Lettisch"
+
+#: php-typography/_language_names.php:34
+msgctxt "language name"
+msgid "Mongolian (Cyrillic)"
+msgstr "Mongolisch (Kyrillisch)"
+
+#: php-typography/_language_names.php:35
+msgctxt "language name"
+msgid "Dutch"
+msgstr "Niederländisch"
+
+#: php-typography/_language_names.php:36
+msgctxt "language name"
+msgid "Norwegian"
+msgstr "Norwegisch"
+
+#: php-typography/_language_names.php:37
+msgctxt "language name"
+msgid "Polish"
+msgstr "Polnisch"
+
+#: php-typography/_language_names.php:38
+msgctxt "language name"
+msgid "Portuguese"
+msgstr "Portugiesisch"
+
+#: php-typography/_language_names.php:39
+msgctxt "language name"
+msgid "Romanian"
+msgstr "Rumänisch"
+
+#: php-typography/_language_names.php:40
+msgctxt "language name"
+msgid "Russian"
+msgstr "Russisch"
+
+#: php-typography/_language_names.php:41
+msgctxt "language name"
+msgid "Sanskrit"
+msgstr "Sanskrit"
+
+#: php-typography/_language_names.php:42
+msgctxt "language name"
+msgid "Serbocroatian (Cyrillic)"
+msgstr "Serbokroatisch (Kyrillisch)"
+
+#: php-typography/_language_names.php:43
+msgctxt "language name"
+msgid "Serbocroatian (Latin)"
+msgstr "Serbokroatisch (Lateinschrift)"
+
+#: php-typography/_language_names.php:44
+msgctxt "language name"
+msgid "Slovak"
+msgstr "Slowakisch"
+
+#: php-typography/_language_names.php:45
+msgctxt "language name"
+msgid "Slovenian"
+msgstr "Slowenisch"
+
+#: php-typography/_language_names.php:46
+msgctxt "language name"
+msgid "Serbian (Cyrillic)"
+msgstr "Serbisch (Kyrillisch)"
+
+#: php-typography/_language_names.php:47
+msgctxt "language name"
+msgid "Swedish"
+msgstr "Schwedisch"
+
+#: php-typography/_language_names.php:48
+msgctxt "language name"
+msgid "Thai"
+msgstr "Thai"
+
+#: php-typography/_language_names.php:49
+msgctxt "language name"
+msgid "Turkmen"
+msgstr "Turkmenisch"
+
+#: php-typography/_language_names.php:50
+msgctxt "language name"
+msgid "Turkish"
+msgstr "Türkisch"
+
+#: php-typography/_language_names.php:51
+msgctxt "language name"
+msgid "Ukrainian"
+msgstr "Ukrainisch"
+
+#: php-typography/_language_names.php:52
+msgctxt "language name"
+msgid "Chinese pinyin (Latin)"
+msgstr "Chinesisch (Pinyin)"
 
 #~ msgid ""
 #~ "Improve your web typography with: hyphenation, space control, intelligent "
