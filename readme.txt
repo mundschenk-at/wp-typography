@@ -74,6 +74,10 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 
 == Changelog ==
 
+= 3.5.0 - unreleased =
+* Added "Latin (Liturgical)" as a new hyphenation language.
+*
+
 = 3.4.0 - July 10, 2016 = 
 * Store hyphenation patterns as JSON files instead of PHP to work around a GlotPress bug that prevents timely language pack updates. 
 * Out-of-the box support for Advanced Custom Fields (specifically for fields of the types `text`, `textarea` and `wysiwyg`).
