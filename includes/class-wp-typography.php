@@ -247,10 +247,17 @@ class WP_Typography {
 			add_filter( 'wp_title_parts',       array( $this, 'process_title_parts' ), $priority ); // WP < 4.4.
 
 			// 3rd-party plugins
-			if ( class_exists( 'acf' ) ) {
-				add_filter( 'acf/format_value_for_api/type=wysiwyg',  array( $this, 'process' ),       $priority );
-				add_filter( 'acf/format_value_for_api/type=textarea', array( $this, 'process' ),       $priority );
-				add_filter( 'acf/format_value_for_api/type=text',     array( $this, 'process_title' ), $priority );
+			// ACF (https://www.advancedcustomfields.com)
+			if ( class_exists( 'acf' ) && function_exists('acf_get_setting') ) {
+				if ( intval( acf_get_setting('version') ) === 5 ) { // ACF Pro (version 5)
+					add_filter( 'acf/format_value/type=wysiwyg',  array( $this, 'process' ),       $priority );
+					add_filter( 'acf/format_value/type=textarea', array( $this, 'process' ),       $priority );
+					add_filter( 'acf/format_value/type=text',     array( $this, 'process_title' ), $priority );
+				} elseif ( intval( acf_get_setting('version') ) === 4) { // ACF (version 4)
+					add_filter( 'acf/format_value_for_api/type=wysiwyg',  array( $this, 'process' ),       $priority );
+					add_filter( 'acf/format_value_for_api/type=textarea', array( $this, 'process' ),       $priority );
+					add_filter( 'acf/format_value_for_api/type=text',     array( $this, 'process_title' ), $priority );
+				}
 			}
 		}
 
