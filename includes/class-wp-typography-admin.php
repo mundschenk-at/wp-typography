@@ -126,11 +126,13 @@ class WP_Typography_Admin {
 	private $admin_form_controls = array();
 
 	/**
-	 * An array of transient names.
+	 * A lookup table for cache keys.
+	 *
+	 * @since 3.5.0
 	 *
 	 * @var array
 	 */
-	private $transient_names = array();
+	private $cache_key_names = array();
 
 	/**
 	 * The plugin instance used for setting transients.
@@ -149,8 +151,8 @@ class WP_Typography_Admin {
 		$this->local_plugin_path = $basename;
 		$this->plugin_path       = plugin_dir_path( __DIR__ ) . basename( $this->local_plugin_path );
 		$this->version			 = $plugin->get_version();
-		$this->transient_names['hyphenate_languages'] = 'typo_hyphenate_languages_' . $plugin->get_version_hash();
-		$this->transient_names['diacritic_languages'] = 'typo_diacritic_languages_' . $plugin->get_version_hash();
+		$this->cache_key_names['hyphenate_languages'] = 'typo_hyphenate_languages_' . $plugin->get_version_hash();
+		$this->cache_key_names['diacritic_languages'] = 'typo_diacritic_languages_' . $plugin->get_version_hash();
 		$this->plugin = $plugin;
 
 		// Initialize admin form.
@@ -243,10 +245,6 @@ class WP_Typography_Admin {
 
 		// Fieldsets will be displayed in the order included.
 		return array(
-			'caching'          => array(
-				'heading'      => __( 'Caching', 'wp-typography' ),
-				'section'      => 'caching',
-			),
 			'smart-quotes'     => array(
 				'heading'      => __( 'Quotemarks', 'wp-typography' ),
 				'sectionID'    => 'character-replacement',
@@ -314,27 +312,6 @@ class WP_Typography_Admin {
 				'help_text' 	=> __( 'Separate ID names with spaces.', 'wp-typography' ),
 				'control' 		=> 'textarea',
 				'default' 		=> '',
-			),
-			'typo_enable_caching' => array(
-				'section' 		=> 'general-scope',
-				'fieldset'      => 'caching',
-				'label' 		=> __( '%1$s Enable caching', 'wp-typography' ),
-				'help_text' 	=> __( 'Caches processed text fragments. Can cause major database growth when used without a separate object cache implementation.', 'wp-typography' ),
-				'control' 		=> 'input',
-				'input_type' 	=> 'checkbox',
-				'default' 		=> 0,
-			),
-			'typo_caching_limit' => array(
-				'section' 		=> 'general-scope',
-				'fieldset'      => 'caching',
-				'label' 		=> __( 'Limit number of cached fragments to %1$s.', 'wp-typography' ),
-				'help_text' 	=> __( 'Set limit to <samp>0</samp> for unrestricted caching. Only recommend when used with an in-memory object cache implementation.', 'wp-typography' ),
-				'control' 		=> 'input',
-				'input_type' 	=> 'number',
-				'attributes'    => array(
-					'min' => 0,
-				),
-				'default' 		=> '1000',
 			),
 			'typo_enable_hyphenation' => array(
 				'section' 		=> 'hyphenation',
@@ -842,7 +819,7 @@ sub {
 	function get_admin_page_content() {
 
 		// Dynamically generate the list of hyphenation language patterns.
-		if ( false === ( $languages = get_transient( $this->transient_names['hyphenate_languages'] ) ) ) {
+		if ( false === ( $languages = $this->plugin->get_cache( $this->cache_key_names['hyphenate_languages'] ) ) ) {
 			/**
 			 * Filter the caching duration for the language plugin lists.
 			 *
@@ -857,11 +834,11 @@ sub {
 			// Ensure that language names are properly translated.
 			array_walk( $languages, function( &$lang, $code ) { $lang = _x( $lang, 'language name', 'wp-typography' ); } ); // @codingStandardsIgnoreLine.
 
-			$this->plugin->set_transient( $this->transient_names['hyphenate_languages'], $languages, $duration, true );
+			$this->plugin->set_cache( $this->cache_key_names['hyphenate_languages'], $languages, $duration );
 		}
 		$this->admin_form_controls['typo_hyphenate_languages']['option_values'] = $languages;
 
-		if ( false === ( $languages = get_transient( $this->transient_names['diacritic_languages'] ) ) ) {
+		if ( false === ( $languages = $this->plugin->get_cache( $this->cache_key_names['diacritic_languages'] ) ) ) {
 			/** This filter is documented in class-wp-typography-admin.php */
 			$duration = apply_filters( 'typo_language_list_caching_duration', WEEK_IN_SECONDS, 'diacritic_languages' );
 			$languages = \PHP_Typography\PHP_Typography::get_diacritic_languages();
@@ -869,7 +846,7 @@ sub {
 			// Ensure that language names are properly translated.
 			array_walk( $languages, function( &$lang, $code ) { $lang = _x( $lang, 'language name', 'wp-typography' ); } ); // @codingStandardsIgnoreLine.
 
-			$this->plugin->set_transient( $this->transient_names['diacritic_languages'], $languages, $duration, true );
+			$this->plugin->set_cache( $this->cache_key_names['diacritic_languages'], $languages, $duration );
 		}
 		$this->admin_form_controls['typo_diacritic_languages']['option_values'] = $languages;
 

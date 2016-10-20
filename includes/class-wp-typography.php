@@ -79,6 +79,15 @@ class WP_Typography {
 	private $transients = array();
 
 	/**
+	 * The cache keys set by the plugin (to clear on update).
+	 *
+	 * @since 3.5.0
+	 *
+	 * @var array A hash with the cache keys set by the plugin stored as ( $key => true ).
+	 */
+	private $cache_keys = array();
+
+	/**
 	 * The PHP_Typography configuration is not changed after initialization, so the settings hash can be cached.
 	 *
 	 * @var string The settings hash for the PHP_Typography instance
@@ -125,6 +134,7 @@ class WP_Typography {
 		$this->version_hash      = $this->hash_version_string( $version );
 		$this->local_plugin_path = $basename;
 		$this->transients        = get_option( 'typo_transient_keys', array() );
+		$this->cache_key         = get_option( 'typo_cache_keys', array() );
 
 		// Initialize admin interface handler.
 		$this->admin             = new WP_Typography_Admin( $basename, $this );
@@ -329,7 +339,7 @@ class WP_Typography {
 	 */
 	public function process( $text, $is_title = false, $force_feed = false ) {
 		$typo = $this->get_php_typo();
-		$transient = 'typo_' . base64_encode( md5( $text, true ) . $this->cached_settings_hash );
+		$key = 'typo_' . base64_encode( md5( $text, true ) . $this->cached_settings_hash );
 
 		/**
 		 * Filter the caching duration for processed text fragments.
@@ -339,20 +349,23 @@ class WP_Typography {
 		 * @param number $duration The duration in seconds. Defaults to 1 day.
 		 */
 		$duration = apply_filters( 'typo_processed_text_caching_duration', DAY_IN_SECONDS );
+		$found = false;
 
 		if ( is_feed() || $force_feed ) { // feed readers can be pretty stupid.
-			$transient .= 'f' . ( $is_title ? 't' : 's' ) . $this->version_hash;
+			$key .= 'f' . ( $is_title ? 't' : 's' ) . $this->version_hash;
+			$processed_text = $this->get_cache( $key, $found );
 
-			if ( empty( $this->settings['typo_enable_caching'] ) || false === ( $processed_text = get_transient( $transient ) ) ) {
+			if ( ! $found ) {
 				$processed_text = $typo->process_feed( $text, $is_title );
-				$this->set_transient( $transient, $processed_text, $duration );
+				$this->set_cache( $key, $processed_text, $duration );
 			}
 		} else {
-			$transient .= ( $is_title ? 't' : 's' ) . $this->version_hash;
+			$key .= ( $is_title ? 't' : 's' ) . $this->version_hash;
+			$processed_text = $this->get_cache( $key, $found );
 
-			if ( empty( $this->settings['typo_enable_caching'] ) || false === ( $processed_text = get_transient( $transient ) ) ) {
+			if ( ! $found ) {
 				$processed_text = $typo->process( $text, $is_title );
-				$this->set_transient( $transient, $processed_text, $duration );
+				$this->set_cache( $key, $processed_text, $duration );
 			}
 		}
 
@@ -362,24 +375,15 @@ class WP_Typography {
 	/**
 	 * Set a transient and store the key.
 	 *
-	 * @param string  $transient The transient key. Maximum length depends on WordPress version (for WP < 4.4 it is 45 characters).
-	 * @param mixed   $value     The value to store.
-	 * @param number  $duration  The duration in seconds. Optional. Default 1 second.
-	 * @param boolean $force     Set the transient even if 'Disable Caching' is set to true.
+	 * @param string $transient The transient key. Maximum length depends on WordPress version (for WP < 4.4 it is 45 characters).
+	 * @param mixed  $value     The value to store.
+	 * @param number $duration  The duration in seconds. Optional. Default 1 second.
+	 *
 	 * @return boolean True if the transient could be set successfully.
 	 */
-	public function set_transient( $transient, $value, $duration = 1, $force = false ) {
-		if ( ! $force && empty( $this->settings['typo_enable_caching'] ) ) {
-			// Caching is disabled and not forced for this transient, so we bail.
-			return false;
-		}
-
-		if ( ! empty( $this->settings['typo_caching_limit'] ) && count( $this->transients ) >= $this->settings['typo_caching_limit'] ) {
-			// Too many cached entries - clean up transients.
-			$this->clear_cache();
-		}
-
+	public function set_transient( $transient, $value, $duration = 1 ) {
 		$result = false;
+
 		if ( $result = set_transient( $transient, $value, $duration ) ) {
 			// Store $transient as keys to prevent duplicates.
 			$this->transients[ $transient ] = true;
@@ -387,6 +391,39 @@ class WP_Typography {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Store an entry in the cache and remember the key.
+	 *
+	 * @param string $key       The cache key.
+	 * @param mixed  $value     The value to store.
+	 * @param number $duration  The duration in seconds. Optional. Default 0 (no expiration).
+	 *
+	 * @return boolean True if the cache could be set successfully.
+	 */
+	public function set_cache( $key, $value, $duration = 0 ) {
+		$result = false;
+
+		if ( $result = wp_cache_set( $key, $value, 'wp-typography', $duration ) ) {
+			// Store as keys to prevent duplicates.
+			$this->cache_keys[ $key ] = true;
+			update_option( 'typo_cache_keys', $this->cache_keys );
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Retrieve a cached value.
+	 *
+	 * @param string  $key   The cache key.
+	 * @param boolean $found Optional. Whether the key was found in the cache. Disambiguates a return of false, a storable value. Passed by reference. Default null.
+	 *
+	 * @return mixed
+	 */
+	public function get_cache( $key, &$found = null ) {
+		return wp_cache_get( $key, 'wp-typography', false, $found );
 	}
 
 	/**
@@ -409,12 +446,12 @@ class WP_Typography {
 				 *
 				 * @since 3.2.0
 				 *
-				 * @param number $duration The duration in seconds. Defaults to 1 week.
+				 * @param number $duration The duration in seconds. Defaults to 0 (no expiration).
 				 */
-				$duration = apply_filters( 'typo_php_typography_caching_duration', WEEK_IN_SECONDS );
+				$duration = apply_filters( 'typo_php_typography_caching_duration', 0 );
 
 				// Try again next time.
-				$this->set_transient( $transient, $this->php_typo, $duration, true );
+				$this->set_transient( $transient, $this->php_typo, $duration );
 			}
 
 			// Settings won't be touched again, so cache the hash.
@@ -540,9 +577,14 @@ class WP_Typography {
 		foreach ( array_keys( $this->transients ) as $transient ) {
 			delete_transient( $transient );
 		}
+		// ... as well as cache keys.
+		foreach ( array_keys( $this->cache_keys ) as $key ) {
+			wp_cache_delete( $key, 'wp-typography' );
+		}
 
-		$this->transients = array();
+		$this->transients = $this->cache_keys = array();
 		update_option( 'typo_transient_keys', $this->transients );
+		update_option( 'typo_cache_keys', $this->cache_keys );
 		update_option( 'typo_clear_cache', false );
 	}
 
