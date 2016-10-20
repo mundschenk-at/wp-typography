@@ -853,6 +853,10 @@ sub {
 			 */
 			$duration = apply_filters( 'typo_language_list_caching_duration', WEEK_IN_SECONDS, 'hyphenate_languages' );
 			$languages = \PHP_Typography\PHP_Typography::get_hyphenation_languages();
+
+			// Ensure that language names are properly translated.
+			array_walk( $languages, function( &$lang, $code ) { $lang = _x( $lang, 'language name', 'wp-typography' ); } ); // @codingStandardsIgnoreLine.
+
 			$this->plugin->set_transient( $this->transient_names['hyphenate_languages'], $languages, $duration, true );
 		}
 		$this->admin_form_controls['typo_hyphenate_languages']['option_values'] = $languages;
@@ -861,6 +865,10 @@ sub {
 			/** This filter is documented in class-wp-typography-admin.php */
 			$duration = apply_filters( 'typo_language_list_caching_duration', WEEK_IN_SECONDS, 'diacritic_languages' );
 			$languages = \PHP_Typography\PHP_Typography::get_diacritic_languages();
+
+			// Ensure that language names are properly translated.
+			array_walk( $languages, function( &$lang, $code ) { $lang = _x( $lang, 'language name', 'wp-typography' ); } ); // @codingStandardsIgnoreLine.
+
 			$this->plugin->set_transient( $this->transient_names['diacritic_languages'], $languages, $duration, true );
 		}
 		$this->admin_form_controls['typo_diacritic_languages']['option_values'] = $languages;
