@@ -123,6 +123,11 @@ class WP_Typography_Setup {
 			delete_option( 'typo_remove_ie6' );
 		}
 
+		if ( version_compare( $previous_version, '3.5.0-alpha.1', '<' ) ) {
+			delete_option( 'typo_enable_caching' );
+			delete_option( 'typo_caching_limit' );
+		}
+
 		update_option( 'typo_installed_version', $this->plugin->get_version() );
 	}
 
