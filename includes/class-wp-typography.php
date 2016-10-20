@@ -202,6 +202,9 @@ class WP_Typography {
 		// Disable wptexturize filter if it conflicts with our settings.
 		if ( $this->settings['typo_smart_characters'] && ! is_admin() ) {
 			add_filter( 'run_wptexturize', '__return_false' );
+
+			// Ensure that wptexturize is actually off by forcing a re-evaluation (some plugins call it too early).
+			wptexturize( '', true );
 		}
 
 		// Apply our filters.
