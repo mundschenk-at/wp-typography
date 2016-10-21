@@ -3,7 +3,7 @@ Contributors: pputzer
 Tags: typography, hyphenation, smart quotes, quote marks, smartypants, typogrify, quotes, prettify, widows, orphans, small caps, diacritics
 Requires at least: 4.4
 Tested up to: 4.6
-Stable tag: 3.4.0
+Stable tag: 3.5.0
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
@@ -74,9 +74,18 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 
 == Changelog ==
 
-= 3.5.0 - unreleased =
-* Added "Latin (Liturgical)" as a new hyphenation language.
-*
+= 3.5.0 - October 21, 2016 =
+* Feature: Added "Latin (Liturgical)" as a new hyphenation language.
+* Feature: Limited support for ACF Pro.
+* Change: Better compatibility with improperly written plugins (ensuring that `wptexturize` is always off).
+* Change: Only use the WP Object Cache for caching, not transients, to reduce database usage and prevent clogging in some configurations.
+* Change: Updated list of valid top-level domains.
+* Change: Updated HTML5 parser (html5-php) to 2.2.2.
+* Bugfix: Custom hyphenations with more than one hyphenation point were not working properly.
+* Bugfix: The `min_after` hyphenation setting was off by one. 
+* Bugfix: An IE11 bug on Windows 7 was previously triggered when the Safari workaround is enabled.
+* Bugfix: Language names were not translated in the settings screen.
+* Bugfix: Fractions did not play nice with prime symbols.
 
 = 3.4.0 - July 10, 2016 = 
 * Store hyphenation patterns as JSON files instead of PHP to work around a GlotPress bug that prevents timely language pack updates. 
