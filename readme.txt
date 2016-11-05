@@ -3,7 +3,7 @@ Contributors: pputzer
 Tags: typography, hyphenation, smart quotes, quote marks, smartypants, typogrify, quotes, prettify, widows, orphans, small caps, diacritics
 Requires at least: 4.4
 Tested up to: 4.6
-Stable tag: 3.5.0
+Stable tag: 3.5.1
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
@@ -74,6 +74,9 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 
 == Changelog ==
 
+= 3.5.1 - November 05, 2016 =
+* Bugfix: Quotes ending in numbers were sometimes interpreted as primes.
+
 = 3.5.0 - October 21, 2016 =
 * Feature: Added "Latin (Liturgical)" as a new hyphenation language.
 * Feature: Limited support for ACF Pro.
@@ -82,19 +85,19 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 * Change: Updated list of valid top-level domains.
 * Change: Updated HTML5 parser (html5-php) to 2.2.2.
 * Bugfix: Custom hyphenations with more than one hyphenation point were not working properly.
-* Bugfix: The `min_after` hyphenation setting was off by one. 
+* Bugfix: The `min_after` hyphenation setting was off by one.
 * Bugfix: An IE11 bug on Windows 7 was previously triggered when the Safari workaround is enabled.
 * Bugfix: Language names were not translated in the settings screen.
 * Bugfix: Fractions did not play nice with prime symbols.
 
-= 3.4.0 - July 10, 2016 = 
-* Store hyphenation patterns as JSON files instead of PHP to work around a GlotPress bug that prevents timely language pack updates. 
+= 3.4.0 - July 10, 2016 =
+* Store hyphenation patterns as JSON files instead of PHP to work around a GlotPress bug that prevents timely language pack updates.
 * Out-of-the box support for Advanced Custom Fields (specifically for fields of the types `text`, `textarea` and `wysiwyg`).
 * Updated list of valid top-level domains.
 
 = 3.3.1 - June 27, 2016 =
 * The JavaScript files for `Remove hyphenation when copying to clipboard` were missing from the build.
-* Fixed a typo in the settings page.  
+* Fixed a typo in the settings page.
 
 = 3.3.0 - June 27, 2016 =
 * Updated HTML parser (html5-php) to 2.2.1.
