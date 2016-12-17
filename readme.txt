@@ -3,7 +3,7 @@ Contributors: pputzer
 Tags: typography, hyphenation, smart quotes, quote marks, smartypants, typogrify, quotes, prettify, widows, orphans, small caps, diacritics
 Requires at least: 4.4
 Tested up to: 4.7
-Stable tag: 3.5.2
+Stable tag: 3.5.3
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
@@ -73,6 +73,9 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 1. wp-Typography administrative settings page
 
 == Changelog ==
+
+= 3.5.3 - December 17, 2016 =
+* Bugfix: Remove ambiguous entries from German diacritics replacement file.
 
 = 3.5.2 - December 14, 2016 =
 * Change: Return unmodified HTML if a processed text fragment is not well-formed. This improves compatibility with page builder plugins (and themes) that do weird things with the `the_content` filter.
