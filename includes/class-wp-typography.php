@@ -285,12 +285,15 @@ class WP_Typography {
 	/**
 	 * Process heading text fragment.
 	 *
-	 * Calls `process( $text, true )`.
+	 * Calls `process( $text, true, $settings )`.
 	 *
-	 * @param string $text Required.
+	 * @since 3.6.0 Parameter $settings added.
+	 *
+	 * @param string                   $text Required.
+	 * @param \PHP_Typography\Settings $settings Optional. A settings object. Default null (which means the internal settings will be used).
 	 */
-	function process_title( $text ) {
-		return $this->process( $text, true );
+	function process_title( $text, \PHP_Typography\Settings $settings = null ) {
+		return $this->process( $text, true, $settings );
 	}
 
 	/**
@@ -299,12 +302,14 @@ class WP_Typography {
 	 * Calls `process( $text, $is_title, true )`.
 	 *
 	 * @since 3.2.4
+	 * @since 3.6.0 Parameter $settings added.
 	 *
-	 * @param string  $text     Required.
-	 * @param boolean $is_title Optional. Default false.
+	 * @param string                   $text     Required.
+	 * @param boolean                  $is_title Optional. Default false.
+	 * @param \PHP_Typography\Settings $settings Optional. A settings object. Default null (which means the internal settings will be used).
 	 */
-	function process_feed( $text, $is_title = false ) {
-		return $this->process( $text, $is_title, true );
+	function process_feed( $text, $is_title = false, \PHP_Typography\Settings $settings = null ) {
+		return $this->process( $text, $is_title, true, $settings );
 	}
 
 	/**
@@ -332,14 +337,19 @@ class WP_Typography {
 	 * Process text fragment.
 	 *
 	 * @since 3.2.4 Parameter $force_feed added.
+	 * @since 3.6.0 Parameter $settings added.
 	 *
-	 * @param string  $text       Required.
-	 * @param boolean $is_title   Optional. Default false.
-	 * @param boolean $force_feed Optional. Default false.
+	 * @param string                   $text       Required.
+	 * @param bool                     $is_title   Optional. Default false.
+	 * @param bool                     $force_feed Optional. Default false.
+	 * @param \PHP_Typography\Settings $settings   Optional. A settings object. Default null (which means the internal settings will be used).
+	 *
+	 * @return string The processed $text.
 	 */
-	public function process( $text, $is_title = false, $force_feed = false ) {
+	public function process( $text, $is_title = false, $force_feed = false, \PHP_Typography\Settings $settings = null ) {
 		$typo = $this->get_php_typo();
-		$key = 'typo_' . base64_encode( md5( $text, true ) . $this->cached_settings_hash );
+		$hash = ! empty( $settings ) ? $settings->get_hash() : $this->cached_settings_hash;
+		$key  = 'typo_' . base64_encode( md5( $text, true ) . $hash );
 
 		/**
 		 * Filter the caching duration for processed text fragments.
@@ -356,7 +366,7 @@ class WP_Typography {
 			$processed_text = $this->get_cache( $key, $found );
 
 			if ( ! $found ) {
-				$processed_text = $typo->process_feed( $text, $is_title );
+				$processed_text = $typo->process_feed( $text, $is_title, $settings );
 				$this->set_cache( $key, $processed_text, $duration );
 			}
 		} else {
@@ -364,7 +374,7 @@ class WP_Typography {
 			$processed_text = $this->get_cache( $key, $found );
 
 			if ( ! $found ) {
-				$processed_text = $typo->process( $text, $is_title );
+				$processed_text = $typo->process( $text, $is_title, $settings );
 				$this->set_cache( $key, $processed_text, $duration );
 			}
 		}
