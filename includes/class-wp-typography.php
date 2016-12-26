@@ -176,6 +176,17 @@ class WP_Typography {
 	}
 
 	/**
+	 * Retrieve a copy of the preferences set by the user via the plugin settings screen.
+	 *
+	 * @since 4.0.0
+	 *
+	 * @return \PHP_Typography\Settings
+	 */
+	public static function get_user_settings() {
+		return self::get_instance()->get_settings();
+	}
+
+	/**
 	 * Process content text fragment.
 	 *
 	 * @since 4.0.0
@@ -545,10 +556,10 @@ class WP_Typography {
 	}
 
 	/**
-	 * Initialize the PHP_Typograpyh instance from our settings.
+	 * Initialize the PHP_Typography instance from our settings.
 	 */
 	private function init_php_typo() {
-		// Load configuration variables into our phpTypography class.
+		// Load configuration variables into our PHP_Typography class.
 		$this->php_typo->set_tags_to_ignore( $this->settings['typo_ignore_tags'] );
 		$this->php_typo->set_classes_to_ignore( $this->settings['typo_ignore_classes'] );
 		$this->php_typo->set_ids_to_ignore( $this->settings['typo_ignore_ids'] );
