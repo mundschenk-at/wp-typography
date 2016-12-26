@@ -177,6 +177,76 @@ class WP_Typography {
 	}
 
 	/**
+	 * Process content text fragment.
+	 *
+	 * @since 4.0.0
+	 *
+	 * @param string                   $text     Required.
+	 * @param \PHP_Typography\Settings $settings Optional. A settings object. Default null (which means the internal settings will be used).
+	 *
+	 * @return string The processed $text.
+	 */
+	public static function filter( $text, \PHP_Typography\Settings $settings = null ) {
+		return self::get_instance()->process( $text, false, false, $settings );
+	}
+
+	/**
+	 * Process content text fragment as RSS feed (limiting HTML features to most widely compatible ones).
+	 *
+	 * @since 4.0.0
+	 *
+	 * @param string                   $text     Required.
+	 * @param \PHP_Typography\Settings $settings Optional. A settings object. Default null (which means the internal settings will be used).
+	 *
+	 * @return string The processed $text.
+	 */
+	public static function filter_feed( $text, \PHP_Typography\Settings $settings = null ) {
+		return self::get_instance()->process_feed( $text, false, $settings );
+	}
+
+	/**
+	 * Process title text fragment as RSS feed (limiting HTML features to most widely compatible ones).
+	 *
+	 * @since 4.0.0
+	 *
+	 * @param string                   $text     Required.
+	 * @param \PHP_Typography\Settings $settings Optional. A settings object. Default null (which means the internal settings will be used).
+	 *
+	 * @return string The processed $text.
+	 */
+	public static function filter_feed_title( $text, \PHP_Typography\Settings $settings = null ) {
+		return self::get_instance()->process_feed( $text, true, $settings );
+	}
+
+	/**
+	 * Process title text fragment.
+	 *
+	 * @since 4.0.0
+	 *
+	 * @param string                   $text     Required.
+	 * @param \PHP_Typography\Settings $settings Optional. A settings object. Default null (which means the internal settings will be used).
+	 *
+	 * @return string The processed $text.
+	 */
+	public static function filter_title( $text, \PHP_Typography\Settings $settings = null ) {
+		return self::get_instance()->process_title( $text, $settings );
+	}
+
+	/**
+	 * Process title parts and strip &shy; and zero-width space.
+	 *
+	 * @since 4.0.0
+	 *
+	 * @param array                    $title_parts An array of strings.
+	 * @param \PHP_Typography\Settings $settings    Optional. A settings object. Default null (which means the internal settings will be used).
+	 *
+	 * @return array
+	 */
+	public static function filter_title_parts( $title_parts, \PHP_Typography\Settings $settings = null ) {
+		return self::get_instance()->process_title_parts( $title_parts, $settings );
+	}
+
+	/**
 	 * Start the plugin for real.
 	 */
 	function run() {
@@ -287,7 +357,7 @@ class WP_Typography {
 	 *
 	 * Calls `process( $text, true, $settings )`.
 	 *
-	 * @since 3.6.0 Parameter $settings added.
+	 * @since 4.0.0 Parameter $settings added.
 	 *
 	 * @param string                   $text Required.
 	 * @param \PHP_Typography\Settings $settings Optional. A settings object. Default null (which means the internal settings will be used).
@@ -302,7 +372,7 @@ class WP_Typography {
 	 * Calls `process( $text, $is_title, true )`.
 	 *
 	 * @since 3.2.4
-	 * @since 3.6.0 Parameter $settings added.
+	 * @since 4.0.0 Parameter $settings added.
 	 *
 	 * @param string                   $text     Required.
 	 * @param boolean                  $is_title Optional. Default false.
@@ -316,10 +386,14 @@ class WP_Typography {
 	 * Process title parts and strip &shy; and zero-width space.
 	 *
 	 * @since 3.2.5
+	 * @since 4.0.0 Parameter $settings added.
 	 *
-	 * @param array $title_parts An array of strings.
+	 * @param array                    $title_parts An array of strings.
+	 * @param \PHP_Typography\Settings $settings    Optional. A settings object. Default null (which means the internal settings will be used).
+	 *
+	 * @return array
 	 */
-	function process_title_parts( $title_parts ) {
+	function process_title_parts( $title_parts, \PHP_Typography\Settings $settings = null ) {
 		/**
 		 * We need a utility function that's not autoloaded.
 		 */
@@ -327,7 +401,7 @@ class WP_Typography {
 
 		foreach ( $title_parts as $index => $part ) {
 			// Remove &shy; and &#8203; after processing title part.
-			$title_parts[ $index ] = strip_tags( str_replace( array( \PHP_Typography\uchr( 173 ), \PHP_Typography\uchr( 8203 ) ), '', $this->process( $part, true, true ) ) );
+			$title_parts[ $index ] = strip_tags( str_replace( array( \PHP_Typography\uchr( 173 ), \PHP_Typography\uchr( 8203 ) ), '', $this->process( $part, true, true, $settings ) ) );
 		}
 
 		return $title_parts;
@@ -337,7 +411,7 @@ class WP_Typography {
 	 * Process text fragment.
 	 *
 	 * @since 3.2.4 Parameter $force_feed added.
-	 * @since 3.6.0 Parameter $settings added.
+	 * @since 4.0.0 Parameter $settings added.
 	 *
 	 * @param string                   $text       Required.
 	 * @param bool                     $is_title   Optional. Default false.
