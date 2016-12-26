@@ -3,8 +3,6 @@
  *  This file is part of wp-Typography.
  *
  *	Copyright 2014-2016 Peter Putzer.
- *	Copyright 2012-2013 Marie Hogebrandt.
- *	Coypright 2009-2011 KINGdesk, LLC.
  *
  *	This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -31,13 +29,15 @@
  *  Description: Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
  *  Author: Peter Putzer
  *  Author URI: https://code.mundschenk.at
- *  Version: 3.5.3
+ *  Version: 4.0.0-alpha.1
  *  License: GNU General Public License v2 or later
  *  License URI: https://www.gnu.org/licenses/gpl-2.0.html
  *  Text Domain: wp-typography
  *  Domain Path: /translations
  *
  *  ***
+ *
+ *  Based on original work by KINGdesk, LLC.
  *
  *  Portions of this plugin are inspired by:
  *	   Christian Metts - href="http://code.google.com/p/typogrify/
