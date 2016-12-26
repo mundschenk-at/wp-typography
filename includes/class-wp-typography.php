@@ -554,6 +554,16 @@ class WP_Typography {
 		} else { // save some cycles.
 			$this->php_typo->set_hyphenation( $this->settings['typo_enable_hyphenation'] );
 		}
+
+		/**
+		 * Filter whether HTML parser errors should be silently ignored. The resulting HTML will be a "best guess"
+		 * by the parser, like it was before version 3.5.2.
+		 *
+		 * @since 3.6.0
+		 *
+		 * @param bool $ignore Default false.
+		 */
+		$this->php_typo->set_ignore_parser_errors( apply_filters( 'typo_ignore_parser_errors', false ) );
 	}
 
 	/**
