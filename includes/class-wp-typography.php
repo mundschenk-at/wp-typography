@@ -335,37 +335,54 @@ class WP_Typography {
 			$priority = apply_filters( 'typo_filter_priority', $this->filter_priority );
 
 			// Add filters for "full" content.
-			add_filter( 'comment_author',    array( $this, 'process' ),       $priority );
-			add_filter( 'comment_text',      array( $this, 'process' ),       $priority );
-			add_filter( 'comment_text',      array( $this, 'process' ),       $priority );
-			add_filter( 'the_content',       array( $this, 'process' ),       $priority );
-			add_filter( 'term_name',         array( $this, 'process' ),       $priority );
-			add_filter( 'term_description',  array( $this, 'process' ),       $priority );
-			add_filter( 'link_name',         array( $this, 'process' ),       $priority );
-			add_filter( 'the_excerpt',       array( $this, 'process' ),       $priority );
-			add_filter( 'the_excerpt_embed', array( $this, 'process' ),       $priority );
-			add_filter( 'widget_text',       array( $this, 'process' ),       $priority );
+			/**
+			 * Disable automatic filtering by wp-Typography.
+			 *
+			 * @since 3.6.0
+			 *
+			 * @param bool   $disable      Whether to disable automatic filtering. Default false.
+			 * @param string $filter_group Which filters to disable. Possible values 'content', 'heading', 'title', 'acf'.
+			 */
+			if ( ! apply_filters( 'typo_disable_filtering', false, 'content' ) ) {
+				add_filter( 'comment_author',    array( $this, 'process' ), $priority );
+				add_filter( 'comment_text',      array( $this, 'process' ), $priority );
+				add_filter( 'comment_text',      array( $this, 'process' ), $priority );
+				add_filter( 'the_content',       array( $this, 'process' ), $priority );
+				add_filter( 'term_name',         array( $this, 'process' ), $priority );
+				add_filter( 'term_description',  array( $this, 'process' ), $priority );
+				add_filter( 'link_name',         array( $this, 'process' ), $priority );
+				add_filter( 'the_excerpt',       array( $this, 'process' ), $priority );
+				add_filter( 'the_excerpt_embed', array( $this, 'process' ), $priority );
+				add_filter( 'widget_text',       array( $this, 'process' ), $priority );
+			}
 
 			// Add filters for headings.
-			add_filter( 'the_title',            array( $this, 'process_title' ), $priority );
-			add_filter( 'single_post_title',    array( $this, 'process_title' ), $priority );
-			add_filter( 'single_cat_title',     array( $this, 'process_title' ), $priority );
-			add_filter( 'single_tag_title',     array( $this, 'process_title' ), $priority );
-			add_filter( 'single_month_title',   array( $this, 'process_title' ), $priority );
-			add_filter( 'single_month_title',   array( $this, 'process_title' ), $priority );
-			add_filter( 'nav_menu_attr_title',  array( $this, 'process_title' ), $priority );
-			add_filter( 'nav_menu_description', array( $this, 'process_title' ), $priority );
-			add_filter( 'widget_title',         array( $this, 'process_title' ), $priority );
-			add_filter( 'list_cats',            array( $this, 'process_title' ), $priority );
+			/** This filter is documented in class-wp-typography.php */
+			if ( ! apply_filters( 'typo_disable_filtering', false, 'heading' ) ) {
+				add_filter( 'the_title',            array( $this, 'process_title' ), $priority );
+				add_filter( 'single_post_title',    array( $this, 'process_title' ), $priority );
+				add_filter( 'single_cat_title',     array( $this, 'process_title' ), $priority );
+				add_filter( 'single_tag_title',     array( $this, 'process_title' ), $priority );
+				add_filter( 'single_month_title',   array( $this, 'process_title' ), $priority );
+				add_filter( 'single_month_title',   array( $this, 'process_title' ), $priority );
+				add_filter( 'nav_menu_attr_title',  array( $this, 'process_title' ), $priority );
+				add_filter( 'nav_menu_description', array( $this, 'process_title' ), $priority );
+				add_filter( 'widget_title',         array( $this, 'process_title' ), $priority );
+				add_filter( 'list_cats',            array( $this, 'process_title' ), $priority );
+			}
 
 			// Extra care needs to be taken with the <title> tag.
-			add_filter( 'wp_title',             array( $this, 'process_feed' ),        $priority ); // WP < 4.4.
-			add_filter( 'document_title_parts', array( $this, 'process_title_parts' ), $priority );
-			add_filter( 'wp_title_parts',       array( $this, 'process_title_parts' ), $priority ); // WP < 4.4.
+			/** This filter is documented in class-wp-typography.php */
+			if ( ! apply_filters( 'typo_disable_filtering', false, 'title' ) ) {
+				add_filter( 'wp_title',             array( $this, 'process_feed' ),        $priority ); // WP < 4.4.
+				add_filter( 'document_title_parts', array( $this, 'process_title_parts' ), $priority );
+				add_filter( 'wp_title_parts',       array( $this, 'process_title_parts' ), $priority ); // WP < 4.4.
+			}
 
 			// 3rd-party plugins
 			// ACF (https://www.advancedcustomfields.com)
-			if ( class_exists( 'acf' ) && function_exists( 'acf_get_setting' ) ) {
+			/** This filter is documented in class-wp-typography.php */
+			if ( class_exists( 'acf' ) && function_exists( 'acf_get_setting' ) && ! apply_filters( 'typo_disable_filtering', false, 'acf' ) ) {
 				if ( 5 === intval( acf_get_setting( 'version' ) ) ) { // ACF Pro (version 5).
 					add_filter( 'acf/format_value/type=wysiwyg',  array( $this, 'process' ),       $priority );
 					add_filter( 'acf/format_value/type=textarea', array( $this, 'process' ),       $priority );
@@ -655,6 +672,16 @@ class WP_Typography {
 		} else { // save some cycles.
 			$this->php_typo->set_hyphenation( $this->settings['typo_enable_hyphenation'] );
 		}
+
+		/**
+		 * Filter whether HTML parser errors should be silently ignored. The resulting HTML will be a "best guess"
+		 * by the parser, like it was before version 3.5.2.
+		 *
+		 * @since 3.6.0
+		 *
+		 * @param bool $ignore Default false.
+		 */
+		$this->php_typo->set_ignore_parser_errors( apply_filters( 'typo_ignore_parser_errors', false ) );
 	}
 
 	/**
