@@ -3,7 +3,7 @@ Contributors: pputzer
 Tags: typography, hyphenation, smart quotes, quote marks, smartypants, typogrify, quotes, prettify, widows, orphans, small caps, diacritics
 Requires at least: 4.4
 Tested up to: 4.7
-Stable tag: 3.5.3
+Stable tag: 3.6.0
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
@@ -74,6 +74,10 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 
 == Changelog ==
 
+= 3.6.0 - December 26, 2016 =
+* Feature: Added hook `typo_ignore_parser_errors` to re-enable "parser guessing" as it was before version 3.5.2.
+* Feature: Added new hook `typo_disable_filtering` to selectively disable filter groups.
+
 = 3.5.3 - December 17, 2016 =
 * Bugfix: Remove ambiguous entries from German diacritics replacement file.
 
@@ -100,6 +104,7 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 * Store hyphenation patterns as JSON files instead of PHP to work around a GlotPress bug that prevents timely language pack updates.
 * Out-of-the box support for Advanced Custom Fields (specifically for fields of the types `text`, `textarea` and `wysiwyg`).
 * Updated list of valid top-level domains.
+* Tested as compatible with WPML.
 
 = 3.3.1 - June 27, 2016 =
 * The JavaScript files for `Remove hyphenation when copying to clipboard` were missing from the build.

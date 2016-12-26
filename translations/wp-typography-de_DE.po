@@ -320,8 +320,8 @@ msgstr ""
 
 #: includes/class-wp-typography-admin.php:532
 msgid ""
-"%1$s Transform registration marks [ <samp>(c)</samp> <samp>(r)</samp> <samp>"
-"(tm)</samp> <samp>(sm)</samp> <samp>(p)</samp> ] to  proper characters "
+"%1$s Transform registration marks [ <samp>(c)</samp> <samp>(r)</samp> "
+"<samp>(tm)</samp> <samp>(sm)</samp> <samp>(p)</samp> ] to  proper characters "
 "[ <samp>©</samp> <samp>®</samp> <samp>™</samp> <samp>℠</samp> <samp>℗</"
 "samp> ]."
 msgstr ""
@@ -905,6 +905,16 @@ msgctxt "language name"
 msgid "Chinese pinyin (Latin)"
 msgstr "Chinesisch (Pinyin)"
 
+#~ msgid ""
+#~ "Improve your web typography with: hyphenation, space control, intelligent "
+#~ "character replacement, and CSS hooks."
+#~ msgstr ""
+#~ "Bessere Web-Typographie durch Silbentrennung, Weißraum-Kontrolle, "
+#~ "intelligente Zeichenersetzung und CSS-Klassen."
+
+#~ msgid "Peter Putzer"
+#~ msgstr "Peter Putzer"
+
 #~ msgid "Caching"
 #~ msgstr "Cache"
 
@@ -929,16 +939,6 @@ msgstr "Chinesisch (Pinyin)"
 #~ "Für unbeschränktes Caching den Wert auf <samp>0</samp> setzen. Dies wird "
 #~ "jedoch nur empfohlen, wenn ein Hauptspeicher-basierter Objekt-Cache "
 #~ "verwendet wird."
-
-#~ msgid ""
-#~ "Improve your web typography with: hyphenation, space control, intelligent "
-#~ "character replacement, and CSS hooks."
-#~ msgstr ""
-#~ "Bessere Web-Typographie durch Silbentrennung, Weißraum-Kontrolle, "
-#~ "intelligente Zeichenersetzung und CSS-Klassen."
-
-#~ msgid "Peter Putzer"
-#~ msgstr "Peter Putzer"
 
 #~ msgid "https://code.mundschenk.at"
 #~ msgstr "https://code.mundschenk.at"
