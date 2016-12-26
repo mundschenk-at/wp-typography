@@ -187,6 +187,30 @@ class WP_Typography {
 	}
 
 	/**
+	 * Retrieve the list of valid hyphenation languages.
+	 * The language names are translation-ready but not translated yet.
+	 *
+	 * @since 4.0.0
+	 *
+	 * @return array An array in the form of ( LANG_CODE => LANGUAGE ).
+	 */
+	static public function get_hyphenation_languages() {
+		return \PHP_Typography\PHP_Typography\get_hyphenation_languages();
+	}
+
+	/**
+	 * Retrieve the list of valid diacritic replacement languages.
+	 * The language names are translation-ready but not translated yet.
+	 *
+	 * @since 4.0.0
+	 *
+	 * @return array An array in the form of ( LANG_CODE => LANGUAGE ).
+	 */
+	static public function get_diacritic_languages() {
+		return \PHP_Typography\PHP_Typography\get_diacritic_languages();
+	}
+
+	/**
 	 * Process content text fragment.
 	 *
 	 * @since 4.0.0
