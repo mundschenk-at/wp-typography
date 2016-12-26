@@ -3,8 +3,6 @@
  *  This file is part of wp-Typography.
  *
  *	Copyright 2014-2016 Peter Putzer.
- *	Copyright 2012-2013 Marie Hogebrandt.
- *	Coypright 2009-2011 KINGdesk, LLC.
  *
  *	This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -38,6 +36,8 @@
  *  Domain Path: /translations
  *
  *  ***
+ *
+ *  Based on original work by KINGdesk, LLC.
  *
  *  Portions of this plugin are inspired by:
  *	   Christian Metts - href="http://code.google.com/p/typogrify/

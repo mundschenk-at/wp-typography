@@ -3,8 +3,7 @@
  *  This file is part of wp-Typography.
  *
  *	Copyright 2014-2016 Peter Putzer.
- *	Copyright 2012-2013 Marie Hogebrandt.
- *	Coypright 2009-2011 KINGdesk, LLC.
+ *	Copyright 2009-2011 KINGdesk, LLC.
  *
  *	This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -151,7 +150,7 @@ class WP_Typography {
 	 * @return WP_Typography
 	 */
 	public static function _get_instance( $version, $basename = 'wp-typography/wp-typography.php' ) {
-		if ( ! self::$_instance ) {
+		if ( empty( self::$_instance ) ) {
 			self::$_instance = new self( $version, $basename );
 		} else {
 			_doing_it_wrong( __FUNCTION__, 'WP_Typography::_get_instance called more than once.', '3.2.0' );
@@ -168,7 +167,7 @@ class WP_Typography {
 	 * @return WP_Typography
 	 */
 	public static function get_instance() {
-		if ( ! self::$_instance ) {
+		if ( empty( self::$_instance ) ) {
 			_doing_it_wrong( __FUNCTION__, 'WP_Typography::get_instance called without plugin intialization.', '3.2.0' );
 			return self::_get_instance( '0.0.0' ); // fallback with invalid version.
 		}
@@ -750,8 +749,8 @@ class WP_Typography {
 	 */
 	public function enqueue_scripts() {
 		if ( $this->settings['typo_hyphenate_clean_clipboard'] ) {
-			wp_enqueue_script( 'jquery-selection', plugin_dir_url( $this->local_plugin_path ) . 'js/jquery.selection.js', array( 'jquery' ), $this->version, true );
-			wp_enqueue_script( 'wp-typography-cleanup-clipboard', plugin_dir_url( $this->local_plugin_path ) . 'js/clean_clipboard.js', array( 'jquery', 'jquery-selection' ), $this->version, true );
+			wp_enqueue_script( 'jquery-selection',                plugin_dir_url( $this->local_plugin_path ) . 'js/jquery.selection.js', array( 'jquery' ),                     $this->version, true );
+			wp_enqueue_script( 'wp-typography-cleanup-clipboard', plugin_dir_url( $this->local_plugin_path ) . 'js/clean_clipboard.js',  array( 'jquery', 'jquery-selection' ), $this->version, true );
 		}
 	}
 }
