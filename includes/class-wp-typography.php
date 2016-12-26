@@ -3,8 +3,7 @@
  *  This file is part of wp-Typography.
  *
  *	Copyright 2014-2016 Peter Putzer.
- *	Copyright 2012-2013 Marie Hogebrandt.
- *	Coypright 2009-2011 KINGdesk, LLC.
+ *	Copyright 2009-2011 KINGdesk, LLC.
  *
  *	This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -151,7 +150,7 @@ class WP_Typography {
 	 * @return WP_Typography
 	 */
 	public static function _get_instance( $version, $basename = 'wp-typography/wp-typography.php' ) {
-		if ( ! self::$_instance ) {
+		if ( empty( self::$_instance ) ) {
 			self::$_instance = new self( $version, $basename );
 		} else {
 			_doing_it_wrong( __FUNCTION__, 'WP_Typography::_get_instance called more than once.', '3.2.0' );
@@ -168,12 +167,117 @@ class WP_Typography {
 	 * @return WP_Typography
 	 */
 	public static function get_instance() {
-		if ( ! self::$_instance ) {
+		if ( empty( self::$_instance ) ) {
 			_doing_it_wrong( __FUNCTION__, 'WP_Typography::get_instance called without plugin intialization.', '3.2.0' );
 			return self::_get_instance( '0.0.0' ); // fallback with invalid version.
 		}
 
 		return self::$_instance;
+	}
+
+	/**
+	 * Retrieve a copy of the preferences set by the user via the plugin settings screen.
+	 *
+	 * @since 4.0.0
+	 *
+	 * @return \PHP_Typography\Settings
+	 */
+	public static function get_user_settings() {
+		return self::get_instance()->get_settings();
+	}
+
+	/**
+	 * Retrieve the list of valid hyphenation languages.
+	 * The language names are translation-ready but not translated yet.
+	 *
+	 * @since 4.0.0
+	 *
+	 * @return array An array in the form of ( LANG_CODE => LANGUAGE ).
+	 */
+	static public function get_hyphenation_languages() {
+		return \PHP_Typography\PHP_Typography\get_hyphenation_languages();
+	}
+
+	/**
+	 * Retrieve the list of valid diacritic replacement languages.
+	 * The language names are translation-ready but not translated yet.
+	 *
+	 * @since 4.0.0
+	 *
+	 * @return array An array in the form of ( LANG_CODE => LANGUAGE ).
+	 */
+	static public function get_diacritic_languages() {
+		return \PHP_Typography\PHP_Typography\get_diacritic_languages();
+	}
+
+	/**
+	 * Process content text fragment.
+	 *
+	 * @since 4.0.0
+	 *
+	 * @param string                   $text     Required.
+	 * @param \PHP_Typography\Settings $settings Optional. A settings object. Default null (which means the internal settings will be used).
+	 *
+	 * @return string The processed $text.
+	 */
+	public static function filter( $text, \PHP_Typography\Settings $settings = null ) {
+		return self::get_instance()->process( $text, false, false, $settings );
+	}
+
+	/**
+	 * Process content text fragment as RSS feed (limiting HTML features to most widely compatible ones).
+	 *
+	 * @since 4.0.0
+	 *
+	 * @param string                   $text     Required.
+	 * @param \PHP_Typography\Settings $settings Optional. A settings object. Default null (which means the internal settings will be used).
+	 *
+	 * @return string The processed $text.
+	 */
+	public static function filter_feed( $text, \PHP_Typography\Settings $settings = null ) {
+		return self::get_instance()->process_feed( $text, false, $settings );
+	}
+
+	/**
+	 * Process title text fragment as RSS feed (limiting HTML features to most widely compatible ones).
+	 *
+	 * @since 4.0.0
+	 *
+	 * @param string                   $text     Required.
+	 * @param \PHP_Typography\Settings $settings Optional. A settings object. Default null (which means the internal settings will be used).
+	 *
+	 * @return string The processed $text.
+	 */
+	public static function filter_feed_title( $text, \PHP_Typography\Settings $settings = null ) {
+		return self::get_instance()->process_feed( $text, true, $settings );
+	}
+
+	/**
+	 * Process title text fragment.
+	 *
+	 * @since 4.0.0
+	 *
+	 * @param string                   $text     Required.
+	 * @param \PHP_Typography\Settings $settings Optional. A settings object. Default null (which means the internal settings will be used).
+	 *
+	 * @return string The processed $text.
+	 */
+	public static function filter_title( $text, \PHP_Typography\Settings $settings = null ) {
+		return self::get_instance()->process_title( $text, $settings );
+	}
+
+	/**
+	 * Process title parts and strip &shy; and zero-width space.
+	 *
+	 * @since 4.0.0
+	 *
+	 * @param array                    $title_parts An array of strings.
+	 * @param \PHP_Typography\Settings $settings    Optional. A settings object. Default null (which means the internal settings will be used).
+	 *
+	 * @return array
+	 */
+	public static function filter_title_parts( $title_parts, \PHP_Typography\Settings $settings = null ) {
+		return self::get_instance()->process_title_parts( $title_parts, $settings );
 	}
 
 	/**
@@ -302,12 +406,15 @@ class WP_Typography {
 	/**
 	 * Process heading text fragment.
 	 *
-	 * Calls `process( $text, true )`.
+	 * Calls `process( $text, true, $settings )`.
 	 *
-	 * @param string $text Required.
+	 * @since 4.0.0 Parameter $settings added.
+	 *
+	 * @param string                   $text Required.
+	 * @param \PHP_Typography\Settings $settings Optional. A settings object. Default null (which means the internal settings will be used).
 	 */
-	function process_title( $text ) {
-		return $this->process( $text, true );
+	function process_title( $text, \PHP_Typography\Settings $settings = null ) {
+		return $this->process( $text, true, $settings );
 	}
 
 	/**
@@ -316,22 +423,28 @@ class WP_Typography {
 	 * Calls `process( $text, $is_title, true )`.
 	 *
 	 * @since 3.2.4
+	 * @since 4.0.0 Parameter $settings added.
 	 *
-	 * @param string  $text     Required.
-	 * @param boolean $is_title Optional. Default false.
+	 * @param string                   $text     Required.
+	 * @param boolean                  $is_title Optional. Default false.
+	 * @param \PHP_Typography\Settings $settings Optional. A settings object. Default null (which means the internal settings will be used).
 	 */
-	function process_feed( $text, $is_title = false ) {
-		return $this->process( $text, $is_title, true );
+	function process_feed( $text, $is_title = false, \PHP_Typography\Settings $settings = null ) {
+		return $this->process( $text, $is_title, true, $settings );
 	}
 
 	/**
 	 * Process title parts and strip &shy; and zero-width space.
 	 *
 	 * @since 3.2.5
+	 * @since 4.0.0 Parameter $settings added.
 	 *
-	 * @param array $title_parts An array of strings.
+	 * @param array                    $title_parts An array of strings.
+	 * @param \PHP_Typography\Settings $settings    Optional. A settings object. Default null (which means the internal settings will be used).
+	 *
+	 * @return array
 	 */
-	function process_title_parts( $title_parts ) {
+	function process_title_parts( $title_parts, \PHP_Typography\Settings $settings = null ) {
 		/**
 		 * We need a utility function that's not autoloaded.
 		 */
@@ -339,7 +452,7 @@ class WP_Typography {
 
 		foreach ( $title_parts as $index => $part ) {
 			// Remove &shy; and &#8203; after processing title part.
-			$title_parts[ $index ] = strip_tags( str_replace( array( \PHP_Typography\uchr( 173 ), \PHP_Typography\uchr( 8203 ) ), '', $this->process( $part, true, true ) ) );
+			$title_parts[ $index ] = strip_tags( str_replace( array( \PHP_Typography\uchr( 173 ), \PHP_Typography\uchr( 8203 ) ), '', $this->process( $part, true, true, $settings ) ) );
 		}
 
 		return $title_parts;
@@ -349,14 +462,19 @@ class WP_Typography {
 	 * Process text fragment.
 	 *
 	 * @since 3.2.4 Parameter $force_feed added.
+	 * @since 4.0.0 Parameter $settings added.
 	 *
-	 * @param string  $text       Required.
-	 * @param boolean $is_title   Optional. Default false.
-	 * @param boolean $force_feed Optional. Default false.
+	 * @param string                   $text       Required.
+	 * @param bool                     $is_title   Optional. Default false.
+	 * @param bool                     $force_feed Optional. Default false.
+	 * @param \PHP_Typography\Settings $settings   Optional. A settings object. Default null (which means the internal settings will be used).
+	 *
+	 * @return string The processed $text.
 	 */
-	public function process( $text, $is_title = false, $force_feed = false ) {
+	public function process( $text, $is_title = false, $force_feed = false, \PHP_Typography\Settings $settings = null ) {
 		$typo = $this->get_php_typo();
-		$key = 'typo_' . base64_encode( md5( $text, true ) . $this->cached_settings_hash );
+		$hash = ! empty( $settings ) ? $settings->get_hash() : $this->cached_settings_hash;
+		$key  = 'typo_' . base64_encode( md5( $text, true ) . $hash );
 
 		/**
 		 * Filter the caching duration for processed text fragments.
@@ -373,7 +491,7 @@ class WP_Typography {
 			$processed_text = $this->get_cache( $key, $found );
 
 			if ( ! $found ) {
-				$processed_text = $typo->process_feed( $text, $is_title );
+				$processed_text = $typo->process_feed( $text, $is_title, $settings );
 				$this->set_cache( $key, $processed_text, $duration );
 			}
 		} else {
@@ -381,7 +499,7 @@ class WP_Typography {
 			$processed_text = $this->get_cache( $key, $found );
 
 			if ( ! $found ) {
-				$processed_text = $typo->process( $text, $is_title );
+				$processed_text = $typo->process( $text, $is_title, $settings );
 				$this->set_cache( $key, $processed_text, $duration );
 			}
 		}
@@ -479,10 +597,10 @@ class WP_Typography {
 	}
 
 	/**
-	 * Initialize the PHP_Typograpyh instance from our settings.
+	 * Initialize the PHP_Typography instance from our settings.
 	 */
 	private function init_php_typo() {
-		// Load configuration variables into our phpTypography class.
+		// Load configuration variables into our PHP_Typography class.
 		$this->php_typo->set_tags_to_ignore( $this->settings['typo_ignore_tags'] );
 		$this->php_typo->set_classes_to_ignore( $this->settings['typo_ignore_classes'] );
 		$this->php_typo->set_ids_to_ignore( $this->settings['typo_ignore_ids'] );
@@ -693,8 +811,8 @@ class WP_Typography {
 	 */
 	public function enqueue_scripts() {
 		if ( $this->settings['typo_hyphenate_clean_clipboard'] ) {
-			wp_enqueue_script( 'jquery-selection', plugin_dir_url( $this->local_plugin_path ) . 'js/jquery.selection.js', array( 'jquery' ), $this->version, true );
-			wp_enqueue_script( 'wp-typography-cleanup-clipboard', plugin_dir_url( $this->local_plugin_path ) . 'js/clean_clipboard.js', array( 'jquery', 'jquery-selection' ), $this->version, true );
+			wp_enqueue_script( 'jquery-selection',                plugin_dir_url( $this->local_plugin_path ) . 'js/jquery.selection.js', array( 'jquery' ),                     $this->version, true );
+			wp_enqueue_script( 'wp-typography-cleanup-clipboard', plugin_dir_url( $this->local_plugin_path ) . 'js/clean_clipboard.js',  array( 'jquery', 'jquery-selection' ), $this->version, true );
 		}
 	}
 }
