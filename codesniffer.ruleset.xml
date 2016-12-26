@@ -15,6 +15,9 @@
 	<rule ref="WordPress-VIP">
 		<exclude name="WordPress.VIP.RestrictedFunctions.error_log" />
 	</rule>
+	<rule ref="Squiz.Commenting.LongConditionClosingComment">
+		<exclude name="Squiz.Commenting.LongConditionClosingComment" />
+	</rule>
 
 	<!-- Include sniffs for PHP cross-version compatibility. -->
 	<rule ref="PHPCompatibility"/>
