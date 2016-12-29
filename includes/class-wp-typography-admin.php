@@ -379,17 +379,10 @@ class WP_Typography_Admin {
 			),
 			'typo_hyphenate_exceptions' => array(
 				'tab_id' 		=> 'hyphenation',
-				'label' 		=> __( 'Exception List:', 'wp-typography' ),
-				'help_text' 	=> __( 'Mark allowed hyphenations with "-"; separate words with spaces.', 'wp-typography' ),
-				'control' 		=> 'textarea',
-				'default' 		=> 'Mund-schenk',
-			),
-			'typo_hyphenate_exceptions' => array(
-				'tab_id' 		=> 'hyphenation',
 				'short'			=> __( 'Exception list', 'wp-typography' ),
 				'help_text' 	=> __( 'Mark allowed hyphenations with "-"; separate words with spaces.', 'wp-typography' ),
 				'control' 		=> 'textarea',
-				'attributes'	=> array( 'rows' => '3' ),
+				'attributes'	=> array( 'rows' => '8' ),
 				'default' 		=> 'Mund-schenk',
 			),
 			'typo_hyphenate_clean_clipboard' => array(
