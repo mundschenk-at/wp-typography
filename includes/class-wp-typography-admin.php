@@ -829,7 +829,7 @@ sub {
 
 		// General sections for each tab.
 		foreach ( $this->admin_form_tabs as $tab_id => $heading ) {
-			add_settings_section( $tab_id, $heading, array( $this, 'print_settings_section' ), $this->option_group . $tab_id );
+			add_settings_section( $tab_id, '', array( $this, 'print_settings_section' ), $this->option_group . $tab_id );
 		}
 
 		// Additional sections.
