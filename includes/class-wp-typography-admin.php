@@ -849,7 +849,7 @@ sub {
 		if ( ! empty( $_POST['typo_restore_defaults'] ) ) { // WPCS: CSRF ok.
 			// Check active tab.
 			$all_tabs   = array_keys( $this->admin_form_tabs ); // PHP 5.3 workaround.
-			$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : $all_tabs[0];
+			$active_tab = ! empty( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : $all_tabs[0];
 
 			add_settings_error( $this->option_group . $active_tab, 'defaults-restored', __( 'Settings reset to default values.', 'wp-typography' ), 'updated' );
 		}
@@ -865,10 +865,10 @@ sub {
 	 * @return mixed
 	 */
 	public function sanitize_clear_cache( $input ) {
-		if ( ! empty( isset( $_POST['typo_clear_cache'] ) ) ) { // WPCS: CSRF ok.
+		if ( ! empty( $_POST['typo_clear_cache'] ) ) { // WPCS: CSRF ok.
 			// Check active tab.
 			$all_tabs   = array_keys( $this->admin_form_tabs ); // PHP 5.3 workaround.
-			$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : $all_tabs[0];
+			$active_tab = ! empty( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : $all_tabs[0];
 
 			add_settings_error( $this->option_group . $active_tab, 'cache-cleared', __( 'Cached text fragments cleared.', 'wp-typography' ), 'notice-info' );
 		}
