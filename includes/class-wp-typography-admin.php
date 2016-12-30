@@ -78,9 +78,16 @@ class WP_Typography_Admin {
 	/**
 	 * Links to add the settings page.
 	 *
-	 * @var array $adminResourceLinks An array in the form of 'anchor text' => 'URL'.
+	 * @var array $admin_resource_links An array in the form of 'anchor text' => 'URL'.
 	 */
 	private $admin_resource_links;
+
+	/**
+	 * Context sensitive help for the settings page.
+	 *
+	 * @var array $admin_help_pages
+	 */
+	private $admin_help_pages;
 
 	/**
 	 * Section IDs and headings for the settings page.
@@ -166,6 +173,7 @@ class WP_Typography_Admin {
 
 		// Initialize admin form.
 		$this->admin_resource_links = $this->initialize_resource_links();
+		$this->admin_help_pages     = $this->initialize_help_pages();
 		$this->admin_form_tabs      = $this->initialize_form_tabs();
 		$this->admin_form_sections  = $this->initialize_form_sections();
 		$this->admin_form_controls  = $this->initialize_controls();
@@ -222,6 +230,25 @@ class WP_Typography_Admin {
 	}
 
 	/**
+	 * Initialize displayable strings for the settings page help.
+	 *
+	 * @return array {
+	 *  	@type array $id {
+	 *  		@type string $heading The displayed tab name.
+	 *  		@type string $content The help content.
+	 *  	}
+	 * }
+	 */
+	function initialize_help_pages() {
+		return array(
+			'help-intro' => array(
+				'heading' => __( 'Introduction', 'wp-typography' ),
+				'content' => __( '<p>Im­prove your web ty­pog­ra­phy with hy­phen­ation, space con­trol, in­tel­li­gent char­ac­ter re­place­ment, and CSS hooks.</p>', 'wp-typography' ),
+			),
+		);
+	}
+
+	/**
 	 * Initialize displayable strings for the plugin settings page.
 	 *
 	 * @return array(
@@ -254,6 +281,10 @@ class WP_Typography_Admin {
 
 		// Fieldsets will be displayed in the order included.
 		return array(
+			'math-replacements'  => array(
+				'heading' => __( 'Math & Numbers', 'wp-typography' ),
+				'tab_id'  => 'character-replacement',
+			),
 			'enable-wrapping'  => array(
 				'heading' => __( 'Enable Wrapping', 'wp-typography' ),
 				'tab_id'  => 'space-control',
@@ -480,9 +511,13 @@ class WP_Typography_Admin {
 			'typo_smart_dashes_style' => array(
 				'tab_id'		=> 'character-replacement',
 				'group_with'	=> 'typo_smart_dashes',
-				'label' 		=> __( 'Use the %1$s style for dashes. In the US, the em dash&#8202;&mdash;&#8202;with no or very little spacing&#8202;&mdash;&#8202;is used for parenthetical expressions, while internationally, the en dash &ndash; with spaces &ndash; is more prevalent.', 'wp-typography' ),
+				'label' 		=> __( 'Use the %1$s style for dashes.', 'wp-typography' ),
+				'help_text' 	=> __( 'In the US, the em dash&#8202;&mdash;&#8202;with no or very little spacing&#8202;&mdash;&#8202;is used for parenthetical expressions, while internationally, the en dash &ndash; with spaces &ndash; is more prevalent.', 'wp-typography' ),
 				'control' 		=> 'select',
-				'option_values' => array( 'traditionalUS' => __( 'Traditional US' ), 'international' => __( 'International' ) ),
+				'option_values' => array(
+						'traditionalUS' => __( 'Traditional US' ),
+						'international' => __( 'International' ),
+				),
 				'default' 		=> 'traditionalUS',
 			),
 			'typo_smart_diacritics' => array(
@@ -499,7 +534,7 @@ class WP_Typography_Admin {
 				'tab_id'		=> 'character-replacement',
 				'group_with'	=> 'typo_smart_diacritics',
 				'label' 		=> __( 'Language for diacritic replacements: %1$s', 'wp-typography' ),
-				'help_text' 	=> __( 'Language definitions will purposefully <strong>not</strong> process words that have alternate meaning without diacritics like <code>resume</code>/<code>résumé</code>, <code>divorce</code>/<code>divorcé</code>, and <code>expose</code>/<code>exposé</code>.', 'wp-typography' ),
+				'help_text' 	=> __( 'Language definitions will purposefully not process words that have alternate meaning without diacritics like <code>resume</code>/<code>résumé</code>, <code>divorce</code>/<code>divorcé</code>, and <code>expose</code>/<code>exposé</code>.', 'wp-typography' ),
 				'control' 		=> 'select',
 				'option_values'	=> array(), // Automatically detected and listed in __construct.
 				'default' 		=> 'en-US',
@@ -532,6 +567,7 @@ class WP_Typography_Admin {
 			),
 			'typo_smart_math' => array(
 				'tab_id'		=> 'character-replacement',
+				'section'		=> 'math-replacements',
 				'short'			=> __( 'Math symbols', 'wp-typography' ),
 				'label' 		=> __( '%1$s Transform exponents [ <code>3^2</code> ] to pretty exponents [ <code>3<sup>2</sup></code> ] and math symbols [ <code>(2x6)/3=4</code> ] to correct symbols [ <code>(2&#215;6)&#247;3=4</code> ].', 'wp-typography' ),
 				'control' 		=> 'input',
@@ -540,6 +576,7 @@ class WP_Typography_Admin {
 			),
 			'typo_smart_fractions' => array(
 				'tab_id'		=> 'character-replacement',
+				'section'		=> 'math-replacements',
 				'short'			=> __( 'Fractions', 'wp-typography' ),
 				'label' 		=> __( '%1$s Transform fractions [ <code>1/2</code> ] to  pretty fractions [ <code><sup>1</sup>&#8260;<sub>2</sub></code> ].', 'wp-typography' ),
 				'help_text'		=> __( 'Warning: If you use a font (like Lucida Grande) that does not have a fraction-slash character, this may cause a missing line between the numerator and denominator.', 'wp-typography' ),
@@ -549,6 +586,7 @@ class WP_Typography_Admin {
 			),
 			'typo_smart_ordinals' => array(
 				'tab_id'		=> 'character-replacement',
+				'section'		=> 'math-replacements',
 				'short'			=> __( 'Ordinal numbers', 'wp-typography' ),
 				'label' 		=> __( '%1$s Transform ordinal suffixes [ <code>1st</code> ] to  pretty ordinals [ <code>1<sup>st</sup></code> ].', 'wp-typography' ),
 				'control' 		=> 'input',
@@ -839,6 +877,18 @@ sub {
 	}
 
 	/**
+	 * Retrieve the active tab on the settings page.
+	 *
+	 * @return string
+	 */
+	private function get_active_settings_tab() {
+		// Check active tab.
+		$all_tabs   = array_keys( $this->admin_form_tabs ); // PHP 5.3 workaround.
+
+		return ! empty( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : $all_tabs[0];
+	}
+
+	/**
 	 * Add proper notification for Restore Defaults button.
 	 *
 	 * @param mixed $input Ignored.
@@ -847,11 +897,7 @@ sub {
 	 */
 	public function sanitize_restore_defaults( $input ) {
 		if ( ! empty( $_POST['typo_restore_defaults'] ) ) { // WPCS: CSRF ok.
-			// Check active tab.
-			$all_tabs   = array_keys( $this->admin_form_tabs ); // PHP 5.3 workaround.
-			$active_tab = ! empty( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : $all_tabs[0];
-
-			add_settings_error( $this->option_group . $active_tab, 'defaults-restored', __( 'Settings reset to default values.', 'wp-typography' ), 'updated' );
+			add_settings_error( $this->option_group . $this->get_active_settings_tab(), 'defaults-restored', __( 'Settings reset to default values.', 'wp-typography' ), 'updated' );
 		}
 
 		return $input;
@@ -866,11 +912,7 @@ sub {
 	 */
 	public function sanitize_clear_cache( $input ) {
 		if ( ! empty( $_POST['typo_clear_cache'] ) ) { // WPCS: CSRF ok.
-			// Check active tab.
-			$all_tabs   = array_keys( $this->admin_form_tabs ); // PHP 5.3 workaround.
-			$active_tab = ! empty( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : $all_tabs[0];
-
-			add_settings_error( $this->option_group . $active_tab, 'cache-cleared', __( 'Cached text fragments cleared.', 'wp-typography' ), 'notice-info' );
+			add_settings_error( $this->option_group . $this->get_active_settings_tab(), 'cache-cleared', __( 'Cached text fragments cleared.', 'wp-typography' ), 'notice-info' );
 		}
 
 		return $input;
@@ -892,8 +934,35 @@ sub {
 			add_settings_section( $section_id, $section['heading'], array( $this, 'print_settings_section' ), $this->option_group . $section['tab_id'] );
 		}
 
+		// Add help tab.
+		add_action( 'load-' . $page, array( $this, 'add_context_help' ) );
+
 		// Using registered $page handle to hook stylesheet loading.
 		add_action( 'admin_print_styles-' . $page, array( $this, 'print_admin_styles' ) );
+	}
+
+	/**
+	 * Add context-sensitive help to the settings page.
+	 */
+	public function add_context_help() {
+		$screen = get_current_screen();
+
+		foreach ( $this->admin_help_pages as $help_id => $help ) {
+			$screen->add_help_tab( array(
+					'id'      => $help_id,
+					'title'   => $help['heading'],
+					'content' => $help['content'],
+			)	);
+		}
+
+		// Create sidebar.
+		$sidebar = '<p>' . __( 'Useful resources:', 'wp-typography' ) . '</p><ul>';
+		foreach ( $this->admin_resource_links as $anchor => $url ) {
+			$sidebar .= '<li><a href="' . esc_url( $url ) . '">' . __( $anchor, 'wp-typography' ) . '</a></li>';  // @codingStandardsIgnoreLine.
+		}
+		$sidebar .= '</ul>';
+
+		$screen->set_help_sidebar( $sidebar );
 	}
 
 	/**
@@ -1099,6 +1168,11 @@ sub {
 			$control_markup .= '</label>';
 		} else {
 			$control_markup .= '%1$s';
+		}
+
+		// Non-inline help.
+		if ( empty( $help_inline ) && ! empty( $help ) ) {
+			$control_markup .= '<p class="description">' . $help . '</p>';
 		}
 
 		$select_markup = "<select id='$id' name='$id' $attributes>";
