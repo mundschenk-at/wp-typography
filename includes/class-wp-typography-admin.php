@@ -52,7 +52,7 @@ class WP_Typography_Admin {
 	 *
 	 * @var string $option_group
 	 */
-	private $option_group = 'typo_options';
+	private $option_group = 'typo_options_';
 
 	/**
 	 * The result of plugin_basename() for the main plugin file (relative from plugins folder).
@@ -801,8 +801,13 @@ sub {
 	 */
 	function register_the_settings() {
 		foreach ( $this->admin_form_controls as $control_id => $control ) {
+			// Register setting.
 			register_setting( $this->option_group . $control['tab_id'], $control_id );
 
+			// Prevent spurious saves.
+			add_filter( 'pre_update_option_' . $control_id , array( $this, 'filter_update_option' ), 10, 3 );
+
+			// Add settings fields.
 			if ( empty( $control['group_with'] ) ) {
 				add_settings_field( $control_id, isset( $control['short'] ) ? $control['short'] : '', array( $this, 'print_settings_field' ), $this->option_group . $control['tab_id'], isset( $control['section'] ) ? $control['section'] : $control['tab_id'], array( 'control_id' => $control_id ) );
 			} else {
@@ -810,8 +815,65 @@ sub {
 			}
 		}
 
-		register_setting( $this->option_group, 'typo_restore_defaults' );
-		register_setting( $this->option_group, 'typo_clear_cache' );
+		foreach ( $this->admin_form_tabs as $tab_id => $heading ) {
+			register_setting( $this->option_group . $tab_id, 'typo_restore_defaults', array( $this, 'sanitize_restore_defaults' ) );
+			register_setting( $this->option_group . $tab_id, 'typo_clear_cache', array( $this, 'sanitize_clear_cache' ) );
+		}
+	}
+
+	/**
+	 * Prevent settings from being saved if we are clearing the cache or restoring defaults.
+	 *
+	 * @param mixed  $value     The new value.
+	 * @param mixed  $old_value The old value.
+	 * @param string $option    The option name.
+	 *
+	 * @return mixed
+	 */
+	public function filter_update_option( $value, $old_value, $option ) {
+		if ( ! empty( $_POST['typo_restore_defaults'] ) || ! empty( $_POST['typo_clear_cache'] ) ) { // WPCS: CSRF ok.
+			return $old_value;
+		} else {
+			return $value;
+		}
+	}
+
+	/**
+	 * Add proper notification for Restore Defaults button.
+	 *
+	 * @param mixed $input Ignored.
+	 *
+	 * @return mixed
+	 */
+	public function sanitize_restore_defaults( $input ) {
+		if ( ! empty( $_POST['typo_restore_defaults'] ) ) { // WPCS: CSRF ok.
+			// Check active tab.
+			$all_tabs   = array_keys( $this->admin_form_tabs ); // PHP 5.3 workaround.
+			$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : $all_tabs[0];
+
+			add_settings_error( $this->option_group . $active_tab, 'defaults-restored', __( 'Settings reset to default values.', 'wp-typography' ), 'updated' );
+		}
+
+		return $input;
+	}
+
+	/**
+	 * Add proper notification for Clear Cache button.
+	 *
+	 * @param mixed $input Ignored.
+	 *
+	 * @return mixed
+	 */
+	public function sanitize_clear_cache( $input ) {
+		if ( ! empty( isset( $_POST['typo_clear_cache'] ) ) ) { // WPCS: CSRF ok.
+			// Check active tab.
+			$all_tabs   = array_keys( $this->admin_form_tabs ); // PHP 5.3 workaround.
+			$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : $all_tabs[0];
+
+			add_settings_error( $this->option_group . $active_tab, 'cache-cleared', __( 'Cached text fragments cleared.', 'wp-typography' ), 'notice-info' );
+		}
+
+		return $input;
 	}
 
 	/**
