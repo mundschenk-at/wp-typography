@@ -3,8 +3,7 @@
 	<h1><?php echo esc_html( sprintf( __( '%s Settings', 'wp-typography' ), $this->plugin_name ) ); ?></h1><?php
 
 	// Check active tab.
-	$all_tabs   = array_keys( $this->admin_form_tabs ); // PHP 5.3 workaround.
-	$active_tab = ! empty( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : $all_tabs[0];
+	$active_tab = $this->get_active_settings_tab();
 
 	?>
 	<h2 class="nav-tab-wrapper">
