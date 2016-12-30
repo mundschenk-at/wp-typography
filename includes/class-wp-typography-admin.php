@@ -259,11 +259,26 @@ class WP_Typography_Admin {
 
 		// Sections will be displayed in the order included.
 		return array(
-			'general-scope' 		=> __( 'General Scope',                     'wp-typography' ),
-			'hyphenation' 			=> __( 'Hyphenation',                       'wp-typography' ),
-			'character-replacement'	=> __( 'Intelligent Character Replacement', 'wp-typography' ),
-			'space-control' 		=> __( 'Space Control',                     'wp-typography' ),
-			'css-hooks' 			=> __( 'Add CSS Hooks',                     'wp-typography' ),
+			'general-scope' 		=> array(
+					'heading'     => __( 'General Scope', 'wp-typography' ),
+					'description' => __( 'By default, wp-Typography processes all post content and titles (but not the whole page). Certain HTML elements can be exempted to prevent conflicts with your theme or other plugins.', 'wp-typography' ),
+			),
+			'hyphenation' 			=> array(
+					'heading'     => __( 'Hyphenation', 'wp-typography' ),
+					'description' => __( 'Hyphenation rules are based on pre-computed dictionaries, but can be fine tuned. Custom hyphenations always override the patterns from the dictionary.', 'wp-typography' ),
+			),
+			'character-replacement'	=> array(
+					'heading'     => __( 'Intelligent Character Replacement', 'wp-typography' ),
+					'description' => __( 'Modern keyboards are still based on the limited character range of typewriters. This section allows you to selectively replace typewriter characters with better alternatives.', 'wp-typography' ),
+			),
+			'space-control' 		=> array(
+					'heading'     => __( 'Space Control', 'wp-typography' ),
+					'description' => __( 'Take control of space. At least in your WordPress posts.', 'wp-typography' ),
+			),
+			'css-hooks' 			=> array(
+					'heading'     => __( 'Add CSS Hooks', 'wp-typography' ),
+					'description' => __( 'To help with styling your posts, some additional CSS classes can be added automatically.', 'wp-typography' ),
+			),
 		);
 	}
 
@@ -283,10 +298,12 @@ class WP_Typography_Admin {
 		return array(
 			'math-replacements'  => array(
 				'heading' => __( 'Math & Numbers', 'wp-typography' ),
+				'description' => __( 'Not all number formattings are appropriate for all languages.', 'wp-typography' ),
 				'tab_id'  => 'character-replacement',
 			),
 			'enable-wrapping'  => array(
 				'heading' => __( 'Enable Wrapping', 'wp-typography' ),
+				'description' => __( 'Sometimes you want to enable certain long words to wrap to a new line, while at other times you want to prevent wrapping.', 'wp-typography' ),
 				'tab_id'  => 'space-control',
 			),
 		);
@@ -853,9 +870,9 @@ sub {
 			}
 		}
 
-		foreach ( $this->admin_form_tabs as $tab_id => $heading ) {
+		foreach ( $this->admin_form_tabs as $tab_id => $tab ) {
 			register_setting( $this->option_group . $tab_id, 'typo_restore_defaults', array( $this, 'sanitize_restore_defaults' ) );
-			register_setting( $this->option_group . $tab_id, 'typo_clear_cache', array( $this, 'sanitize_clear_cache' ) );
+			register_setting( $this->option_group . $tab_id, 'typo_clear_cache',      array( $this, 'sanitize_clear_cache' ) );
 		}
 	}
 
@@ -925,7 +942,7 @@ sub {
 		$page = add_options_page( $this->plugin_name, $this->plugin_name, 'manage_options', strtolower( $this->plugin_name ), array( $this, 'get_admin_page_content' ) );
 
 		// General sections for each tab.
-		foreach ( $this->admin_form_tabs as $tab_id => $heading ) {
+		foreach ( $this->admin_form_tabs as $tab_id => $tab ) {
 			add_settings_section( $tab_id, '', array( $this, 'print_settings_section' ), $this->option_group . $tab_id );
 		}
 
@@ -971,7 +988,13 @@ sub {
 	 * @param array $section The section information.
 	 */
 	public function print_settings_section( $section ) {
-		// Error_log("print_settings_section: " . print_r( $section ,true ));.
+		$section_id = ! empty( $section['id'] ) ? $section['id'] : '';
+
+		if ( ! empty( $this->admin_form_tabs[ $section_id ]['description'] ) ) {
+			echo '<p>' . esc_html( $this->admin_form_tabs[ $section_id ]['description'] ) . '</p>';
+		} elseif ( ! empty( $this->admin_form_sections[ $section_id ]['description'] ) ) {
+			echo '<p>' . esc_html( $this->admin_form_sections[ $section_id ]['description'] ) . '</p>';
+		}
 	}
 
 	/**

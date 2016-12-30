@@ -7,13 +7,13 @@
 
 	?>
 	<h2 class="nav-tab-wrapper">
-	<?php foreach ( $this->admin_form_tabs as $tab_id => $heading ): ?>
-		<a href="?page=<?php echo esc_attr( strtolower( $this->plugin_name ) ); ?>&amp;tab=<?php echo esc_attr( $tab_id ); ?>" class="nav-tab<?php echo $tab_id === $active_tab ? ' nav-tab-active' : ''; ?>"><?php _e( $heading, 'wp-typography' ); ?></a>
+	<?php foreach ( $this->admin_form_tabs as $tab_id => $tab ): ?>
+		<a href="?page=<?php echo esc_attr( strtolower( $this->plugin_name ) ); ?>&amp;tab=<?php echo esc_attr( $tab_id ); ?>" class="nav-tab<?php echo $tab_id === $active_tab ? ' nav-tab-active' : ''; ?>"><?php _e( $tab['heading'], 'wp-typography' ); ?></a>
 	<?php endforeach; ?>
 	</h2>
 
 	<form method="post" action="options.php">
-		<?php foreach ( $this->admin_form_tabs as $tab_id => $heading ) : ?>
+		<?php foreach ( $this->admin_form_tabs as $tab_id => $tab ) : ?>
 			<?php if ( $active_tab === $tab_id ) : ?>
 				<?php settings_fields( $this->option_group . $tab_id ); ?>
 				<?php do_settings_sections( $this->option_group . $tab_id ); ?>
