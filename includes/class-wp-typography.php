@@ -225,34 +225,6 @@ class WP_Typography {
 	}
 
 	/**
-	 * Process content text fragment as RSS feed (limiting HTML features to most widely compatible ones).
-	 *
-	 * @since 4.0.0
-	 *
-	 * @param string                   $text     Required.
-	 * @param \PHP_Typography\Settings $settings Optional. A settings object. Default null (which means the internal settings will be used).
-	 *
-	 * @return string The processed $text.
-	 */
-	public static function filter_feed( $text, \PHP_Typography\Settings $settings = null ) {
-		return self::get_instance()->process_feed( $text, false, $settings );
-	}
-
-	/**
-	 * Process title text fragment as RSS feed (limiting HTML features to most widely compatible ones).
-	 *
-	 * @since 4.0.0
-	 *
-	 * @param string                   $text     Required.
-	 * @param \PHP_Typography\Settings $settings Optional. A settings object. Default null (which means the internal settings will be used).
-	 *
-	 * @return string The processed $text.
-	 */
-	public static function filter_feed_title( $text, \PHP_Typography\Settings $settings = null ) {
-		return self::get_instance()->process_feed( $text, true, $settings );
-	}
-
-	/**
 	 * Process title text fragment.
 	 *
 	 * @since 4.0.0
@@ -278,6 +250,34 @@ class WP_Typography {
 	 */
 	public static function filter_title_parts( $title_parts, \PHP_Typography\Settings $settings = null ) {
 		return self::get_instance()->process_title_parts( $title_parts, $settings );
+	}
+
+	/**
+	 * Process content text fragment as RSS feed (limiting HTML features to most widely compatible ones).
+	 *
+	 * @since 4.0.0
+	 *
+	 * @param string                   $text     Required.
+	 * @param \PHP_Typography\Settings $settings Optional. A settings object. Default null (which means the internal settings will be used).
+	 *
+	 * @return string The processed $text.
+	 */
+	public static function filter_feed( $text, \PHP_Typography\Settings $settings = null ) {
+		return self::get_instance()->process_feed( $text, false, $settings );
+	}
+
+	/**
+	 * Process title text fragment as RSS feed (limiting HTML features to most widely compatible ones).
+	 *
+	 * @since 4.0.0
+	 *
+	 * @param string                   $text     Required.
+	 * @param \PHP_Typography\Settings $settings Optional. A settings object. Default null (which means the internal settings will be used).
+	 *
+	 * @return string The processed $text.
+	 */
+	public static function filter_feed_title( $text, \PHP_Typography\Settings $settings = null ) {
+		return self::get_instance()->process_feed( $text, true, $settings );
 	}
 
 	/**
