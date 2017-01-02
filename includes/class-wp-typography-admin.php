@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *	Copyright 2014-2016 Peter Putzer.
+ *	Copyright 2014-2017 Peter Putzer.
  *	Copyright 2012-2013 Marie Hogebrandt.
  *	Copyright 2009-2011 KINGdesk, LLC.
  *
@@ -541,7 +541,7 @@ class WP_Typography_Admin {
 				'tab_id'		=> 'character-replacement',
 				'short'			=> __( 'Smart diacritics', 'wp-typography' ),
 				'label' 		=> __( '%1$s Force diacritics where appropriate.', 'wp-typography' ),
-				'help_text' 	=> __( 'i.e. <code>creme brulee</code> becomes <code>crème brûlée</code>', 'wp-typography' ),
+				'help_text' 	=> __( 'For example, <code>creme brulee</code> becomes <code>crème brûlée</code>.', 'wp-typography' ),
 				'help_inline' 	=> true,
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
@@ -560,7 +560,7 @@ class WP_Typography_Admin {
 				'tab_id' 		=> 'character-replacement',
 				'group_with'	=> 'typo_smart_diacritics',
 				'label' 		=> __( 'Custom diacritic word replacements:', 'wp-typography' ),
-				'help_text' 	=> __( 'Must be formatted <code>"word to replace"=>"replacement word",</code>; this is case-sensitive.', 'wp-typography' ),
+				'help_text' 	=> __( 'Must be formatted <code>"word to replace"=>"replacement word",</code>. The entries are case-sensitive.', 'wp-typography' ),
 				'control' 		=> 'textarea',
 				'attributes'	=> array( 'rows' => '8' ),
 				'default' 		=> '"cooperate"=>"coöperate", "Cooperate"=>"Coöperate", "cooperation"=>"coöperation", "Cooperation"=>"Coöperation", "cooperative"=>"coöperative", "Cooperative"=>"Coöperative", "coordinate"=>"coördinate", "Coordinate"=>"Coördinate", "coordinated"=>"coördinated", "Coordinated"=>"Coördinated", "coordinating"=>"coördinating", "Coordinating"=>"Coördinating", "coordination"=>"coördination", "Coordination"=>"Coördination", "coordinator"=>"coördinator", "Coordinator"=>"Coördinator", "coordinators"=>"coördinators", "Coordinators"=>"Coördinators", "continuum"=>"continuüm", "Continuum"=>"Continuüm", "debacle"=>"débâcle", "Debacle"=>"Débâcle", "elite"=>"élite", "Elite"=>"Élite",',
@@ -630,7 +630,7 @@ class WP_Typography_Admin {
 				'tab_id'		=> 'space-control',
 				'short'			=> __( 'Fractions', 'wp-typography' ),
 				'label' 		=> __( '%1$s Keep integers with adjoining fractions.', 'wp-typography' ),
-				'help_text' 	=> __( 'i.e. <code>1 1/2</code> or <code>1 <sup>1</sup>&#8260;<sub>2</sub></code>', 'wp-typography' ),
+				'help_text' 	=> __( 'Examples: <code>1 1/2</code> or <code>1 <sup>1</sup>&#8260;<sub>2</sub></code>.', 'wp-typography' ),
 				'help_inline'	=> true,
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
@@ -659,7 +659,7 @@ class WP_Typography_Admin {
 				'tab_id'		=> 'space-control',
 				'short'			=> __( 'Values &amp; Units', 'wp-typography' ),
 				'label' 		=> __( '%1$s Keep values and units together.', 'wp-typography' ),
-				'help_text' 	=> __( 'i.e. <code>1 in.</code> or <code>10 m<sup>2</sup></code>', 'wp-typography' ),
+				'help_text' 	=> __( 'Examples: <code>1 in.</code> or <code>10 m<sup>2</sup></code>.', 'wp-typography' ),
 				'help_inline'	=> true,
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
@@ -771,7 +771,7 @@ class WP_Typography_Admin {
 			'typo_style_hanging_punctuation' => array(
 				'tab_id' 		=> 'css-hooks',
 				'short'			=> __( 'Hanging punctuation', 'wp-typography' ),
-				'label' 		=> __( '%1$s Wrap small punctuation marks', 'wp-typography' ),
+				'label' 		=> __( '%1$s Wrap small punctuation marks.', 'wp-typography' ),
 				'help_text' 	=> __( "The amount of push/pull should be adjusted for your selected font in the stylesheet. <br />Single quote-like marks [ <code>&#8218;&lsquo;&apos;&prime;'</code> ] are wrapped with <code>&lt;span class=\"pull-single\"&gt;</code>. <br />Double quote-like marks [ <code>&#8222;&ldquo;&Prime;\"</code> ] are wrapped with <code>&lt;span class=\"pull-double\"&gt;</code>. <br/>For punctuation marks that do not begin a block of text, a corresponding empty <code>&lt;span class=\"push-&hellip;\"&gt;</code> ensures proper alignment within the line.", 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
@@ -780,7 +780,7 @@ class WP_Typography_Admin {
 			'typo_style_initial_quotes' => array(
 				'tab_id' 		=> 'css-hooks',
 				'short'			=> __( 'Initial quotes', 'wp-typography' ),
-				'label' 		=> __( '%1$s Wrap initial quotes', 'wp-typography' ),
+				'label' 		=> __( '%1$s Wrap initial quotes.', 'wp-typography' ),
 				'help_text' 	=> __( 'Matches quotemarks at the beginning of blocks of text, not all opening quotemarks. <br />Single quotes [ <code>&lsquo;</code> <code>&#8218;</code> ] are wrapped with <code>&lt;span class="quo"&gt;</code>. <br />Double quotes [ <code>&ldquo;</code> <code>&#8222;</code> ] are wrapped with <code>&lt;span class="dquo"&gt;</code>. <br />Guillemets [ <code>&laquo;</code> <code>&raquo;</code> ] are wrapped with <code>&lt;span class="dquo"&gt;</code>.', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
@@ -797,7 +797,7 @@ class WP_Typography_Admin {
 			'typo_style_css_include' => array(
 				'tab_id' 		=> 'css-hooks',
 				'short'			=> __( 'Styles', 'wp-typography' ),
-				'label' 		=> __( '%1$s Include Styling for CSS Hooks', 'wp-typography' ),
+				'label' 		=> __( '%1$s Include styling for CSS hooks.', 'wp-typography' ),
 				'help_text' 	=> __( 'Attempts to inject the CSS specified below.  If you are familiar with CSS, it is recommended you not use this option, and maintain all styles in your main stylesheet.', 'wp-typography' ),
 				'control' 		=> 'input',
 				'input_type' 	=> 'checkbox',
@@ -806,7 +806,7 @@ class WP_Typography_Admin {
 			'typo_style_css' => array(
 				'tab_id'		=> 'css-hooks',
 				'group_with'	=> 'typo_style_css_include',
-				'label' 		=> __( 'Styling for CSS Hooks:', 'wp-typography' ),
+				'label' 		=> __( 'Styling for CSS hooks:', 'wp-typography' ),
 				'help_text' 	=> __( 'This will only be applied if explicitly selected with the preceding option.', 'wp-typography' ),
 				'control' 		=> 'textarea',
 				'attributes'	=> array( 'rows' => '10' ),
