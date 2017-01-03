@@ -74,31 +74,51 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 
 == Changelog ==
 
+= 4.0.0 - January xx, 2017 =
+* _Feature:_ API improvements for developers
+  - New Settings API added.
+  - Easier access via new static methods `WP_Typography::filter*`.
+  - Updated [API documentation](https://code.mundschenk.at/wp-typography/api/).
+* _Feature:_ Re-vamped settings page
+  - Uses tabs for easier navigation.
+  - Follows WordPress styleguide more closely.
+  - Includes online help.
+* _Feature:_ New hyphenation languages
+  - Hindi,
+  - Marathi,
+  - Occitan,
+  - Oriya,
+  - Panjabi,
+  - Tamil,
+  - Telugu.
+* _Change:_ Uses minified JavaScript.
+* _Change:_ Updated list of valid top-level domains.
+
 = 3.6.0 - December 26, 2016 =
-* Feature: Added hook `typo_ignore_parser_errors` to re-enable "parser guessing" as it was before version 3.5.2.
-* Feature: Added new hook `typo_disable_filtering` to selectively disable filter groups.
+* _Feature:_ Added hook `typo_ignore_parser_errors` to re-enable "parser guessing" as it was before version 3.5.2.
+* _Feature:_ Added new hook `typo_disable_filtering` to selectively disable filter groups.
 
 = 3.5.3 - December 17, 2016 =
-* Bugfix: Remove ambiguous entries from German diacritics replacement file.
+* _Bugfix:_ Remove ambiguous entries from German diacritics replacement file.
 
 = 3.5.2 - December 14, 2016 =
-* Change: Return unmodified HTML if a processed text fragment is not well-formed. This improves compatibility with page builder plugins (and themes) that do weird things with the `the_content` filter.
+* *Change: Return unmodified HTML if a processed text fragment is not well-formed. This improves compatibility with page builder plugins (and themes) that do weird things with the `the_content` filter.
 
 = 3.5.1 - November 05, 2016 =
-* Bugfix: Quotes ending in numbers were sometimes interpreted as primes.
+* _Bugfix:_ Quotes ending in numbers were sometimes interpreted as primes.
 
 = 3.5.0 - October 21, 2016 =
-* Feature: Added "Latin (Liturgical)" as a new hyphenation language.
-* Feature: Limited support for ACF Pro.
-* Change: Better compatibility with improperly written plugins (ensuring that `wptexturize` is always off).
-* Change: Only use the WP Object Cache for caching, not transients, to reduce database usage and prevent clogging in some configurations.
-* Change: Updated list of valid top-level domains.
-* Change: Updated HTML5 parser (html5-php) to 2.2.2.
-* Bugfix: Custom hyphenations with more than one hyphenation point were not working properly.
-* Bugfix: The `min_after` hyphenation setting was off by one.
-* Bugfix: An IE11 bug on Windows 7 was previously triggered when the Safari workaround is enabled.
-* Bugfix: Language names were not translated in the settings screen.
-* Bugfix: Fractions did not play nice with prime symbols.
+* _Feature:_ Added "Latin (Liturgical)" as a new hyphenation language.
+* _Feature:_ Limited support for ACF Pro.
+* _Change:_ Better compatibility with improperly written plugins (ensuring that `wptexturize` is always off).
+* _Change:_ Only use the WP Object Cache for caching, not transients, to reduce database usage and prevent clogging in some configurations.
+* _Change:_ Updated list of valid top-level domains.
+* _Change:_ Updated HTML5 parser (html5-php) to 2.2.2.
+* _Bugfix:_ Custom hyphenations with more than one hyphenation point were not working properly.
+* _Bugfix:_ The `min_after` hyphenation setting was off by one.
+* _Bugfix:_ An IE11 bug on Windows 7 was previously triggered when the Safari workaround is enabled.
+* _Bugfix:_ Language names were not translated in the settings screen.
+* _Bugfix:_ Fractions did not play nice with prime symbols.
 
 = 3.4.0 - July 10, 2016 =
 * Store hyphenation patterns as JSON files instead of PHP to work around a GlotPress bug that prevents timely language pack updates.
