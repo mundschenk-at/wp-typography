@@ -815,8 +815,11 @@ class WP_Typography {
 	 */
 	public function enqueue_scripts() {
 		if ( $this->settings['typo_hyphenate_clean_clipboard'] ) {
-			wp_enqueue_script( 'jquery-selection',                plugin_dir_url( $this->local_plugin_path ) . 'js/jquery.selection.js', array( 'jquery' ),                     $this->version, true );
-			wp_enqueue_script( 'wp-typography-cleanup-clipboard', plugin_dir_url( $this->local_plugin_path ) . 'js/clean_clipboard.js',  array( 'jquery', 'jquery-selection' ), $this->version, true );
+			// Set up file suffix.
+			$suffix = SCRIPT_DEBUG ? '' : '.min';
+
+			wp_enqueue_script( 'jquery-selection',                plugin_dir_url( $this->local_plugin_path ) . "js/jquery.selection$suffix.js", array( 'jquery' ),                     $this->version, true );
+			wp_enqueue_script( 'wp-typography-cleanup-clipboard', plugin_dir_url( $this->local_plugin_path ) . "js/clean_clipboard$suffix.js",  array( 'jquery', 'jquery-selection' ), $this->version, true );
 		}
 	}
 }
