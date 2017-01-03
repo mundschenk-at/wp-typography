@@ -70,7 +70,11 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 
 == Screenshots ==
 
-1. wp-Typography administrative settings page
+1. wp-Typography "General" settings page.
+2. wp-Typography "Hyphenation" settings page.
+3. wp-Typography "Intelligent Character Replacement" settings page.
+4. wp-Typography "Space Control" settings page.
+4. wp-Typography "Add CSS Hooks" settings page.
 
 == Changelog ==
 

@@ -76,11 +76,14 @@ This plugin is an official replacement for the [wp-Typogrify plugin](http://word
 
 Remember, many more FAQs are are addressed the [wp-Typography website](https://code.mundschenk.at/wp-typography/frequently-asked-questions/).
 
-
 ## Screenshots ##
 
 ### wp-Typography Administrative Settings ###
-![Imawp-Typography administrative settings](wp-assets/screenshot-1.png)
+![wp-Typography "General" settings page](wp-assets/screenshot-1.png)
+![wp-Typography "Hyphenation" settings page](wp-assets/screenshot-2.png)
+![wp-Typography "Intelligent Character Replacement" settings page](wp-assets/screenshot-3.png)
+![wp-Typography "Space Control" settings page](wp-assets/screenshot-4.png)
+![wp-Typography "Add CSS Hooks" settings page](wp-assets/screenshot-5.png)
 
 ## Changelog ##
 
