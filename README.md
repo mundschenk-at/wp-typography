@@ -58,7 +58,7 @@ Alternately, you may manually upload the plugin by following the following instr
 
 FAQs are maintained at the [wp-Typography website](https://code.mundschenk.at/wp-typography/frequently-asked-questions/ "wp-Typography FAQs").
 
-Three questions come up so frequently, we will republish their answers here:
+Two questions come up so frequently, we will republish their answers here:
 
 ### Will this plu­gin slow my page load­ing times? ###
 
@@ -70,17 +70,14 @@ More likely than not, your WordPress theme is using an improper function to set 
 
 If you are uncomfortable editing your theme's code, you may alternatively go to the wp-Typography settings page in your admin panel and add `h1` and `h2` to the "Do not process the content of these HTML elements:" field.  This will disable typographic processing within improperly designed page title links <em>and</em> page titles.
 
-### Does this plugin work with wp-Typogrify? ###
-
-This plugin is an official replacement for the [wp-Typogrify plugin](http://wordpress.org/extend/plugins/wp-typogrify/).  Please uninstall wp-Typogrify and install wp-Typography in its place.
-
-Remember, many more FAQs are are addressed the [wp-Typography website](https://code.mundschenk.at/wp-typography/frequently-asked-questions/).
-
-
 ## Screenshots ##
 
 ### wp-Typography Administrative Settings ###
-![Imawp-Typography administrative settings](wp-assets/screenshot-1.png)
+![wp-Typography "General" settings page](wp-assets/screenshot-1.png)
+![wp-Typography "Hyphenation" settings page](wp-assets/screenshot-2.png)
+![wp-Typography "Intelligent Character Replacement" settings page](wp-assets/screenshot-3.png)
+![wp-Typography "Space Control" settings page](wp-assets/screenshot-4.png)
+![wp-Typography "Add CSS Hooks" settings page](wp-assets/screenshot-5.png)
 
 ## Changelog ##
 

@@ -49,7 +49,7 @@ wp‐Typography has the following requirements:
 
 FAQs are maintained on the [wp-Typography website](https://code.mundschenk.at/wp-typography/frequently-asked-questions/).
 
-Three questions come up so frequently, we will republish their answers here:
+Two questions come up so frequently, we will republish their answers here:
 
 = Will this plu­gin slow my page load­ing times? =
 
@@ -61,16 +61,16 @@ More likely than not, your WordPress theme is using an improper function to set 
 
 If you are uncomfortable editing your theme's code, you may alternatively go to the wp-Typography settings page in your admin panel and add `h1` and `h2` to the "Do not process the content of these HTML elements:" field.  This will disable typographic processing within improperly designed page title links <em>and</em> page titles.
 
-= Does this plugin work with wp-Typogrify? =
-
-This plugin is an official replacement for the [wp-Typogrify plugin](http://wordpress.org/extend/plugins/wp-typogrify/).  Please uninstall wp-Typogrify and install wp-Typography in its place.
-
 Remember, many more FAQs are are addressed the [wp-Typography website](https://code.mundschenk.at/wp-typography/frequently-asked-questions/).
 
 
 == Screenshots ==
 
-1. wp-Typography administrative settings page
+1. wp-Typography "General" settings page.
+2. wp-Typography "Hyphenation" settings page.
+3. wp-Typography "Intelligent Character Replacement" settings page.
+4. wp-Typography "Space Control" settings page.
+4. wp-Typography "Add CSS Hooks" settings page.
 
 == Changelog ==
 
