@@ -102,7 +102,7 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 * _Bugfix:_ Remove ambiguous entries from German diacritics replacement file.
 
 = 3.5.2 - December 14, 2016 =
-* *Change: Return unmodified HTML if a processed text fragment is not well-formed. This improves compatibility with page builder plugins (and themes) that do weird things with the `the_content` filter.
+* _Change:_ Return unmodified HTML if a processed text fragment is not well-formed. This improves compatibility with page builder plugins (and themes) that do weird things with the `the_content` filter.
 
 = 3.5.1 - November 05, 2016 =
 * _Bugfix:_ Quotes ending in numbers were sometimes interpreted as primes.
