@@ -49,7 +49,7 @@ wp‐Typography has the following requirements:
 
 FAQs are maintained on the [wp-Typography website](https://code.mundschenk.at/wp-typography/frequently-asked-questions/).
 
-Three questions come up so frequently, we will republish their answers here:
+Two questions come up so frequently, we will republish their answers here:
 
 = Will this plu­gin slow my page load­ing times? =
 
@@ -60,10 +60,6 @@ Yes. Use [WP Super Cache](http://wordpress.org/extend/plugins/wp-super-cache/).
 More likely than not, your WordPress theme is using an improper function to set the title attribute of your heading's link.  It is probably using the `the_title()` function, which delivers the post title *after* filtering.  It should be using `the_title_attribute()` which delivers the post title *before* filtering.  Change out this function throughout your theme when it is used inside of an HTML tag, and the problem should go away.
 
 If you are uncomfortable editing your theme's code, you may alternatively go to the wp-Typography settings page in your admin panel and add `h1` and `h2` to the "Do not process the content of these HTML elements:" field.  This will disable typographic processing within improperly designed page title links <em>and</em> page titles.
-
-= Does this plugin work with wp-Typogrify? =
-
-This plugin is an official replacement for the [wp-Typogrify plugin](http://wordpress.org/extend/plugins/wp-typogrify/).  Please uninstall wp-Typogrify and install wp-Typography in its place.
 
 Remember, many more FAQs are are addressed the [wp-Typography website](https://code.mundschenk.at/wp-typography/frequently-asked-questions/).
 
