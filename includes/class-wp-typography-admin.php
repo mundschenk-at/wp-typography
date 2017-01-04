@@ -929,7 +929,7 @@ sub {
 	 */
 	public function sanitize_clear_cache( $input ) {
 		if ( ! empty( $_POST['typo_clear_cache'] ) ) { // WPCS: CSRF ok.
-			add_settings_error( $this->option_group . $this->get_active_settings_tab(), 'cache-cleared', __( 'Cached text fragments cleared.', 'wp-typography' ), 'notice-info' );
+			add_settings_error( $this->option_group . $this->get_active_settings_tab(), 'cache-cleared', __( 'Cached post content cleared.', 'wp-typography' ), 'notice-info' );
 		}
 
 		return $input;
