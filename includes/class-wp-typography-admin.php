@@ -243,7 +243,11 @@ class WP_Typography_Admin {
 		return array(
 			'help-intro' => array(
 				'heading' => __( 'Introduction', 'wp-typography' ),
-				'content' => __( '<p>Im­prove your web ty­pog­ra­phy with hy­phen­ation, space con­trol, in­tel­li­gent char­ac­ter re­place­ment, and CSS hooks.</p>', 'wp-typography' ),
+				'content' => __(
+						'<p>Im­prove your web ty­pog­ra­phy with <em>hy­phen­ation</em>, <em>space con­trol</em>, <em>in­tel­li­gent char­ac­ter re­place­ment</em>, and <em>CSS hooks</em>. These improvements can be enabled separately via the settings tabs provided below. We try to provide reasonable default values, but please check that they are suitable for your site language.</p>' .
+						'<p>Please keep in mind that technically, WordPress applies the typographic fixes on the individual content parts used in your site templates, e.g. <code>the_title</code>, <code>the_content</code>, not the page as a whole. For this reason, HTML tags (including classes and IDs) from the theme\'s template files cannot be used to limit the scope of wp-Typography\'s processing.</p>',
+						'wp-typography'
+				),
 			),
 		);
 	}
@@ -261,7 +265,7 @@ class WP_Typography_Admin {
 		return array(
 			'general-scope' 		=> array(
 					'heading'     => __( 'General Scope', 'wp-typography' ),
-					'description' => __( 'By default, wp-Typography processes all post content and titles (but not the whole page). Certain HTML elements can be exempted to prevent conflicts with your theme or other plugins.', 'wp-typography' ),
+					'description' => __( 'By default, wp-Typography processes all post content and titles (but not the whole page). Certain HTML elements within your content can be exempted to prevent conflicts with your theme or other plugins.', 'wp-typography' ),
 			),
 			'hyphenation' 			=> array(
 					'heading'     => __( 'Hyphenation', 'wp-typography' ),
@@ -276,7 +280,7 @@ class WP_Typography_Admin {
 					'description' => __( 'Take control of space. At least in your WordPress posts.', 'wp-typography' ),
 			),
 			'css-hooks' 			=> array(
-					'heading'     => __( 'Add CSS Hooks', 'wp-typography' ),
+					'heading'     => __( 'CSS Hooks', 'wp-typography' ),
 					'description' => __( 'To help with styling your posts, some additional CSS classes can be added automatically.', 'wp-typography' ),
 			),
 		);
