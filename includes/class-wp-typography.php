@@ -554,8 +554,8 @@ class WP_Typography {
 	/**
 	 * Retrieves a cached value.
 	 *
-	 * @param string  $key   The cache key.
-	 * @param bool    $found Optional. Whether the key was found in the cache. Disambiguates a return of false, a storable value. Passed by reference. Default null.
+	 * @param string $key   The cache key.
+	 * @param bool   $found Optional. Whether the key was found in the cache. Disambiguates a return of false, a storable value. Passed by reference. Default null.
 	 *
 	 * @return mixed
 	 */
