@@ -684,7 +684,10 @@ class WP_Typography {
 		 *
 		 * @param bool $ignore Default false.
 		 */
-		$this->php_typo->set_ignore_parser_errors( apply_filters( 'typo_ignore_parser_errors', false ) );
+		$this->php_typo->set_ignore_parser_errors( $this->settings['typo_ignore_parser_errors'] || apply_filters( 'typo_ignore_parser_errors', false ) );
+
+		// Make parser errors filterable on an individual level.
+		$this->php_typo->set_parser_errors_handler( array( $this, 'parser_errors_handler' ) );
 	}
 
 	/**
@@ -734,6 +737,24 @@ class WP_Typography {
 		update_option( 'typo_transient_keys', $this->transients );
 		update_option( 'typo_cache_keys', $this->cache_keys );
 		update_option( 'typo_clear_cache', false );
+	}
+
+	/**
+	 * Makes parser errors filterable.
+	 *
+	 * @param array $errors An array of error messages.
+	 *
+	 * @return array The filtered array.
+	 */
+	function parser_errors_handler( $errors ) {
+		/**
+		 * Filters the HTML parser errors (if there are any).
+		 *
+		 * @since 4.0.0
+		 *
+		 * @param array $errors An array of error messages.
+		 */
+		return apply_filters( 'typo_handle_parser_errors', $errors );
 	}
 
 	/**
