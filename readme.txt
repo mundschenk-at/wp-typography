@@ -55,7 +55,7 @@ Two questions come up so frequently, we will republish their answers here:
 
 Yes. Use [WP Super Cache](http://wordpress.org/extend/plugins/wp-super-cache/).
 
-= This plugin breaks post title links.  What gives? =
+= This plugin breaks post title links. What gives? =
 
 More likely than not, your WordPress theme is using an improper function to set the title attribute of your heading's link.  It is probably using the `the_title()` function, which delivers the post title *after* filtering.  It should be using `the_title_attribute()` which delivers the post title *before* filtering.  Change out this function throughout your theme when it is used inside of an HTML tag, and the problem should go away.
 
@@ -93,6 +93,7 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
   - Telugu.
 * _Change:_ Uses minified JavaScript.
 * _Change:_ Updated list of valid top-level domains.
+* _Change:_ "Ignore errors in parsed HTML" is the default again (as it was pre 3.5.2) and can be switched on and off via the settings page. Parsing errors can be filtered via the new hook `typo_handle_parser_errors` (`typo_ignore_parser_errors` still works as well, of course).
 
 = 3.6.0 - December 26, 2016 =
 * _Feature:_ Added hook `typo_ignore_parser_errors` to re-enable "parser guessing" as it was before version 3.5.2.
@@ -171,7 +172,7 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 * Changed behavior of caching setting: it needs to be explicitely enabled. Having it on by default caused too many problems on shared hosting environments.
 * Started adding filters for programmatic adjustments to the typographic enhancements.
 * Made main plugin class a singleton to ensure easier access for theme developers.
-* Added the wp-Typography filter to additional WordPress hooks and completely disabled wptexturize (if Smart Character Replacement is enabled).
+* Added the wp-Typography filter to additional WordPress hooks and completely disabled `wptexturize` (if Intelligent Character Replacement is enabled).
 
 = 3.1.3 - January 13, 2016 =
 * Pre­vent in­cor­rect re­place­ment of straight quotes with primes (e.g. `"number 6"` is not re­placed with `“num­ber 6″` but with `“num­ber 6”`).
