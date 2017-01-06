@@ -355,6 +355,15 @@ class WP_Typography_Admin {
 				'control' 		=> 'textarea',
 				'default' 		=> '',
 			),
+			'typo_ignore_parser_errors' => array(
+				'tab_id' 		=> 'general-scope',
+				'short'			=> __( 'Parser errors', 'wp-typography' ),
+				'label' 		=> __( '%1$s Ignore errors in parsed HTML.', 'wp-typography' ),
+				'help_text' 	=> __( 'Unchecking will prevent processing completely if the HTML parser produces any errors for a given content part. You should only need to do this in case your site layout changes with wp-Typography enabled.', 'wp-typography' ),
+				'control' 		=> 'input',
+				'input_type' 	=> 'checkbox',
+				'default' 		=> 1,
+			),
 			'typo_enable_hyphenation' => array(
 				'tab_id' 		=> 'hyphenation',
 				'short'			=> __( 'Hyphenation', 'wp-typography' ),

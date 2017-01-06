@@ -684,7 +684,7 @@ class WP_Typography {
 		 *
 		 * @param bool $ignore Default false.
 		 */
-		$this->php_typo->set_ignore_parser_errors( apply_filters( 'typo_ignore_parser_errors', false ) );
+		$this->php_typo->set_ignore_parser_errors( $this->settings['typo_ignore_parser_errors'] || apply_filters( 'typo_ignore_parser_errors', false ) );
 
 		// Make parser errors filterable on an individual level.
 		$this->php_typo->set_parser_errors_handler( array( $this, 'parser_errors_handler' ) );
