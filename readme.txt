@@ -3,7 +3,7 @@ Contributors: pputzer
 Tags: typography, hyphenation, smart quotes, quote marks, smartypants, typogrify, quotes, prettify, widows, orphans, small caps, diacritics
 Requires at least: 4.4
 Tested up to: 4.7
-Stable tag: 4.0.0
+Stable tag: 4.0.1
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
@@ -73,6 +73,9 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 4. wp-Typography "Add CSS Hooks" settings page.
 
 == Changelog ==
+
+= 4.0.1 - January 7, 2017 =
+* _Bugfix:_ Workaround for PHP 5.3 issue in `dewidow` callback.
 
 = 4.0.0 - January 6, 2017 =
 * _Feature:_ API improvements for developers
