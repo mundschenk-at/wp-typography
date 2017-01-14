@@ -519,9 +519,9 @@ class WP_Typography {
 	 * @return bool True if the transient could be set successfully.
 	 */
 	public function set_transient( $transient, $value, $duration = 1 ) {
-		$result = false;
+		$result = set_transient( $transient, $value, $duration );
 
-		if ( $result = set_transient( $transient, $value, $duration ) ) {
+		if ( $result ) {
 			// Store $transient as keys to prevent duplicates.
 			$this->transients[ $transient ] = true;
 			update_option( 'typo_transient_keys', $this->transients );
@@ -540,9 +540,9 @@ class WP_Typography {
 	 * @return bool True if the cache could be set successfully.
 	 */
 	public function set_cache( $key, $value, $duration = 0 ) {
-		$result = false;
+		$result = wp_cache_set( $key, $value, 'wp-typography', $duration );
 
-		if ( $result = wp_cache_set( $key, $value, 'wp-typography', $duration ) ) {
+		if ( $result ) {
 			// Store as keys to prevent duplicates.
 			$this->cache_keys[ $key ] = true;
 			update_option( 'typo_cache_keys', $this->cache_keys );
@@ -569,9 +569,10 @@ class WP_Typography {
 	private function get_php_typo() {
 
 		if ( empty( $this->php_typo ) ) {
-			$transient = 'typo_php_' . md5( json_encode( $this->settings ) ) . '_' . $this->version_hash;
+			$transient      = 'typo_php_' . md5( json_encode( $this->settings ) ) . '_' . $this->version_hash;
+			$this->php_typo = get_transient( $transient );
 
-			if ( ! $this->php_typo = ( get_transient( $transient ) ) ) {
+			if ( empty( $this->php_typo ) ) {
 				// OK, we have to initialize the PHP_Typography instance manually.
 				$this->php_typo = new \PHP_Typography\PHP_Typography( false, 'now' );
 
@@ -733,7 +734,8 @@ class WP_Typography {
 			wp_cache_delete( $key, 'wp-typography' );
 		}
 
-		$this->transients = $this->cache_keys = array();
+		$this->transients = array();
+		$this->cache_keys = array();
 		update_option( 'typo_transient_keys', $this->transients );
 		update_option( 'typo_cache_keys', $this->cache_keys );
 		update_option( 'typo_clear_cache', false );
