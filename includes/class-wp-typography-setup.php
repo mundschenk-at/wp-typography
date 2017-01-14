@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *	Copyright 2014-2016 Peter Putzer.
+ *	Copyright 2014-2017 Peter Putzer.
  *
  *	This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -97,7 +97,7 @@ class WP_Typography_Setup {
 
 		// Each version should get it's own if-block.
 		if ( version_compare( $previous_version, '3.1.0-beta.2', '<' ) ) {
-			error_log( 'Upgrading wp-Typography from ' . ( $previous_version ? $previous_version : '< 3.1.0') );
+			error_log( 'Upgrading wp-Typography from ' . ( $previous_version ? $previous_version : '< 3.1.0') ); // @codingStandardsIgnoreLine
 
 			foreach ( $this->plugin->get_default_options() as $option_name => $option ) {
 				$old_option = $this->get_old_option_name( $option_name );
@@ -108,7 +108,7 @@ class WP_Typography_Setup {
 					$result_delete = delete_option( $old_option );
 
 					if ( ! $result_update || ! $result_delete ) {
-						error_log("Error while upgrading $old_option: " . ( $result_update ? '' : 'Update failed. ' .
+						error_log("Error while upgrading $old_option: " . ( $result_update ? '' : 'Update failed. ' .     // @codingStandardsIgnoreLine
 																		  ( $result_delete ? '' : 'Delete failed.') ) );
 					}
 				}

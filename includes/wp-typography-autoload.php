@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *	Copyright 2015 Peter Putzer.
+ *	Copyright 2015-2017 Peter Putzer.
  *
  *	This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -40,8 +40,8 @@ function wp_typography_autoloader( $class_name ) {
 		$classes_dir = realpath( plugin_dir_path( __FILE__ ) ) . DIRECTORY_SEPARATOR;
 	}
 
-	$class_file = 'class-' . str_replace( '_', '-', strtolower( $class_name ) ) . '.php';
-	if ( is_file( $class_file_path = $classes_dir . $class_file ) ) {
+	$class_file_path = $classes_dir . 'class-' . str_replace( '_', '-', strtolower( $class_name ) ) . '.php';
+	if ( is_file( $class_file_path ) ) {
 		require_once( $class_file_path );
 	}
 }

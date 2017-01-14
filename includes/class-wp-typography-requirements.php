@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *	Copyright 2014-2016 Peter Putzer.
+ *	Copyright 2014-2017 Peter Putzer.
  *	Copyright 2009-2011 KINGdesk, LLC.
  *
  *	This program is free software; you can redistribute it and/or
@@ -152,6 +152,7 @@ class WP_Typography_Requirements {
 	function admin_notices_wp_version_incompatible() {
 		global $wp_version;
 
+		/* translators: 1: plugin name 2: target WordPress version number 3: actual WordPress version number */
 		$this->display_error_notice( __( 'The activated plugin %1$s requires WordPress version %2$s or later. You are running WordPress version %3$s. Please deactivate this plugin, or upgrade your installation of WordPress.', 'wp-typography' ),
 									 "<strong>{$this->plugin_name}</strong>",
 									 $this->install_requirements['WordPress Version'],
@@ -162,6 +163,7 @@ class WP_Typography_Requirements {
 	 * Print 'PHP version incompatible' admin notice
 	 */
 	function admin_notices_php_version_incompatible() {
+		/* translators: 1: plugin name 2: target PHP version number 3: actual PHP version number */
 		$this->display_error_notice( __( 'The activated plugin %1$s requires PHP %2$s or later. Your server is running PHP %3$s. Please deactivate this plugin, or upgrade your server\'s installation of PHP.', 'wp-typography' ),
 								  	 "<strong>{$this->plugin_name}</strong>",
 									 $this->install_requirements['PHP Version'],
@@ -172,6 +174,7 @@ class WP_Typography_Requirements {
 	 * Print 'mbstring extension missing' admin notice
 	 */
 	function admin_notices_mbstring_incompatible() {
+		/* translators: 1: plugin name 2: mbstring documentation URL */
 		$this->display_error_notice( __( 'The activated plugin %1$s requires the mbstring PHP extension to be enabled on your server. Please deactivate this plugin, or <a href="%2$s">enable the extension</a>.', 'wp-typography' ),
 									 "<strong>{$this->plugin_name}</strong>",
 									 'http://www.php.net/manual/en/mbstring.installation.php' );
@@ -181,6 +184,7 @@ class WP_Typography_Requirements {
 	 * Print 'Charset incompatible' admin notice
 	 */
 	function admin_notices_charset_incompatible() {
+		/* translators: 1: plugin name 2: current character encoding 3: options URL */
 		$this->display_error_notice( __( 'The activated plugin %1$s requires your blog use the UTF-8 character encoding. You have set your blogs encoding to %2$s. Please deactivate this plugin, or <a href="%3$s">change your character encoding to UTF-8</a>.', 'wp-typography' ),
 									 "<strong>{$this->plugin_name}</strong>",
 									 get_bloginfo( 'charset' ),
