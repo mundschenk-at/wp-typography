@@ -453,7 +453,7 @@ class WP_Typography {
 		require_once dirname( __DIR__ ) . '/php-typography/php-typography-functions.php'; // @codeCoverageIgnore.
 
 		foreach ( $title_parts as $index => $part ) {
-			// Remove &shy; and &#8203; after processing title part.
+			// Remove "&shy;" and "&#8203;" after processing title part.
 			$title_parts[ $index ] = strip_tags( str_replace( array( \PHP_Typography\uchr( 173 ), \PHP_Typography\uchr( 8203 ) ), '', $this->process( $part, true, true, $settings ) ) );
 		}
 
@@ -569,7 +569,7 @@ class WP_Typography {
 	private function get_php_typo() {
 
 		if ( empty( $this->php_typo ) ) {
-			$transient      = 'typo_php_' . md5( json_encode( $this->settings ) ) . '_' . $this->version_hash;
+			$transient      = 'typo_php_' . md5( wp_json_encode( $this->settings ) ) . '_' . $this->version_hash;
 			$this->php_typo = get_transient( $transient );
 
 			if ( empty( $this->php_typo ) ) {
