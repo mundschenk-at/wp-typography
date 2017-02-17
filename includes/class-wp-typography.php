@@ -320,7 +320,7 @@ class WP_Typography {
 			add_filter( 'run_wptexturize', '__return_false' );
 
 			// Ensure that wptexturize is actually off by forcing a re-evaluation (some plugins call it too early).
-			wptexturize( '', true );
+			wptexturize( ' ', true ); // Argument must not be empty string!
 		}
 
 		// Apply our filters.
