@@ -164,7 +164,6 @@ class WP_Typography_Setup {
 	 * @since    3.1.0
 	 */
 	public function deactivate() {
-		// $this->plugin->clear_cache();
 	}
 
 	/**

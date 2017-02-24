@@ -54,7 +54,6 @@ class WP_Typography_Requirements {
 		'UTF-8'				=> true,
 	 );
 
-
 	/**
 	 * The result of plugin_basename() for the main plugin file.
 	 * (Relative from plugins folder.)
@@ -119,7 +118,7 @@ class WP_Typography_Requirements {
 	 */
 	function deactivate_plugin() {
 		deactivate_plugins( plugin_basename( $this->local_plugin_path ) );
-		}
+	}
 
 	/**
 	 * Check if multibyte functions are supported.
