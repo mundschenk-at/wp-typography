@@ -428,7 +428,15 @@ class WP_Typography_Admin {
 				/* translators: 1: number dropdown */
 				'label' 		=> __( 'Do not hyphenate words with less than %1$s letters.', 'wp-typography' ),
 				'control' 		=> 'select',
-				'option_values'	=> array( 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10 ),
+				'option_values'	=> array(
+					4 => 4,
+					5 => 5,
+					6 => 6,
+					7 => 7,
+					8 => 8,
+					9 => 9,
+					10 => 10,
+				),
 				'default' 		=> 5,
 			),
 			'typo_hyphenate_min_before' => array(
@@ -437,7 +445,12 @@ class WP_Typography_Admin {
 				/* translators: 1: number dropdown */
 				'label' 		=> __( 'Keep at least %1$s letters before hyphenation.', 'wp-typography' ),
 				'control' 		=> 'select',
-				'option_values'	=> array( 2 => 2, 3 => 3, 4 => 4, 5 => 5 ),
+				'option_values'	=> array(
+					2 => 2,
+					3 => 3,
+					4 => 4,
+					5 => 5,
+				),
 				'default' 		=> 3,
 			),
 			'typo_hyphenate_min_after' => array(
@@ -446,7 +459,12 @@ class WP_Typography_Admin {
 				/* translators: 1: number dropdown */
 				'label' 		=> __( 'Keep at least %1$s letters after hyphenation.', 'wp-typography' ),
 				'control' 		=> 'select',
-				'option_values'	=> array( 2 => 2, 3 => 3,4 => 4, 5 => 5 ),
+				'option_values'	=> array(
+					2 => 2,
+					3 => 3,
+					4 => 4,
+					5 => 5,
+				),
 				'default' 		=> 2,
 			),
 			'typo_hyphenate_exceptions' => array(
@@ -454,7 +472,9 @@ class WP_Typography_Admin {
 				'short'			=> __( 'Exception list', 'wp-typography' ),
 				'help_text' 	=> __( 'Mark allowed hyphenations with "-"; separate words with spaces.', 'wp-typography' ),
 				'control' 		=> 'textarea',
-				'attributes'	=> array( 'rows' => '8' ),
+				'attributes'	=> array(
+					'rows' => '8',
+				),
 				'default' 		=> 'Mund-schenk',
 			),
 			'typo_hyphenate_clean_clipboard' => array(
@@ -564,8 +584,8 @@ class WP_Typography_Admin {
 				'help_text' 	=> __( 'In the US, the em dash&#8202;&mdash;&#8202;with no or very little spacing&#8202;&mdash;&#8202;is used for parenthetical expressions, while internationally, the en dash &ndash; with spaces &ndash; is more prevalent.', 'wp-typography' ),
 				'control' 		=> 'select',
 				'option_values' => array(
-						'traditionalUS' => __( 'Traditional US', 'wp-typography' ),
-						'international' => __( 'International', 'wp-typography' ),
+					'traditionalUS' => __( 'Traditional US', 'wp-typography' ),
+					'international' => __( 'International', 'wp-typography' ),
 				),
 				'default' 		=> 'traditionalUS',
 			),
@@ -596,7 +616,9 @@ class WP_Typography_Admin {
 				'label' 		=> __( 'Custom diacritic word replacements:', 'wp-typography' ),
 				'help_text' 	=> __( 'Must be formatted <code>"word to replace"=>"replacement word",</code>. The entries are case-sensitive.', 'wp-typography' ),
 				'control' 		=> 'textarea',
-				'attributes'	=> array( 'rows' => '8' ),
+				'attributes'	=> array(
+					'rows' => '8',
+				),
 				'default' 		=> '"cooperate"=>"coöperate", "Cooperate"=>"Coöperate", "cooperation"=>"coöperation", "Cooperation"=>"Coöperation", "cooperative"=>"coöperative", "Cooperative"=>"Coöperative", "coordinate"=>"coördinate", "Coordinate"=>"Coördinate", "coordinated"=>"coördinated", "Coordinated"=>"Coördinated", "coordinating"=>"coördinating", "Coordinating"=>"Coördinating", "coordination"=>"coördination", "Coordination"=>"Coördination", "coordinator"=>"coördinator", "Coordinator"=>"Coördinator", "coordinators"=>"coördinators", "Coordinators"=>"Coördinators", "continuum"=>"continuüm", "Continuum"=>"Continuüm", "debacle"=>"débâcle", "Debacle"=>"Débâcle", "elite"=>"élite", "Elite"=>"Élite",',
 			),
 
@@ -761,7 +783,16 @@ class WP_Typography_Admin {
 				/* translators: 1: number dropdown */
 				'label' 		=> __( 'Keep at least the last %1$s characters of a URL together.', 'wp-typography' ),
 				'control' 		=> 'select',
-				'option_values'	=> array( 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10 ),
+				'option_values'	=> array(
+					3 => 3,
+					4 => 4,
+					5 => 5,
+					6 => 6,
+					7 => 7,
+					8 => 8,
+					9 => 9,
+					10 => 10,
+				),
 				'default' 		=> 3,
 			),
 			'typo_prevent_widows' => array(
@@ -783,7 +814,16 @@ class WP_Typography_Admin {
 				/* translators: 1: number dropdown */
 				'label' 		=> __( 'Only protect widows with %1$s or fewer letters.', 'wp-typography' ),
 				'control' 		=> 'select',
-				'option_values'	=> array( 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10, 100 => 100 ),
+				'option_values'	=> array(
+					4 => 4,
+					5 => 5,
+					6 => 6,
+					7 => 7,
+					8 => 8,
+					9 => 9,
+					10 => 10,
+					100 => 100,
+				),
 				'default' 		=> 5,
 			),
 			'typo_widow_max_pull' => array(
@@ -793,7 +833,16 @@ class WP_Typography_Admin {
 				/* translators: 1: number dropdown */
 				'label' 		=> __( 'Pull at most %1$s letters from the previous line to keep the widow company.', 'wp-typography' ),
 				'control' 		=> 'select',
-				'option_values'	=> array( 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10, 100 => 100 ),
+				'option_values'	=> array(
+					4 => 4,
+					5 => 5,
+					6 => 6,
+					7 => 7,
+					8 => 8,
+					9 => 9,
+					10 => 10,
+					100 => 100,
+				),
 				'default' 		=> 5,
 			),
 			'typo_style_amps' => array(
@@ -867,7 +916,9 @@ class WP_Typography_Admin {
 				'label' 		=> __( 'Styling for CSS hooks:', 'wp-typography' ),
 				'help_text' 	=> __( 'This will only be applied if explicitly selected with the preceding option.', 'wp-typography' ),
 				'control' 		=> 'textarea',
-				'attributes'	=> array( 'rows' => '10' ),
+				'attributes'	=> array(
+					'rows' => '10',
+				),
 				'default' 		=> 'sup {
 	vertical-align: 60%;
 	font-size: 75%;
@@ -922,7 +973,11 @@ sub {
 
 			// Add settings fields.
 			if ( empty( $control['group_with'] ) ) {
-				add_settings_field( $control_id, isset( $control['short'] ) ? $control['short'] : '', array( $this, 'print_settings_field' ), $this->option_group . $control['tab_id'], isset( $control['section'] ) ? $control['section'] : $control['tab_id'], array( 'control_id' => $control_id ) );
+				$short   = isset( $control['short'] ) ? $control['short'] : '';
+				$section = isset( $control['section'] ) ? $control['section'] : $control['tab_id'];
+				add_settings_field( $control_id, $short, array( $this, 'print_settings_field' ), $this->option_group . $control['tab_id'], $section, array(
+					'control_id' => $control_id,
+				) );
 			} else {
 				$this->admin_form_control_groupings[ $control['group_with'] ][] = $control_id;
 			}
@@ -1121,7 +1176,9 @@ sub {
 		if ( ! empty( $grouping ) ) {
 			foreach ( $grouping as $control_id ) {
 				echo '<br />';
-				$this->print_settings_field( array( 'control_id' => $control_id ) );
+				$this->print_settings_field( array(
+					'control_id' => $control_id,
+				) );
 			}
 
 			echo '</fieldset>';

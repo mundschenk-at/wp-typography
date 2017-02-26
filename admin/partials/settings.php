@@ -48,10 +48,16 @@
 		<?php endforeach; // admin_form_sections. ?>
 
 		<p class="submit">
-			<?php submit_button( __( 'Save Changes', 'wp-typography' ),     'primary',   'save_changes',          false, array( 'tabindex' => 1 ) ); ?>
+			<?php submit_button( __( 'Save Changes', 'wp-typography' ), 'primary', 'save_changes', false, array(
+				'tabindex' => 1,
+			) ); ?>
 			<span class="aux-buttons">
-				<?php submit_button( __( 'Restore Defaults', 'wp-typography' ), 'delete',    'typo_restore_defaults', false, array( 'tabindex' => 2 ) ); ?>
-				<?php submit_button( __( 'Clear Cache', 'wp-typography' ),      'secondary', 'typo_clear_cache',      false, array( 'tabindex' => 3 ) ); ?>
+				<?php submit_button( __( 'Restore Defaults', 'wp-typography' ), 'delete', 'typo_restore_defaults', false, array(
+					'tabindex' => 2,
+				) ); ?>
+				<?php submit_button( __( 'Clear Cache', 'wp-typography' ), 'secondary', 'typo_clear_cache', false, array(
+					'tabindex' => 3,
+				) ); ?>
 			</span>
 		</p><!-- .submit -->
 	</form>
