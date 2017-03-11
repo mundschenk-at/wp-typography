@@ -63,6 +63,9 @@ If you are uncomfortable editing your theme's code, you may alternatively go to 
 
 Remember, many more FAQs are are addressed the [wp-Typography website](https://code.mundschenk.at/wp-typography/frequently-asked-questions/).
 
+= I'm using Advanced Custom Fields and don't want my custom fields to be hyphenated! How can I disable that behavior? =
+
+Please install the [wp-Typography Disable ACF Integration plugin](https://wordpress.org/plugins/wp-typography-disable-acf-integration/) by @sarukku.
 
 == Screenshots ==
 
@@ -73,6 +76,9 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 4. wp-Typography "Add CSS Hooks" settings page.
 
 == Changelog ==
+
+= 4.1.0 - xxx, 2017 =
+*
 
 = 4.0.2 - February 17, 2017 =
 * _Bugfix:_ Workaround for plugins that call `wptexturize` too early (wasn't actually working before).
