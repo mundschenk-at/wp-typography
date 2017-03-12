@@ -78,6 +78,10 @@ Please install the [wp-Typography Disable ACF Integration plugin](https://wordpr
 == Changelog ==
 
 = 4.1.0 - xxx, 2017 =
+* _Bugfix_: Incorrect replacement of initial hyphens fixed.
+* _Bugfix_: French spacing rules improved.
+* _Bugfix_: Proper dashes for German date intervals.
+* _Feature_: Hyphenator instance has been made cacheable.
 *
 
 = 4.0.2 - February 17, 2017 =
