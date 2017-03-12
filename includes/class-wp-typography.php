@@ -568,6 +568,7 @@ class WP_Typography {
 	 */
 	private function get_php_typo() {
 
+		// Initialize PHP_Typography instance.
 		if ( empty( $this->php_typo ) ) {
 			$transient      = 'typo_php_' . md5( wp_json_encode( $this->settings ) ) . '_' . $this->version_hash;
 			$this->php_typo = get_transient( $transient );
@@ -594,6 +595,25 @@ class WP_Typography {
 
 			// Settings won't be touched again, so cache the hash.
 			$this->cached_settings_hash = $this->php_typo->get_settings_hash( 32 );
+		}
+
+		// Also cache hyphenator (the pattern trie is expensive to build).
+		if ( $this->settings['typo_enable_hyphenation'] ) {
+			$transient  = 'typo_php_hyphenator_' . $this->version_hash;
+			$hyphenator = get_transient( $transient );
+
+			if ( empty( $hyphenator ) ) {
+				$hyphenator = $this->php_typo->get_hyphenator( $this->php_typo->get_settings() );
+
+				/** This filter is documented in class-wp-typography.php */
+				$duration = apply_filters( 'typo_php_typography_caching_duration', 0 );
+
+				// Try again next time.
+				$res = set_transient( $transient, $hyphenator, $duration );
+			}
+
+			// Let's use it!
+			$this->php_typo->set_hyphenator( $hyphenator );
 		}
 
 		return $this->php_typo;
