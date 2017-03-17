@@ -183,7 +183,7 @@ class WP_Typography {
 	 * @return \PHP_Typography\Settings
 	 */
 	public static function get_user_settings() {
-		return self::get_instance()->get_settings();
+		return self::get_instance()->get_php_typo()->get_settings();
 	}
 
 	/**
@@ -416,7 +416,7 @@ class WP_Typography {
 	 * @param \PHP_Typography\Settings $settings Optional. A settings object. Default null (which means the internal settings will be used).
 	 */
 	function process_title( $text, \PHP_Typography\Settings $settings = null ) {
-		return $this->process( $text, true, $settings );
+		return $this->process( $text, true, false, $settings );
 	}
 
 	/**
