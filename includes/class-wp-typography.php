@@ -571,7 +571,7 @@ class WP_Typography {
 		// Initialize PHP_Typography instance.
 		if ( empty( $this->php_typo ) ) {
 			$transient      = 'typo_php_' . md5( wp_json_encode( $this->settings ) ) . '_' . $this->version_hash;
-			$this->php_typo = get_transient( $transient );
+			$this->php_typo = $this->_maybe_fix_object( get_transient( $transient ) );
 
 			if ( empty( $this->php_typo ) ) {
 				// OK, we have to initialize the PHP_Typography instance manually.
@@ -600,7 +600,7 @@ class WP_Typography {
 		// Also cache hyphenator (the pattern trie is expensive to build).
 		if ( $this->settings['typo_enable_hyphenation'] ) {
 			$transient  = 'typo_php_hyphenator_' . $this->version_hash;
-			$hyphenator = get_transient( $transient );
+			$hyphenator = $this->_maybe_fix_object( get_transient( $transient ) );
 
 			if ( empty( $hyphenator ) ) {
 				$hyphenator = $this->php_typo->get_hyphenator( $this->php_typo->get_settings() );
@@ -864,5 +864,21 @@ class WP_Typography {
 			wp_enqueue_script( 'jquery-selection',                plugin_dir_url( $this->local_plugin_path ) . "js/jquery.selection$suffix.js", array( 'jquery' ),                     $this->version, true );
 			wp_enqueue_script( 'wp-typography-cleanup-clipboard', plugin_dir_url( $this->local_plugin_path ) . "js/clean_clipboard$suffix.js",  array( 'jquery', 'jquery-selection' ), $this->version, true );
 		}
+	}
+
+	/**
+	 * Fix object cache implementations sumetimes returning __PHP_Incomplete_Class.
+	 *
+	 * Based on http://stackoverflow.com/a/1173769/6646342.
+	 *
+	 * @param  object $object An object that should have been unserialized, but may be of __PHP_Incomplete_Class.
+	 * @return object         The object with its real class.
+	 */
+	private function _maybe_fix_object( $object ) {
+		if ( ! is_object( $object ) && 'object' === gettype( $object ) ) {
+			$object = unserialize( serialize( $object ) );
+		}
+
+		return $object;
 	}
 }
