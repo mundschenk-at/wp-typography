@@ -2,10 +2,10 @@
 /**
  *  This file is part of wp-Typography.
  *
- *	Copyright 2014-2017 Peter Putzer.
- *	Copyright 2009-2011 KINGdesk, LLC.
+ *  Copyright 2014-2017 Peter Putzer.
+ *  Copyright 2009-2011 KINGdesk, LLC.
  *
- *	This program is free software; you can redistribute it and/or
+ *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  as published by the Free Software Foundation; either version 2
  *  of the License, or (at your option) any later version.
@@ -48,11 +48,11 @@ class WP_Typography_Requirements {
 	 * @var array A Hash containing the version requirements for the plugin.
 	 */
 	private $install_requirements = array(
-		'PHP Version' 		=> '5.3.4',
-		'WordPress Version'	=> '4.4',
-		'Multibyte' 		=> true,
-		'UTF-8'				=> true,
-	 );
+		'PHP Version'       => '5.3.4',
+		'WordPress Version' => '4.4',
+		'Multibyte'         => true,
+		'UTF-8'             => true,
+	);
 
 	/**
 	 * The result of plugin_basename() for the main plugin file.
@@ -132,7 +132,7 @@ class WP_Typography_Requirements {
 			 function_exists( 'mb_detect_encoding' ) ) {
 			return true;
 		 } else {
-		 	return false;
+			 return false;
 		 }
 	}
 
@@ -164,7 +164,7 @@ class WP_Typography_Requirements {
 	function admin_notices_php_version_incompatible() {
 		/* translators: 1: plugin name 2: target PHP version number 3: actual PHP version number */
 		$this->display_error_notice( __( 'The activated plugin %1$s requires PHP %2$s or later. Your server is running PHP %3$s. Please deactivate this plugin, or upgrade your server\'s installation of PHP.', 'wp-typography' ),
-								  	 "<strong>{$this->plugin_name}</strong>",
+									 "<strong>{$this->plugin_name}</strong>",
 									 $this->install_requirements['PHP Version'],
 									 phpversion() );
 	}

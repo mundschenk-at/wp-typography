@@ -2,9 +2,9 @@
 /**
  *  This file is part of wp-Typography.
  *
- *	Copyright 2014-2017 Peter Putzer.
+ *  Copyright 2014-2017 Peter Putzer.
  *
- *	This program is free software; you can redistribute it and/or
+ *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  as published by the Free Software Foundation; either version 2
  *  of the License, or (at your option) any later version.
@@ -29,7 +29,7 @@
  *  Description: Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
  *  Author: Peter Putzer
  *  Author URI: https://code.mundschenk.at
- *  Version: 4.1.1
+ *  Version: 4.1.2
  *  License: GNU General Public License v2 or later
  *  License URI: https://www.gnu.org/licenses/gpl-2.0.html
  *  Text Domain: wp-typography
@@ -40,7 +40,7 @@
  *  Based on original work by KINGdesk, LLC.
  *
  *  Portions of this plugin are inspired by:
- *	   Christian Metts - href="http://code.google.com/p/typogrify/
+ *     Christian Metts - href="http://code.google.com/p/typogrify/
  *     Hamish Macpherson - http://www.hamstu.com/
  */
 
