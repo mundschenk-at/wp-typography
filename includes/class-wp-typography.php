@@ -71,6 +71,13 @@ class WP_Typography {
 	private $php_typo;
 
 	/**
+	 * The Hyphenator instance.
+	 *
+	 * @var Hyphenator $hyphenator
+	 */
+	private $hyphenator;
+
+	/**
 	 * The transients set by the plugin (to clear on update).
 	 *
 	 * @var array A hash with the transient keys set by the plugin stored as ( $key => true ).
@@ -598,22 +605,22 @@ class WP_Typography {
 		}
 
 		// Also cache hyphenator (the pattern trie is expensive to build).
-		if ( $this->settings['typo_enable_hyphenation'] ) {
+		if ( $this->settings['typo_enable_hyphenation'] && empty( $this->hyphenator ) ) {
 			$transient  = 'typo_php_hyphenator_' . $this->version_hash;
-			$hyphenator = $this->_maybe_fix_object( get_transient( $transient ) );
+			$this->hyphenator = $this->_maybe_fix_object( get_transient( $transient ) );
 
-			if ( empty( $hyphenator ) ) {
-				$hyphenator = $this->php_typo->get_hyphenator( $this->php_typo->get_settings() );
+			if ( empty( $this->hyphenator ) ) {
+				$this->hyphenator = $this->php_typo->get_hyphenator( $this->php_typo->get_settings() );
 
 				/** This filter is documented in class-wp-typography.php */
 				$duration = apply_filters( 'typo_php_typography_caching_duration', 0 );
 
 				// Try again next time.
-				$res = set_transient( $transient, $hyphenator, $duration );
+				$res = set_transient( $transient, $this->hyphenator, $duration );
 			}
 
 			// Let's use it!
-			$this->php_typo->set_hyphenator( $hyphenator );
+			$this->php_typo->set_hyphenator( $this->hyphenator );
 		}
 
 		return $this->php_typo;
