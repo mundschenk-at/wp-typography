@@ -82,7 +82,7 @@ class WP_Typography {
 	 *
 	 * @var array A hash with the transient keys set by the plugin stored as ( $key => true ).
 	 */
-	private $transients = array();
+	private $transients = [];
 
 	/**
 	 * The cache keys set by the plugin (to clear on update).
@@ -91,7 +91,7 @@ class WP_Typography {
 	 *
 	 * @var array A hash with the cache keys set by the plugin stored as ( $key => true ).
 	 */
-	private $cache_keys = array();
+	private $cache_keys = [];
 
 	/**
 	 * The PHP_Typography configuration is not changed after initialization, so the settings hash can be cached.
@@ -139,8 +139,8 @@ class WP_Typography {
 		$this->version           = $version;
 		$this->version_hash      = $this->hash_version_string( $version );
 		$this->local_plugin_path = $basename;
-		$this->transients        = get_option( 'typo_transient_keys', array() );
-		$this->cache_key         = get_option( 'typo_cache_keys', array() );
+		$this->transients        = get_option( 'typo_transient_keys', [] );
+		$this->cache_key         = get_option( 'typo_cache_keys', [] );
 
 		// Initialize admin interface handler.
 		$this->admin             = new WP_Typography_Admin( $basename, $this );
@@ -294,10 +294,10 @@ class WP_Typography {
 	 */
 	function run() {
 		// Ensure that our translations are loaded.
-		add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ) );
+		add_action( 'plugins_loaded', [ $this, 'plugins_loaded' ] );
 
 		// Load settings.
-		add_action( 'init', array( $this, 'init' ) );
+		add_action( 'init', [ $this, 'init' ] );
 
 		// Also run the backend UI.
 		$this->admin->run();
@@ -353,39 +353,39 @@ class WP_Typography {
 			 * @param string $filter_group Which filters to disable. Possible values 'content', 'heading', 'title', 'acf'.
 			 */
 			if ( ! apply_filters( 'typo_disable_filtering', false, 'content' ) ) {
-				add_filter( 'comment_author',    array( $this, 'process' ), $priority );
-				add_filter( 'comment_text',      array( $this, 'process' ), $priority );
-				add_filter( 'comment_text',      array( $this, 'process' ), $priority );
-				add_filter( 'the_content',       array( $this, 'process' ), $priority );
-				add_filter( 'term_name',         array( $this, 'process' ), $priority );
-				add_filter( 'term_description',  array( $this, 'process' ), $priority );
-				add_filter( 'link_name',         array( $this, 'process' ), $priority );
-				add_filter( 'the_excerpt',       array( $this, 'process' ), $priority );
-				add_filter( 'the_excerpt_embed', array( $this, 'process' ), $priority );
-				add_filter( 'widget_text',       array( $this, 'process' ), $priority );
+				add_filter( 'comment_author',    [ $this, 'process' ], $priority );
+				add_filter( 'comment_text',      [ $this, 'process' ], $priority );
+				add_filter( 'comment_text',      [ $this, 'process' ], $priority );
+				add_filter( 'the_content',       [ $this, 'process' ], $priority );
+				add_filter( 'term_name',         [ $this, 'process' ], $priority );
+				add_filter( 'term_description',  [ $this, 'process' ], $priority );
+				add_filter( 'link_name',         [ $this, 'process' ], $priority );
+				add_filter( 'the_excerpt',       [ $this, 'process' ], $priority );
+				add_filter( 'the_excerpt_embed', [ $this, 'process' ], $priority );
+				add_filter( 'widget_text',       [ $this, 'process' ], $priority );
 			}
 
 			// Add filters for headings.
 			/** This filter is documented in class-wp-typography.php */
 			if ( ! apply_filters( 'typo_disable_filtering', false, 'heading' ) ) {
-				add_filter( 'the_title',            array( $this, 'process_title' ), $priority );
-				add_filter( 'single_post_title',    array( $this, 'process_title' ), $priority );
-				add_filter( 'single_cat_title',     array( $this, 'process_title' ), $priority );
-				add_filter( 'single_tag_title',     array( $this, 'process_title' ), $priority );
-				add_filter( 'single_month_title',   array( $this, 'process_title' ), $priority );
-				add_filter( 'single_month_title',   array( $this, 'process_title' ), $priority );
-				add_filter( 'nav_menu_attr_title',  array( $this, 'process_title' ), $priority );
-				add_filter( 'nav_menu_description', array( $this, 'process_title' ), $priority );
-				add_filter( 'widget_title',         array( $this, 'process_title' ), $priority );
-				add_filter( 'list_cats',            array( $this, 'process_title' ), $priority );
+				add_filter( 'the_title',            [ $this, 'process_title' ], $priority );
+				add_filter( 'single_post_title',    [ $this, 'process_title' ], $priority );
+				add_filter( 'single_cat_title',     [ $this, 'process_title' ], $priority );
+				add_filter( 'single_tag_title',     [ $this, 'process_title' ], $priority );
+				add_filter( 'single_month_title',   [ $this, 'process_title' ], $priority );
+				add_filter( 'single_month_title',   [ $this, 'process_title' ], $priority );
+				add_filter( 'nav_menu_attr_title',  [ $this, 'process_title' ], $priority );
+				add_filter( 'nav_menu_description', [ $this, 'process_title' ], $priority );
+				add_filter( 'widget_title',         [ $this, 'process_title' ], $priority );
+				add_filter( 'list_cats',            [ $this, 'process_title' ], $priority );
 			}
 
 			// Extra care needs to be taken with the <title> tag.
 			/** This filter is documented in class-wp-typography.php */
 			if ( ! apply_filters( 'typo_disable_filtering', false, 'title' ) ) {
-				add_filter( 'wp_title',             array( $this, 'process_feed' ),        $priority ); // WP < 4.4.
-				add_filter( 'document_title_parts', array( $this, 'process_title_parts' ), $priority );
-				add_filter( 'wp_title_parts',       array( $this, 'process_title_parts' ), $priority ); // WP < 4.4.
+				add_filter( 'wp_title',             [ $this, 'process_feed' ],        $priority ); // WP < 4.4.
+				add_filter( 'document_title_parts', [ $this, 'process_title_parts' ], $priority );
+				add_filter( 'wp_title_parts',       [ $this, 'process_title_parts' ], $priority ); // WP < 4.4.
 			}
 
 			// 3rd-party plugins
@@ -393,22 +393,22 @@ class WP_Typography {
 			/** This filter is documented in class-wp-typography.php */
 			if ( class_exists( 'acf' ) && function_exists( 'acf_get_setting' ) && ! apply_filters( 'typo_disable_filtering', false, 'acf' ) ) {
 				if ( 5 === intval( acf_get_setting( 'version' ) ) ) { // ACF Pro (version 5).
-					add_filter( 'acf/format_value/type=wysiwyg',  array( $this, 'process' ),       $priority );
-					add_filter( 'acf/format_value/type=textarea', array( $this, 'process' ),       $priority );
-					add_filter( 'acf/format_value/type=text',     array( $this, 'process_title' ), $priority );
+					add_filter( 'acf/format_value/type=wysiwyg',  [ $this, 'process' ],       $priority );
+					add_filter( 'acf/format_value/type=textarea', [ $this, 'process' ],       $priority );
+					add_filter( 'acf/format_value/type=text',     [ $this, 'process_title' ], $priority );
 				} elseif ( 4 === intval( acf_get_setting( 'version' ) ) ) { // ACF (version 4).
-					add_filter( 'acf/format_value_for_api/type=wysiwyg',  array( $this, 'process' ),       $priority );
-					add_filter( 'acf/format_value_for_api/type=textarea', array( $this, 'process' ),       $priority );
-					add_filter( 'acf/format_value_for_api/type=text',     array( $this, 'process_title' ), $priority );
+					add_filter( 'acf/format_value_for_api/type=wysiwyg',  [ $this, 'process' ],       $priority );
+					add_filter( 'acf/format_value_for_api/type=textarea', [ $this, 'process' ],       $priority );
+					add_filter( 'acf/format_value_for_api/type=text',     [ $this, 'process_title' ], $priority );
 				}
 			}
 		}
 
 		// Add CSS Hook styling.
-		add_action( 'wp_head', array( $this, 'add_wp_head' ) );
+		add_action( 'wp_head', [ $this, 'add_wp_head' ] );
 
 		// Optionally enable clipboard clean-up.
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 	}
 
 
@@ -715,7 +715,7 @@ class WP_Typography {
 		$this->php_typo->set_ignore_parser_errors( $this->settings['typo_ignore_parser_errors'] || apply_filters( 'typo_ignore_parser_errors', false ) );
 
 		// Make parser errors filterable on an individual level.
-		$this->php_typo->set_parser_errors_handler( array( $this, 'parser_errors_handler' ) );
+		$this->php_typo->set_parser_errors_handler( [ $this, 'parser_errors_handler' ] );
 	}
 
 	/**
@@ -761,8 +761,8 @@ class WP_Typography {
 			wp_cache_delete( $key, 'wp-typography' );
 		}
 
-		$this->transients = array();
-		$this->cache_keys = array();
+		$this->transients = [];
+		$this->cache_keys = [];
 		update_option( 'typo_transient_keys', $this->transients );
 		update_option( 'typo_cache_keys', $this->cache_keys );
 		update_option( 'typo_clear_cache', false );
@@ -868,8 +868,8 @@ class WP_Typography {
 			// Set up file suffix.
 			$suffix = SCRIPT_DEBUG ? '' : '.min';
 
-			wp_enqueue_script( 'jquery-selection',                plugin_dir_url( $this->local_plugin_path ) . "js/jquery.selection$suffix.js", array( 'jquery' ),                     $this->version, true );
-			wp_enqueue_script( 'wp-typography-cleanup-clipboard', plugin_dir_url( $this->local_plugin_path ) . "js/clean_clipboard$suffix.js",  array( 'jquery', 'jquery-selection' ), $this->version, true );
+			wp_enqueue_script( 'jquery-selection',                plugin_dir_url( $this->local_plugin_path ) . "js/jquery.selection$suffix.js", [ 'jquery' ],                     $this->version, true );
+			wp_enqueue_script( 'wp-typography-cleanup-clipboard', plugin_dir_url( $this->local_plugin_path ) . "js/clean_clipboard$suffix.js",  [ 'jquery', 'jquery-selection' ], $this->version, true );
 		}
 	}
 
