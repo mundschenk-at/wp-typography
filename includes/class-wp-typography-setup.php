@@ -69,8 +69,8 @@ class WP_Typography_Setup {
 	 * @param string $plugin_file The full path and filename to the main plugin file.
 	 */
 	public function register( $plugin_file ) {
-		register_activation_hook( $plugin_file, array( $this, 'activate' ) );
-		register_deactivation_hook( $plugin_file, array( $this, 'deactivate' ) );
+		register_activation_hook( $plugin_file, [ $this, 'activate' ] );
+		register_deactivation_hook( $plugin_file, [ $this, 'deactivate' ] );
 		register_uninstall_hook( $plugin_file, __CLASS__ . '::uninstall' );
 	}
 
@@ -179,6 +179,6 @@ class WP_Typography_Setup {
 			delete_transient( $transient );
 		}
 
-		update_option( 'typo_transient_keys', array() );
+		update_option( 'typo_transient_keys', [] );
 	}
 }
