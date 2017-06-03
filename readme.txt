@@ -79,6 +79,11 @@ Please install the [wp-Typography Disable ACF Integration plugin](https://wordpr
 
 = 4.2.0 - unreleased =
 * _Feature_: Core API refactored and minimum PHP version increased to 5.4.0.
+* _Feature_: Updated hyphenation patterns:
+  - German
+  - German (Traditional)
+  - Latin
+  - Latin (Liturgical)
 
 = 4.1.2 - May 26, 2017 =
 * _Bugfix_: Hyphenation patterns at the end of word were accidentally ignored.
