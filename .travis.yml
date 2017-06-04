@@ -32,11 +32,6 @@ matrix:
           env: SNIFF=1
         # aliased to a recent 7.1 version
         - php: '7.1'
-        # aliased to a recent hhvm version
-        - php: 'hhvm'
-
-    allow_failures:
-        - php: 'hhvm'
 
 # Use this to prepare the system to install prerequisites or dependencies.
 # e.g. sudo apt-get update.
