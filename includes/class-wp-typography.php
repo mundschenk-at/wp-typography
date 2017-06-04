@@ -599,8 +599,19 @@ class WP_Typography {
 				 */
 				$duration = apply_filters( 'typo_php_typography_caching_duration', 0 );
 
+				/**
+				 * Filters whether the PHP_Typography engine state should be cached.
+				 *
+				 * @since 4.2.0
+				 *
+				 * @param bool $enabled Defaults to true.
+				 */
+				$caching_enabled = apply_filters( 'typo_php_typography_caching_enabled', true );
+
 				// Try again next time.
-				$this->set_transient( $transient, $this->php_typo, $duration );
+				if ( $caching_enabled ) {
+					$this->set_transient( $transient, $this->php_typo, $duration );
+				}
 			}
 
 			// Settings won't be touched again, so cache the hash.
@@ -618,8 +629,13 @@ class WP_Typography {
 				/** This filter is documented in class-wp-typography.php */
 				$duration = apply_filters( 'typo_php_typography_caching_duration', 0 );
 
+				/** This filter is documented in class-wp-typography.php */
+				$caching_enabled = apply_filters( 'typo_php_typography_caching_enabled', true );
+
 				// Try again next time.
-				$res = $this->set_transient( $transient, $this->hyphenator, $duration );
+				if ( $caching_enabled ) {
+					$this->set_transient( $transient, $this->hyphenator, $duration );
+				}
 			}
 
 			// Let's use it!
