@@ -154,6 +154,7 @@ class WP_Typography {
 	 *
 	 * @param string $version  The full plugin version string (e.g. "3.0.0-beta.2").
 	 * @param string $basename Optional. The result of plugin_basename() for the main plugin file. Default 'wp-typography/wp-typography.php'.
+	 *
 	 * @return WP_Typography
 	 */
 	public static function _get_instance( $version, $basename = 'wp-typography/wp-typography.php' ) {
@@ -618,7 +619,7 @@ class WP_Typography {
 				$duration = apply_filters( 'typo_php_typography_caching_duration', 0 );
 
 				// Try again next time.
-				$res = set_transient( $transient, $this->hyphenator, $duration );
+				$res = $this->set_transient( $transient, $this->hyphenator, $duration );
 			}
 
 			// Let's use it!
@@ -881,6 +882,7 @@ class WP_Typography {
 	 * Based on http://stackoverflow.com/a/1173769/6646342.
 	 *
 	 * @param  object $object An object that should have been unserialized, but may be of __PHP_Incomplete_Class.
+	 *
 	 * @return object         The object with its real class.
 	 */
 	private function _maybe_fix_object( $object ) {
