@@ -455,10 +455,6 @@ class WP_Typography {
 	 * @return array
 	 */
 	function process_title_parts( $title_parts, \PHP_Typography\Settings $settings = null ) {
-		/**
-		 * We need a utility function that's not autoloaded.
-		 */
-		require_once dirname( __DIR__ ) . '/php-typography/php-typography-functions.php'; // @codeCoverageIgnore.
 
 		foreach ( $title_parts as $index => $part ) {
 			// Remove "&shy;" and "&#8203;" after processing title part.
