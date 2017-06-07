@@ -54,7 +54,8 @@
 			<span class="aux-buttons"><?php
 				submit_button( __( 'Restore Defaults', 'wp-typography' ), 'delete', 'typo_restore_defaults', false, [
 					'tabindex' => 2,
-				] );
+				] ); ?>
+				<?php // The whitespace is necessary.
 				submit_button( __( 'Clear Cache', 'wp-typography' ), 'secondary', 'typo_clear_cache', false, [
 					'tabindex' => 3,
 				] ); ?>
