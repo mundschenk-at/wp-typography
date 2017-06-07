@@ -690,6 +690,7 @@ class WP_Typography {
 		$this->php_typo->set_dash_spacing( $this->settings['typo_dash_spacing'] );
 		$this->php_typo->set_fraction_spacing( $this->settings['typo_fraction_spacing'] );
 		$this->php_typo->set_unit_spacing( $this->settings['typo_unit_spacing'] );
+		$this->php_typo->set_numbered_abbreviation_spacing( $this->settings['typo_numbered_abbreviations_spacing'] );
 		$this->php_typo->set_french_punctuation_spacing( $this->settings['typo_french_punctuation_spacing'] );
 		$this->php_typo->set_units( $this->settings['typo_units'] );
 		$this->php_typo->set_space_collapse( $this->settings['typo_space_collapse'] );

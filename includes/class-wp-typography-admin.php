@@ -720,6 +720,17 @@ class WP_Typography_Admin {
 				'input_type'    => 'checkbox',
 				'default'       => 0,
 			],
+			'typo_numbered_abbreviations_spacing' => [
+				'tab_id'        => 'space-control',
+				'short'         => __( 'Numbered abbreviations', 'wp-typography' ),
+				/* translators: 1: checkbox HTML */
+				'label'         => __( '%1$s Keep abbreviations containing numbers together.', 'wp-typography' ),
+				'help_text'     => __( 'Examples: <code>ISO 9001</code> or <code>E 100</code>.', 'wp-typography' ),
+				'help_inline'   => true,
+				'control'       => 'input',
+				'input_type'    => 'checkbox',
+				'default'       => 0,
+			],
 			'typo_unit_spacing' => [
 				'tab_id'        => 'space-control',
 				'short'         => __( 'Values &amp; Units', 'wp-typography' ),
