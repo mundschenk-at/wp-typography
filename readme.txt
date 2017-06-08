@@ -3,7 +3,7 @@ Contributors: pputzer
 Tags: typography, hyphenation, smart quotes, quote marks, formatting, typogrify, quotes, prettify, widows, orphans, small caps, diacritics
 Requires at least: 4.4
 Tested up to: 4.8
-Stable tag: 4.1.2
+Stable tag: 4.2.0
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
@@ -77,7 +77,9 @@ Please install the [wp-Typography Disable ACF Integration plugin](https://wordpr
 
 == Changelog ==
 
-= 4.2.0 - unreleased =
+= 4.2.0 - June 8, 2017 =
+* _Feature_: Prevent line-breaks in numbered abbreviations (e.g. `ISO 9001`).
+* _Feature_: Added new hook `typo_php_typography_caching_enabled` to disable object caching for very resource-starved environments.
 * _Change_: Core API refactored and minimum PHP version increased to 5.4.0.
 * _Change_: Updated hyphenation patterns:
   - German
