@@ -1,0 +1,455 @@
+= 4.2.1 - June 9, 2017 =
+*  _Bugfix_: Prevent crash on PHP 5.x when building the hyphenation trie.
+
+= 4.2.0 - June 8, 2017 =
+*   _Feature_: Prevent line-breaks in numbered abbreviations (e.g. `ISO 9001`).
+*   _Feature_: Added new hook `typo_php_typography_caching_enabled` to disable object caching for very resource-starved environments.
+*   _Change_: Core API refactored and minimum PHP version increased to 5.4.0.
+*   _Change_: Updated hyphenation patterns:
+    -   German
+    -   German (Traditional)
+    -   Latin
+    -   Latin (Liturgical)
+*   _Change:_ Updated list of valid top-level domains.
+
+= 4.1.2 - May 26, 2017 =
+*   _Bugfix_: Hyphenation patterns at the end of word were accidentally ignored.
+*   _Bugfix_: Diacritics replacement does not count soft hyphens as word boundaries anymore.
+
+= 4.1.1 - March 19, 2017 =
+*   _Bugfix_: Performance issue accidentally introduced in 4.1.0 fixed.
+
+= 4.1.0 - March 18, 2017 =
+*   _Feature_: Hyphenator instance has been made cacheable.
+*   _Feature_: Workaround for broken GoDaddy APC object cache.
+*   _Bugfix_: Incorrect replacement of initial hyphens fixed.
+*   _Bugfix_: French spacing rules improved.
+*   _Bugfix_: Proper dashes for German date intervals.
+*   _Bugfix_: `WP_Typography::get_user_settings` and `WP_Typography::process_title` now work correctly (props @roopemerikukka).
+
+= 4.0.2 - February 17, 2017 =
+*   _Bugfix:_ Workaround for plugins that call `wptexturize` too early (wasn't actually working before).
+
+= 4.0.1 - January 7, 2017 =
+*   _Bugfix:_ Workaround for PHP 5.3 issue in `dewidow` callback.
+
+= 4.0.0 - January 6, 2017 =
+*   _Feature:_ API improvements for developers
+    -   New Settings API added.
+    -   Easier access via new static methods `WP_Typography::filter*`.
+    -   Updated [API documentation](https://code.mundschenk.at/wp-typography/api/).
+*   _Feature:_ Re-vamped settings page
+    -   Uses tabs for easier navigation.
+    -   Follows WordPress styleguide more closely.
+    -   Includes online help.
+*   _Feature:_ New hyphenation languages
+    -   Hindi,
+    -   Marathi,
+    -   Occitan,
+    -   Oriya,
+    -   Panjabi,
+    -   Tamil,
+    -   Telugu.
+*   _Change:_ Uses minified JavaScript.
+*   _Change:_ Updated list of valid top-level domains.
+*   _Change:_ "Ignore errors in parsed HTML" is the default again (as it was pre 3.5.2) and can be switched on and off via the settings page. Parsing errors can be filtered via the new hook `typo_handle_parser_errors` (`typo_ignore_parser_errors` still works as well, of course).
+
+= 3.6.0 - December 26, 2016 =
+*   _Feature:_ Added hook `typo_ignore_parser_errors` to re-enable "parser guessing" as it was before version 3.5.2.
+*   _Feature:_ Added new hook `typo_disable_filtering` to selectively disable filter groups.
+
+= 3.5.3 - December 17, 2016 =
+*   _Bugfix:_ Remove ambiguous entries from German diacritics replacement file.
+
+= 3.5.2 - December 14, 2016 =
+*   _Change:_ Return unmodified HTML if a processed text fragment is not well-formed. This improves compatibility with page builder plugins (and themes) that do weird things with the `the_content` filter.
+
+= 3.5.1 - November 05, 2016 =
+*   _Bugfix:_ Quotes ending in numbers were sometimes interpreted as primes.
+
+= 3.5.0 - October 21, 2016 =
+*   _Feature:_ Added "Latin (Liturgical)" as a new hyphenation language.
+*   _Feature:_ Limited support for ACF Pro.
+*   _Change:_ Better compatibility with improperly written plugins (ensuring that `wptexturize` is always off).
+*   _Change:_ Only use the WP Object Cache for caching, not transients, to reduce database usage and prevent clogging in some configurations.
+*   _Change:_ Updated list of valid top-level domains.
+*   _Change:_ Updated HTML5 parser (html5-php) to 2.2.2.
+*   _Bugfix:_ Custom hyphenations with more than one hyphenation point were not working properly.
+*   _Bugfix:_ The `min_after` hyphenation setting was off by one.
+*   _Bugfix:_ An IE11 bug on Windows 7 was previously triggered when the Safari workaround is enabled.
+*   _Bugfix:_ Language names were not translated in the settings screen.
+*   _Bugfix:_ Fractions did not play nice with prime symbols.
+
+= 3.4.0 - July 10, 2016 =
+*   Store hyphenation patterns as JSON files instead of PHP to work around a GlotPress bug that prevents timely language pack updates.
+*   Out-of-the box support for Advanced Custom Fields (specifically for fields of the types `text`, `textarea` and `wysiwyg`).
+*   Updated list of valid top-level domains.
+*   Tested as compatible with WPML.
+
+= 3.3.1 - June 27, 2016 =
+*   The JavaScript files for `Remove hyphenation when copying to clipboard` were missing from the build.
+*   Fixed a typo in the settings page.
+
+= 3.3.0 - June 27, 2016 =
+*   Updated HTML parser (html5-php) to 2.2.1.
+*   Updated list of valid top-level domains.
+*   Removed IE6 references and workarounds. He's dead, Jim.
+*   Prevent references to US non-profit organizations like `501(c)(3)` being replaced with the copyright symbol (props @randybruder).
+*   Added optional clean up of text copied to clipboard to prevent stray hyphens from showing on paste.
+*   Added CSS classes for smart fractions ("numerator", "denominator") and ordinal suffixes ("ordinal").
+*   Fixed « and » spacing when French punctuation style is enabled.
+*   Fixed `<title>` tag handling (no more `&shy;` and `<span>`tags, props @mpcube).
+*   [Preliminary API documentation](https://code.mundschenk.at/wp-typography/api/) has been added to the plugin website.
+
+= 3.2.7 - April 14, 2016 =
+*   "Duplicate ID" warnings should be gone now, regardless of the installed libXML version.
+
+= 3.2.6 - April 05, 2016 =
+*   Fixed autoloading issue on frontpage. Sorry!
+
+= 3.2.5 - April 05, 2016 =
+*   Properly handle `<title>` in WordPress 4.4 or higher (props @TimThemann).
+*   Fixed missing parameter that prevented the `Hyphenate headings` setting from working correctly.
+
+= 3.2.4 - April 04, 2016 =
+*   Fixed filtering of `<title>` tag (do only smart character replacement).
+
+= 3.2.3 - March 28, 2016 =
+*   Made Safari rendering bug workaround less aggressive by not enabling discretionary ligatures.
+
+= 3.2.2 - March 22, 2016 =
+*   Fixed Safari rendering bug workaround on Safari 9.1 (Mac OS X 10.11.4).
+
+= 3.2.1 - March 20, 2016 =
+*   Accidentally, the filter for `the_content` was dropped in the version 3.2.0.
+
+= 3.2.0 - March 20, 2016 =
+*   Added support for the French punctuation style (thin non-breakable space before `;:?!`).
+*   Added proper hyphenation of hyphenated compound words (e.g. `editor-in-chief`).
+*   Added partial support for styling hanging punctuation.
+*   Added adjustable limit for the number of cached text fragments.
+*   Changed behavior of caching setting: it needs to be explicitely enabled. Having it on by default caused too many problems on shared hosting environments.
+*   Started adding filters for programmatic adjustments to the typographic enhancements.
+*   Made main plugin class a singleton to ensure easier access for theme developers.
+*   Added the wp-Typography filter to additional WordPress hooks and completely disabled `wptexturize` (if Intelligent Character Replacement is enabled).
+
+= 3.1.3 - January 13, 2016 =
+*   Pre­vent in­cor­rect re­place­ment of straight quotes with primes (e.g. `"number 6"` is not re­placed with `“num­ber 6″` but with `“num­ber 6”`).
+*   Fixed a bug that pre­vented header tags (`<h1>` … `<h6>`) that were set as “tags to ig­nore” from ac­tu­ally be­ing left alone by the plu­gin.
+
+= 3.1.2 - January 7, 2016 =
+*   Do not create (most) transients if Disable Caching is set. This prevents unchecked database growth on large installations.
+
+= 3.1.1 - January 5, 2016 =
+*   Fixed fatal error when running on PHP 5.3 (use of $this in anonymous function).
+
+= 3.1.0 - January 3, 2016 =
+*   Minimum PHP version updated to 5.3.4 (from 5.3.0) to ensure consistent handling of UTF-8 regular expressions.
+*   Added workaround for insane NextGEN Gallery filter priority (props @Itsacon).
+*   Added "Clear Cache" button.
+*   Changed internal option names to conform to WordPress standards (no camel case).
+*   Performance improvements through lazy initialization and caching of the PHP_Typography object state.
+*   Fixed diacritics replacement for UTF-8 strings
+*   Refactored plugin code for easier maintenance.
+*   Date-like values (e.g. "during the fiscal year 2015/2016") are not converted to smart fractions anymore.
+*   Added ability to switch between dash styles: both traditional US (em dash without spacing) and international usage (en dash with spaces) can be selected.
+*   Various white-space fixes related to dash styling.
+*   Language names in the Settings panel are sorted correctly for all locales.
+*   Fixed a bug where block-level tags where not detected corrected.
+*   Added workaround for duplicate ID warnings generated by some versions of libXML.
+*   Updated all hyphenation files and added the following new languages:
+    -   Afrikaans,
+    -   Armenian,
+    -   Dutch,
+    -   Georgian,
+    -   German (Traditional),
+    -   Latin (Classical),
+    -   Latvian,
+    -   Thai, and
+    -   Turkmen.
+
+= 3.0.4 - December 12, 2015 =
+*   Prevent accidentally invalid XPath queries from being fatal on the frontend.
+*   Replaced old FAQ links in the README.
+
+= 3.0.3 - December 8, 2015 =
+*   Use WordPress languages packs for translations.
+*   Fixed a bug in the XPath expression for ignoring tags by CSS ID.
+
+= 3.0.2 - December 3, 2015 =
+*   A typo prevented custom quote styles from working.
+
+= 3.0.1 - December 3, 2015 =
+*   Prevent drop-down box settings from being accidentally overwritten (props Stefan Engenhorst).
+*   Earlier check for minimum PHP version to prevent a parsing error on PHP 5.2 (props @Javi).
+
+= 3.0.0 - December 2, 2015 =
+*   DOM-based HTML parsing with HTML5-PHP
+*   Translation-ready & German translation added
+*   Added German as a diacritics language (mainly for French words).
+*   Various optimizations (hyphenation is still slow, though)
+*   Fixed custom hyphenation patterns.
+*   Fixed some calls to deprecated functions.
+*   Adopted semantic versioning for the project.
+*   Added workaround for Safari font bug.
+*   Added transient caching to speed things up a bit.
+
+= 2.0.4 - January 4, 2011 =
+
+*   An errant "settings" link was being injected into the "Plugins" page. It has been removed.
+
+= 2.0.3 - January 3, 2011 =
+
+*   Removed "text-rendering: optimizeLegibility;" from the plugin's default CSS rules as a bug in Chrome with this statement causes all soft-hyphens to be displayed throughout the text. This will only correct the settings in new downloads. So, if you have an older version installed, remove the "* {text-rendering: optimizeLegibility;}" statement from the "Styling for CSS Hooks" textarea in this plugin's options page (the very last field).
+
+= 2.0.2 - July 16, 2010 =
+
+*   Rolled back application of wp-Typography's title filter to bloginfo('name') and bloginfo('description') to resolve conflicts introduced with RSS feeds
+
+= 2.0.1 - July 14, 2010 =
+
+*   Applied wp-Typography's title filter to bloginfo('name') and bloginfo('description')
+*   Prevented processing of wp_title() and wp_post_title() so that HTML tags do not appear in page title
+
+= 2.0 - July 7, 2010 =
+
+*   Simplified acronym identification to not include some obscure uppercase characters. This will reduce support for some non-English languages, but it resolves an issue of catastrophic failure (where the entire page fails to load) with certain server configurations.
+*   Security Fix: Prevented comments with exceptionally long strings from causing fatal PHP error.
+*   Added `*{text-rendering: optimizeLegibility;}` to default CSS rules to enable kerning and ligatures in supported browsers. Note this will not appear for upgrades, only new installs
+*   Upgraded to [PHP Typography 2.0](http://kingdesk.com/projects/php-typography/)
+
+= 1.22 - March 4, 2010 =
+
+*   Fixed bug that caused occasional hyphenation errors for non-English languages.
+*   Upgraded to [PHP Typography 1.22](http://kingdesk.com/projects/php-typography/)
+
+= 1.21.1 - January 22, 2010 =
+
+*   Deepened font stacks on admin page – some special characters were not displaying on certain system configurations
+
+= 1.21 - December 31, 2009 =
+
+*   Fixed bug in custom diacritic handling
+*   Upgraded to [PHP Typography 1.21](http://kingdesk.com/projects/php-typography/)
+
+= 1.20 - December 20, 2009 =
+
+*   Verified compatible with WordPress 2.9
+*   Resolved uninitialized variable
+*   Added HTML5 elements to parsing algorithm for greater contextual awareness
+*   Upgraded to [PHP Typography 1.20](http://kingdesk.com/projects/php-typography/)
+
+= 1.19 - December 1, 2009 =
+
+*   Fixed bug where dewidow functionality would add broken no-break spaces to the end of texts, and smart_exponents would drop some of the resulting text.
+*   Declared encoding in all instances of mb_substr to avoid conflicts
+*   Corrected a few instances of undeclared variables.
+*   Upgraded to [PHP Typography 1.19](http://kingdesk.com/projects/php-typography/)
+
+= 1.18 - November 10, 2009 =
+
+*   Added Norwegian Hyphenation Patterns
+*   Upgraded to [PHP Typography 1.18](http://kingdesk.com/projects/php-typography/)
+
+= 1.17 - November 9, 2009 =
+
+*   Fixed bug in diacritic handling.
+*   Upgraded to [PHP Typography 1.17](http://kingdesk.com/projects/php-typography/)
+
+= 1.16 - November 4, 2009 =
+
+*   Added automated diacritic replacements (i.e. "creme brulee" becomes "crème brûlée").
+*   Improved smart quotes and smart dashes with sensitivity to adjacent diacritic characters.
+*   Upgraded to [PHP Typography 1.16](http://kingdesk.com/projects/php-typography/)
+
+= 1.15 - October 21, 2009 =
+
+*   Replaced quotation language styles with individual selection of primary and secondary quotation styles.  NOTE: this change requires reselection of quotation styles for anyone using non-English preferences.
+*   Tested for WordPress version 2.8.5 compatibility.
+*   Upgraded to [PHP Typography 1.15](http://kingdesk.com/projects/php-typography/)
+
+= 1.14 - September 8, 2009 =
+
+*   Improved space collapse functionality.
+*   Corrected bug in smart quote and single character word handling where the "0" character may be improperly duplicated
+*   Upgraded to [PHP Typography 1.14](http://kingdesk.com/projects/php-typography/)
+
+= 1.13.1 - August 31, 2009 =
+
+*   Clarified requirement for PHP `mbstring` extension, and refined a test upon installation of the plugin to catch incapable server environments.
+*   Corrected default hyphenation language pattern to `English (United States)`.
+
+= 1.13 - August 31, 2009 =
+
+*   Added option to collapse adjacent space characters to a single character
+*   Upgraded to [PHP Typography 1.13](http://kingdesk.com/projects/php-typography/)
+
+= 1.12 - August 17, 2009 =
+
+*   Corrected multibyte character handling error that could cause some text to not display properly
+*   Upgraded to [PHP Typography 1.12](http://kingdesk.com/projects/php-typography/)
+
+= 1.11 - August 14, 2009 =
+
+*   Added language specific quote handling (for single quotes, not just double) for English, German and French quotation styles
+*   Upgraded to [PHP Typography 1.11](http://kingdesk.com/projects/php-typography/)
+
+= 1.10.1 - August 14, 2009 =
+
+*   Left a setting in test mode.  That is corrected.
+
+= 1.10 - August 14, 2009 =
+
+*   Fixed typo in default CSS styles
+*   Added language specific quote handling for English, German and French quotation styles
+*   Corrected multibyte character handling error that could cause some text to not display properly
+*   Expanded the multibyte character set recognized as valid word characters for improved hyphenation
+*   Upgraded to [PHP Typography 1.10](http://kingdesk.com/projects/php-typography/)
+
+= 1.9 - August 12, 2009 =
+
+*   Added option to force single character words to wrap to new line (unless they are widows).
+*   Upgraded to [PHP Typography 1.9](http://kingdesk.com/projects/php-typography/)
+
+= 1.8.1 - August 7, 2009 =
+
+*   Added optional automatic inclusion of styling of CSS hooks
+*   Fixed "Restore Defaults" conflict with other plugins
+
+= 1.8 - August 4, 2009 =
+
+*   Corrected math and dash handling of dates
+*   Styling of uppercase words now plays nicely with soft-hyphens
+*   Upgraded to [PHP Typography 1.8](http://kingdesk.com/projects/php-typography/)
+
+= 1.7.2 - July 29, 2009 =
+
+*   Now WordPress MU compatible
+*   Updated Options Page to new `register_setting()` and `settings_fields()` API
+
+= 1.7.1 - July 29, 2009 =
+
+*   Updated thin space handling to be off by default, and updated the description in the admin panel to warn of rare mishandling in Safari and Chrome.
+
+= 1.7 - July 29, 2009 =
+
+*   Reformatted language files for increased stability and to bypass a false positive from Avira's free antivirus software
+*   Upgraded to [PHP Typography 1.7](http://kingdesk.com/projects/php-typography/)
+
+= 1.6 - July 28, 2009 =
+
+*   Efficiency Optimizations ( approximately 25% speed increase )
+*   Upgraded to [PHP Typography 1.6](http://kingdesk.com/projects/php-typography/)
+
+= 1.5 - July 27, 2009 =
+
+*   Added the ability to exclude hyphenation of capitalized (title case) words to help protect proper nouns
+*   Added Hungarian hyphenation patterns
+*   Upgraded to [PHP Typography 1.5](http://kingdesk.com/projects/php-typography/)
+
+= 1.4 - July 23, 2009 =
+
+*   Fixed an instance where pre-hyphenated words were hyphenated again
+*   Upgraded to [PHP Typography 1.4](http://kingdesk.com/projects/php-typography/)
+
+= 1.3 - July 23, 2009 =
+
+*   Removed two uses of create_function() for improved performance
+*   Corrected many uninitialized variables
+*   Corrected two variables that were called out of scope
+*   Upgraded to [PHP Typography 1.3](http://kingdesk.com/projects/php-typography/)
+
+= 1.2 - July 23, 2009 =
+
+*   added new 100 character option for max widow length protected
+*   added new 100 character option for max pull length for widow protection
+*   moved the processing of widow handling after hyphenation so that max-pull would not be compared to the length of the adjacent word, but rather the length of the adjacent word segment (i.e. that after a soft hyphen)
+*   Upgraded to [PHP Typography 1.2](http://kingdesk.com/projects/php-typography/)
+
+= 1.1 - July 22, 2009 =
+
+*   took advantage of new feature in PHP Typography 1.1 where we could just set user settings without first setting phpTypography defaults for a slight performance improvement.
+*   Decoded special HTML characters (for feeds only) to avoid invalid character injection (according to XML's specs)
+*   Upgraded to [PHP Typography 1.1](http://kingdesk.com/projects/php-typography/)
+
+= 1.0.4 - July 20, 2009 =
+
+*   Added test for curl to avoid bug where admin panel would not load
+
+= 1.0.3 - July 17, 2009 =
+
+*   Reverted use of the hyphen character to the basic minus-hyphen in words like "mother-in-law" because of poor support in IE6
+*   Zero-width-space removal for IE6 was broken.  This is corrected.
+*   Clarified some labels in the admin interface
+*   Simplified the admin interface URL
+
+= 1.0.2 - July 16, 2009 =
+
+*   Fixed smart math handling so it can be turned off.
+*   Corrected smart math handling to not convert slashes in URLs to division signs
+*   Corrected issue where some server settings were throwing a warning in the admin panel for use of file_get_contents()
+
+= 1.0.1 - July 15, 2009 =
+
+*   Corrected label in admin interface that indicated pretty fractions were part of basic math handling.
+
+= 1.0 - July 15, 2009 =
+
+*   Changed default settings from all options being enabled to a minimal set being enabled.
+*   Added test to phpTypography methods `process()` and `process_feed()` to skip processing if `$isTitle` parameter is `TRUE` and `h1` or `h2` is an excluded HTML tag
+
+= 1.0 beta 9 - July 14, 2009 =
+
+*   Added catch-all quote handling, now any quotes that escape previous filters will be assumed to be closing quotes
+*   A section of resource links were added to the wp-Typography admin settings page.
+
+= 1.0 beta 8 - July 13, 2009 =
+
+*   Changed thin space injection behavior so that for text such as "...often-always?-judging...", the second dash will be wrapped in thin spaces
+*   Corrected error where fractions were not being styled because of a zero-space insertion with the wrap hard hyphens functionality
+*   Added default class to exclude: `noTypo`
+*   Changed order of admin page options, moving hyphenation options toward the top
+
+= 1.0 beta 7 - July 10, 2009 =
+
+*   Added "/" as a valid word character so we could capture "this/that" as a word for processing (similar to "mother-in-law")
+*   Corrected error where characters from the Latin 1 Supplement Block were not recognized as word characters
+*   Corrected smart quote handling for strings of numbers
+*   Added smart guillemet conversion: `&lt;&lt;` and `&gt;&gt;` to `&laquo;` and `&raquo;`
+*   Added smart Single Low 9 Quote conversion as part of smart quotes: comma followed by non-space becomes Single Low 9 Quote
+*   Added Single Low 9 Quote, Double Low 9 Quote and &raquo; to style_initial_character functionality
+*   Added a new phpTypography method smart_math that assigns proper characters to minus, multiplication and division characters
+*   Depreciated the phpTypography method smart_multiplication in favor of smart_math
+*   Cleaned up some smart quote functionality
+*   Added ability to wrap after "/" if set_wrap_hard_hyphen is TRUE (like "this/that")
+*   Titles were not being properly processed, this has been corrected
+
+= 1.0 beta 6 - July 9, 2009 =
+
+*   Critical bug fix:  RSS feeds were being disabled by previous versions.  This has been corrected.
+
+= 1.0 beta 5 - July 8, 2009 =
+
+*   Corrected error where requiring  Em/En dash thin spacing "word-" would become "word &ndash;" instead of "word&ndash;"
+*   Corrected default settings
+*   Alphabetically sorted languages returned with get_languages() method
+*   Added a "Restore Defaults" option to the admin page
+
+= 1.0 beta 4 - July 7, 2009 =
+
+*   Added default encoding value to smart_quote handling to avoid PHP warning messages
+*   Disabled processing of category titles using wp_list_categories()
+
+= 1.0 beta 3 - July 6, 2009 =
+
+*   Corrected curling quotes at the end of block level elements
+*   Disabled processing of page titles (some browsers did not properly handle soft hyphens) reverts to wp-texturize for titles.
+
+= 1.0 beta 2 - July 6, 2009 =
+
+*   Corrected multibyte character conflict in smart-quote handling that caused infrequent dropping of text
+*   Thin space injection included for en-dashes
+
+= 1.0 beta 1 - July 3, 2009 =
+
+*   Initial release
