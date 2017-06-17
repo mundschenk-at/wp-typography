@@ -978,7 +978,7 @@ sub {
 			register_setting( $this->option_group . $control['tab_id'], $control_id );
 
 			// Prevent spurious saves.
-			add_filter( 'pre_update_option_' . $control_id , [ $this, 'filter_update_option' ], 10, 3 );
+			add_filter( 'pre_update_option_' . $control_id , [ $this, 'filter_update_option' ], 10, 2 );
 
 			// Add settings fields.
 			if ( empty( $control['group_with'] ) ) {
@@ -1001,13 +1001,12 @@ sub {
 	/**
 	 * Prevent settings from being saved if we are clearing the cache or restoring defaults.
 	 *
-	 * @param mixed  $value     The new value.
-	 * @param mixed  $old_value The old value.
-	 * @param string $option    The option name.
+	 * @param mixed $value     The new value.
+	 * @param mixed $old_value The old value.
 	 *
 	 * @return mixed
 	 */
-	public function filter_update_option( $value, $old_value, $option ) {
+	public function filter_update_option( $value, $old_value ) {
 		if ( ! empty( $_POST['typo_restore_defaults'] ) || ! empty( $_POST['typo_clear_cache'] ) ) { // WPCS: CSRF ok.
 			return $old_value;
 		} else {
