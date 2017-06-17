@@ -140,7 +140,7 @@ class WP_Typography {
 		$this->version_hash      = $this->hash_version_string( $version );
 		$this->local_plugin_path = $basename;
 		$this->transients        = get_option( 'typo_transient_keys', [] );
-		$this->cache_key         = get_option( 'typo_cache_keys', [] );
+		$this->cache_keys        = get_option( 'typo_cache_keys', [] );
 
 		// Initialize admin interface handler.
 		$this->admin             = new WP_Typography_Admin( $basename, $this );
