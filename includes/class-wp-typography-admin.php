@@ -1227,6 +1227,8 @@ sub {
 
 		// Dynamically generate the list of hyphenation language patterns.
 		if ( false === $languages ) {
+			$languages = self::translate_languages( PHP_Typography::get_hyphenation_languages() );
+
 			/**
 			 * Filter the caching duration for the language plugin lists.
 			 *
@@ -1236,7 +1238,6 @@ sub {
 			 * @param string $list     The name language plugin list.
 			 */
 			$duration = apply_filters( 'typo_language_list_caching_duration', WEEK_IN_SECONDS, 'hyphenate_languages' );
-			$languages = self::translate_languages( PHP_Typography::get_hyphenation_languages() );
 
 			// Cache translated hyphenation languages.
 			$this->plugin->set_cache( $this->cache_key_names['hyphenate_languages'], $languages, $duration );
@@ -1248,9 +1249,10 @@ sub {
 
 		// Dynamically generate the list of diacritics replacement languages.
 		if ( false === $languages ) {
+			$languages = self::translate_languages( PHP_Typography::get_diacritic_languages() );
+
 			/** This filter is documented in class-wp-typography-admin.php */
 			$duration = apply_filters( 'typo_language_list_caching_duration', WEEK_IN_SECONDS, 'diacritic_languages' );
-			$languages = self::translate_languages( PHP_Typography::get_diacritic_languages() );
 
 			// Cache translated diactrics languages.
 			$this->plugin->set_cache( $this->cache_key_names['diacritic_languages'], $languages, $duration );
