@@ -26,6 +26,8 @@
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
+use \PHP_Typography\PHP_Typography;
+
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -1234,7 +1236,7 @@ sub {
 			 * @param string $list     The name language plugin list.
 			 */
 			$duration = apply_filters( 'typo_language_list_caching_duration', WEEK_IN_SECONDS, 'hyphenate_languages' );
-			$languages = self::translate_languages( \PHP_Typography\PHP_Typography::get_hyphenation_languages() );
+			$languages = self::translate_languages( PHP_Typography::get_hyphenation_languages() );
 
 			// Cache translated hyphenation languages.
 			$this->plugin->set_cache( $this->cache_key_names['hyphenate_languages'], $languages, $duration );
@@ -1248,7 +1250,7 @@ sub {
 		if ( false === $languages ) {
 			/** This filter is documented in class-wp-typography-admin.php */
 			$duration = apply_filters( 'typo_language_list_caching_duration', WEEK_IN_SECONDS, 'diacritic_languages' );
-			$languages = self::translate_languages( \PHP_Typography\PHP_Typography::get_diacritic_languages() );
+			$languages = self::translate_languages( PHP_Typography::get_diacritic_languages() );
 
 			// Cache translated diactrics languages.
 			$this->plugin->set_cache( $this->cache_key_names['diacritic_languages'], $languages, $duration );
