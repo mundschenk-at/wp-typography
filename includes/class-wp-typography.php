@@ -66,14 +66,14 @@ class WP_Typography {
 	/**
 	 * The PHP_Typography instance doing the actual work.
 	 *
-	 * @var PHP_Typography $php_typo
+	 * @var PHP_Typography\PHP_Typography $php_typo
 	 */
 	private $php_typo;
 
 	/**
 	 * The Hyphenator instance.
 	 *
-	 * @var Hyphenator $hyphenator
+	 * @var PHP_Typography\Hyphenator $hyphenator
 	 */
 	private $hyphenator;
 

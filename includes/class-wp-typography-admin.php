@@ -153,7 +153,7 @@ class WP_Typography_Admin {
 	/**
 	 * The plugin instance used for setting transients.
 	 *
-	 * @var callable
+	 * @var WP_Typography
 	 */
 	private $plugin;
 
