@@ -66,14 +66,14 @@ class WP_Typography {
 	/**
 	 * The PHP_Typography instance doing the actual work.
 	 *
-	 * @var PHP_Typography $php_typo
+	 * @var PHP_Typography\PHP_Typography $php_typo
 	 */
 	private $php_typo;
 
 	/**
 	 * The Hyphenator instance.
 	 *
-	 * @var Hyphenator $hyphenator
+	 * @var PHP_Typography\Hyphenator $hyphenator
 	 */
 	private $hyphenator;
 
@@ -140,7 +140,7 @@ class WP_Typography {
 		$this->version_hash      = $this->hash_version_string( $version );
 		$this->local_plugin_path = $basename;
 		$this->transients        = get_option( 'typo_transient_keys', [] );
-		$this->cache_key         = get_option( 'typo_cache_keys', [] );
+		$this->cache_keys        = get_option( 'typo_cache_keys', [] );
 
 		// Initialize admin interface handler.
 		$this->admin             = new WP_Typography_Admin( $basename, $this );

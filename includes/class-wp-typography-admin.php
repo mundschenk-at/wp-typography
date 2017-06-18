@@ -26,6 +26,8 @@
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
+use \PHP_Typography\PHP_Typography;
+
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -153,7 +155,7 @@ class WP_Typography_Admin {
 	/**
 	 * The plugin instance used for setting transients.
 	 *
-	 * @var callable
+	 * @var WP_Typography
 	 */
 	private $plugin;
 
@@ -978,7 +980,7 @@ sub {
 			register_setting( $this->option_group . $control['tab_id'], $control_id );
 
 			// Prevent spurious saves.
-			add_filter( 'pre_update_option_' . $control_id , [ $this, 'filter_update_option' ], 10, 3 );
+			add_filter( 'pre_update_option_' . $control_id , [ $this, 'filter_update_option' ], 10, 2 );
 
 			// Add settings fields.
 			if ( empty( $control['group_with'] ) ) {
@@ -1001,13 +1003,12 @@ sub {
 	/**
 	 * Prevent settings from being saved if we are clearing the cache or restoring defaults.
 	 *
-	 * @param mixed  $value     The new value.
-	 * @param mixed  $old_value The old value.
-	 * @param string $option    The option name.
+	 * @param mixed $value     The new value.
+	 * @param mixed $old_value The old value.
 	 *
 	 * @return mixed
 	 */
-	public function filter_update_option( $value, $old_value, $option ) {
+	public function filter_update_option( $value, $old_value ) {
 		if ( ! empty( $_POST['typo_restore_defaults'] ) || ! empty( $_POST['typo_clear_cache'] ) ) { // WPCS: CSRF ok.
 			return $old_value;
 		} else {
@@ -1226,6 +1227,8 @@ sub {
 
 		// Dynamically generate the list of hyphenation language patterns.
 		if ( false === $languages ) {
+			$languages = self::translate_languages( PHP_Typography::get_hyphenation_languages() );
+
 			/**
 			 * Filter the caching duration for the language plugin lists.
 			 *
@@ -1235,11 +1238,8 @@ sub {
 			 * @param string $list     The name language plugin list.
 			 */
 			$duration = apply_filters( 'typo_language_list_caching_duration', WEEK_IN_SECONDS, 'hyphenate_languages' );
-			$languages = \PHP_Typography\PHP_Typography::get_hyphenation_languages();
 
-			// Ensure that language names are properly translated.
-			array_walk( $languages, function( &$lang, $code ) { $lang = _x( $lang, 'language name', 'wp-typography' ); } ); // @codingStandardsIgnoreLine.
-
+			// Cache translated hyphenation languages.
 			$this->plugin->set_cache( $this->cache_key_names['hyphenate_languages'], $languages, $duration );
 		}
 		$this->admin_form_controls['typo_hyphenate_languages']['option_values'] = $languages;
@@ -1249,19 +1249,33 @@ sub {
 
 		// Dynamically generate the list of diacritics replacement languages.
 		if ( false === $languages ) {
+			$languages = self::translate_languages( PHP_Typography::get_diacritic_languages() );
+
 			/** This filter is documented in class-wp-typography-admin.php */
 			$duration = apply_filters( 'typo_language_list_caching_duration', WEEK_IN_SECONDS, 'diacritic_languages' );
-			$languages = \PHP_Typography\PHP_Typography::get_diacritic_languages();
 
-			// Ensure that language names are properly translated.
-			array_walk( $languages, function( &$lang, $code ) { $lang = _x( $lang, 'language name', 'wp-typography' ); } ); // @codingStandardsIgnoreLine.
-
+			// Cache translated diactrics languages.
 			$this->plugin->set_cache( $this->cache_key_names['diacritic_languages'], $languages, $duration );
 		}
 		$this->admin_form_controls['typo_diacritic_languages']['option_values'] = $languages;
 
 		// Load the settings page HTML.
 		include_once dirname( __DIR__ ) . '/admin/partials/settings.php';
+	}
+
+	/**
+	 * Translate language list.
+	 *
+	 * @param array $languages An array in the form [ LANGUAGE_CODE => LANGUAGE ].
+	 *
+	 * @return array The same array with the language name translated.
+	 */
+	private static function translate_languages( array $languages ) {
+		array_walk( $languages, function( &$lang, $code ) {
+			$lang = _x( $lang, 'language name', 'wp-typography' );  // @codingStandardsIgnoreLine.
+		} );
+
+		return $languages;
 	}
 
 	/**
