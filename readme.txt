@@ -3,7 +3,7 @@ Contributors: pputzer
 Tags: typography, hyphenation, smart quotes, quote marks, formatting, typogrify, quotes, prettify, widows, orphans, small caps, diacritics
 Requires at least: 4.4
 Tested up to: 4.8
-Stable tag: 4.2.1
+Stable tag: 4.2.2
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
@@ -76,6 +76,10 @@ Please install the [wp-Typography Disable ACF Integration plugin](https://wordpr
 4. wp-Typography "Add CSS Hooks" settings page.
 
 == Changelog ==
+
+= 4.2.2 - June 18, 2017 =
+* _Bugfix_: Properly clear cache on upgrade.
+* _Change_: Various internal performance improvements.
 
 = 4.2.1 - June 9, 2017 =
 * _Bugfix_: Prevent crash on PHP 5.x when building the hyphenation trie.
