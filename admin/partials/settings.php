@@ -26,12 +26,10 @@
  */
 
 ?><div class='wrap'>
-	<?php /* translators: settings page headline, %s is the plugin name */ ?>
-	<h1><?php echo esc_html( sprintf( __( '%s Settings', 'wp-typography' ), $this->plugin_name ) ); ?></h1><?php
-
-	// Check active tab.
-	$active_tab = $this->get_active_settings_tab();
-
+	<h1><?php echo esc_html( sprintf( /* translators: settings page headline, %s is the plugin name */ __( '%s Settings', 'wp-typography' ), $this->plugin_name ) ); ?></h1>
+	<?php
+		// Check active tab.
+		$active_tab = $this->get_active_settings_tab();
 	?>
 	<h2 class="nav-tab-wrapper">
 	<?php foreach ( $this->admin_form_tabs as $tab_id => $tab ) : ?>
@@ -40,27 +38,30 @@
 	</h2>
 
 	<form method="post" action="options.php">
-		<?php foreach ( $this->admin_form_tabs as $tab_id => $tab ) : ?>
-			<?php if ( $active_tab === $tab_id ) : ?>
-				<?php settings_fields( $this->option_group . $tab_id ); ?>
-				<?php do_settings_sections( $this->option_group . $tab_id ); ?>
-			<?php endif; // active_tab. ?>
-		<?php endforeach; // admin_form_sections. ?>
+		<?php settings_fields( $this->option_group . $active_tab ); ?>
+		<?php do_settings_sections( $this->option_group . $active_tab ); ?>
 
-		<p class="submit"><?php
-			submit_button( __( 'Save Changes', 'wp-typography' ), 'primary', 'save_changes', false, [
-				'tabindex' => 1,
-			] ); ?>
-			<span class="aux-buttons"><?php
-				submit_button( __( 'Restore Defaults', 'wp-typography' ), 'delete', 'typo_restore_defaults', false, [
-					'tabindex' => 2,
-				] ); ?>
-				<?php // The whitespace is necessary.
-				submit_button( __( 'Clear Cache', 'wp-typography' ), 'secondary', 'typo_clear_cache', false, [
-					'tabindex' => 3,
-				] ); ?>
+		<p class="submit">
+			<?php
+				submit_button( __( 'Save Changes', 'wp-typography' ), 'primary', 'save_changes', false, [
+					'tabindex' => 1,
+				] );
+			?>
+			<span class="aux-buttons">
+				<?php
+					submit_button( __( 'Restore Defaults', 'wp-typography' ), 'delete', 'typo_restore_defaults', false, [
+						'tabindex' => 2,
+					] );
+				?>
+				<?php
+					// The whitespace is necessary.
+					submit_button( __( 'Clear Cache', 'wp-typography' ), 'secondary', 'typo_clear_cache', false, [
+						'tabindex' => 3,
+					] );
+				?>
 			</span>
 		</p><!-- .submit -->
 	</form>
 
-</div><!-- .wrap --><?php
+</div><!-- .wrap -->
+<?php
