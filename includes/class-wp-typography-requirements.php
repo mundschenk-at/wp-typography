@@ -197,7 +197,7 @@ class WP_Typography_Requirements {
 	 * @param mixed  $param1,... An optional number of parameters for sprintf.
 	 */
 	private function display_error_notice( $format ) {
-		if ( func_num_args() < 1 ) {
+		if ( func_num_args() < 1 || empty( $format ) ) {
 			return; // abort.
 		}
 
