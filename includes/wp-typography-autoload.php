@@ -31,16 +31,28 @@
  * @param string $class_name Required.
  */
 function wp_typography_autoloader( $class_name ) {
-	if ( false === strpos( $class_name, 'WP_Typography' ) ) {
+	static $prefix;
+	static $base_namespace;
+	if ( empty( $prefix ) || empty( $base_namespace ) ) {
+		$prefix = 'WP_Typography';
+		$base_namespace = $prefix . '\\';
+	}
+
+	if ( false === strpos( $class_name, $prefix ) ) {
 		return; // abort early.
+	} elseif ( false !== strpos( $class_name, $base_namespace ) ) {
+		$class_name = substr( $class_name, strlen( $base_namespace ) );
 	}
 
-	static $classes_dir;
-	if ( empty( $classes_dir ) ) {
-		$classes_dir = realpath( plugin_dir_path( __FILE__ ) ) . DIRECTORY_SEPARATOR;
+	$classes_dir      = realpath( dirname( __FILE__ ) ) . DIRECTORY_SEPARATOR;
+	$class_name_parts = str_replace( '_', '-', explode( '\\', $class_name ) );
+	$class_file       = 'class-' . strtolower( array_pop( $class_name_parts ) ) . '.php';
+
+	if ( count( $class_name_parts ) > 0 ) {
+		$classes_dir .= implode( DIRECTORY_SEPARATOR, array_map( 'strtolower', $class_name_parts ) ) . DIRECTORY_SEPARATOR;
 	}
 
-	$class_file_path = $classes_dir . 'class-' . str_replace( '_', '-', strtolower( $class_name ) ) . '.php';
+	$class_file_path = $classes_dir . $class_file;
 	if ( is_file( $class_file_path ) ) {
 		require_once( $class_file_path );
 	}
