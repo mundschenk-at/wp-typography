@@ -1222,11 +1222,13 @@ sub {
 	 * Display the plugin options page.
 	 */
 	function get_admin_page_content() {
+		$found = false;
+
 		// Try to load hyphenation language list from cache.
-		$languages = $this->plugin->get_cache( $this->cache_key_names['hyphenate_languages'] );
+		$languages = $this->plugin->get_cache( $this->cache_key_names['hyphenate_languages'], $found );
 
 		// Dynamically generate the list of hyphenation language patterns.
-		if ( false === $languages ) {
+		if ( false === $found ) {
 			$languages = self::translate_languages( PHP_Typography::get_hyphenation_languages() );
 
 			/**
@@ -1245,10 +1247,10 @@ sub {
 		$this->admin_form_controls['typo_hyphenate_languages']['option_values'] = $languages;
 
 		// Try to load diacritics language list from cache.
-		$languages = $this->plugin->get_cache( $this->cache_key_names['diacritic_languages'] );
+		$languages = $this->plugin->get_cache( $this->cache_key_names['diacritic_languages'], $found );
 
 		// Dynamically generate the list of diacritics replacement languages.
-		if ( false === $languages ) {
+		if ( false === $found ) {
 			$languages = self::translate_languages( PHP_Typography::get_diacritic_languages() );
 
 			/** This filter is documented in class-wp-typography-admin.php */
