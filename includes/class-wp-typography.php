@@ -206,7 +206,7 @@ final class WP_Typography {
 	 * @return array An array in the form of ( $language_code => $language ).
 	 */
 	static public function get_hyphenation_languages() {
-		return \PHP_Typography\PHP_Typography\get_hyphenation_languages();
+		return PHP_Typography::get_hyphenation_languages();
 	}
 
 	/**
@@ -219,7 +219,7 @@ final class WP_Typography {
 	 * @return array An array in the form of ( $language_code => $language ).
 	 */
 	static public function get_diacritic_languages() {
-		return \PHP_Typography\PHP_Typography\get_diacritic_languages();
+		return PHP_Typography::get_diacritic_languages();
 	}
 
 	/**
