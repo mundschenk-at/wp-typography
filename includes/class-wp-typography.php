@@ -225,8 +225,8 @@ final class WP_Typography {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param string                   $text     Required.
-	 * @param \PHP_Typography\Settings $settings Optional. A settings object. Default null (which means the internal settings will be used).
+	 * @param string                        $text     Required.
+	 * @param \PHP_Typography\Settings|null $settings Optional. A settings object. Default null (which means the internal settings will be used).
 	 *
 	 * @return string The processed $text.
 	 */
@@ -239,8 +239,8 @@ final class WP_Typography {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param string                   $text     Required.
-	 * @param \PHP_Typography\Settings $settings Optional. A settings object. Default null (which means the internal settings will be used).
+	 * @param string                        $text     Required.
+	 * @param \PHP_Typography\Settings|null $settings Optional. A settings object. Default null (which means the internal settings will be used).
 	 *
 	 * @return string The processed $text.
 	 */
@@ -253,8 +253,8 @@ final class WP_Typography {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param array                    $title_parts An array of strings.
-	 * @param \PHP_Typography\Settings $settings    Optional. A settings object. Default null (which means the internal settings will be used).
+	 * @param array                         $title_parts An array of strings.
+	 * @param \PHP_Typography\Settings|null $settings    Optional. A settings object. Default null (which means the internal settings will be used).
 	 *
 	 * @return array
 	 */
@@ -267,8 +267,8 @@ final class WP_Typography {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param string                   $text     Required.
-	 * @param \PHP_Typography\Settings $settings Optional. A settings object. Default null (which means the internal settings will be used).
+	 * @param string                        $text     Required.
+	 * @param \PHP_Typography\Settings|null $settings Optional. A settings object. Default null (which means the internal settings will be used).
 	 *
 	 * @return string The processed $text.
 	 */
@@ -281,8 +281,8 @@ final class WP_Typography {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param string                   $text     Required.
-	 * @param \PHP_Typography\Settings $settings Optional. A settings object. Default null (which means the internal settings will be used).
+	 * @param string                        $text     Required.
+	 * @param \PHP_Typography\Settings|null $settings Optional. A settings object. Default null (which means the internal settings will be used).
 	 *
 	 * @return string The processed $text.
 	 */
@@ -420,8 +420,8 @@ final class WP_Typography {
 	 *
 	 * @since 4.0.0 Parameter $settings added.
 	 *
-	 * @param string                   $text Required.
-	 * @param \PHP_Typography\Settings $settings Optional. A settings object. Default null (which means the internal settings will be used).
+	 * @param string                        $text Required.
+	 * @param \PHP_Typography\Settings|null $settings Optional. A settings object. Default null (which means the internal settings will be used).
 	 */
 	function process_title( $text, \PHP_Typography\Settings $settings = null ) {
 		return $this->process( $text, true, false, $settings );
@@ -435,9 +435,9 @@ final class WP_Typography {
 	 * @since 3.2.4
 	 * @since 4.0.0 Parameter $settings added.
 	 *
-	 * @param string                   $text     Required.
-	 * @param bool                     $is_title Optional. Default false.
-	 * @param \PHP_Typography\Settings $settings Optional. A settings object. Default null (which means the internal settings will be used).
+	 * @param string                        $text     Required.
+	 * @param bool                          $is_title Optional. Default false.
+	 * @param \PHP_Typography\Settings|null $settings Optional. A settings object. Default null (which means the internal settings will be used).
 	 */
 	function process_feed( $text, $is_title = false, \PHP_Typography\Settings $settings = null ) {
 		return $this->process( $text, $is_title, true, $settings );
@@ -449,8 +449,8 @@ final class WP_Typography {
 	 * @since 3.2.5
 	 * @since 4.0.0 Parameter $settings added.
 	 *
-	 * @param array                    $title_parts An array of strings.
-	 * @param \PHP_Typography\Settings $settings    Optional. A settings object. Default null (which means the internal settings will be used).
+	 * @param array                         $title_parts An array of strings.
+	 * @param \PHP_Typography\Settings|null $settings    Optional. A settings object. Default null (which means the internal settings will be used).
 	 *
 	 * @return array
 	 */
