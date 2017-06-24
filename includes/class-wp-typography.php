@@ -25,7 +25,8 @@
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-use \PHP_Typography;
+use \PHP_Typography\PHP_Typography;
+use \PHP_Typography\Hyphenator;
 
 /**
  * Autoload parser classes
@@ -75,7 +76,7 @@ final class WP_Typography {
 	/**
 	 * The Hyphenator instance.
 	 *
-	 * @var PHP_Typography\Hyphenator $hyphenator
+	 * @var Hyphenator $hyphenator
 	 */
 	private $hyphenator;
 
@@ -119,7 +120,7 @@ final class WP_Typography {
 	/**
 	 * The priority for our filter hooks.
 	 *
-	 * @var number
+	 * @var int
 	 */
 	private $filter_priority = 9999;
 
