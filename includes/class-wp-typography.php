@@ -25,6 +25,8 @@
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
+use \PHP_Typography;
+
 /**
  * Autoload parser classes
  */
@@ -66,7 +68,7 @@ final class WP_Typography {
 	/**
 	 * The PHP_Typography instance doing the actual work.
 	 *
-	 * @var PHP_Typography\PHP_Typography $php_typo
+	 * @var PHP_Typography $php_typo
 	 */
 	private $php_typo;
 
@@ -581,7 +583,7 @@ final class WP_Typography {
 
 			if ( empty( $this->php_typo ) ) {
 				// OK, we have to initialize the PHP_Typography instance manually.
-				$this->php_typo = new \PHP_Typography\PHP_Typography( false, 'now' );
+				$this->php_typo = new PHP_Typography( false, 'now' );
 
 				// Load our settings into the instance.
 				$this->init_php_typo();
