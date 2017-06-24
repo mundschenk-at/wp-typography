@@ -33,7 +33,7 @@ require_once dirname( __DIR__ ) . '/php-typography/php-typography-autoload.php';
 /**
  * Main wp-Typography plugin class. All WordPress specific code goes here.
  */
-class WP_Typography {
+final class WP_Typography {
 
 	/**
 	 * The full version string of the plugin.
