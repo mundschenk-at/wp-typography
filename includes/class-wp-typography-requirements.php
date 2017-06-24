@@ -107,7 +107,11 @@ class WP_Typography_Requirements {
 		if ( ! $requirements_met && is_admin() ) {
 			// Load text domain to ensure translated admin notices.
 			load_plugin_textdomain( 'wp-typography', false, dirname( $this->local_plugin_path ) . '/translations/' );
-			/* add_action( 'admin_init', array( $this, 'deactivate_plugin' ) ); */
+
+			/*
+				Not sure if we should actually auto-deactivate the plugin.
+				add_action( 'admin_init', array( $this, 'deactivate_plugin' ) );
+			 */
 		}
 
 		return $requirements_met;
