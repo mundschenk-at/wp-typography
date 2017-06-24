@@ -563,11 +563,11 @@ final class WP_Typography {
 	 * Retrieves a cached value.
 	 *
 	 * @param string $key   The cache key.
-	 * @param bool   $found Optional. Whether the key was found in the cache. Disambiguates a return of false, a storable value. Passed by reference. Default null.
+	 * @param bool   $found Whether the key was found in the cache. Disambiguates a return of false as a storable value. Passed by reference.
 	 *
 	 * @return mixed
 	 */
-	public function get_cache( $key, &$found = null ) {
+	public function get_cache( $key, &$found ) {
 		return wp_cache_get( $key, 'wp-typography', false, $found );
 	}
 
