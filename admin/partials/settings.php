@@ -42,8 +42,8 @@
 	</h2>
 
 	<form method="post" action="options.php">
-		<?php settings_fields( $this->option_group . $active_tab ); ?>
-		<?php do_settings_sections( $this->option_group . $active_tab ); ?>
+		<?php settings_fields( self::OPTION_GROUP . $active_tab ); ?>
+		<?php do_settings_sections( self::OPTION_GROUP . $active_tab ); ?>
 
 		<p class="submit">
 			<?php

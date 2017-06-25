@@ -744,10 +744,10 @@ final class WP_Typography {
 	 */
 	function set_default_options( $force_defaults = false ) {
 		// Grab configuration variables.
-		foreach ( $this->default_settings as $key => $value ) {
+		foreach ( $this->default_settings as $key => $default ) {
 			// Set or update the options with the default value if necessary.
 			if ( $force_defaults || ! is_string( get_option( $key ) ) ) {
-				update_option( $key, $value['default'] );
+				update_option( $key, $default );
 			}
 		}
 
