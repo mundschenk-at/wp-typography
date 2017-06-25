@@ -74,7 +74,7 @@ script:
     # Generate list of relevant PHP files.
     - mkdir $PHP_FILES_DIR
     - find -L . -not \( -path ./tests -prune \) -name '*.php' > $PHP_FILES_LIST
-    - cat $PHP_FILES_LIST | grep -v -e vendor/ -e build/ -e node_modules/ -e php_typography/_language_names.php > $PHPCS_FILES_LIST
+    - cat $PHP_FILES_LIST | grep -v -e vendor/ -e build/ -e .phan/ -e node_modules/ -e php_typography/_language_names.php > $PHPCS_FILES_LIST
     # Search for PHP syntax errors.
     - if [[ "$CHECKING_PHP52" == "1" ]]; then find -L . -name 'wp-typography.php' -print0 | xargs -0 -n 1 -P 4 php -l; fi
     - if [[ "$CHECKING_PHP52" == "1" ]]; then find -L . -name 'class-wp-typography-requirements.php' -print0 | xargs -0 -n 1 -P 4 php -l; fi
