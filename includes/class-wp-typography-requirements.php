@@ -48,7 +48,7 @@ class WP_Typography_Requirements {
 	 * @var array A Hash containing the version requirements for the plugin.
 	 */
 	private $install_requirements = array(
-		'PHP Version'       => '5.4.0',
+		'PHP Version'       => '5.6.0',
 		'WordPress Version' => '4.4',
 		'Multibyte'         => true,
 		'UTF-8'             => true,
