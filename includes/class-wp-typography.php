@@ -27,6 +27,7 @@
 
 use \PHP_Typography\PHP_Typography;
 use \PHP_Typography\Hyphenator;
+use \PHP_Typography\Settings;
 
 /**
  * Autoload parser classes
@@ -191,7 +192,7 @@ final class WP_Typography {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @return \PHP_Typography\Settings
+	 * @return Settings
 	 */
 	public static function get_user_settings() {
 		return self::get_instance()->get_php_typo()->get_settings();
@@ -228,12 +229,12 @@ final class WP_Typography {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param string                        $text     Required.
-	 * @param \PHP_Typography\Settings|null $settings Optional. A settings object. Default null (which means the internal settings will be used).
+	 * @param string        $text     Required.
+	 * @param Settings|null $settings Optional. A settings object. Default null (which means the internal settings will be used).
 	 *
 	 * @return string The processed $text.
 	 */
-	public static function filter( $text, \PHP_Typography\Settings $settings = null ) {
+	public static function filter( $text, Settings $settings = null ) {
 		return self::get_instance()->process( $text, false, false, $settings );
 	}
 
@@ -242,12 +243,12 @@ final class WP_Typography {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param string                        $text     Required.
-	 * @param \PHP_Typography\Settings|null $settings Optional. A settings object. Default null (which means the internal settings will be used).
+	 * @param string        $text     Required.
+	 * @param Settings|null $settings Optional. A settings object. Default null (which means the internal settings will be used).
 	 *
 	 * @return string The processed $text.
 	 */
-	public static function filter_title( $text, \PHP_Typography\Settings $settings = null ) {
+	public static function filter_title( $text, Settings $settings = null ) {
 		return self::get_instance()->process_title( $text, $settings );
 	}
 
@@ -256,12 +257,12 @@ final class WP_Typography {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param array                         $title_parts An array of strings.
-	 * @param \PHP_Typography\Settings|null $settings    Optional. A settings object. Default null (which means the internal settings will be used).
+	 * @param array         $title_parts An array of strings.
+	 * @param Settings|null $settings    Optional. A settings object. Default null (which means the internal settings will be used).
 	 *
 	 * @return array
 	 */
-	public static function filter_title_parts( $title_parts, \PHP_Typography\Settings $settings = null ) {
+	public static function filter_title_parts( $title_parts, Settings $settings = null ) {
 		return self::get_instance()->process_title_parts( $title_parts, $settings );
 	}
 
@@ -270,12 +271,12 @@ final class WP_Typography {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param string                        $text     Required.
-	 * @param \PHP_Typography\Settings|null $settings Optional. A settings object. Default null (which means the internal settings will be used).
+	 * @param string        $text     Required.
+	 * @param Settings|null $settings Optional. A settings object. Default null (which means the internal settings will be used).
 	 *
 	 * @return string The processed $text.
 	 */
-	public static function filter_feed( $text, \PHP_Typography\Settings $settings = null ) {
+	public static function filter_feed( $text, Settings $settings = null ) {
 		return self::get_instance()->process_feed( $text, false, $settings );
 	}
 
@@ -284,12 +285,12 @@ final class WP_Typography {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param string                        $text     Required.
-	 * @param \PHP_Typography\Settings|null $settings Optional. A settings object. Default null (which means the internal settings will be used).
+	 * @param string        $text     Required.
+	 * @param Settings|null $settings Optional. A settings object. Default null (which means the internal settings will be used).
 	 *
 	 * @return string The processed $text.
 	 */
-	public static function filter_feed_title( $text, \PHP_Typography\Settings $settings = null ) {
+	public static function filter_feed_title( $text, Settings $settings = null ) {
 		return self::get_instance()->process_feed( $text, true, $settings );
 	}
 
@@ -423,10 +424,10 @@ final class WP_Typography {
 	 *
 	 * @since 4.0.0 Parameter $settings added.
 	 *
-	 * @param string                        $text Required.
-	 * @param \PHP_Typography\Settings|null $settings Optional. A settings object. Default null (which means the internal settings will be used).
+	 * @param string        $text Required.
+	 * @param Settings|null $settings Optional. A settings object. Default null (which means the internal settings will be used).
 	 */
-	function process_title( $text, \PHP_Typography\Settings $settings = null ) {
+	function process_title( $text, Settings $settings = null ) {
 		return $this->process( $text, true, false, $settings );
 	}
 
@@ -438,11 +439,11 @@ final class WP_Typography {
 	 * @since 3.2.4
 	 * @since 4.0.0 Parameter $settings added.
 	 *
-	 * @param string                        $text     Required.
-	 * @param bool                          $is_title Optional. Default false.
-	 * @param \PHP_Typography\Settings|null $settings Optional. A settings object. Default null (which means the internal settings will be used).
+	 * @param string        $text     Required.
+	 * @param bool          $is_title Optional. Default false.
+	 * @param Settings|null $settings Optional. A settings object. Default null (which means the internal settings will be used).
 	 */
-	function process_feed( $text, $is_title = false, \PHP_Typography\Settings $settings = null ) {
+	function process_feed( $text, $is_title = false, Settings $settings = null ) {
 		return $this->process( $text, $is_title, true, $settings );
 	}
 
@@ -452,12 +453,12 @@ final class WP_Typography {
 	 * @since 3.2.5
 	 * @since 4.0.0 Parameter $settings added.
 	 *
-	 * @param array                         $title_parts An array of strings.
-	 * @param \PHP_Typography\Settings|null $settings    Optional. A settings object. Default null (which means the internal settings will be used).
+	 * @param array         $title_parts An array of strings.
+	 * @param Settings|null $settings    Optional. A settings object. Default null (which means the internal settings will be used).
 	 *
 	 * @return array
 	 */
-	function process_title_parts( $title_parts, \PHP_Typography\Settings $settings = null ) {
+	function process_title_parts( $title_parts, Settings $settings = null ) {
 
 		foreach ( $title_parts as $index => $part ) {
 			// Remove "&shy;" and "&#8203;" after processing title part.
@@ -475,14 +476,14 @@ final class WP_Typography {
 	 * @since 3.2.4 Parameter $force_feed added.
 	 * @since 4.0.0 Parameter $settings added.
 	 *
-	 * @param string                   $text       Required.
-	 * @param bool                     $is_title   Optional. Default false.
-	 * @param bool                     $force_feed Optional. Default false.
-	 * @param \PHP_Typography\Settings $settings   Optional. A settings object. Default null (which means the internal settings will be used).
+	 * @param string        $text       Required.
+	 * @param bool          $is_title   Optional. Default false.
+	 * @param bool          $force_feed Optional. Default false.
+	 * @param Settings|null $settings   Optional. A settings object. Default null (which means the internal settings will be used).
 	 *
 	 * @return string The processed $text.
 	 */
-	function process( $text, $is_title = false, $force_feed = false, \PHP_Typography\Settings $settings = null ) {
+	function process( $text, $is_title = false, $force_feed = false, Settings $settings = null ) {
 		$typo = $this->get_php_typo();
 		$hash = ! empty( $settings ) ? $settings->get_hash() : $this->cached_settings_hash;
 		$key  = 'typo_' . base64_encode( md5( $text, true ) . $hash );
