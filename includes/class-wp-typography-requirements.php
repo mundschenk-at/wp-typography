@@ -26,7 +26,15 @@
  */
 
 /**
- * Main wp-Typography plugin class. All WordPress specific code goes here.
+ * This class checks if the required runtime environment is available.
+ *
+ * Included checks:
+ *    - PHP version
+ *    - WordPress version
+ *    - mb_string extension
+ *    - UTF-8 encoding
+ *
+ * Note: All code must be executable on PHP 5.2.
  */
 class WP_Typography_Requirements {
 
