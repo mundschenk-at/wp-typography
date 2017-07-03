@@ -81,43 +81,6 @@ abstract class Input extends Control {
 	}
 
 	/**
-	 * Markup the control itself.
-	 *
-	 * @param string|null $label           Translated label (or null).
-	 * @param string|null $help_text       Translated help text (or null).
-	 *
-	 * @return string
-	 */
-	protected function control_markup( $label, $help_text ) {
-		$markup = '%1$s';
-		$help_text = wp_kses( $help_text, [
-			'code' => [],
-		] );
-
-		if ( ( ! empty( $label ) || ! empty( $this->inline_help ) ) ) {
-			$markup = '<label for="' . esc_attr( $this->id ) . '">';
-
-			if ( ! empty( $label ) ) {
-				$markup .= $label;
-			} else {
-				$markup .= '%1$s';
-			}
-
-			if ( ! empty( $this->inline_help ) && ! empty( $help_text ) ) {
-				$markup .= ' <span class="description">' . $help_text . '</span>';
-			}
-
-			$markup .= '</label>';
-		}
-
-		if ( empty( $this->inline_help ) && ! empty( $help_text ) ) {
-			$markup .= '<p class="description">' . $help_text . '</p>';
-		}
-
-		return $markup;
-	}
-
-	/**
 	 * Render control-specific HTML.
 	 *
 	 * @param string|null $label           Translated label (or null).

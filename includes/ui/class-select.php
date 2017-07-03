@@ -100,33 +100,7 @@ class Select extends Control {
 	 * @param string      $html_attributes An HTML attribute string (may be empty).
 	 */
 	protected function internal_render( $label, $help_text, $html_attributes ) {
-		$control_markup = '';
-		$help_text = wp_kses( $help_text, [
-			'code' => [],
-		] );
-
-		if ( ( ! empty( $label ) || ! empty( $this->inline_help ) ) ) {
-			$control_markup .= '<label for="' . esc_attr( $this->id ) . '">';
-
-			if ( ! empty( $label ) ) {
-				$control_markup .= $label;
-			} else {
-				$control_markup .= '%1$s';
-			}
-
-			if ( ! empty( $this->inline_help ) && ! empty( $label ) ) {
-				$control_markup .= ' <span class="description">' . $help_text . '</span>';
-			}
-
-			$control_markup .= '</label>';
-		} else {
-			$control_markup .= '%1$s';
-		}
-
-		// Non-inline help.
-		if ( empty( $this->inline_help ) && ! empty( $help_text ) ) {
-			$control_markup .= '<p class="description">' . $help_text . '</p>';
-		}
+		$control_markup = $this->control_markup( $label, $help_text );
 
 		$select_markup = '<select id="' . esc_attr( $this->id ) . '" name="' . esc_attr( $this->id ) . ' ' . $html_attributes . '>';
 		foreach ( $this->options as $option_value => $display ) {
