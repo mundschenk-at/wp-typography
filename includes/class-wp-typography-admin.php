@@ -213,9 +213,9 @@ class WP_Typography_Admin {
 	/**
 	 * Initialize displayable strings for the plugin settings page.
 	 *
-	 * @return [
-	 *     'translated anchor text' => 'URL'
-	 * ]
+	 * @return array {
+	 *     @type string $translated_anchor_text A URL.
+	 * }
 	 */
 	function initialize_resource_links() {
 		return [
@@ -253,9 +253,14 @@ class WP_Typography_Admin {
 	/**
 	 * Initialize displayable strings for the plugin settings page.
 	 *
-	 * @return [
-	 *      'id' => 'translated heading'
-	 * ]
+	 * @return array {
+	 *      @type array $id {
+	 *            The tab ID.
+	 *
+	 *            @type string $heading     Tab heading (translated).
+	 *            @type string $description Tab description (translated).
+	 *      }
+	 * }
 	 */
 	function initialize_form_tabs() {
 
@@ -287,12 +292,15 @@ class WP_Typography_Admin {
 	/**
 	 * Initialize displayable strings for the plugin settings page.
 	 *
-	 * @return [
-	 *  'id' => [
-	 *          'heading'   => string Fieldset Name,     // REQUIRED
-	 *          'tab_id'    => string Parent Section ID, // REQUIRED
-	 *  ],
-	 * ]
+	 * @return array {
+	 *         @type array $id {
+	 *               The form ID.
+	 *
+	 *               @type string $heading     Section name (translated).
+	 *               @type string $description Section description (translated).
+	 *               @type string $tab_id      Tab ID.
+	 *         }
+	 * }
 	 */
 	function initialize_form_sections() {
 
@@ -314,19 +322,9 @@ class WP_Typography_Admin {
 	/**
 	 * Initialize displayable strings for the plugin settings page.
 	 *
-	 * @return [
-	 *       "id" => [
-	 *          'tab_id'        => string nav tab ID,       // REQUIRED
-	 *          'section'       => string section ID,       // OPTIONAL
-	 *          'label'         => string Label Content,    // OPTIONAL
-	 *          'help_text'     => string Help Text,        // OPTIONAL
-	 *          'control'       => string Control,          // REQUIRED
-	 *          'input_type'    => string Control Type,     // OPTIONAL
-	 *          'attributes'    => array HTML attributes,   // OPTIONAL
-	 *          'option_values' => [value=>text, ... ] // OPTIONAL, only for controls of type 'select'
-	 *          'default'       => string Default Value,    // REQUIRED (although it may be an empty string)
-	 *       ],
-	 * ]
+	 * @return array {
+	 *         @type Control $id A control object.
+	 * }
 	 */
 	function initialize_controls() {
 		$controls = [
