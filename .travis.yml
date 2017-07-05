@@ -23,9 +23,7 @@ matrix:
         # aliased to 5.2.17
         - php: '5.2'
           env: CHECKING_PHP52=1
-        # minimum version for activating wp-Typography 5.4.0, Travis-CI has 5.4.??
-        - php: '5.4'
-        # aliased to a recent 5.6.x version
+        # minimum version for activating wp-Typography 5.6.0, aliased to a recent 5.6.x version
         - php: '5.6'
         # aliased to a recent 7.0 version
         - php: '7.0'
@@ -74,7 +72,7 @@ script:
     # Generate list of relevant PHP files.
     - mkdir $PHP_FILES_DIR
     - find -L . -not \( -path ./tests -prune \) -name '*.php' > $PHP_FILES_LIST
-    - cat $PHP_FILES_LIST | grep -v -e vendor/ -e build/ -e node_modules/ -e php_typography/_language_names.php > $PHPCS_FILES_LIST
+    - cat $PHP_FILES_LIST | grep -v -e vendor/ -e build/ -e .phan/ -e node_modules/ -e php_typography/_language_names.php > $PHPCS_FILES_LIST
     # Search for PHP syntax errors.
     - if [[ "$CHECKING_PHP52" == "1" ]]; then find -L . -name 'wp-typography.php' -print0 | xargs -0 -n 1 -P 4 php -l; fi
     - if [[ "$CHECKING_PHP52" == "1" ]]; then find -L . -name 'class-wp-typography-requirements.php' -print0 | xargs -0 -n 1 -P 4 php -l; fi

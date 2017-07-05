@@ -26,7 +26,15 @@
  */
 
 /**
- * Main wp-Typography plugin class. All WordPress specific code goes here.
+ * This class checks if the required runtime environment is available.
+ *
+ * Included checks:
+ *    - PHP version
+ *    - WordPress version
+ *    - mb_string extension
+ *    - UTF-8 encoding
+ *
+ * Note: All code must be executable on PHP 5.2.
  */
 class WP_Typography_Requirements {
 
@@ -48,7 +56,7 @@ class WP_Typography_Requirements {
 	 * @var array A Hash containing the version requirements for the plugin.
 	 */
 	private $install_requirements = array(
-		'PHP Version'       => '5.4.0',
+		'PHP Version'       => '5.6.0',
 		'WordPress Version' => '4.4',
 		'Multibyte'         => true,
 		'UTF-8'             => true,
@@ -107,7 +115,11 @@ class WP_Typography_Requirements {
 		if ( ! $requirements_met && is_admin() ) {
 			// Load text domain to ensure translated admin notices.
 			load_plugin_textdomain( 'wp-typography', false, dirname( $this->local_plugin_path ) . '/translations/' );
-			/* add_action( 'admin_init', array( $this, 'deactivate_plugin' ) ); */
+
+			/*
+				Not sure if we should actually auto-deactivate the plugin.
+				add_action( 'admin_init', array( $this, 'deactivate_plugin' ) );
+			 */
 		}
 
 		return $requirements_met;
@@ -126,14 +138,11 @@ class WP_Typography_Requirements {
 	 * @return boolean
 	 */
 	private function check_multibyte_support() {
-		if ( function_exists( 'mb_strlen' )     &&
-			 function_exists( 'mb_strtolower' ) &&
-			 function_exists( 'mb_substr' )      &&
-			 function_exists( 'mb_detect_encoding' ) ) {
-			return true;
-		 } else {
-			 return false;
-		 }
+		return
+			function_exists( 'mb_strlen' ) &&
+			function_exists( 'mb_strtolower' ) &&
+			function_exists( 'mb_substr' ) &&
+			function_exists( 'mb_detect_encoding' );
 	}
 
 	/**
@@ -151,53 +160,60 @@ class WP_Typography_Requirements {
 	function admin_notices_wp_version_incompatible() {
 		global $wp_version;
 
-		/* translators: 1: plugin name 2: target WordPress version number 3: actual WordPress version number */
-		$this->display_error_notice( __( 'The activated plugin %1$s requires WordPress version %2$s or later. You are running WordPress version %3$s. Please deactivate this plugin, or upgrade your installation of WordPress.', 'wp-typography' ),
-									 "<strong>{$this->plugin_name}</strong>",
-									 $this->install_requirements['WordPress Version'],
-									 $wp_version );
+		$this->display_error_notice(
+			/* translators: 1: plugin name 2: target WordPress version number 3: actual WordPress version number */
+			__( 'The activated plugin %1$s requires WordPress version %2$s or later. You are running WordPress version %3$s. Please deactivate this plugin, or upgrade your installation of WordPress.', 'wp-typography' ),
+			"<strong>{$this->plugin_name}</strong>",
+			$this->install_requirements['WordPress Version'],
+			$wp_version
+		);
 	}
 
 	/**
 	 * Print 'PHP version incompatible' admin notice
 	 */
 	function admin_notices_php_version_incompatible() {
-		/* translators: 1: plugin name 2: target PHP version number 3: actual PHP version number */
-		$this->display_error_notice( __( 'The activated plugin %1$s requires PHP %2$s or later. Your server is running PHP %3$s. Please deactivate this plugin, or upgrade your server\'s installation of PHP.', 'wp-typography' ),
-									 "<strong>{$this->plugin_name}</strong>",
-									 $this->install_requirements['PHP Version'],
-									 phpversion() );
+		$this->display_error_notice(
+			/* translators: 1: plugin name 2: target PHP version number 3: actual PHP version number */
+			__( 'The activated plugin %1$s requires PHP %2$s or later. Your server is running PHP %3$s. Please deactivate this plugin, or upgrade your server\'s installation of PHP.', 'wp-typography' ),
+			"<strong>{$this->plugin_name}</strong>",
+			$this->install_requirements['PHP Version'],
+			phpversion()
+		);
 	}
 
 	/**
 	 * Print 'mbstring extension missing' admin notice
 	 */
 	function admin_notices_mbstring_incompatible() {
-		/* translators: 1: plugin name 2: mbstring documentation URL */
-		$this->display_error_notice( __( 'The activated plugin %1$s requires the mbstring PHP extension to be enabled on your server. Please deactivate this plugin, or <a href="%2$s">enable the extension</a>.', 'wp-typography' ),
-									 "<strong>{$this->plugin_name}</strong>",
-									 'http://www.php.net/manual/en/mbstring.installation.php' );
+		$this->display_error_notice(
+			/* translators: 1: plugin name 2: mbstring documentation URL */
+			__( 'The activated plugin %1$s requires the mbstring PHP extension to be enabled on your server. Please deactivate this plugin, or <a href="%2$s">enable the extension</a>.', 'wp-typography' ),
+			"<strong>{$this->plugin_name}</strong>",
+			'http://www.php.net/manual/en/mbstring.installation.php'
+		);
 	}
 
 	/**
 	 * Print 'Charset incompatible' admin notice
 	 */
 	function admin_notices_charset_incompatible() {
-		/* translators: 1: plugin name 2: current character encoding 3: options URL */
-		$this->display_error_notice( __( 'The activated plugin %1$s requires your blog use the UTF-8 character encoding. You have set your blogs encoding to %2$s. Please deactivate this plugin, or <a href="%3$s">change your character encoding to UTF-8</a>.', 'wp-typography' ),
-									 "<strong>{$this->plugin_name}</strong>",
-									 get_bloginfo( 'charset' ),
-									 '/wp-admin/options-reading.php' );
+		$this->display_error_notice(
+			/* translators: 1: plugin name 2: current character encoding 3: options URL */
+			__( 'The activated plugin %1$s requires your blog use the UTF-8 character encoding. You have set your blogs encoding to %2$s. Please deactivate this plugin, or <a href="%3$s">change your character encoding to UTF-8</a>.', 'wp-typography' ),
+			"<strong>{$this->plugin_name}</strong>",
+			get_bloginfo( 'charset' ),
+			'/wp-admin/options-reading.php'
+		);
 	}
 
 	/**
 	 * Show an error message in the admin area.
 	 *
-	 * @param string $format     An `sprintf` format string.
-	 * @param mixed  $param1,... An optional number of parameters for sprintf.
+	 * @param string $format ... An `sprintf` format string, followd by an unspecified number of optional parameters.
 	 */
 	private function display_error_notice( $format ) {
-		if ( func_num_args() < 1 ) {
+		if ( func_num_args() < 1 || empty( $format ) ) {
 			return; // abort.
 		}
 
