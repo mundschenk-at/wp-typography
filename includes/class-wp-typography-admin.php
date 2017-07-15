@@ -806,7 +806,8 @@ class WP_Typography_Admin {
 				'attributes'    => [
 					'rows' => '10',
 				],
-				'default'       => 'sup {
+				'default'       =>
+				'sup {
 	vertical-align: 60%;
 	font-size: 75%;
 	line-height: 100%;
