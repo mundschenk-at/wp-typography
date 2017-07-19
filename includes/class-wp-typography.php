@@ -337,76 +337,7 @@ final class WP_Typography {
 
 		// Apply our filters.
 		if ( ! is_admin() ) {
-			/**
-			 * Filters the priority used for wp-Typography's text processing filters.
-			 *
-			 * When NextGen Gallery is detected, the priority is set to PHP_INT_MAX.
-			 *
-			 * @since 3.2.0
-			 *
-			 * @param int $priority The filter priority. Default 9999.
-			 */
-			$priority = apply_filters( 'typo_filter_priority', $this->filter_priority );
-
-			// Add filters for "full" content.
-			/**
-			 * Disables automatic filtering by wp-Typography.
-			 *
-			 * @since 3.6.0
-			 *
-			 * @param bool   $disable      Whether to disable automatic filtering. Default false.
-			 * @param string $filter_group Which filters to disable. Possible values 'content', 'heading', 'title', 'acf'.
-			 */
-			if ( ! apply_filters( 'typo_disable_filtering', false, 'content' ) ) {
-				add_filter( 'comment_author',    [ $this, 'process' ], $priority );
-				add_filter( 'comment_text',      [ $this, 'process' ], $priority );
-				add_filter( 'comment_text',      [ $this, 'process' ], $priority );
-				add_filter( 'the_content',       [ $this, 'process' ], $priority );
-				add_filter( 'term_name',         [ $this, 'process' ], $priority );
-				add_filter( 'term_description',  [ $this, 'process' ], $priority );
-				add_filter( 'link_name',         [ $this, 'process' ], $priority );
-				add_filter( 'the_excerpt',       [ $this, 'process' ], $priority );
-				add_filter( 'the_excerpt_embed', [ $this, 'process' ], $priority );
-				add_filter( 'widget_text',       [ $this, 'process' ], $priority );
-			}
-
-			// Add filters for headings.
-			/** This filter is documented in class-wp-typography.php */
-			if ( ! apply_filters( 'typo_disable_filtering', false, 'heading' ) ) {
-				add_filter( 'the_title',            [ $this, 'process_title' ], $priority );
-				add_filter( 'single_post_title',    [ $this, 'process_title' ], $priority );
-				add_filter( 'single_cat_title',     [ $this, 'process_title' ], $priority );
-				add_filter( 'single_tag_title',     [ $this, 'process_title' ], $priority );
-				add_filter( 'single_month_title',   [ $this, 'process_title' ], $priority );
-				add_filter( 'single_month_title',   [ $this, 'process_title' ], $priority );
-				add_filter( 'nav_menu_attr_title',  [ $this, 'process_title' ], $priority );
-				add_filter( 'nav_menu_description', [ $this, 'process_title' ], $priority );
-				add_filter( 'widget_title',         [ $this, 'process_title' ], $priority );
-				add_filter( 'list_cats',            [ $this, 'process_title' ], $priority );
-			}
-
-			// Extra care needs to be taken with the <title> tag.
-			/** This filter is documented in class-wp-typography.php */
-			if ( ! apply_filters( 'typo_disable_filtering', false, 'title' ) ) {
-				add_filter( 'wp_title',             [ $this, 'process_feed' ],        $priority ); // WP < 4.4.
-				add_filter( 'document_title_parts', [ $this, 'process_title_parts' ], $priority );
-				add_filter( 'wp_title_parts',       [ $this, 'process_title_parts' ], $priority ); // WP < 4.4.
-			}
-
-			// 3rd-party plugins
-			// ACF (https://www.advancedcustomfields.com)
-			/** This filter is documented in class-wp-typography.php */
-			if ( class_exists( 'acf' ) && function_exists( 'acf_get_setting' ) && ! apply_filters( 'typo_disable_filtering', false, 'acf' ) ) {
-				if ( 5 === intval( acf_get_setting( 'version' ) ) ) { // ACF Pro (version 5).
-					add_filter( 'acf/format_value/type=wysiwyg',  [ $this, 'process' ],       $priority );
-					add_filter( 'acf/format_value/type=textarea', [ $this, 'process' ],       $priority );
-					add_filter( 'acf/format_value/type=text',     [ $this, 'process_title' ], $priority );
-				} elseif ( 4 === intval( acf_get_setting( 'version' ) ) ) { // ACF (version 4).
-					add_filter( 'acf/format_value_for_api/type=wysiwyg',  [ $this, 'process' ],       $priority );
-					add_filter( 'acf/format_value_for_api/type=textarea', [ $this, 'process' ],       $priority );
-					add_filter( 'acf/format_value_for_api/type=text',     [ $this, 'process_title' ], $priority );
-				}
-			}
+			$this->add_content_filters();
 		}
 
 		// Add CSS Hook styling.
@@ -416,6 +347,84 @@ final class WP_Typography {
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 	}
 
+	/**
+	 * Adds content filter handlers.
+	 */
+	public function add_content_filters() {
+		/**
+		 * Filters the priority used for wp-Typography's text processing filters.
+		 *
+		 * When NextGen Gallery is detected, the priority is set to PHP_INT_MAX.
+		 *
+		 * @since 3.2.0
+		 *
+		 * @param int $priority The filter priority. Default 9999.
+		 */
+		$priority = apply_filters( 'typo_filter_priority', $this->filter_priority );
+
+		// Add filters for "full" content.
+		/**
+		 * Disables automatic filtering by wp-Typography.
+		 *
+		 * @since 3.6.0
+		 *
+		 * @param bool   $disable      Whether to disable automatic filtering. Default false.
+		 * @param string $filter_group Which filters to disable. Possible values 'content', 'heading', 'title', 'acf'.
+		 */
+		if ( ! apply_filters( 'typo_disable_filtering', false, 'content' ) ) {
+			add_filter( 'comment_author',    [ $this, 'process' ], $priority );
+			add_filter( 'comment_text',      [ $this, 'process' ], $priority );
+			add_filter( 'comment_text',      [ $this, 'process' ], $priority );
+			add_filter( 'the_content',       [ $this, 'process' ], $priority );
+			add_filter( 'term_name',         [ $this, 'process' ], $priority );
+			add_filter( 'term_description',  [ $this, 'process' ], $priority );
+			add_filter( 'link_name',         [ $this, 'process' ], $priority );
+			add_filter( 'the_excerpt',       [ $this, 'process' ], $priority );
+			add_filter( 'the_excerpt_embed', [ $this, 'process' ], $priority );
+			add_filter( 'widget_text',       [ $this, 'process' ], $priority );
+		}
+
+		// Add filters for headings.
+		/** This filter is documented in class-wp-typography.php */
+		if ( ! apply_filters( 'typo_disable_filtering', false, 'heading' ) ) {
+			add_filter( 'the_title',            [ $this, 'process_title' ], $priority );
+			add_filter( 'single_post_title',    [ $this, 'process_title' ], $priority );
+			add_filter( 'single_cat_title',     [ $this, 'process_title' ], $priority );
+			add_filter( 'single_tag_title',     [ $this, 'process_title' ], $priority );
+			add_filter( 'single_month_title',   [ $this, 'process_title' ], $priority );
+			add_filter( 'single_month_title',   [ $this, 'process_title' ], $priority );
+			add_filter( 'nav_menu_attr_title',  [ $this, 'process_title' ], $priority );
+			add_filter( 'nav_menu_description', [ $this, 'process_title' ], $priority );
+			add_filter( 'widget_title',         [ $this, 'process_title' ], $priority );
+			add_filter( 'list_cats',            [ $this, 'process_title' ], $priority );
+		}
+
+		// Extra care needs to be taken with the <title> tag.
+		/** This filter is documented in class-wp-typography.php */
+		if ( ! apply_filters( 'typo_disable_filtering', false, 'title' ) ) {
+			add_filter( 'wp_title',             [ $this, 'process_feed' ],        $priority ); // WP < 4.4.
+			add_filter( 'document_title_parts', [ $this, 'process_title_parts' ], $priority );
+			add_filter( 'wp_title_parts',       [ $this, 'process_title_parts' ], $priority ); // WP < 4.4.
+		}
+
+		/**
+		 * 3rd-party plugins
+		 */
+
+		// ACF (https://www.advancedcustomfields.com).
+		/** This filter is documented in class-wp-typography.php */
+		if ( class_exists( 'acf' ) && function_exists( 'acf_get_setting' ) && ! apply_filters( 'typo_disable_filtering', false, 'acf' ) ) {
+			if ( 5 === intval( acf_get_setting( 'version' ) ) ) { // ACF Pro (version 5).
+				add_filter( 'acf/format_value/type=wysiwyg',  [ $this, 'process' ],       $priority );
+				add_filter( 'acf/format_value/type=textarea', [ $this, 'process' ],       $priority );
+				add_filter( 'acf/format_value/type=text',     [ $this, 'process_title' ], $priority );
+			} elseif ( 4 === intval( acf_get_setting( 'version' ) ) ) { // ACF (version 4).
+				add_filter( 'acf/format_value_for_api/type=wysiwyg',  [ $this, 'process' ],       $priority );
+				add_filter( 'acf/format_value_for_api/type=textarea', [ $this, 'process' ],       $priority );
+				add_filter( 'acf/format_value_for_api/type=text',     [ $this, 'process_title' ], $priority );
+			}
+		}
+	}
 
 	/**
 	 * Processes a heading text fragment.

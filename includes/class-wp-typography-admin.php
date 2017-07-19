@@ -29,6 +29,7 @@
 use \WP_Typography\UI;
 
 use \PHP_Typography\PHP_Typography;
+use \PHP_Typography\Arrays;
 
 /**
  * The admin-specific functionality of the plugin.
@@ -193,21 +194,9 @@ class WP_Typography_Admin {
 	 * }
 	 */
 	public function get_default_settings() {
-		return self::array_map_assoc( function( $control_id, $control ) {
+		return Arrays::array_map_assoc( function( $control_id, $control ) {
 			return [ $control_id, $control->get_default() ];
 		}, $this->admin_form_controls );
-	}
-
-	/**
-	 * Provides an array_map implementation with control over resulting array's keys.
-	 *
-	 * @param  callable $callable A callback function that needs to $key, $value pairs.
-	 * @param  array    $array    The array.
-	 *
-	 * @return array
-	 */
-	private static function array_map_assoc( callable $callable, array $array ) {
-		return array_column( array_map( $callable, array_keys( $array ), $array ), 1, 0 );
 	}
 
 	/**
@@ -817,7 +806,8 @@ class WP_Typography_Admin {
 				'attributes'    => [
 					'rows' => '10',
 				],
-				'default'       => 'sup {
+				'default'       =>
+				'sup {
 	vertical-align: 60%;
 	font-size: 75%;
 	line-height: 100%;
@@ -857,7 +847,7 @@ sub {
 		];
 
 		// Add ID as index.
-		$controls = self::array_map_assoc( function( $key, $control ) {
+		$controls = Arrays::array_map_assoc( function( $key, $control ) {
 			return [ $control->get_id(), $control ];
 		}, $controls );
 
