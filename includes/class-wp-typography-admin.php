@@ -763,43 +763,7 @@ class WP_Typography_Admin {
 				'attributes'    => [
 					'rows' => '10',
 				],
-				'default'       =>
-				'sup {
-	vertical-align: 60%;
-	font-size: 75%;
-	line-height: 100%;
-}
-sub {
-	vertical-align: -10%;
-	font-size: 75%;
-	line-height: 100%;
-}
-.amp {
-	font-family: Baskerville, "Goudy Old Style", "Palatino", "Book Antiqua", "Warnock Pro", serif;
-	font-weight: normal;
-	font-style: italic;
-	font-size: 1.1em;
-	line-height: 1em;
-}
-.caps {
-	font-size: 90%;
-}
-.dquo {
-	margin-left:-.40em;
-}
-.quo {
-	margin-left:-.2em;
-}
-/* Double quote (") marks */
-.pull-double{ margin-left:-.38em }
-.push-double{ margin-right:.38em }
-
-/* Single quote (\') marks */
-.pull-single{ margin-left:-.15em }
-.push-single{ margin-right:.15em }
-
-/* because formatting .numbers should consider your current font settings, we will not style it here */
-',
+				'default'       => file_get_contents( dirname( __DIR__ ) . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'default-styles.css' ),
 			] ),
 		];
 

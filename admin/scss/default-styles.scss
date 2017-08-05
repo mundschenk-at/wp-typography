@@ -1,0 +1,62 @@
+// wp-Typography default styles
+// scss-lint:disable Comment
+//
+/*
+ * Styled sub- and superscripts.
+ */
+%sub-and-superscript {
+  font-size: 75%;
+  line-height: 100%;
+}
+
+sup {
+  @extend %sub-and-superscript;
+
+  vertical-align: 60%;
+}
+
+sub {
+  @extend %sub-and-superscript;
+
+  vertical-align: -10%;
+}
+
+/*
+ * Styled ampersands.
+ */
+.amp {
+  font-family: Baskerville, "Goudy Old Style", Palatino, "Book Antiqua", "Warnock Pro", serif;
+  font-size: 1.1em;
+  font-style: italic;
+  font-weight: normal;
+  line-height: 1em;
+}
+
+/*
+ * Words in caps.
+ */
+.caps { font-size: 90%; }
+
+/*
+ * Styled initial quotes.
+ */
+$initial-quotes-margin: .4em;
+.dquo { margin-left: -$initial-quotes-margin; }
+.quo { margin-left: -$initial-quotes-margin / 2; }
+
+/*
+ * Hanging punctuation.
+ */
+$single-quote-offset: .15em;
+$double-quote-offset: .38em;
+// Single quote (') marks
+.pull-single { margin-left: -$single-quote-offset; }
+.push-single { margin-right: $single-quote-offset; }
+
+// Double quote (") marks
+.pull-double { margin-left: -$double-quote-offset; }
+.push-double { margin-right: $double-quote-offset; }
+
+/*
+ * Because formatting .numbers should consider your current font settings, we will not do it here.
+ */
