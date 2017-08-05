@@ -393,39 +393,21 @@ class WP_Typography_Admin {
 				'short'         => __( 'Character limits', 'wp-typography' ),
 				/* translators: 1: number dropdown */
 				'label'         => __( 'Do not hyphenate words with less than %1$s letters.', 'wp-typography' ),
-				'option_values' => [
-					4  => 4,
-					5  => 5,
-					6  => 6,
-					7  => 7,
-					8  => 8,
-					9  => 9,
-					10 => 10,
-				],
+				'option_values' => self::get_numeric_option_values( [ 4, 5, 6, 7, 8, 9, 10 ] ),
 				'default'       => 5,
 			] ),
 			new UI\Select( self::OPTION_GROUP, 'typo_hyphenate_min_before', [
 				'tab_id'        => 'hyphenation',
 				/* translators: 1: number dropdown */
 				'label'         => __( 'Keep at least %1$s letters before hyphenation.', 'wp-typography' ),
-				'option_values' => [
-					2 => 2,
-					3 => 3,
-					4 => 4,
-					5 => 5,
-				],
+				'option_values' => self::get_numeric_option_values( [ 2, 3, 4, 5 ] ),
 				'default'       => 3,
 			] ),
 			new UI\Select( self::OPTION_GROUP, 'typo_hyphenate_min_after', [
 				'tab_id'        => 'hyphenation',
 				/* translators: 1: number dropdown */
 				'label'         => __( 'Keep at least %1$s letters after hyphenation.', 'wp-typography' ),
-				'option_values' => [
-					2 => 2,
-					3 => 3,
-					4 => 4,
-					5 => 5,
-				],
+				'option_values' => self::get_numeric_option_values( [ 2, 3, 4, 5 ] ),
 				'default'       => 2,
 			] ),
 			new UI\Textarea( self::OPTION_GROUP, 'typo_hyphenate_exceptions', [
@@ -694,16 +676,7 @@ class WP_Typography_Admin {
 				'section'       => 'enable-wrapping',
 				/* translators: 1: number dropdown */
 				'label'         => __( 'Keep at least the last %1$s characters of a URL together.', 'wp-typography' ),
-				'option_values' => [
-					3  => 3,
-					4  => 4,
-					5  => 5,
-					6  => 6,
-					7  => 7,
-					8  => 8,
-					9  => 9,
-					10 => 10,
-				],
+				'option_values' => self::get_numeric_option_values( [ 3, 4, 5, 6, 7, 8, 9, 10 ] ),
 				'default'       => 3,
 			] ),
 			new UI\Checkbox_Input( self::OPTION_GROUP, 'typo_prevent_widows', [
@@ -721,16 +694,7 @@ class WP_Typography_Admin {
 				'section'       => 'enable-wrapping',
 				/* translators: 1: number dropdown */
 				'label'         => __( 'Only protect widows with %1$s or fewer letters.', 'wp-typography' ),
-				'option_values' => [
-					4   => 4,
-					5   => 5,
-					6   => 6,
-					7   => 7,
-					8   => 8,
-					9   => 9,
-					10  => 10,
-					100 => 100,
-				],
+				'option_values' => self::get_numeric_option_values( [ 4, 5, 6, 7, 8, 9, 10, 100 ] ),
 				'default'       => 5,
 			] ),
 			new UI\Select( self::OPTION_GROUP, 'typo_widow_max_pull', [
@@ -738,16 +702,7 @@ class WP_Typography_Admin {
 				'section'       => 'enable-wrapping',
 				/* translators: 1: number dropdown */
 				'label'         => __( 'Pull at most %1$s letters from the previous line to keep the widow company.', 'wp-typography' ),
-				'option_values' => [
-					4   => 4,
-					5   => 5,
-					6   => 6,
-					7   => 7,
-					8   => 8,
-					9   => 9,
-					10  => 10,
-					100 => 100,
-				],
+				'option_values' => self::get_numeric_option_values( [ 4, 5, 6, 7, 8, 9, 10, 100 ] ),
 				'default'       => 5,
 			] ),
 			new UI\Checkbox_Input( self::OPTION_GROUP, 'typo_style_amps', [
@@ -931,6 +886,17 @@ sub {
 		$all_tabs   = array_keys( $this->admin_form_tabs ); // PHP 5.3 workaround.
 
 		return ! empty( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : $all_tabs[0];
+	}
+
+	/**
+	 * Return numeric values as in associative form $value => $value.
+	 *
+	 * @param array $values Option values.
+	 *
+	 * @return array
+	 */
+	private static function get_numeric_option_values( array $values ) {
+		return array_combine( $values, $values );
 	}
 
 	/**
