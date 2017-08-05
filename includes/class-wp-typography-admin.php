@@ -29,6 +29,8 @@
 use \WP_Typography\UI;
 
 use \PHP_Typography\PHP_Typography;
+use \PHP_Typography\Settings\Dash_Style;
+use \PHP_Typography\Settings\Quote_Style;
 use \PHP_Typography\Arrays;
 
 /**
@@ -391,39 +393,21 @@ class WP_Typography_Admin {
 				'short'         => __( 'Character limits', 'wp-typography' ),
 				/* translators: 1: number dropdown */
 				'label'         => __( 'Do not hyphenate words with less than %1$s letters.', 'wp-typography' ),
-				'option_values' => [
-					4  => 4,
-					5  => 5,
-					6  => 6,
-					7  => 7,
-					8  => 8,
-					9  => 9,
-					10 => 10,
-				],
+				'option_values' => self::get_numeric_option_values( [ 4, 5, 6, 7, 8, 9, 10 ] ),
 				'default'       => 5,
 			] ),
 			new UI\Select( self::OPTION_GROUP, 'typo_hyphenate_min_before', [
 				'tab_id'        => 'hyphenation',
 				/* translators: 1: number dropdown */
 				'label'         => __( 'Keep at least %1$s letters before hyphenation.', 'wp-typography' ),
-				'option_values' => [
-					2 => 2,
-					3 => 3,
-					4 => 4,
-					5 => 5,
-				],
+				'option_values' => self::get_numeric_option_values( [ 2, 3, 4, 5 ] ),
 				'default'       => 3,
 			] ),
 			new UI\Select( self::OPTION_GROUP, 'typo_hyphenate_min_after', [
 				'tab_id'        => 'hyphenation',
 				/* translators: 1: number dropdown */
 				'label'         => __( 'Keep at least %1$s letters after hyphenation.', 'wp-typography' ),
-				'option_values' => [
-					2 => 2,
-					3 => 3,
-					4 => 4,
-					5 => 5,
-				],
+				'option_values' => self::get_numeric_option_values( [ 2, 3, 4, 5 ] ),
 				'default'       => 2,
 			] ),
 			new UI\Textarea( self::OPTION_GROUP, 'typo_hyphenate_exceptions', [
@@ -469,46 +453,46 @@ class WP_Typography_Admin {
 				/* translators: 1: style dropdown */
 				'label'         => __( 'Primary quotation style: Convert <code>"foo"</code> to %1$s.', 'wp-typography' ),
 				'option_values' => [
-					'doubleCurled'             => '&ldquo;foo&rdquo;',
-					'doubleCurledReversed'     => '&rdquo;foo&rdquo;',
-					'doubleLow9'               => '&bdquo;foo&rdquo;',
-					'doubleLow9Reversed'       => '&bdquo;foo&ldquo;',
-					'singleCurled'             => '&lsquo;foo&rsquo;',
-					'singleCurledReversed'     => '&rsquo;foo&rsquo;',
-					'singleLow9'               => '&sbquo;foo&rsquo;',
-					'singleLow9Reversed'       => '&sbquo;foo&lsquo;',
-					'doubleGuillemetsFrench'   => '&laquo;&nbsp;foo&nbsp;&raquo;',
-					'doubleGuillemets'         => '&laquo;foo&raquo;',
-					'doubleGuillemetsReversed' => '&raquo;foo&laquo;',
-					'singleGuillemets'         => '&lsaquo;foo&rsaquo;',
-					'singleGuillemetsReversed' => '&rsaquo;foo&lsaquo;',
-					'cornerBrackets'           => '&#x300c;foo&#x300d;',
-					'whiteCornerBracket'       => '&#x300e;foo&#x300f;',
+					Quote_Style::DOUBLE_CURLED              => '&ldquo;foo&rdquo;',
+					Quote_Style::DOUBLE_CURLED_REVERSED     => '&rdquo;foo&rdquo;',
+					Quote_Style::DOUBLE_LOW_9               => '&bdquo;foo&rdquo;',
+					Quote_Style::DOUBLE_LOW_9_REVERSED      => '&bdquo;foo&ldquo;',
+					Quote_Style::SINGLE_CURLED              => '&lsquo;foo&rsquo;',
+					Quote_Style::SINGLE_CURLED_REVERSED     => '&rsquo;foo&rsquo;',
+					Quote_Style::SINGLE_LOW_9               => '&sbquo;foo&rsquo;',
+					Quote_Style::SINGLE_LOW_9_REVERSED      => '&sbquo;foo&lsquo;',
+					Quote_Style::DOUBLE_GUILLEMETS_FRENCH   => '&laquo;&nbsp;foo&nbsp;&raquo;',
+					Quote_Style::DOUBLE_GUILLEMETS          => '&laquo;foo&raquo;',
+					Quote_Style::DOUBLE_GUILLEMETS_REVERSED => '&raquo;foo&laquo;',
+					Quote_Style::SINGLE_GUILLEMETS          => '&lsaquo;foo&rsaquo;',
+					Quote_Style::SINGLE_GUILLEMETS_REVERSED => '&rsaquo;foo&lsaquo;',
+					Quote_Style::CORNER_BRACKETS            => '&#x300c;foo&#x300d;',
+					Quote_Style::WHITE_CORNER_BRACKETS      => '&#x300e;foo&#x300f;',
 				],
-				'default'       => 'doubleCurled',
+				'default'       => Quote_Style::DOUBLE_CURLED,
 			] ),
 			new UI\Select( self::OPTION_GROUP, 'typo_smart_quotes_secondary', [
 				'tab_id'        => 'character-replacement',
 				/* translators: 1: style dropdown */
 				'label'         => __( "Secondary quotation style: Convert <code>'foo'</code> to %1\$s.", 'wp-typography' ),
 				'option_values' => [
-					'doubleCurled'             => '&ldquo;foo&rdquo;',
-					'doubleCurledReversed'     => '&rdquo;foo&rdquo;',
-					'doubleLow9'               => '&bdquo;foo&rdquo;',
-					'doubleLow9Reversed'       => '&bdquo;foo&ldquo;',
-					'singleCurled'             => '&lsquo;foo&rsquo;',
-					'singleCurledReversed'     => '&rsquo;foo&rsquo;',
-					'singleLow9'               => '&sbquo;foo&rsquo;',
-					'singleLow9Reversed'       => '&sbquo;foo&lsquo;',
-					'doubleGuillemetsFrench'   => '&laquo;&nbsp;foo&nbsp;&raquo;',
-					'doubleGuillemets'         => '&laquo;foo&raquo;',
-					'doubleGuillemetsReversed' => '&raquo;foo&laquo;',
-					'singleGuillemets'         => '&lsaquo;foo&rsaquo;',
-					'singleGuillemetsReversed' => '&rsaquo;foo&lsaquo;',
-					'cornerBrackets'           => '&#x300c;foo&#x300d;',
-					'whiteCornerBracket'       => '&#x300e;foo&#x300f;',
+					Quote_Style::DOUBLE_CURLED              => '&ldquo;foo&rdquo;',
+					Quote_Style::DOUBLE_CURLED_REVERSED     => '&rdquo;foo&rdquo;',
+					Quote_Style::DOUBLE_LOW_9               => '&bdquo;foo&rdquo;',
+					Quote_Style::DOUBLE_LOW_9_REVERSED      => '&bdquo;foo&ldquo;',
+					Quote_Style::SINGLE_CURLED              => '&lsquo;foo&rsquo;',
+					Quote_Style::SINGLE_CURLED_REVERSED     => '&rsquo;foo&rsquo;',
+					Quote_Style::SINGLE_LOW_9               => '&sbquo;foo&rsquo;',
+					Quote_Style::SINGLE_LOW_9_REVERSED      => '&sbquo;foo&lsquo;',
+					Quote_Style::DOUBLE_GUILLEMETS_FRENCH   => '&laquo;&nbsp;foo&nbsp;&raquo;',
+					Quote_Style::DOUBLE_GUILLEMETS          => '&laquo;foo&raquo;',
+					Quote_Style::DOUBLE_GUILLEMETS_REVERSED => '&raquo;foo&laquo;',
+					Quote_Style::SINGLE_GUILLEMETS          => '&lsaquo;foo&rsaquo;',
+					Quote_Style::SINGLE_GUILLEMETS_REVERSED => '&rsaquo;foo&lsaquo;',
+					Quote_Style::CORNER_BRACKETS            => '&#x300c;foo&#x300d;',
+					Quote_Style::WHITE_CORNER_BRACKETS      => '&#x300e;foo&#x300f;',
 				],
-				'default'       => 'singleCurled',
+				'default'       => Quote_Style::SINGLE_CURLED,
 			] ),
 			new UI\Checkbox_Input( self::OPTION_GROUP, 'typo_smart_dashes', [
 				'tab_id'        => 'character-replacement',
@@ -523,10 +507,10 @@ class WP_Typography_Admin {
 				'label'         => __( 'Use the %1$s style for dashes.', 'wp-typography' ),
 				'help_text'     => __( 'In the US, the em dash&#8202;&mdash;&#8202;with no or very little spacing&#8202;&mdash;&#8202;is used for parenthetical expressions, while internationally, the en dash &ndash; with spaces &ndash; is more prevalent.', 'wp-typography' ),
 				'option_values' => [
-					'traditionalUS' => __( 'Traditional US', 'wp-typography' ),
-					'international' => __( 'International', 'wp-typography' ),
+					Dash_Style::TRADITIONAL_US => __( 'Traditional US', 'wp-typography' ),
+					Dash_Style::INTERNATIONAL  => __( 'International', 'wp-typography' ),
 				],
-				'default'       => 'traditionalUS',
+				'default'       => Dash_Style::TRADITIONAL_US,
 			] ),
 			new UI\Checkbox_Input( self::OPTION_GROUP, 'typo_smart_diacritics', [
 				'tab_id'        => 'character-replacement',
@@ -692,16 +676,7 @@ class WP_Typography_Admin {
 				'section'       => 'enable-wrapping',
 				/* translators: 1: number dropdown */
 				'label'         => __( 'Keep at least the last %1$s characters of a URL together.', 'wp-typography' ),
-				'option_values' => [
-					3  => 3,
-					4  => 4,
-					5  => 5,
-					6  => 6,
-					7  => 7,
-					8  => 8,
-					9  => 9,
-					10 => 10,
-				],
+				'option_values' => self::get_numeric_option_values( [ 3, 4, 5, 6, 7, 8, 9, 10 ] ),
 				'default'       => 3,
 			] ),
 			new UI\Checkbox_Input( self::OPTION_GROUP, 'typo_prevent_widows', [
@@ -719,16 +694,7 @@ class WP_Typography_Admin {
 				'section'       => 'enable-wrapping',
 				/* translators: 1: number dropdown */
 				'label'         => __( 'Only protect widows with %1$s or fewer letters.', 'wp-typography' ),
-				'option_values' => [
-					4   => 4,
-					5   => 5,
-					6   => 6,
-					7   => 7,
-					8   => 8,
-					9   => 9,
-					10  => 10,
-					100 => 100,
-				],
+				'option_values' => self::get_numeric_option_values( [ 4, 5, 6, 7, 8, 9, 10, 100 ] ),
 				'default'       => 5,
 			] ),
 			new UI\Select( self::OPTION_GROUP, 'typo_widow_max_pull', [
@@ -736,16 +702,7 @@ class WP_Typography_Admin {
 				'section'       => 'enable-wrapping',
 				/* translators: 1: number dropdown */
 				'label'         => __( 'Pull at most %1$s letters from the previous line to keep the widow company.', 'wp-typography' ),
-				'option_values' => [
-					4   => 4,
-					5   => 5,
-					6   => 6,
-					7   => 7,
-					8   => 8,
-					9   => 9,
-					10  => 10,
-					100 => 100,
-				],
+				'option_values' => self::get_numeric_option_values( [ 4, 5, 6, 7, 8, 9, 10, 100 ] ),
 				'default'       => 5,
 			] ),
 			new UI\Checkbox_Input( self::OPTION_GROUP, 'typo_style_amps', [
@@ -806,43 +763,7 @@ class WP_Typography_Admin {
 				'attributes'    => [
 					'rows' => '10',
 				],
-				'default'       =>
-				'sup {
-	vertical-align: 60%;
-	font-size: 75%;
-	line-height: 100%;
-}
-sub {
-	vertical-align: -10%;
-	font-size: 75%;
-	line-height: 100%;
-}
-.amp {
-	font-family: Baskerville, "Goudy Old Style", "Palatino", "Book Antiqua", "Warnock Pro", serif;
-	font-weight: normal;
-	font-style: italic;
-	font-size: 1.1em;
-	line-height: 1em;
-}
-.caps {
-	font-size: 90%;
-}
-.dquo {
-	margin-left:-.40em;
-}
-.quo {
-	margin-left:-.2em;
-}
-/* Double quote (") marks */
-.pull-double{ margin-left:-.38em }
-.push-double{ margin-right:.38em }
-
-/* Single quote (\') marks */
-.pull-single{ margin-left:-.15em }
-.push-single{ margin-right:.15em }
-
-/* because formatting .numbers should consider your current font settings, we will not style it here */
-',
+				'default'       => file_get_contents( dirname( __DIR__ ) . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'default-styles.css' ),
 			] ),
 		];
 
@@ -929,6 +850,17 @@ sub {
 		$all_tabs   = array_keys( $this->admin_form_tabs ); // PHP 5.3 workaround.
 
 		return ! empty( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : $all_tabs[0];
+	}
+
+	/**
+	 * Return numeric values as in associative form $value => $value.
+	 *
+	 * @param array $values Option values.
+	 *
+	 * @return array
+	 */
+	private static function get_numeric_option_values( array $values ) {
+		return array_combine( $values, $values );
 	}
 
 	/**
