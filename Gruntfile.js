@@ -9,7 +9,6 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
-
         jshint: {
             files: [
                 'js/**/*.js',
@@ -54,7 +53,9 @@ module.exports = function(grunt) {
                         '*.php',
                         'includes/**',
                         'admin/**',
-                        'vendor/**',
+                        'vendor/composer/**',
+                        'vendor/masterminds/html5/src/**',
+                        'vendor/mundschenk-at/php-typography/src/**',
                         'js/**',
                     ],
                     dest: 'build/'
@@ -204,12 +205,6 @@ module.exports = function(grunt) {
             },
         },
 
-        curl: {
-            'update-iana': {
-                src: 'https://data.iana.org/TLD/tlds-alpha-by-domain.txt',
-                dest: 'vendor/IANA/tlds-alpha-by-domain.txt'
-            }
-        },
         regex_extract: {
             options: {
 
