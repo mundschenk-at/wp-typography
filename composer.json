@@ -23,6 +23,8 @@
         "mundschenk-at/php-typography": "dev-master"
     },
 
+    "minimum-stability": "dev",
+
     "autoload": {
         "classmap": ["includes/"]
     },
