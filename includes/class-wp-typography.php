@@ -30,11 +30,6 @@ use \PHP_Typography\Hyphenator_Cache;
 use \PHP_Typography\Settings;
 
 /**
- * Autoload parser classes
- */
-require_once dirname( __DIR__ ) . '/php-typography/php-typography-autoload.php';
-
-/**
  * Main wp-Typography plugin class. All WordPress specific code goes here.
  */
 final class WP_Typography {

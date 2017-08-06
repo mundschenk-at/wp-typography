@@ -1,9 +1,8 @@
 # tmp files
 *~
 
-# Eclipse
-.project
-.settings/*
+# Composer
+vendor/*
 
 # Node.js/Grunt
 node_modules/*

@@ -44,10 +44,10 @@
  *     Hamish Macpherson - http://www.hamstu.com/
  */
 
-/**
- * Autoload our classes
- */
-require_once dirname( __FILE__ ) . '/includes/wp-typography-autoload.php';
+ /**
+  * Autoload requirements in a PHP 5.2 compatible manner.
+  */
+ require_once dirname( __FILE__ ) . '/includes/class-wp-typography-requirements.php';
 
 /**
  * Load the plugin after checking for the necessary PHP version.
@@ -59,9 +59,10 @@ function run_wp_typography() {
 	$requirements = new WP_Typography_Requirements( 'wp-Typography', plugin_basename( __FILE__ ) );
 
 	if ( $requirements->check() ) {
-		/**
-		 * Load version from plugin data
-		 */
+		// Autoload the rest of our classes.
+		require_once __DIR__ . '/vendor/autoload.php';
+
+		// Load version from plugin data.
 		if ( ! function_exists( 'get_plugin_data' ) ) {
 			include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 		}
