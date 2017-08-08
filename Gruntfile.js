@@ -36,7 +36,7 @@ module.exports = function(grunt) {
 	            src: ['includes/**/*.php', 'admin/**/*.php']
 	        },
 	        options: {
-	        	bin: '/usr/local/opt/php-code-sniffer@2.9/bin/phpcs -p -s -v -n --ignore=php-typography/_language_names.php --ignore=tests/perf.php',
+	        	bin: '/usr/local/opt/php-code-sniffer@2.9/bin/phpcs -p -s -v -n --ignore=includes/_language_names.php --ignore=tests/perf.php',
 	            standard: './phpcs.xml'
 	        }
 	    },
@@ -222,8 +222,10 @@ module.exports = function(grunt) {
                     includePath: false
                 },
                 files: {
-
-                    "php-typography/_language_names.php": ['php-typography/lang/*.json', 'php-typography/diacritics/*.json'],
+                    "includes/_language_names.php": [
+                        'vendor/mundschenk-at/php-typography/src/lang/*.json',
+                        'vendor/mundschenk-at/php-typography/src/diacritics/*.json'
+                    ],
                 }
             }
         },
