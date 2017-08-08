@@ -52,15 +52,26 @@ module.exports = function(grunt) {
                         'CHANGELOG.md',
                         '*.php',
                         'includes/**',
-                        'admin/**',
-                        'vendor/**/LICENSE*',
-                        'vendor/**/README*',
-                        'vendor/**/CREDITS*',
+                        'admin/**!(scss)',
                         'vendor/*',
                         'vendor/composer/**/*.php',
                         'vendor/masterminds/html5/src/**/*.php',
                         'vendor/mundschenk-at/php-typography/src/**',
                         'js/**',
+                    ],
+                    dest: 'build/'
+                }],
+            },
+            meta: {
+                files: [{
+                    expand: true,
+                    nonull: false,
+                    src: [
+                        'vendor/**/LICENSE*',
+                        'vendor/**/README*',
+                        'vendor/**/CREDITS*',
+                        'vendor/**/COPYING*',
+                        'vendor/**/CHANGE*',
                     ],
                     dest: 'build/'
                 }],
@@ -261,7 +272,8 @@ module.exports = function(grunt) {
         //		'wp_readme_to_markdown',
         'clean:build',
         'regex_extract:language_names',
-        'copy',
+        'copy:main',
+        'copy:meta',
         'newer:delegate:sass:dist',
         'newer:postcss:dist',
         'newer:minify'
@@ -280,7 +292,8 @@ module.exports = function(grunt) {
     ]);
     grunt.registerTask('assets', [
         'clean:build',
-        'copy',
+        'copy:main',
+        'copy:meta',
         'wp_deploy:assets'
     ]);
 
