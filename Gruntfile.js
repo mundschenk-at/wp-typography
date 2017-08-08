@@ -9,33 +9,6 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
-        shell: {
-            update_html5: {
-                tmpDir: 'vendor/tmp',
-                sourceDir: '<%= shell.update_html5.tmpDir %>/src',
-                targetDir: 'vendor/Masterminds',
-                repository: 'https://github.com/Masterminds/html5-php.git',
-                command: [
-                    'mkdir -p <%= shell.update_html5.tmpDir %>',
-                    'git clone <%= shell.update_html5.repository %> <%= shell.update_html5.tmpDir %>',
-                    'cp -a <%= shell.update_html5.sourceDir %>/* <%= shell.update_html5.targetDir %>',
-                    'rm -rf <%= shell.update_html5.tmpDir %>' // cleanup
-                ].join(' && ')
-            },
-
-            update_patterns: {
-                targetDir: 'php-typography/lang',
-                command: (function() {
-                    var cli = [];
-                    grunt.file.readJSON('php-typography/bin/patterns.json').list.forEach(function(element) {
-                        cli.push('php php-typography/bin/pattern2json.php -l "' + element.name + '" -f ' + element.url + ' > <%= shell.update_patterns.targetDir %>/' + element.short + '.json');
-                    });
-
-                    return cli;
-                })().join(' && ')
-            }
-        },
-
         jshint: {
             files: [
                 'js/**/*.js',
@@ -60,31 +33,14 @@ module.exports = function(grunt) {
 
 	    phpcs: {
 	        plugin: {
-	            src: ['includes/**/*.php', 'php-typography/**/*.php', 'admin/**/*.php', 'tests/**/*.php']
+	            src: ['includes/**/*.php', 'admin/**/*.php']
 	        },
 	        options: {
-	        	bin: '/usr/local/opt/php-code-sniffer@2.9/bin/phpcs -p -s -v -n --ignore=php-typography/_language_names.php --ignore=tests/perf.php',
+	        	bin: '/usr/local/opt/php-code-sniffer@2.9/bin/phpcs -p -s -v -n --ignore=includes/_language_names.php --ignore=tests/perf.php',
 	            standard: './phpcs.xml'
 	        }
 	    },
 
-	    phpunit: {
-	        default: {
-	            options: {
-	            	testsuite: 'wpTypography',
-	            }
-	        },
-	        coverage: {
-	            options: {
-	            	testsuite: 'wpTypography',
-	            	coverageHtml: 'tests/coverage/',
-	            }
-	        },
-	        options: {
-	            colors: true,
-	            configuration: 'phpunit.xml',
-	        }
-	    },
 
         copy: {
             main: {
@@ -96,11 +52,14 @@ module.exports = function(grunt) {
                         'CHANGELOG.md',
                         '*.php',
                         'includes/**',
-                        'php-typography/*.php',
-                        'php-typography/lang/*.json',
-                        'php-typography/diacritics/*.json',
                         'admin/**',
-                        'vendor/**',
+                        'vendor/**/LICENSE*',
+                        'vendor/**/README*',
+                        'vendor/**/CREDITS*',
+                        'vendor/*',
+                        'vendor/composer/**/*.php',
+                        'vendor/masterminds/html5/src/**/*.php',
+                        'vendor/mundschenk-at/php-typography/src/**',
                         'js/**',
                     ],
                     dest: 'build/'
@@ -250,12 +209,6 @@ module.exports = function(grunt) {
             },
         },
 
-        curl: {
-            'update-iana': {
-                src: 'https://data.iana.org/TLD/tlds-alpha-by-domain.txt',
-                dest: 'vendor/IANA/tlds-alpha-by-domain.txt'
-            }
-        },
         regex_extract: {
             options: {
 
@@ -269,17 +222,14 @@ module.exports = function(grunt) {
                     includePath: false
                 },
                 files: {
-
-                    "php-typography/_language_names.php": ['php-typography/lang/*.json', 'php-typography/diacritics/*.json'],
+                    "includes/_language_names.php": [
+                        'vendor/mundschenk-at/php-typography/src/lang/*.json',
+                        'vendor/mundschenk-at/php-typography/src/diacritics/*.json'
+                    ],
                 }
             }
         },
     });
-
-    // update various components
-    grunt.registerTask('update:iana', ['curl:update-iana']);
-    grunt.registerTask('update:html5', ['shell:update_html5']);
-    grunt.registerTask('update:patterns', ['shell:update_patterns']);
 
     // delegate stuff
     grunt.registerTask('delegate', function() {
@@ -318,14 +268,12 @@ module.exports = function(grunt) {
     ]);
 
     grunt.registerTask('deploy', [
-        'phpunit:default',
         'phpcs',
         'jscs',
         'build',
         'wp_deploy:release'
     ]);
     grunt.registerTask('trunk', [
-        'phpunit:default',
         'phpcs',
         'build',
         'wp_deploy:trunk'
@@ -337,7 +285,6 @@ module.exports = function(grunt) {
     ]);
 
     grunt.registerTask('default', [
-        //'phpunit:default',
         'phpcs',
         'jscs',
         'regex_extract:language_names',

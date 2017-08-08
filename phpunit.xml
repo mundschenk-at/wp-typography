@@ -20,7 +20,7 @@
 	    		<directory>php-typography/diacritics</directory>
 	    		<file>php-typography/php-typography-autoload.php</file>
 	    		<file>php-typography/php-typography-debug.php</file>
-	    		<file>php-typography/_language_names.php</file>
+	    		<file>includes/_language_names.php</file>
 	    	</exclude>
 		</whitelist>
 	</filter>

@@ -1,0 +1,35 @@
+{
+    "name": "mundschenk-at/wp-typography",
+    "description": "A WordPress plugin for improving your web typography",
+    "type": "project",
+    "license": "GPL 2.0+",
+    "authors": [
+        {
+            "name": "Peter Putzer",
+            "email": "github@mundschenk.at",
+            "homepage": "https://code.mundschenk.at",
+            "role": "Developer"
+        },
+        {
+            "name": "Jeffrey D. King",
+            "email": "jeff.king@weathersource.com",
+            "homepage": "http://kingdesk.com",
+            "role": "Original author"
+        }
+    ],
+
+    "require": {
+        "php": ">=5.6.0",
+        "mundschenk-at/php-typography": "dev-master"
+    },
+
+    "minimum-stability": "dev",
+
+    "autoload": {
+        "classmap": ["includes/"]
+    },
+
+    "config": {
+        "classmap-authoritative": true
+    }
+}
