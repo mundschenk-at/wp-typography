@@ -45,7 +45,7 @@
  */
 
  /**
-  * Autoload requirements in a PHP 5.2 compatible manner.
+  * Load requirements class in a PHP 5.2 compatible manner.
   */
  require_once dirname( __FILE__ ) . '/includes/class-wp-typography-requirements.php';
 
