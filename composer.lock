@@ -77,12 +77,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/mundschenk-at/php-typography.git",
-                "reference": "2d2662a254959996da7eac10c25ece88ba119926"
+                "reference": "a4d91e18f26bcca46a3cdd4a4cc10c39e9670b24"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mundschenk-at/php-typography/zipball/2d2662a254959996da7eac10c25ece88ba119926",
-                "reference": "2d2662a254959996da7eac10c25ece88ba119926",
+                "url": "https://api.github.com/repos/mundschenk-at/php-typography/zipball/a4d91e18f26bcca46a3cdd4a4cc10c39e9670b24",
+                "reference": "a4d91e18f26bcca46a3cdd4a4cc10c39e9670b24",
                 "shasum": ""
             },
             "require": {
@@ -127,7 +127,7 @@
                 }
             ],
             "description": "A PHP library for improving your web typography",
-            "time": "2017-08-06 22:21:19"
+            "time": "2017-08-07 21:24:18"
         }
     ],
     "packages-dev": [],
