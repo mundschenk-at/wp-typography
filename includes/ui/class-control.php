@@ -62,21 +62,21 @@ abstract class Control {
 	/**
 	 * Short label. Optional.
 	 *
-	 * @var string
+	 * @var string|null
 	 */
 	protected $short;
 
 	/**
 	 * Label content with the position of the control marked as %1$s. Optional.
 	 *
-	 * @var string
+	 * @var string|null
 	 */
 	protected $label;
 
 	/**
 	 * Help text. Optional.
 	 *
-	 * @var string
+	 * @var string|null
 	 */
 	protected $help_text;
 

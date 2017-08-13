@@ -522,7 +522,7 @@ final class WP_Typography {
 		// Needed to initialize settings.
 		$typo = $this->get_php_typo();
 
-		if ( empty( $settings ) ) {
+		if ( null === $settings ) {
 			$settings = $this->php_typo_settings;
 			$hash = $this->cached_settings_hash;
 		} else {
@@ -969,7 +969,7 @@ final class WP_Typography {
 	 */
 	private function _maybe_fix_object( $object ) {
 		if ( ! is_object( $object ) && 'object' === gettype( $object ) ) {
-			$object = unserialize( serialize( $object ) );
+			$object = unserialize( serialize( $object ) ); // @codingStandardsIgnoreLine
 		}
 
 		return $object;

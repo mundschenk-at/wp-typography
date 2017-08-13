@@ -833,7 +833,7 @@ class WP_Typography_Admin {
 	 * @return mixed
 	 */
 	public function filter_update_option( $value, $old_value ) {
-		if ( ! empty( $_POST['typo_restore_defaults'] ) || ! empty( $_POST['typo_clear_cache'] ) ) { // WPCS: CSRF ok.
+		if ( ! empty( $_POST['typo_restore_defaults'] ) || ! empty( $_POST['typo_clear_cache'] ) ) { // WPCS: CSRF ok. Input var okay.
 			return $old_value;
 		} else {
 			return $value;
@@ -847,9 +847,9 @@ class WP_Typography_Admin {
 	 */
 	private function get_active_settings_tab() {
 		// Check active tab.
-		$all_tabs   = array_keys( $this->admin_form_tabs ); // PHP 5.3 workaround.
+		$all_tabs = array_keys( $this->admin_form_tabs ); // PHP 5.3 workaround.
 
-		return ! empty( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : $all_tabs[0];
+		return ! empty( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : $all_tabs[0]; // WPCS: CSRF ok. Input var okay.
 	}
 
 	/**
@@ -871,7 +871,7 @@ class WP_Typography_Admin {
 	 * @return mixed
 	 */
 	public function sanitize_restore_defaults( $input ) {
-		if ( ! empty( $_POST['typo_restore_defaults'] ) ) { // WPCS: CSRF ok.
+		if ( ! empty( $_POST['typo_restore_defaults'] ) ) { // WPCS: CSRF ok. Input var okay.
 			add_settings_error( self::OPTION_GROUP . $this->get_active_settings_tab(), 'defaults-restored', __( 'Settings reset to default values.', 'wp-typography' ), 'updated' );
 		}
 
@@ -886,7 +886,7 @@ class WP_Typography_Admin {
 	 * @return mixed
 	 */
 	public function sanitize_clear_cache( $input ) {
-		if ( ! empty( $_POST['typo_clear_cache'] ) ) { // WPCS: CSRF ok.
+		if ( ! empty( $_POST['typo_clear_cache'] ) ) { // WPCS: CSRF ok. Input var okay.
 			add_settings_error( self::OPTION_GROUP . $this->get_active_settings_tab(), 'cache-cleared', __( 'Cached post content cleared.', 'wp-typography' ), 'notice-info' );
 		}
 
