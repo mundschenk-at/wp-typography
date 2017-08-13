@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "22fd75f33ebd883bce3c70cdfbf860c9",
+    "content-hash": "c4ec26fa5e4e856e17967e008d5ffe01",
     "packages": [
         {
             "name": "masterminds/html5",
@@ -69,20 +69,20 @@
                 "serializer",
                 "xml"
             ],
-            "time": "2017-07-26 14:10:45"
+            "time": "2017-07-26T14:10:45+00:00"
         },
         {
             "name": "mundschenk-at/php-typography",
-            "version": "dev-master",
+            "version": "v5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mundschenk-at/php-typography.git",
-                "reference": "a4d91e18f26bcca46a3cdd4a4cc10c39e9670b24"
+                "reference": "d70afd58b03b0527fb0582f4c8d63ec74c2b3630"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mundschenk-at/php-typography/zipball/a4d91e18f26bcca46a3cdd4a4cc10c39e9670b24",
-                "reference": "a4d91e18f26bcca46a3cdd4a4cc10c39e9670b24",
+                "url": "https://api.github.com/repos/mundschenk-at/php-typography/zipball/d70afd58b03b0527fb0582f4c8d63ec74c2b3630",
+                "reference": "d70afd58b03b0527fb0582f4c8d63ec74c2b3630",
                 "shasum": ""
             },
             "require": {
@@ -93,10 +93,12 @@
             },
             "require-dev": {
                 "dealerdirect/phpcodesniffer-composer-installer": "^0.4.1",
+                "ext-curl": "*",
+                "phpstan/phpstan": "^0.8.0",
                 "phpunit/phpunit": "6.*",
-                "squizlabs/php_codesniffer": "^2.9",
-                "wimg/php-compatibility": "dev-master",
-                "wp-coding-standards/wpcs": "dev-master"
+                "squizlabs/php_codesniffer": "^3.0.2",
+                "wimg/php-compatibility": "^8.0",
+                "wp-coding-standards/wpcs": "^0.13"
             },
             "bin": [
                 "src/bin/update-patterns.php",
@@ -127,15 +129,13 @@
                 }
             ],
             "description": "A PHP library for improving your web typography",
-            "time": "2017-08-07 21:24:18"
+            "time": "2017-08-13T12:23:23+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "mundschenk-at/php-typography": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
