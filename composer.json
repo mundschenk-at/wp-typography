@@ -22,6 +22,13 @@
         "php": ">=5.6.0",
         "mundschenk-at/php-typography": "^5.0"
     },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.0.2",
+        "wp-coding-standards/wpcs": "^0.13",
+        "wimg/php-compatibility": "^8.0",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.4.1",
+        "phpstan/phpstan": "^0.8.0"
+    },
 
     "minimum-stability": "dev",
 
@@ -31,5 +38,19 @@
 
     "config": {
         "classmap-authoritative": true
+    },
+
+    "scripts": {
+      "check": [
+          "@phpcs",
+          "@phpstan"
+      ],
+      "phpcs": [
+          "phpcs -p -s includes/ --ignore='includes/_language_names.php' --extensions=php"
+      ],
+      "phpstan": [
+          "phpstan analyse --configuration=.phpstan.neon --level=7 --ansi includes/",
+          "#phpstan analyse --configuration=.phpstan.neon --level=6 --ansi tests/"
+      ]
     }
 }

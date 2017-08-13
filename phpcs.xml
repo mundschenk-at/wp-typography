@@ -13,9 +13,20 @@
 		<exclude name="Generic.WhiteSpace.ScopeIndent.IncorrectExact" />
 		<exclude name="Generic.WhiteSpace.ScopeIndent.Incorrect" />
 		<exclude name="PEAR.Functions.FunctionCallSignature.Indent" />
+		<exclude name="WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents" />
 	</rule>
-	<rule ref="WordPress-VIP">
-		<exclude name="WordPress.VIP.RestrictedFunctions.error_log" />
+
+	<rule ref="WordPress.VIP.RestrictedFunctions">
+		<properties>
+			<property name="exclude" value="error_log" />
+			<property name="exclude" value="file_get_contents" />
+		</properties>
+	</rule>
+	<rule ref="WordPress.WP.AlternativeFunctions">
+		<properties>
+			<property name="exclude" value="file_get_contents" /><!-- Not working? -->
+			<property name="exclude" value="file_system_read" />
+		</properties>
 	</rule>
 	<rule ref="Squiz.Commenting.LongConditionClosingComment">
 		<exclude name="Squiz.Commenting.LongConditionClosingComment" />
@@ -30,6 +41,6 @@
 
 	<!-- Include sniffs for PHP cross-version compatibility. -->
 	<rule ref="PHPCompatibility">
-		<config name="testVersion" value="5.4-7.1"/>
+		<config name="testVersion" value="5.6-7.1"/>
 	</rule>
 </ruleset>
