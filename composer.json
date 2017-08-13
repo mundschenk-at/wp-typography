@@ -1,7 +1,7 @@
 {
     "name": "mundschenk-at/wp-typography",
     "description": "A WordPress plugin for improving your web typography",
-    "type": "project",
+    "type": "wordpress-plugin",
     "license": "GPL 2.0+",
     "authors": [
         {
