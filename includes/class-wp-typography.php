@@ -452,10 +452,6 @@ final class WP_Typography {
 	 * @param Settings|null $settings Optional. A settings object. Default null (which means the internal settings will be used).
 	 */
 	public function process_title( $text, Settings $settings = null ) {
-		if ( empty( $settings ) ) {
-			$settings = $this->php_typo_settings;
-		}
-
 		return $this->process( $text, true, false, $settings );
 	}
 
@@ -472,10 +468,6 @@ final class WP_Typography {
 	 * @param Settings|null $settings Optional. A settings object. Default null (which means the internal settings will be used).
 	 */
 	public function process_feed( $text, $is_title = false, Settings $settings = null ) {
-		if ( empty( $settings ) ) {
-			$settings = $this->php_typo_settings;
-		}
-
 		return $this->process( $text, $is_title, true, $settings );
 	}
 
@@ -491,10 +483,6 @@ final class WP_Typography {
 	 * @return array
 	 */
 	public function process_title_parts( $title_parts, Settings $settings = null ) {
-		if ( empty( $settings ) ) {
-			$settings = $this->php_typo_settings;
-		}
-
 		foreach ( $title_parts as $index => $part ) {
 			// Remove "&shy;" and "&#8203;" after processing title part.
 			$title_parts[ $index ] = strip_tags(
