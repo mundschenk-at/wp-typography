@@ -871,11 +871,7 @@ class WP_Typography_Admin {
 	 * @return mixed
 	 */
 	public function sanitize_restore_defaults( $input ) {
-		if ( ! empty( $_POST['typo_restore_defaults'] ) ) { // WPCS: CSRF ok. Input var okay.
-			add_settings_error( self::OPTION_GROUP . $this->get_active_settings_tab(), 'defaults-restored', __( 'Settings reset to default values.', 'wp-typography' ), 'updated' );
-		}
-
-		return $input;
+		return $this->trigger_admin_notice( 'typo_restore_defaults', 'defaults-restored', __( 'Settings reset to default values.', 'wp-typography' ), 'updated', $input );
 	}
 
 	/**
@@ -886,8 +882,23 @@ class WP_Typography_Admin {
 	 * @return mixed
 	 */
 	public function sanitize_clear_cache( $input ) {
-		if ( ! empty( $_POST['typo_clear_cache'] ) ) { // WPCS: CSRF ok. Input var okay.
-			add_settings_error( self::OPTION_GROUP . $this->get_active_settings_tab(), 'cache-cleared', __( 'Cached post content cleared.', 'wp-typography' ), 'notice-info' );
+		return $this->trigger_admin_notice( 'typo_clear_cache', 'cache-cleared', __( 'Cached post content cleared.', 'wp-typography' ), 'notice-info', $input );
+	}
+
+	/**
+	 * Use sanitization callback to trigger an admin notice.
+	 *
+	 * @param  string $setting_name The setting used to trigger the notice.
+	 * @param  string $notice_id    HTML ID attribute for the notice.
+	 * @param  string $message      Translated message string.
+	 * @param  string $notice_level 'updated', 'notice-info', etc.
+	 * @param  mixed  $input        Passed back.
+	 *
+	 * @return mixed The $input parameter.
+	 */
+	private function trigger_admin_notice( $setting_name, $notice_id, $message, $notice_level, $input ) {
+		if ( ! empty( $_POST[ $setting_name ] ) ) { // WPCS: CSRF ok. Input var okay.
+			add_settings_error( self::OPTION_GROUP . $this->get_active_settings_tab(), $notice_id, $message, $notice_level );
 		}
 
 		return $input;
