@@ -763,7 +763,7 @@ class WP_Typography_Admin {
 				'attributes'    => [
 					'rows' => '10',
 				],
-				'default'       => file_get_contents( dirname( __DIR__ ) . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'default-styles.css' ),
+				'default'       => file_get_contents( dirname( __DIR__ ) . '/admin/css/default-styles.css' ),
 			] ),
 		];
 
