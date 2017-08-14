@@ -464,19 +464,19 @@ final class WP_Typography {
 	private function enable_acf_filters( $priority ) {
 		$acf_version = intval( acf_get_setting( 'version' ) );
 
-		switch ( $acf_version ) {
+		if ( 5 === $acf_version ) {
+			// Advanced Custom Fields Pro (version 5).
+			$acf_prefix = 'acf/format_value';
+		} elseif ( 4 === $acf_version ) {
+			// Advanced Custom Fields (version 4).
+			$acf_prefix = 'acf/format_value_for_api';
+		}
 
-			case 5: // Advanced Custom Fields Pro (version 5).
-				add_filter( 'acf/format_value/type=wysiwyg',  [ $this, 'process' ],       $priority );
-				add_filter( 'acf/format_value/type=textarea', [ $this, 'process' ],       $priority );
-				add_filter( 'acf/format_value/type=text',     [ $this, 'process_title' ], $priority );
-				break;
-
-			case 4: // Advanced Custom Fields (version 4).
-				add_filter( 'acf/format_value_for_api/type=wysiwyg',  [ $this, 'process' ],       $priority );
-				add_filter( 'acf/format_value_for_api/type=textarea', [ $this, 'process' ],       $priority );
-				add_filter( 'acf/format_value_for_api/type=text',     [ $this, 'process_title' ], $priority );
-				break;
+		// Other ACF versions (i.e. < 4) are not supported.
+		if ( ! empty( $acf_prefix ) ) {
+			add_filter( "{$acf_prefix}/type=wysiwyg",  [ $this, 'process' ],       $priority );
+			add_filter( "{$acf_prefix}/type=textarea", [ $this, 'process' ],       $priority );
+			add_filter( "{$acf_prefix}/type=text",     [ $this, 'process_title' ], $priority );
 		}
 	}
 
