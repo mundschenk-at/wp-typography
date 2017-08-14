@@ -605,6 +605,37 @@ final class WP_Typography {
 	}
 
 	/**
+	 * Cache the given object under the transient name.
+	 *
+	 * @param  string $transient Required.
+	 * @param  mixed  $object    Required.
+	 */
+	private function cache_object( $transient, $object ) {
+		/**
+		 * Filters the caching duration for the PHP_Typography engine state.
+		 *
+		 * @since 3.2.0
+		 *
+		 * @param int $duration The duration in seconds. Defaults to 0 (no expiration).
+		 */
+		$duration = apply_filters( 'typo_php_typography_caching_duration', 0 );
+
+		/**
+		 * Filters whether the PHP_Typography engine state should be cached.
+		 *
+		 * @since 4.2.0
+		 *
+		 * @param bool $enabled Defaults to true.
+		 */
+		$caching_enabled = apply_filters( 'typo_php_typography_caching_enabled', true );
+
+		// Try again next time.
+		if ( $caching_enabled ) {
+			$this->set_transient( $transient, $object, $duration );
+		}
+	}
+
+	/**
 	 * Retrieves the PHP_Typography instance and ensure just-in-time initialization.
 	 */
 	private function get_php_typo() {
@@ -618,28 +649,8 @@ final class WP_Typography {
 				// OK, we have to initialize the PHP_Typography instance manually.
 				$this->php_typo = new PHP_Typography( PHP_Typography::INIT_NOW );
 
-				/**
-				 * Filters the caching duration for the PHP_Typography engine state.
-				 *
-				 * @since 3.2.0
-				 *
-				 * @param int $duration The duration in seconds. Defaults to 0 (no expiration).
-				 */
-				$duration = apply_filters( 'typo_php_typography_caching_duration', 0 );
-
-				/**
-				 * Filters whether the PHP_Typography engine state should be cached.
-				 *
-				 * @since 4.2.0
-				 *
-				 * @param bool $enabled Defaults to true.
-				 */
-				$caching_enabled = apply_filters( 'typo_php_typography_caching_enabled', true );
-
 				// Try again next time.
-				if ( $caching_enabled ) {
-					$this->set_transient( $transient, $this->php_typo, $duration );
-				}
+				$this->cache_object( $transient, $this->php_typo );
 			}
 		}
 
@@ -655,16 +666,8 @@ final class WP_Typography {
 				// Load our settings into the instance.
 				$this->init_php_typo();
 
-				/** This filter is documented in class-wp-typography.php */
-				$duration = apply_filters( 'typo_php_typography_caching_duration', 0 );
-
-				/** This filter is documented in class-wp-typography.php */
-				$caching_enabled = apply_filters( 'typo_php_typography_caching_enabled', true );
-
 				// Try again next time.
-				if ( $caching_enabled ) {
-					$this->set_transient( $transient, $this->php_typo_settings, $duration );
-				}
+				$this->cache_object( $transient, $this->php_typo_settings );
 			}
 
 			// Settings won't be touched again, so cache the hash.
@@ -679,16 +682,8 @@ final class WP_Typography {
 			if ( empty( $this->hyphenator_cache ) ) {
 				$this->hyphenator_cache = $this->php_typo->get_hyphenator_cache();
 
-				/** This filter is documented in class-wp-typography.php */
-				$duration = apply_filters( 'typo_php_typography_caching_duration', 0 );
-
-				/** This filter is documented in class-wp-typography.php */
-				$caching_enabled = apply_filters( 'typo_php_typography_caching_enabled', true );
-
 				// Try again next time.
-				if ( $caching_enabled ) {
-					$this->set_transient( $transient, $this->hyphenator_cache, $duration );
-				}
+				$this->cache_object( $transient, $this->php_typo_settings );
 			}
 
 			// Let's use it!
