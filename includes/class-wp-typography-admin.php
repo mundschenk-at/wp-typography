@@ -22,7 +22,7 @@
  *
  *  ***
  *
- *  @package wpTypography
+ *  @package mundschenk-at/wp-typography
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
@@ -763,7 +763,7 @@ class WP_Typography_Admin {
 				'attributes'    => [
 					'rows' => '10',
 				],
-				'default'       => file_get_contents( dirname( __DIR__ ) . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'default-styles.css' ),
+				'default'       => file_get_contents( dirname( __DIR__ ) . '/admin/css/default-styles.css' ),
 			] ),
 		];
 
@@ -833,7 +833,7 @@ class WP_Typography_Admin {
 	 * @return mixed
 	 */
 	public function filter_update_option( $value, $old_value ) {
-		if ( ! empty( $_POST['typo_restore_defaults'] ) || ! empty( $_POST['typo_clear_cache'] ) ) { // WPCS: CSRF ok.
+		if ( ! empty( $_POST['typo_restore_defaults'] ) || ! empty( $_POST['typo_clear_cache'] ) ) { // WPCS: CSRF ok. Input var okay.
 			return $old_value;
 		} else {
 			return $value;
@@ -847,9 +847,9 @@ class WP_Typography_Admin {
 	 */
 	private function get_active_settings_tab() {
 		// Check active tab.
-		$all_tabs   = array_keys( $this->admin_form_tabs ); // PHP 5.3 workaround.
+		$all_tabs = array_keys( $this->admin_form_tabs ); // PHP 5.3 workaround.
 
-		return ! empty( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : $all_tabs[0];
+		return ! empty( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : $all_tabs[0]; // WPCS: CSRF ok. Input var okay.
 	}
 
 	/**
@@ -871,11 +871,7 @@ class WP_Typography_Admin {
 	 * @return mixed
 	 */
 	public function sanitize_restore_defaults( $input ) {
-		if ( ! empty( $_POST['typo_restore_defaults'] ) ) { // WPCS: CSRF ok.
-			add_settings_error( self::OPTION_GROUP . $this->get_active_settings_tab(), 'defaults-restored', __( 'Settings reset to default values.', 'wp-typography' ), 'updated' );
-		}
-
-		return $input;
+		return $this->trigger_admin_notice( 'typo_restore_defaults', 'defaults-restored', __( 'Settings reset to default values.', 'wp-typography' ), 'updated', $input );
 	}
 
 	/**
@@ -886,8 +882,23 @@ class WP_Typography_Admin {
 	 * @return mixed
 	 */
 	public function sanitize_clear_cache( $input ) {
-		if ( ! empty( $_POST['typo_clear_cache'] ) ) { // WPCS: CSRF ok.
-			add_settings_error( self::OPTION_GROUP . $this->get_active_settings_tab(), 'cache-cleared', __( 'Cached post content cleared.', 'wp-typography' ), 'notice-info' );
+		return $this->trigger_admin_notice( 'typo_clear_cache', 'cache-cleared', __( 'Cached post content cleared.', 'wp-typography' ), 'notice-info', $input );
+	}
+
+	/**
+	 * Use sanitization callback to trigger an admin notice.
+	 *
+	 * @param  string $setting_name The setting used to trigger the notice.
+	 * @param  string $notice_id    HTML ID attribute for the notice.
+	 * @param  string $message      Translated message string.
+	 * @param  string $notice_level 'updated', 'notice-info', etc.
+	 * @param  mixed  $input        Passed back.
+	 *
+	 * @return mixed The $input parameter.
+	 */
+	private function trigger_admin_notice( $setting_name, $notice_id, $message, $notice_level, $input ) {
+		if ( ! empty( $_POST[ $setting_name ] ) ) { // WPCS: CSRF ok. Input var okay.
+			add_settings_error( self::OPTION_GROUP . $this->get_active_settings_tab(), $notice_id, $message, $notice_level );
 		}
 
 		return $input;
