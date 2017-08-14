@@ -5,6 +5,9 @@ filter:
         - 'js/*'
         - 'wp-typography.php'
 
+    excluded_paths:
+        - 'js/*.min.js'
+
 build:
     cache:
         directories:
