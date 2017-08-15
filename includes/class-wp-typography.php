@@ -150,6 +150,22 @@ final class WP_Typography {
 
 		// Initialize admin interface handler.
 		$this->admin             = new WP_Typography_Admin( $basename, $this );
+	}
+
+	/**
+	 * Starts the plugin for real.
+	 */
+	public function run() {
+		// Ensure that our translations are loaded.
+		add_action( 'plugins_loaded', [ $this, 'plugins_loaded' ] );
+
+		// Load settings.
+		add_action( 'init', [ $this, 'init' ] );
+
+		// Also run the backend UI.
+		$this->admin->run();
+
+		// Keep default settings.
 		$this->default_settings  = $this->admin->get_default_settings();
 	}
 
@@ -294,20 +310,6 @@ final class WP_Typography {
 	 */
 	public static function filter_feed_title( $text, Settings $settings = null ) {
 		return self::get_instance()->process_feed( $text, true, $settings );
-	}
-
-	/**
-	 * Starts the plugin for real.
-	 */
-	public function run() {
-		// Ensure that our translations are loaded.
-		add_action( 'plugins_loaded', [ $this, 'plugins_loaded' ] );
-
-		// Load settings.
-		add_action( 'init', [ $this, 'init' ] );
-
-		// Also run the backend UI.
-		$this->admin->run();
 	}
 
 	/**

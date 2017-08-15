@@ -149,26 +149,28 @@ class WP_Typography_Admin {
 	 * @param string        $basename The plugin slug.
 	 * @param WP_Typography $plugin   The plugin object.
 	 */
-	function __construct( $basename, WP_Typography $plugin ) {
+	public function __construct( $basename, WP_Typography $plugin ) {
 		$this->local_plugin_path = $basename;
 		$this->plugin_path       = plugin_dir_path( __DIR__ ) . basename( $this->local_plugin_path );
 		$this->version           = $plugin->get_version();
+		$this->plugin            = $plugin;
+
+		// Store cache key names.
 		$this->cache_key_names['hyphenate_languages'] = 'typo_hyphenate_languages_' . $plugin->get_version_hash();
 		$this->cache_key_names['diacritic_languages'] = 'typo_diacritic_languages_' . $plugin->get_version_hash();
-		$this->plugin = $plugin;
-
-		// Initialize admin form.
-		$this->admin_resource_links = $this->initialize_resource_links();
-		$this->admin_help_pages     = $this->initialize_help_pages();
-		$this->admin_form_tabs      = $this->initialize_form_tabs();
-		$this->admin_form_sections  = $this->initialize_form_sections();
-		$this->admin_form_controls  = $this->initialize_controls();
 	}
 
 	/**
 	 * Set up the various hooks for the admin side.
 	 */
 	public function run() {
+		// Initialize admin form.
+		$this->admin_resource_links = $this->initialize_resource_links();
+		$this->admin_help_pages     = $this->initialize_help_pages();
+		$this->admin_form_tabs      = $this->initialize_form_tabs();
+		$this->admin_form_sections  = $this->initialize_form_sections();
+		$this->admin_form_controls  = $this->initialize_controls();
+
 		// Add action hooks.
 		add_action( 'admin_menu', [ $this, 'add_options_page' ] );
 		add_action( 'admin_init', [ $this, 'register_the_settings' ] );
