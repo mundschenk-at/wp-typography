@@ -209,7 +209,7 @@ final class WP_Typography {
 	 *
 	 * @return array An array in the form of ( $language_code => $language ).
 	 */
-	static public function get_hyphenation_languages() {
+	public static function get_hyphenation_languages() {
 		return PHP_Typography::get_hyphenation_languages();
 	}
 
@@ -222,7 +222,7 @@ final class WP_Typography {
 	 *
 	 * @return array An array in the form of ( $language_code => $language ).
 	 */
-	static public function get_diacritic_languages() {
+	public static function get_diacritic_languages() {
 		return PHP_Typography::get_diacritic_languages();
 	}
 
@@ -299,7 +299,7 @@ final class WP_Typography {
 	/**
 	 * Starts the plugin for real.
 	 */
-	function run() {
+	public function run() {
 		// Ensure that our translations are loaded.
 		add_action( 'plugins_loaded', [ $this, 'plugins_loaded' ] );
 
@@ -313,7 +313,7 @@ final class WP_Typography {
 	/**
 	 * Loads the settings from the option table.
 	 */
-	function init() {
+	public function init() {
 		// Restore defaults if necessary.
 		if ( get_option( 'typo_restore_defaults' ) ) {  // any truthy value will do.
 			$this->set_default_options( true );
@@ -359,7 +359,7 @@ final class WP_Typography {
 	 * @return Settings
 	 */
 	public function get_settings() {
-		return clone $this->typo_settings;
+		return $this->typo_settings;
 	}
 
 	/**
@@ -832,7 +832,7 @@ final class WP_Typography {
 	 *
 	 * @param bool $force_defaults Optional. Default false.
 	 */
-	function set_default_options( $force_defaults = false ) {
+	private function set_default_options( $force_defaults = false ) {
 		// Grab configuration variables.
 		foreach ( $this->default_settings as $key => $default ) {
 			// Set or update the options with the default value if necessary.
@@ -860,7 +860,7 @@ final class WP_Typography {
 	/**
 	 * Clears all transients set by the plugin.
 	 */
-	 function clear_cache() {
+	private function clear_cache() {
 		// Delete all our transients.
 		foreach ( array_keys( $this->transients ) as $transient ) {
 			delete_transient( $transient );
@@ -884,7 +884,7 @@ final class WP_Typography {
 	 *
 	 * @return array The filtered array.
 	 */
-	function parser_errors_handler( $errors ) {
+	public function parser_errors_handler( $errors ) {
 		/**
 		 * Filters the HTML parser errors (if there are any).
 		 *
@@ -898,7 +898,7 @@ final class WP_Typography {
 	/**
 	 * Prints CSS and JS depending on plugin options.
 	 */
-	function add_wp_head() {
+	public function add_wp_head() {
 		if ( $this->settings['typo_style_css_include'] && '' !== trim( $this->settings['typo_style_css'] ) ) {
 			echo '<style type="text/css">' . "\r\n";
 			echo esc_html( $this->settings['typo_style_css'] ) . "\r\n";
@@ -913,7 +913,7 @@ final class WP_Typography {
 	/**
 	 * Loads translations and checks for other plugins.
 	 */
-	function plugins_loaded() {
+	public function plugins_loaded() {
 		// Load our translations.
 		load_plugin_textdomain( 'wp-typography', false, dirname( $this->local_plugin_path ) . '/translations/' );
 
