@@ -102,10 +102,10 @@ class Select extends Control {
 	protected function internal_render( $label, $help_text, $html_attributes ) {
 		$control_markup = $this->control_markup( $label, $help_text );
 
-		$select_markup = '<select id="' . esc_attr( $this->id ) . '" name="' . esc_attr( $this->id ) . '" ' . $html_attributes . '>';
+		$select_markup = '<select id="' . \esc_attr( $this->id ) . '" name="' . \esc_attr( $this->id ) . '" ' . $html_attributes . '>';
 		foreach ( $this->options as $option_value => $display ) {
 			$translated_display = esc_html__( $display, 'wp-typography' ); // @codingStandardsIgnoreLine.
-			$select_markup .= '<option value="' . esc_attr( $option_value ) . '" ' . selected( $this->get_value(), $option_value, false ) . '>' . $translated_display . '</option>';
+			$select_markup .= '<option value="' . \esc_attr( $option_value ) . '" ' . selected( $this->get_value(), $option_value, false ) . '>' . $translated_display . '</option>';
 		}
 		$select_markup .= '</select>';
 

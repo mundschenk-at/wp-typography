@@ -65,6 +65,6 @@ class Number_Input extends Input {
 	 * @return string
 	 */
 	protected function value_markup( $value ) {
-		return 'value="' . esc_attr( $value ) . '" ';
+		return 'value="' . \esc_attr( $value ) . '" ';
 	}
 }
