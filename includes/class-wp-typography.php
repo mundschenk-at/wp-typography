@@ -722,7 +722,7 @@ final class WP_Typography {
 				$this->hyphenator_cache = $this->typo->get_hyphenator_cache();
 
 				// Try again next time.
-				$this->cache_object( $transient, $this->typo_settings );
+				$this->cache_object( $transient, $this->hyphenator_cache );
 			}
 
 			// Let's use it!
