@@ -547,7 +547,7 @@ final class WP_Typography {
 	 */
 	public function process( $text, $is_title = false, $force_feed = false, Settings $settings = null ) {
 		// Needed to initialize settings.
-		$typo = $this->get_php_typo();
+		$typo = $this->get_typography_instance();
 
 		if ( null === $settings ) {
 			$settings = $this->typo_settings;
@@ -677,7 +677,7 @@ final class WP_Typography {
 	/**
 	 * Retrieves the PHP_Typography instance and ensure just-in-time initialization.
 	 */
-	private function get_php_typo() {
+	private function get_typography_instance() {
 
 		// Initialize PHP_Typography instance.
 		if ( empty( $this->typo ) ) {
