@@ -157,6 +157,9 @@ final class WP_Typography {
 	 * Starts the plugin for real.
 	 */
 	public function run() {
+		// Set plugin singleton.
+		self::set_instance( $this );
+
 		// Ensure that our translations are loaded.
 		add_action( 'plugins_loaded', [ $this, 'plugins_loaded' ] );
 
@@ -173,34 +176,33 @@ final class WP_Typography {
 	/**
 	 * Retrieves (and if necessary creates) the WP_Typography instance. Should not be called outside of plugin set-up.
 	 *
-	 * @since 3.2.0
+	 * @since 5.0.0
 	 *
-	 * @param string $version  The full plugin version string (e.g. "3.0.0-beta.2").
-	 * @param string $basename Optional. The result of plugin_basename() for the main plugin file. Default 'wp-typography/wp-typography.php'.
+	 * @param WP_Typography|null $instance Only used for plugin initialization. Don't ever pass a value in user code.
 	 *
-	 * @return WP_Typography
+	 * @throws BadMethodCallException Thrown when WP_Typography::set_instance after plugin initialization.
 	 */
-	public static function _get_instance( $version, $basename = 'wp-typography/wp-typography.php' ) {
-		if ( empty( self::$_instance ) ) {
-			self::$_instance = new self( $version, $basename );
+	private static function set_instance( WP_Typography $instance ) {
+		if ( null === self::$_instance ) {
+			self::$_instance = $instance;
 		} else {
-			_doing_it_wrong( __FUNCTION__, 'WP_Typography::_get_instance called more than once.', '3.2.0' );
+			throw new BadMethodCallException( 'WP_Typography::set_instance called more than once.' );
 		}
-
-		return self::$_instance;
 	}
 
 	/**
 	 * Retrieves the plugin instance.
 	 *
 	 * @since 3.2.0
+	 * @since 5.0.0 Errors handled ia exceptions.
+	 *
+	 * @throws BadMethodCallException Thrown when WP_Typography::get_instance is called before plugin initialization.
 	 *
 	 * @return WP_Typography
 	 */
 	public static function get_instance() {
-		if ( empty( self::$_instance ) ) {
-			_doing_it_wrong( __FUNCTION__, 'WP_Typography::get_instance called without plugin intialization.', '3.2.0' );
-			return self::_get_instance( '0.0.0' ); // fallback with invalid version.
+		if ( null === self::$_instance ) {
+			throw new BadMethodCallException( 'WP_Typography::get_instance called without prior plugin intialization.' );
 		}
 
 		return self::$_instance;
