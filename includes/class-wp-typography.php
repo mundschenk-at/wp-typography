@@ -574,8 +574,8 @@ final class WP_Typography {
 	public function process( $text, $is_title = false, $force_feed = false, Settings $settings = null ) {
 		// Use default settings if no argument was given.
 		if ( null === $settings ) {
-			$default_settings = $this->get_settings();
-			$settings         = $default_settings;
+			$settings = $this->get_settings();
+			$hash     = $this->cached_settings_hash;
 		}
 
 		/**
@@ -587,8 +587,8 @@ final class WP_Typography {
 		 */
 		$settings = apply_filters( 'typo_settings', $settings );
 
-		// Caclulate hash.
-		$hash = ( $settings === $default_settings ) ? $this->cached_settings_hash : $settings->get_hash();
+		// Caclulate hash if necessary.
+		$hash = isset( $hash ) ? $hash : $settings->get_hash();
 
 		/**
 		 * Filters the caching duration for processed text fragments.
