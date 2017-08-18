@@ -76,7 +76,7 @@ class WP_Typography_Requirements {
 	 * @param string $name     The plugin name.
 	 * @param string $basename The result of plugin_basename() for the main plugin file.
 	 */
-	function __construct( $name, $basename = 'wp-typography/wp-typography.php' ) {
+	public function __construct( $name, $basename = 'wp-typography/wp-typography.php' ) {
 		$this->plugin_name = $name;
 		$this->local_plugin_path = $basename;
 	}
@@ -86,7 +86,7 @@ class WP_Typography_Requirements {
 	 *
 	 * @return boolean
 	 */
-	function check() {
+	public function check() {
 		global $wp_version;
 		$requirements_met = true;
 
@@ -128,7 +128,7 @@ class WP_Typography_Requirements {
 	/**
 	 * Deactivate the plugin.
 	 */
-	function deactivate_plugin() {
+	public function deactivate_plugin() {
 		deactivate_plugins( plugin_basename( $this->local_plugin_path ) );
 	}
 
@@ -157,7 +157,7 @@ class WP_Typography_Requirements {
 	/**
 	 * Print 'WordPress version incompatible' admin notice
 	 */
-	function admin_notices_wp_version_incompatible() {
+	public function admin_notices_wp_version_incompatible() {
 		global $wp_version;
 
 		$this->display_error_notice(
@@ -172,7 +172,7 @@ class WP_Typography_Requirements {
 	/**
 	 * Print 'PHP version incompatible' admin notice
 	 */
-	function admin_notices_php_version_incompatible() {
+	public function admin_notices_php_version_incompatible() {
 		$this->display_error_notice(
 			/* translators: 1: plugin name 2: target PHP version number 3: actual PHP version number */
 			__( 'The activated plugin %1$s requires PHP %2$s or later. Your server is running PHP %3$s. Please deactivate this plugin, or upgrade your server\'s installation of PHP.', 'wp-typography' ),
@@ -185,7 +185,7 @@ class WP_Typography_Requirements {
 	/**
 	 * Print 'mbstring extension missing' admin notice
 	 */
-	function admin_notices_mbstring_incompatible() {
+	public function admin_notices_mbstring_incompatible() {
 		$this->display_error_notice(
 			/* translators: 1: plugin name 2: mbstring documentation URL */
 			__( 'The activated plugin %1$s requires the mbstring PHP extension to be enabled on your server. Please deactivate this plugin, or <a href="%2$s">enable the extension</a>.', 'wp-typography' ),
@@ -197,7 +197,7 @@ class WP_Typography_Requirements {
 	/**
 	 * Print 'Charset incompatible' admin notice
 	 */
-	function admin_notices_charset_incompatible() {
+	public function admin_notices_charset_incompatible() {
 		$this->display_error_notice(
 			/* translators: 1: plugin name 2: current character encoding 3: options URL */
 			__( 'The activated plugin %1$s requires your blog use the UTF-8 character encoding. You have set your blogs encoding to %2$s. Please deactivate this plugin, or <a href="%3$s">change your character encoding to UTF-8</a>.', 'wp-typography' ),

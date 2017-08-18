@@ -58,7 +58,7 @@ class WP_Typography_Setup {
 	 * @param string        $slug   Required.
 	 * @param WP_Typography $plugin Required.
 	 */
-	function __construct( $slug, WP_Typography $plugin ) {
+	public function __construct( $slug, WP_Typography $plugin ) {
 		$this->plugin_slug = $slug;
 		$this->plugin = $plugin;
 	}
@@ -171,7 +171,7 @@ class WP_Typography_Setup {
 	 *
 	 * @since    3.1.0
 	 */
-	static function uninstall() {
+	public static function uninstall() {
 		$transient_list = get_option( 'typo_transient_keys' );
 
 		// Delete all our transients.

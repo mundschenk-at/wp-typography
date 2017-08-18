@@ -838,7 +838,7 @@ final class WP_Typography {
 	 *
 	 * @param bool $force_defaults Optional. Default false.
 	 */
-	private function set_default_options( $force_defaults = false ) {
+	public function set_default_options( $force_defaults = false ) {
 		// Grab configuration variables.
 		foreach ( $this->default_settings as $key => $default ) {
 			// Set or update the options with the default value if necessary.
@@ -866,7 +866,7 @@ final class WP_Typography {
 	/**
 	 * Clears all transients set by the plugin.
 	 */
-	private function clear_cache() {
+	public function clear_cache() {
 		// Delete all our transients.
 		foreach ( array_keys( $this->transients ) as $transient ) {
 			delete_transient( $transient );

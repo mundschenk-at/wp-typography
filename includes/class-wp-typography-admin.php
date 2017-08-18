@@ -210,7 +210,7 @@ class WP_Typography_Admin {
 	 *     @type string $translated_anchor_text A URL.
 	 * }
 	 */
-	function initialize_resource_links() {
+	private function initialize_resource_links() {
 		return [
 			__( 'Plugin Home', 'wp-typography' ) => 'https://code.mundschenk.at/wp-typography/',
 			__( 'FAQs',        'wp-typography' ) => 'https://code.mundschenk.at/wp-typography/frequently-asked-questions/',
@@ -229,7 +229,7 @@ class WP_Typography_Admin {
 	 *      }
 	 * }
 	 */
-	function initialize_help_pages() {
+	private function initialize_help_pages() {
 		return [
 			'help-intro' => [
 				'heading' => __( 'Introduction', 'wp-typography' ),
@@ -255,7 +255,7 @@ class WP_Typography_Admin {
 	 *      }
 	 * }
 	 */
-	function initialize_form_tabs() {
+	private function initialize_form_tabs() {
 
 		// Sections will be displayed in the order included.
 		return [
@@ -295,7 +295,7 @@ class WP_Typography_Admin {
 	 *         }
 	 * }
 	 */
-	function initialize_form_sections() {
+	private function initialize_form_sections() {
 
 		// Fieldsets will be displayed in the order included.
 		return [
@@ -319,7 +319,7 @@ class WP_Typography_Admin {
 	 *         @type Control $id A control object.
 	 * }
 	 */
-	function initialize_controls() {
+	private function initialize_controls() {
 		$controls = [
 			new UI\Textarea( self::OPTION_GROUP, 'typo_ignore_tags', [
 				'tab_id'        => 'general-scope',
@@ -811,7 +811,7 @@ class WP_Typography_Admin {
 	/**
 	 * Register admin settings.
 	 */
-	function register_the_settings() {
+	public function register_the_settings() {
 		foreach ( $this->admin_form_controls as $control_id => $control ) {
 			// Register setting.
 			$control->register();
@@ -909,7 +909,7 @@ class WP_Typography_Admin {
 	/**
 	 * Add an options page for the plugin settings.
 	 */
-	function add_options_page() {
+	public function add_options_page() {
 		$page = add_options_page( $this->plugin_name, $this->plugin_name, 'manage_options', strtolower( $this->plugin_name ), [ $this, 'get_admin_page_content' ] );
 
 		// General sections for each tab.
@@ -971,7 +971,7 @@ class WP_Typography_Admin {
 	/**
 	 * Enqueue stylesheet for options page.
 	 */
-	function print_admin_styles() {
+	public function print_admin_styles() {
 		wp_enqueue_style( 'wp-typography-settings', plugins_url( 'admin/css/settings.css', $this->local_plugin_path ), [], $this->version, 'all' );
 	}
 
@@ -981,7 +981,7 @@ class WP_Typography_Admin {
 	 * @param array $links An array of links.
 	 * @return array An array of links.
 	 */
-	function plugin_action_links( $links ) {
+	public function plugin_action_links( $links ) {
 		$adminurl = trailingslashit( admin_url() );
 
 		// Add link "Settings" to the plugin in /wp-admin/plugins.php.
@@ -994,7 +994,7 @@ class WP_Typography_Admin {
 	/**
 	 * Display the plugin options page.
 	 */
-	function get_admin_page_content() {
+	public function get_admin_page_content() {
 		$found = false;
 
 		// Try to load hyphenation language list from cache.
