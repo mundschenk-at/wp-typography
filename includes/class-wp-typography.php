@@ -356,14 +356,35 @@ final class WP_Typography {
 
 
 	/**
-	 * Retrieves the internal Settings object for the preferences set by the user
-	 * via the plugin options screen.
+	 * Retrieves the internal Settings object for the preferences set via the
+	 * plugin options screen.
 	 *
 	 * @since 5.0.0
 	 *
 	 * @return Settings
 	 */
 	public function get_settings() {
+
+		// Initialize Settings instance.
+		if ( empty( $this->typo_settings ) ) {
+			$transient = 'typo_php_settings_' . md5( wp_json_encode( $this->settings ) ) . '_' . $this->version_hash;
+			$this->typo_settings = $this->_maybe_fix_object( get_transient( $transient ) );
+
+			if ( empty( $this->typo_settings ) ) {
+				// OK, we have to initialize the PHP_Typography instance manually.
+				$this->typo_settings = new Settings( false );
+
+				// Load our settings into the instance.
+				$this->init_settings( $this->typo_settings );
+
+				// Try again next time.
+				$this->cache_object( $transient, $this->typo_settings );
+			}
+
+			// Settings won't be touched again, so cache the hash.
+			$this->cached_settings_hash = $this->typo_settings->get_hash( 32 );
+		}
+
 		return $this->typo_settings;
 	}
 
@@ -698,27 +719,7 @@ final class WP_Typography {
 			}
 		}
 
-		// Initialize Settings instance.
-		if ( empty( $this->typo_settings ) ) {
-			$transient = 'typo_php_settings_' . md5( wp_json_encode( $this->settings ) ) . '_' . $this->version_hash;
-			$this->typo_settings = $this->_maybe_fix_object( get_transient( $transient ) );
-
-			if ( empty( $this->typo_settings ) ) {
-				// OK, we have to initialize the PHP_Typography instance manually.
-				$this->typo_settings = new Settings( false );
-
-				// Load our settings into the instance.
-				$this->init_settings( $this->typo_settings );
-
-				// Try again next time.
-				$this->cache_object( $transient, $this->typo_settings );
-			}
-
-			// Settings won't be touched again, so cache the hash.
-			$this->cached_settings_hash = $this->typo_settings->get_hash( 32 );
-		}
-
-		// Also cache hyphenator (the pattern trie is expensive to build).
+		// Also cache hyphenators (the pattern tries are expensive to build).
 		if ( $this->settings['typo_enable_hyphenation'] && empty( $this->hyphenator_cache ) ) {
 			$transient = 'typo_php_hyphenator_cache_' . $this->version_hash;
 			$this->hyphenator_cache = $this->_maybe_fix_object( get_transient( $transient ) );
