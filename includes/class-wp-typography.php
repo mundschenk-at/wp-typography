@@ -368,7 +368,7 @@ final class WP_Typography {
 		// Initialize Settings instance.
 		if ( empty( $this->typo_settings ) ) {
 			$transient = 'typo_php_settings_' . md5( wp_json_encode( $this->settings ) ) . '_' . $this->version_hash;
-			$this->typo_settings = $this->_maybe_fix_object( get_transient( $transient ) );
+			$this->typo_settings = $this->maybe_fix_object( get_transient( $transient ) );
 
 			if ( empty( $this->typo_settings ) ) {
 				// OK, we have to initialize the PHP_Typography instance manually.
@@ -708,7 +708,7 @@ final class WP_Typography {
 		// Initialize PHP_Typography instance.
 		if ( empty( $this->typo ) ) {
 			$transient = 'typo_php_' . md5( wp_json_encode( $this->settings ) ) . '_' . $this->version_hash;
-			$this->typo = $this->_maybe_fix_object( get_transient( $transient ) );
+			$this->typo = $this->maybe_fix_object( get_transient( $transient ) );
 
 			if ( empty( $this->typo ) ) {
 				// OK, we have to initialize the PHP_Typography instance manually.
@@ -722,7 +722,7 @@ final class WP_Typography {
 		// Also cache hyphenators (the pattern tries are expensive to build).
 		if ( $this->settings['typo_enable_hyphenation'] && empty( $this->hyphenator_cache ) ) {
 			$transient = 'typo_php_hyphenator_cache_' . $this->version_hash;
-			$this->hyphenator_cache = $this->_maybe_fix_object( get_transient( $transient ) );
+			$this->hyphenator_cache = $this->maybe_fix_object( get_transient( $transient ) );
 
 			if ( empty( $this->hyphenator_cache ) ) {
 				$this->hyphenator_cache = $this->typo->get_hyphenator_cache();
@@ -996,7 +996,7 @@ final class WP_Typography {
 	 *
 	 * @return object         The object with its real class.
 	 */
-	private function _maybe_fix_object( $object ) {
+	private function maybe_fix_object( $object ) {
 		if ( ! is_object( $object ) && 'object' === gettype( $object ) ) {
 			$object = unserialize( serialize( $object ) ); // @codingStandardsIgnoreLine
 		}
