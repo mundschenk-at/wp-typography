@@ -24,7 +24,11 @@
 
 namespace WP_Typography\Tests;
 
+use WP_Typography_Admin;
+
 use Brain\Monkey\Functions;
+use Brain\Monkey\Filters;
+
 use Mockery as m;
 
 /**
@@ -48,28 +52,32 @@ class WP_Typography_Test extends TestCase {
 	 * This method is called before a test is executed.
 	 */
 	protected function setUp() { // @codingStandardsIgnoreLine
-		/*
+
 		Functions\expect( 'get_option' )
 			->once()->with( 'typo_transient_keys', [] )->andReturn( [] )->andAlsoExpectIt()
 			->once()->with( 'typo_cache_keys', [] )->andReturn( [] );
 
-		Functions\expect( 'plugin_dir_path' )->once()->andReturnFirstArg();
+		// Mock WP_Typography_Admin instance.
+		$admin_mock = m::mock( \WP_Typography_Admin::class );
+		$admin_mock
+			->shouldReceive( 'run' )
+			->shouldReceive( 'get_default_settings' )->andReturn( [] );
 
-		Functions\when( '__' )->returnArg();
-		Functions\when( 'wp_parse_args' )->alias( function( array $a1, array $a2 ) {
-			return \array_merge( $a1, $a2 );
-		} );
+		// Create instance.
+		$this->wp_typo = new \WP_Typography( '7.7.7', 'dummy/path', $admin_mock );
 
-		// Reset singleton.
-		$this->setStaticValue( \WP_Typography::class, '_instance', null );
-
-		// Retrievef instance.
-		$this->wp_typo = \WP_Typography::_get_instance( '9.9.9', 'test/wp-typography.php' );
-
-		// Reset singleton.
-		$this->setStaticValue( \WP_Typography::class, '_instance', null );
-		*/
 		parent::setUp();
+	}
+
+	/**
+	 * Necesssary clean-up work.
+	 */
+	protected function tearDown() { // @codingStandardsIgnoreLine
+
+		// Reset singleton.
+		$this->setStaticValue( \WP_Typography::class, '_instance', null );
+
+		parent::tearDown();
 	}
 
 	/**
@@ -100,6 +108,7 @@ class WP_Typography_Test extends TestCase {
 	 * @covers ::get_instance
 	 * @covers ::set_instance
 	 *
+	 * @uses ::__construct
 	 * @uses ::run
 	 * @uses ::get_version
 	 * @uses ::get_version_hash
@@ -127,9 +136,6 @@ class WP_Typography_Test extends TestCase {
 		// Check ::get_instance (no underscore).
 		$typo3 = \WP_Typography::get_instance();
 		$this->assertSame( $typo, $typo3 );
-
-		// Reset singleton.
-		$this->setStaticValue( \WP_Typography::class, '_instance', null );
 	}
 
 	/**
@@ -149,5 +155,53 @@ class WP_Typography_Test extends TestCase {
 	public function test_get_instance_failing() {
 		$typo = \WP_Typography::get_instance();
 		$this->assertInstanceOf( \WP_Typography::class, $typo );
+	}
+
+	/**
+	 * Tests ::get_instance without a previous call to ::_get_instance (i.e. _doing_it_wrong).
+	 *
+	 * @covers ::set_instance
+	 *
+	 * @uses ::__construct
+	 * @uses ::run
+	 * @uses ::get_version
+	 * @uses ::get_version_hash
+	 * @uses ::hash_version_string
+	 * @uses \WP_Typography_Admin::__construct
+	 *
+	 * @expectedException \BadMethodCallException
+	 * @expectedExceptionMessage WP_Typography::set_instance called more than once.
+	 */
+	public function test_set_instance_failing() {
+		Functions\expect( 'get_option' )
+			->once()->with( 'typo_transient_keys', [] )->andReturn( [] )->andAlsoExpectIt()
+			->once()->with( 'typo_cache_keys', [] )->andReturn( [] );
+
+		$admin = m::mock( \WP_Typography_Admin::class );
+		$admin->shouldReceive( 'run' )->shouldReceive( 'get_default_settings' )->andReturn( [] );
+
+		$typo = new \WP_Typography( '6.6.6', 'dummy/path', $admin );
+		$typo->run();
+		$typo->run();
+	}
+
+	/**
+	 * Tests constructor.
+	 *
+	 * @covers ::run
+	 *
+	 * @uses ::__construct
+	 * @uses ::set_instance
+	 * @uses ::get_version
+	 * @uses ::get_version_hash
+	 * @uses ::hash_version_string
+	 * @uses \WP_Typography_Admin::__construct
+	 */
+	public function test_run() {
+		$this->wp_typo->run();
+
+		$this->assertTrue( has_action( 'plugins_loaded', \WP_Typography::class . '->plugins_loaded()', 10 ) );
+		$this->assertTrue( has_action( 'init', \WP_Typography::class . '->init()', 10 ) );
+		$this->assertAttributeInternalType( 'array', 'default_settings', $this->wp_typo );
 	}
 }

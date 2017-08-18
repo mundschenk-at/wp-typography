@@ -32,7 +32,7 @@ use \PHP_Typography\Settings;
 /**
  * Main wp-Typography plugin class. All WordPress specific code goes here.
  */
-final class WP_Typography {
+class WP_Typography {
 
 	/**
 	 * The full version string of the plugin.
