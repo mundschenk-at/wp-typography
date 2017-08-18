@@ -137,10 +137,11 @@ final class WP_Typography {
 	/**
 	 * Sets up a new WP_Typography object.
 	 *
-	 * @param string $version  The full plugin version string (e.g. "3.0.0-beta.2").
-	 * @param string $basename Optional. The result of plugin_basename() for the main plugin file. Default 'wp-typography/wp-typography.php'.
+	 * @param string                    $version  The full plugin version string (e.g. "3.0.0-beta.2").
+	 * @param string                    $basename Optional. The result of plugin_basename() for the main plugin file. Default 'wp-typography/wp-typography.php'.
+	 * @param \WP_Typography_Admin|null $admin    Optional. Default null (which means a private instance will be created).
 	 */
-	private function __construct( $version, $basename = 'wp-typography/wp-typography.php' ) {
+	public function __construct( $version, $basename = 'wp-typography/wp-typography.php', WP_Typography_Admin $admin = null ) {
 		// Basic set-up.
 		$this->version           = $version;
 		$this->version_hash      = $this->hash_version_string( $version );
@@ -149,7 +150,7 @@ final class WP_Typography {
 		$this->cache_keys        = get_option( 'typo_cache_keys', [] );
 
 		// Initialize admin interface handler.
-		$this->admin             = new WP_Typography_Admin( $basename, $this );
+		$this->admin             = ( null === $admin ) ? new WP_Typography_Admin( $basename, $this ) : $admin;
 	}
 
 	/**
