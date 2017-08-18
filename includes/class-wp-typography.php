@@ -945,8 +945,7 @@ final class WP_Typography {
 	private function hash_version_string( $version ) {
 		$hash = '';
 
-		$parts = explode( '.', $version );
-		foreach ( $parts as $part ) {
+		foreach ( explode( '.', $version ) as $part ) {
 			$hash .= chr( 64 + preg_replace( '/[^0-9]/', '', $part ) );
 		}
 
