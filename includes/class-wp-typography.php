@@ -572,44 +572,52 @@ final class WP_Typography {
 	 * @return string The processed $text.
 	 */
 	public function process( $text, $is_title = false, $force_feed = false, Settings $settings = null ) {
-		// Needed to initialize settings.
-		$typo = $this->get_typography_instance();
-
+		// Use default settings if no argument was given.
 		if ( null === $settings ) {
-			$settings = $this->typo_settings;
-			$hash = $this->cached_settings_hash;
-		} else {
-			$hash = $settings->get_hash();
+			$default_settings = $this->get_settings();
+			$settings         = $default_settings;
 		}
 
-		$key  = 'typo_' . base64_encode( md5( $text, true ) . $hash );
+		/**
+		 * Filters the settings object used for processing the text fragment.
+		 *
+		 * @since 5.0.0
+		 *
+		 * @param Settings $settings The settings instance.
+		 */
+		$settings = apply_filters( 'typo_settings', $settings );
+
+		// Caclulate hash.
+		$hash = ( $settings === $default_settings ) ? $this->cached_settings_hash : $settings->get_hash();
 
 		/**
-		 * Filter the caching duration for processed text fragments.
+		 * Filters the caching duration for processed text fragments.
 		 *
 		 * @since 3.2.0
 		 *
 		 * @param int $duration The duration in seconds. Defaults to 1 day.
 		 */
 		$duration = apply_filters( 'typo_processed_text_caching_duration', DAY_IN_SECONDS );
-		$found = false;
+		$found    = false;
+		$feed     = $force_feed || is_feed();
 
-		if ( is_feed() || $force_feed ) { // feed readers can be pretty stupid.
-			$key .= 'f' . ( $is_title ? 't' : 's' ) . $this->version_hash;
-			$processed_text = $this->get_cache( $key, $found );
+		// Construct transient key.
+		$key  = 'typo_' . base64_encode( md5( $text, true ) . $hash ) . ( $feed ? 'f' : '' ) . ( $is_title ? 't' : 's' ) . $this->version_hash;
 
-			if ( ! $found ) {
+		// Retrieve cached text.
+		$processed_text = $this->get_cache( $key, $found );
+
+		if ( ! $found ) {
+			$typo = $this->get_typography_instance();
+
+			if ( $feed ) { // Feed readers are strange sometimes.
 				$processed_text = $typo->process_feed( $text, $settings, $is_title );
-				$this->set_cache( $key, $processed_text, $duration );
-			}
-		} else {
-			$key .= ( $is_title ? 't' : 's' ) . $this->version_hash;
-			$processed_text = $this->get_cache( $key, $found );
-
-			if ( ! $found ) {
+			} else {
 				$processed_text = $typo->process( $text, $settings, $is_title );
-				$this->set_cache( $key, $processed_text, $duration );
 			}
+
+			// Save text fragment for later.
+			$this->set_cache( $key, $processed_text, $duration );
 		}
 
 		return $processed_text;
