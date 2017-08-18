@@ -26,8 +26,9 @@ namespace WP_Typography\Tests;
 
 use WP_Typography_Admin;
 
-use Brain\Monkey\Functions;
+use Brain\Monkey\Actions;
 use Brain\Monkey\Filters;
+use Brain\Monkey\Functions;
 
 use Mockery as m;
 
@@ -36,6 +37,10 @@ use Mockery as m;
  *
  * @coversDefaultClass \WP_Typography
  * @usesDefaultClass \WP_Typography
+ *
+ * @uses ::__construct
+ * @uses ::hash_version_string
+ * @uses ::set_transient
  */
 class WP_Typography_Test extends TestCase {
 
@@ -64,7 +69,7 @@ class WP_Typography_Test extends TestCase {
 			->shouldReceive( 'get_default_settings' )->andReturn( [] );
 
 		// Create instance.
-		$this->wp_typo = new \WP_Typography( '7.7.7', 'dummy/path', $admin_mock );
+		$this->wp_typo = m::mock( \WP_Typography::class, [ '7.7.7', 'dummy/path', $admin_mock ] )->makePartial();
 
 		parent::setUp();
 	}
@@ -200,8 +205,182 @@ class WP_Typography_Test extends TestCase {
 	public function test_run() {
 		$this->wp_typo->run();
 
-		$this->assertTrue( has_action( 'plugins_loaded', \WP_Typography::class . '->plugins_loaded()', 10 ) );
-		$this->assertTrue( has_action( 'init', \WP_Typography::class . '->init()', 10 ) );
+		$this->assertTrue( has_action( 'plugins_loaded', get_class( $this->wp_typo ) . '->plugins_loaded()', 10 ) );
+		$this->assertTrue( has_action( 'init',           get_class( $this->wp_typo ) . '->init()',           10 ) );
 		$this->assertAttributeInternalType( 'array', 'default_settings', $this->wp_typo );
+	}
+
+	/**
+	 * Test get_user_settings.
+	 *
+	 * @covers ::get_user_settings
+	 * @covers ::get_settings
+	 *
+	 * @uses ::get_instance
+	 * @uses ::cache_object
+	 * @uses ::init_settings
+	 * @uses ::maybe_fix_object
+	 */
+	public function test_get_user_settings() {
+		$this->setStaticValue( \WP_Typography::class, '_instance', $this->wp_typo );
+
+		Functions\expect( 'wp_json_encode' )->once()->andReturn( '{ json: "value" }' );
+		Functions\expect( 'get_transient' )->once()->andReturn( false );
+		Functions\expect( 'set_transient' )->once()->andReturn( true );
+		Functions\expect( 'update_option' )->once()->andReturn( true );
+
+		$s = \WP_Typography::get_user_settings();
+
+		$this->assertInstanceOf( \PHP_Typography\Settings::class, $s );
+		$this->assertAttributeNotSame( $s, 'typo_settings', $this->wp_typo );
+
+		// Reset singleton.
+		$this->setStaticValue( \WP_Typography::class, '_instance', null );
+	}
+
+	/**
+	 * Test get_hyphenation_languages
+	 *
+	 * @covers ::get_hyphenation_languages
+	 *
+	 * @uses \PHP_Typography\PHP_Typography::get_hyphenation_languages
+	 */
+	 public function test_get_hyphenation_languages() {
+		$langs = \WP_Typography::get_hyphenation_languages();
+
+		$this->assertContainsOnly( 'string', $langs, 'The languages array should only contain strings.' );
+		$this->assertContainsOnly( 'string', array_keys( $langs ), 'The languages array should be indexed by language codes.' );
+	}
+
+	/**
+	 * Test get_diacritic_languages
+	 *
+	 * @covers ::get_diacritic_languages
+	 *
+	 * @uses \PHP_Typography\PHP_Typography::get_diacritic_languages
+	 */
+	 public function test_get_diacritic_languages() {
+		$langs = \WP_Typography::get_diacritic_languages();
+
+		$this->assertContainsOnly( 'string', $langs, 'The languages array should only contain strings.' );
+		$this->assertContainsOnly( 'string', array_keys( $langs ), 'The languages array should be indexed by language codes.' );
+	}
+
+	/**
+	 * Provide data for testing add_content_filters.
+	 *
+	 * @return array
+	 */
+	public function provide_add_content_filters_data() {
+		return [
+			[ true, true, true, 0, false ],
+			[ false, false, false, 0, false ],
+			[ true, false, false, 5, false ],
+			[ true, false, false, 4, true ],
+			[ false, false, false, 4, false ],
+		];
+	}
+
+	/**
+	 * Test add_content_filters
+	 *
+	 * @covers ::add_content_filters
+	 * @covers ::enable_content_filters
+	 * @covers ::enable_heading_filters
+	 * @covers ::enable_title_filters
+	 * @covers ::enable_acf_filters
+	 *
+	 * @dataProvider provide_add_content_filters_data
+	 *
+	 * @param bool $content     Disable content filters if true.
+	 * @param bool $heading     Disable heading filters if true.
+	 * @param bool $title       Disable title filters if true.
+	 * @param int  $acf_version Simulated ACF version.
+	 * @param bool $acf         Disable ACF filters if true.
+	 */
+	public function test_add_content_filters( $content, $heading, $title, $acf_version, $acf ) {
+
+		$content_hooks = [
+			'comment_author',
+			'comment_text',
+			'the_content',
+			'term_name',
+			'term_description',
+			'link_name',
+			'the_excerpt',
+			'the_excerpt_embed',
+			'widget_text',
+		];
+		$heading_hooks = [
+			'the_title',
+			'single_post_title',
+			'single_cat_title',
+			'single_tag_title',
+			'single_month_title',
+			'nav_menu_attr_title',
+			'nav_menu_description',
+			'widget_title',
+			'list_cats',
+		];
+		$title_hooks = [
+			'wp_title'             => 'process_feed',
+			'document_title_parts' => 'process_title_parts',
+			'wp_title_parts'       => 'process_title_parts',
+		];
+		$acf_hooks = [
+			4 => [
+				'acf/format_value_for_api/type=wysiwyg'  => 'process',
+				'acf/format_value_for_api/type=textarea' => 'process',
+				'acf/format_value_for_api/type=text'     => 'process_title',
+			],
+			5 => [
+				'acf/format_value/type=wysiwyg'  => 'process',
+				'acf/format_value/type=textarea' => 'process',
+				'acf/format_value/type=text'     => 'process_title',
+			],
+		];
+
+		Filters\expectApplied( 'typo_filter_priority' )->once();
+		Filters\expectApplied( 'typo_disable_filtering' )->once()->with( false, 'content' )->andReturn( $content );
+		Filters\expectApplied( 'typo_disable_filtering' )->once()->with( false, 'heading' )->andReturn( $heading );
+		Filters\expectApplied( 'typo_disable_filtering' )->once()->with( false, 'title' )->andReturn( $title );
+
+		if ( $acf_version > 0 ) {
+			m::mock( 'acf' );
+
+			Filters\expectApplied( 'typo_disable_filtering' )->once()->with( false, 'acf' )->andReturn( $acf );
+
+			if ( ! $acf ) {
+				Functions\expect( 'acf_get_setting' )->once()->with( 'version' )->andReturn( $acf_version );
+			}
+		}
+
+		$this->wp_typo->add_content_filters();
+
+		$expected = ! $content;
+		foreach ( $content_hooks as $hook ) {
+			$found = has_filter( $hook, get_class( $this->wp_typo ) . '->process()' );
+			$this->assertEquals( $expected, $found, "Hook $hook" . ( $expected ? '' : ' not' ) . ' expected, but' . ( $found ? '' : ' not' ) . ' found.' );
+		}
+
+		$expected = ! $heading;
+		foreach ( $heading_hooks as $hook ) {
+			$found = has_filter( $hook, get_class( $this->wp_typo ) . '->process_title()' );
+			$this->assertEquals( $expected, $found, "Hook $hook" . ( $expected ? '' : ' not' ) . ' expected, but' . ( $found ? '' : ' not' ) . ' found.' );
+		}
+
+		$expected = ! $title;
+		foreach ( $title_hooks as $hook => $method ) {
+			$found = has_filter( $hook, get_class( $this->wp_typo ) . "->$method()" );
+			$this->assertEquals( $expected, $found, "Hook $hook" . ( $expected ? '' : ' not' ) . ' expected, but' . ( $found ? '' : ' not' ) . ' found.' );
+		}
+
+		foreach ( array_keys( $acf_hooks ) as $version ) {
+			$expected = $acf_version === $version && ! $acf;
+			foreach ( $acf_hooks[ $version ] as $hook => $method ) {
+				$found = has_filter( $hook, get_class( $this->wp_typo ) . "->$method()" );
+				$this->assertEquals( $expected, $found, "Hook $hook" . ( $expected ? '' : ' not' ) . ' expected, but' . ( $found ? '' : ' not' ) . ' found.' );
+			}
+		}
 	}
 }
