@@ -60,7 +60,7 @@ class WP_Typography {
 	 *
 	 * @var array
 	 */
-	protected $settings;
+	protected $options;
 
 	/**
 	 * The PHP_Typography instance doing the actual work.
@@ -331,11 +331,11 @@ class WP_Typography {
 
 		// Load settings.
 		foreach ( $this->default_settings as $key => $value ) {
-			$this->settings[ $key ] = get_option( $key );
+			$this->options[ $key ] = get_option( $key );
 		}
 
 		// Disable wptexturize filter if it conflicts with our settings.
-		if ( $this->settings['typo_smart_characters'] && ! is_admin() ) {
+		if ( $this->options['typo_smart_characters'] && ! is_admin() ) {
 			add_filter( 'run_wptexturize', '__return_false' );
 
 			// Ensure that wptexturize is actually off by forcing a re-evaluation (some plugins call it too early).
@@ -367,7 +367,7 @@ class WP_Typography {
 
 		// Initialize Settings instance.
 		if ( empty( $this->typo_settings ) ) {
-			$transient = 'typo_php_settings_' . md5( wp_json_encode( $this->settings ) ) . '_' . $this->version_hash;
+			$transient = 'typo_php_settings_' . md5( wp_json_encode( $this->options ) ) . '_' . $this->version_hash;
 			$this->typo_settings = $this->maybe_fix_object( get_transient( $transient ) );
 
 			if ( empty( $this->typo_settings ) ) {
@@ -715,7 +715,7 @@ class WP_Typography {
 
 		// Initialize PHP_Typography instance.
 		if ( empty( $this->typo ) ) {
-			$transient = 'typo_php_' . md5( wp_json_encode( $this->settings ) ) . '_' . $this->version_hash;
+			$transient = 'typo_php_' . md5( wp_json_encode( $this->options ) ) . '_' . $this->version_hash;
 			$this->typo = $this->maybe_fix_object( get_transient( $transient ) );
 
 			if ( empty( $this->typo ) ) {
@@ -728,7 +728,7 @@ class WP_Typography {
 		}
 
 		// Also cache hyphenators (the pattern tries are expensive to build).
-		if ( $this->settings['typo_enable_hyphenation'] && empty( $this->hyphenator_cache ) ) {
+		if ( $this->options['typo_enable_hyphenation'] && empty( $this->hyphenator_cache ) ) {
 			$transient = 'typo_php_hyphenator_cache_' . $this->version_hash;
 			$this->hyphenator_cache = $this->maybe_fix_object( get_transient( $transient ) );
 
@@ -753,30 +753,30 @@ class WP_Typography {
 	 */
 	protected function init_settings( Settings $s ) {
 		// Load configuration variables into our PHP_Typography class.
-		$s->set_tags_to_ignore( $this->settings['typo_ignore_tags'] );
-		$s->set_classes_to_ignore( $this->settings['typo_ignore_classes'] );
-		$s->set_ids_to_ignore( $this->settings['typo_ignore_ids'] );
+		$s->set_tags_to_ignore( $this->options['typo_ignore_tags'] );
+		$s->set_classes_to_ignore( $this->options['typo_ignore_classes'] );
+		$s->set_ids_to_ignore( $this->options['typo_ignore_ids'] );
 
-		if ( $this->settings['typo_smart_characters'] ) {
-			$s->set_smart_dashes( $this->settings['typo_smart_dashes'] );
-			$s->set_smart_dashes_style( $this->settings['typo_smart_dashes_style'] );
-			$s->set_smart_ellipses( $this->settings['typo_smart_ellipses'] );
-			$s->set_smart_math( $this->settings['typo_smart_math'] );
+		if ( $this->options['typo_smart_characters'] ) {
+			$s->set_smart_dashes( $this->options['typo_smart_dashes'] );
+			$s->set_smart_dashes_style( $this->options['typo_smart_dashes_style'] );
+			$s->set_smart_ellipses( $this->options['typo_smart_ellipses'] );
+			$s->set_smart_math( $this->options['typo_smart_math'] );
 
 			// Note: smart_exponents was grouped with smart_math for the WordPress plugin,
 			// but does not have to be done that way for other ports.
-			$s->set_smart_exponents( $this->settings['typo_smart_math'] );
-			$s->set_smart_fractions( $this->settings['typo_smart_fractions'] );
-			$s->set_smart_ordinal_suffix( $this->settings['typo_smart_ordinals'] );
-			$s->set_smart_marks( $this->settings['typo_smart_marks'] );
-			$s->set_smart_quotes( $this->settings['typo_smart_quotes'] );
+			$s->set_smart_exponents( $this->options['typo_smart_math'] );
+			$s->set_smart_fractions( $this->options['typo_smart_fractions'] );
+			$s->set_smart_ordinal_suffix( $this->options['typo_smart_ordinals'] );
+			$s->set_smart_marks( $this->options['typo_smart_marks'] );
+			$s->set_smart_quotes( $this->options['typo_smart_quotes'] );
 
-			$s->set_smart_diacritics( $this->settings['typo_smart_diacritics'] );
-			$s->set_diacritic_language( $this->settings['typo_diacritic_languages'] );
-			$s->set_diacritic_custom_replacements( $this->settings['typo_diacritic_custom_replacements'] );
+			$s->set_smart_diacritics( $this->options['typo_smart_diacritics'] );
+			$s->set_diacritic_language( $this->options['typo_diacritic_languages'] );
+			$s->set_diacritic_custom_replacements( $this->options['typo_diacritic_custom_replacements'] );
 
-			$s->set_smart_quotes_primary( $this->settings['typo_smart_quotes_primary'] );
-			$s->set_smart_quotes_secondary( $this->settings['typo_smart_quotes_secondary'] );
+			$s->set_smart_quotes_primary( $this->options['typo_smart_quotes_primary'] );
+			$s->set_smart_quotes_secondary( $this->options['typo_smart_quotes_secondary'] );
 		} else {
 			$s->set_smart_dashes( false );
 			$s->set_smart_ellipses( false );
@@ -789,41 +789,41 @@ class WP_Typography {
 			$s->set_smart_diacritics( false );
 		}
 
-		$s->set_single_character_word_spacing( $this->settings['typo_single_character_word_spacing'] );
-		$s->set_dash_spacing( $this->settings['typo_dash_spacing'] );
-		$s->set_fraction_spacing( $this->settings['typo_fraction_spacing'] );
-		$s->set_unit_spacing( $this->settings['typo_unit_spacing'] );
-		$s->set_numbered_abbreviation_spacing( $this->settings['typo_numbered_abbreviations_spacing'] );
-		$s->set_french_punctuation_spacing( $this->settings['typo_french_punctuation_spacing'] );
-		$s->set_units( $this->settings['typo_units'] );
-		$s->set_space_collapse( $this->settings['typo_space_collapse'] );
-		$s->set_dewidow( $this->settings['typo_prevent_widows'] );
-		$s->set_max_dewidow_length( $this->settings['typo_widow_min_length'] );
-		$s->set_max_dewidow_pull( $this->settings['typo_widow_max_pull'] );
-		$s->set_wrap_hard_hyphens( $this->settings['typo_wrap_hyphens'] );
-		$s->set_email_wrap( $this->settings['typo_wrap_emails'] );
-		$s->set_url_wrap( $this->settings['typo_wrap_urls'] );
-		$s->set_min_after_url_wrap( $this->settings['typo_wrap_min_after'] );
-		$s->set_style_ampersands( $this->settings['typo_style_amps'] );
-		$s->set_style_caps( $this->settings['typo_style_caps'] );
-		$s->set_style_numbers( $this->settings['typo_style_numbers'] );
-		$s->set_style_hanging_punctuation( $this->settings['typo_style_hanging_punctuation'] );
-		$s->set_style_initial_quotes( $this->settings['typo_style_initial_quotes'] );
-		$s->set_initial_quote_tags( $this->settings['typo_initial_quote_tags'] );
+		$s->set_single_character_word_spacing( $this->options['typo_single_character_word_spacing'] );
+		$s->set_dash_spacing( $this->options['typo_dash_spacing'] );
+		$s->set_fraction_spacing( $this->options['typo_fraction_spacing'] );
+		$s->set_unit_spacing( $this->options['typo_unit_spacing'] );
+		$s->set_numbered_abbreviation_spacing( $this->options['typo_numbered_abbreviations_spacing'] );
+		$s->set_french_punctuation_spacing( $this->options['typo_french_punctuation_spacing'] );
+		$s->set_units( $this->options['typo_units'] );
+		$s->set_space_collapse( $this->options['typo_space_collapse'] );
+		$s->set_dewidow( $this->options['typo_prevent_widows'] );
+		$s->set_max_dewidow_length( $this->options['typo_widow_min_length'] );
+		$s->set_max_dewidow_pull( $this->options['typo_widow_max_pull'] );
+		$s->set_wrap_hard_hyphens( $this->options['typo_wrap_hyphens'] );
+		$s->set_email_wrap( $this->options['typo_wrap_emails'] );
+		$s->set_url_wrap( $this->options['typo_wrap_urls'] );
+		$s->set_min_after_url_wrap( $this->options['typo_wrap_min_after'] );
+		$s->set_style_ampersands( $this->options['typo_style_amps'] );
+		$s->set_style_caps( $this->options['typo_style_caps'] );
+		$s->set_style_numbers( $this->options['typo_style_numbers'] );
+		$s->set_style_hanging_punctuation( $this->options['typo_style_hanging_punctuation'] );
+		$s->set_style_initial_quotes( $this->options['typo_style_initial_quotes'] );
+		$s->set_initial_quote_tags( $this->options['typo_initial_quote_tags'] );
 
-		if ( $this->settings['typo_enable_hyphenation'] ) {
-			$s->set_hyphenation( $this->settings['typo_enable_hyphenation'] );
-			$s->set_hyphenate_headings( $this->settings['typo_hyphenate_headings'] );
-			$s->set_hyphenate_all_caps( $this->settings['typo_hyphenate_caps'] );
-			$s->set_hyphenate_title_case( $this->settings['typo_hyphenate_title_case'] );
-			$s->set_hyphenate_compounds( $this->settings['typo_hyphenate_compounds'] );
-			$s->set_hyphenation_language( $this->settings['typo_hyphenate_languages'] );
-			$s->set_min_length_hyphenation( $this->settings['typo_hyphenate_min_length'] );
-			$s->set_min_before_hyphenation( $this->settings['typo_hyphenate_min_before'] );
-			$s->set_min_after_hyphenation( $this->settings['typo_hyphenate_min_after'] );
-			$s->set_hyphenation_exceptions( $this->settings['typo_hyphenate_exceptions'] );
+		if ( $this->options['typo_enable_hyphenation'] ) {
+			$s->set_hyphenation( $this->options['typo_enable_hyphenation'] );
+			$s->set_hyphenate_headings( $this->options['typo_hyphenate_headings'] );
+			$s->set_hyphenate_all_caps( $this->options['typo_hyphenate_caps'] );
+			$s->set_hyphenate_title_case( $this->options['typo_hyphenate_title_case'] );
+			$s->set_hyphenate_compounds( $this->options['typo_hyphenate_compounds'] );
+			$s->set_hyphenation_language( $this->options['typo_hyphenate_languages'] );
+			$s->set_min_length_hyphenation( $this->options['typo_hyphenate_min_length'] );
+			$s->set_min_before_hyphenation( $this->options['typo_hyphenate_min_before'] );
+			$s->set_min_after_hyphenation( $this->options['typo_hyphenate_min_after'] );
+			$s->set_hyphenation_exceptions( $this->options['typo_hyphenate_exceptions'] );
 		} else { // save some cycles.
-			$s->set_hyphenation( $this->settings['typo_enable_hyphenation'] );
+			$s->set_hyphenation( $this->options['typo_enable_hyphenation'] );
 		}
 
 		/**
@@ -835,7 +835,7 @@ class WP_Typography {
 		 *
 		 * @param bool $ignore Default false.
 		 */
-		$s->set_ignore_parser_errors( $this->settings['typo_ignore_parser_errors'] || apply_filters( 'typo_ignore_parser_errors', false ) );
+		$s->set_ignore_parser_errors( $this->options['typo_ignore_parser_errors'] || apply_filters( 'typo_ignore_parser_errors', false ) );
 
 		// Make parser errors filterable on an individual level.
 		$s->set_parser_errors_handler( [ $this, 'parser_errors_handler' ] );
@@ -913,13 +913,13 @@ class WP_Typography {
 	 * Prints CSS and JS depending on plugin options.
 	 */
 	public function add_wp_head() {
-		if ( $this->settings['typo_style_css_include'] && '' !== trim( $this->settings['typo_style_css'] ) ) {
+		if ( $this->options['typo_style_css_include'] && '' !== trim( $this->options['typo_style_css'] ) ) {
 			echo '<style type="text/css">' . "\r\n";
-			echo esc_html( $this->settings['typo_style_css'] ) . "\r\n";
+			echo esc_html( $this->options['typo_style_css'] ) . "\r\n";
 			echo "</style>\r\n";
 		}
 
-		if ( $this->settings['typo_hyphenate_safari_font_workaround'] ) {
+		if ( $this->options['typo_hyphenate_safari_font_workaround'] ) {
 			echo "<style type=\"text/css\">body {-webkit-font-feature-settings: \"liga\";font-feature-settings: \"liga\";-ms-font-feature-settings: normal;}</style>\r\n";
 		}
 	}
@@ -986,7 +986,7 @@ class WP_Typography {
 	 * Enqueues frontend JavaScript files.
 	 */
 	public function enqueue_scripts() {
-		if ( $this->settings['typo_hyphenate_clean_clipboard'] ) {
+		if ( $this->options['typo_hyphenate_clean_clipboard'] ) {
 			// Set up file suffix.
 			$suffix = SCRIPT_DEBUG ? '' : '.min';
 
