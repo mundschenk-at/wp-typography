@@ -51,6 +51,12 @@ class WP_Typography_Test extends TestCase {
 	 */
 	protected $wp_typo;
 
+	/**
+	 * Test fixture.
+	 *
+	 * @var \WP_Typography_Admin
+	 */
+	protected $wp_typo_admin;
 
 	/**
 	 * Sets up the fixture, for example, opens a network connection.
@@ -63,13 +69,15 @@ class WP_Typography_Test extends TestCase {
 			->once()->with( 'typo_cache_keys', [] )->andReturn( [] );
 
 		// Mock WP_Typography_Admin instance.
-		$admin_mock = m::mock( \WP_Typography_Admin::class );
-		$admin_mock
-			->shouldReceive( 'run' )
-			->shouldReceive( 'get_default_settings' )->andReturn( [] );
+		$this->wp_typo_admin = m::mock( \WP_Typography_Admin::class )
+			->shouldReceive( 'run' )->byDefault()
+			->shouldReceive( 'get_default_settings' )->andReturn( [ 'dummy_settings' => 'bar' ] )->byDefault()
+			->getMock();
 
 		// Create instance.
-		$this->wp_typo = m::mock( \WP_Typography::class, [ '7.7.7', 'dummy/path', $admin_mock ] )->makePartial();
+		$this->wp_typo = m::mock( \WP_Typography::class, [ '7.7.7', 'dummy/path', $this->wp_typo_admin ] )
+			->shouldAllowMockingProtectedMethods()
+			->makePartial();
 
 		parent::setUp();
 	}
@@ -86,13 +94,23 @@ class WP_Typography_Test extends TestCase {
 	}
 
 	/**
+	 * Prepare WP_Typography options for a test.
+	 *
+	 * @param array $options An array of set options.
+	 */
+	protected function prepareOptions( array $options ) {  // @codingStandardsIgnoreLine
+		// Reset singleton.
+		$this->setValue( $this->wp_typo, 'options', $options );
+	}
+
+	/**
 	 * Tests constructor.
 	 *
 	 * @covers ::__construct
+	 * @covers ::hash_version_string
 	 *
 	 * @uses ::get_version
 	 * @uses ::get_version_hash
-	 * @uses ::hash_version_string
 	 * @uses \WP_Typography_Admin::__construct
 	 */
 	public function test_constructor() {
@@ -214,15 +232,69 @@ class WP_Typography_Test extends TestCase {
 	 * Test get_user_settings.
 	 *
 	 * @covers ::get_user_settings
-	 * @covers ::get_settings
 	 *
+	 * @uses ::get_settings
+	 * @uses ::init_settings_from_options
 	 * @uses ::get_instance
 	 * @uses ::cache_object
-	 * @uses ::init_settings
+	 * @uses ::init_settings_from_options
 	 * @uses ::maybe_fix_object
 	 */
 	public function test_get_user_settings() {
 		$this->setStaticValue( \WP_Typography::class, '_instance', $this->wp_typo );
+
+		$this->prepareOptions( [
+			'typo_ignore_tags'                    => [ 'script' ],
+			'typo_ignore_classes'                 => [ 'noTypo' ],
+			'typo_ignore_ids'                     => [],
+			'typo_smart_characters'               => true,
+			'typo_smart_dashes'                   => false,
+			'typo_smart_dashes_style'             => 'international',
+			'typo_smart_ellipses'                 => false,
+			'typo_smart_math'                     => false,
+			'typo_smart_fractions'                => false,
+			'typo_smart_ordinals'                 => false,
+			'typo_smart_marks'                    => false,
+			'typo_smart_quotes'                   => false,
+			'typo_smart_diacritics'               => false,
+			'typo_diacritic_languages'            => 'en-US',
+			'typo_diacritic_custom_replacements'  => [],
+			'typo_smart_quotes_primary'           => 'doubleCurled',
+			'typo_smart_quotes_secondary'         => 'singleCurled',
+			'typo_single_character_word_spacing'  => false,
+			'typo_dash_spacing'                   => false,
+			'typo_fraction_spacing'               => false,
+			'typo_unit_spacing'                   => false,
+			'typo_numbered_abbreviations_spacing' => false,
+			'typo_french_punctuation_spacing'     => false,
+			'typo_units'                          => [],
+			'typo_space_collapse'                 => false,
+			'typo_prevent_widows'                 => false,
+			'typo_widow_min_length'               => 2,
+			'typo_widow_max_pull'                 => 2,
+			'typo_wrap_hyphens'                   => false,
+			'typo_wrap_emails'                    => false,
+			'typo_wrap_urls'                      => false,
+			'typo_wrap_min_after'                 => 2,
+			'typo_style_amps'                     => false,
+			'typo_style_caps'                     => false,
+			'typo_style_numbers'                  => false,
+			'typo_wrap_urls'                      => false,
+			'typo_style_hanging_punctuation'      => false,
+			'typo_style_initial_quotes'           => false,
+			'typo_initial_quote_tags'             => [],
+			'typo_enable_hyphenation'             => true,
+			'typo_hyphenate_headings'             => false,
+			'typo_hyphenate_caps'                 => false,
+			'typo_hyphenate_title_case'           => false,
+			'typo_hyphenate_compounds'            => false,
+			'typo_hyphenate_languages'            => 'en-US',
+			'typo_hyphenate_min_length'           => 2,
+			'typo_hyphenate_min_before'           => 2,
+			'typo_hyphenate_min_after'            => 2,
+			'typo_hyphenate_exceptions'           => [],
+			'typo_ignore_parser_errors'           => false,
+		] );
 
 		Functions\expect( 'wp_json_encode' )->once()->andReturn( '{ json: "value" }' );
 		Functions\expect( 'get_transient' )->once()->andReturn( false );
@@ -236,6 +308,176 @@ class WP_Typography_Test extends TestCase {
 
 		// Reset singleton.
 		$this->setStaticValue( \WP_Typography::class, '_instance', null );
+	}
+
+	/**
+	 * Test get_typography_instance.
+	 *
+	 * @covers ::get_typography_instance
+	 *
+	 * @uses ::maybe_fix_object
+	 */
+	public function test_get_typography_instance() {
+		$this->prepareOptions( [
+			'typo_enable_hyphenation' => true,
+		] );
+
+		Functions\expect( 'wp_json_encode' )->once()->andReturn( '{ json: "value" }' );
+		Functions\expect( 'get_transient' )->twice()->andReturn( false );
+
+		$this->wp_typo->shouldReceive( 'cache_object' )->twice();
+
+		$this->assertInstanceOf( \PHP_Typography\PHP_Typography::class, $this->invokeMethod( $this->wp_typo, 'get_typography_instance' ) );
+	}
+
+	/**
+	 * Test get_user_settings.
+	 *
+	 * @covers ::get_settings
+	 * @covers ::init_settings_from_options
+	 *
+	 * @uses ::cache_object
+	 * @uses ::init_settings_from_options
+	 * @uses ::maybe_fix_object
+	 */
+	public function test_get_settings() {
+
+		$this->prepareOptions( [
+			'typo_ignore_tags'                    => [ 'script' ],
+			'typo_ignore_classes'                 => [ 'noTypo' ],
+			'typo_ignore_ids'                     => [],
+			'typo_smart_characters'               => true,
+			'typo_smart_dashes'                   => false,
+			'typo_smart_dashes_style'             => 'international',
+			'typo_smart_ellipses'                 => false,
+			'typo_smart_math'                     => false,
+			'typo_smart_fractions'                => false,
+			'typo_smart_ordinals'                 => false,
+			'typo_smart_marks'                    => false,
+			'typo_smart_quotes'                   => false,
+			'typo_smart_diacritics'               => false,
+			'typo_diacritic_languages'            => 'en-US',
+			'typo_diacritic_custom_replacements'  => [],
+			'typo_smart_quotes_primary'           => 'doubleCurled',
+			'typo_smart_quotes_secondary'         => 'singleCurled',
+			'typo_single_character_word_spacing'  => false,
+			'typo_dash_spacing'                   => false,
+			'typo_fraction_spacing'               => false,
+			'typo_unit_spacing'                   => false,
+			'typo_numbered_abbreviations_spacing' => false,
+			'typo_french_punctuation_spacing'     => false,
+			'typo_units'                          => [],
+			'typo_space_collapse'                 => false,
+			'typo_prevent_widows'                 => false,
+			'typo_widow_min_length'               => 2,
+			'typo_widow_max_pull'                 => 2,
+			'typo_wrap_hyphens'                   => false,
+			'typo_wrap_emails'                    => false,
+			'typo_wrap_urls'                      => false,
+			'typo_wrap_min_after'                 => 2,
+			'typo_style_amps'                     => false,
+			'typo_style_caps'                     => false,
+			'typo_style_numbers'                  => false,
+			'typo_wrap_urls'                      => false,
+			'typo_style_hanging_punctuation'      => false,
+			'typo_style_initial_quotes'           => false,
+			'typo_initial_quote_tags'             => [],
+			'typo_enable_hyphenation'             => true,
+			'typo_hyphenate_headings'             => false,
+			'typo_hyphenate_caps'                 => false,
+			'typo_hyphenate_title_case'           => false,
+			'typo_hyphenate_compounds'            => false,
+			'typo_hyphenate_languages'            => 'en-US',
+			'typo_hyphenate_min_length'           => 2,
+			'typo_hyphenate_min_before'           => 2,
+			'typo_hyphenate_min_after'            => 2,
+			'typo_hyphenate_exceptions'           => [],
+			'typo_ignore_parser_errors'           => false,
+		] );
+
+		Functions\expect( 'wp_json_encode' )->once()->andReturn( '{ json: "value" }' );
+		Functions\expect( 'get_transient' )->once()->andReturn( false );
+		Functions\expect( 'set_transient' )->once()->andReturn( true );
+		Functions\expect( 'update_option' )->once()->andReturn( true );
+
+		$s = $this->wp_typo->get_settings();
+
+		$this->assertInstanceOf( \PHP_Typography\Settings::class, $s );
+	}
+
+	/**
+	 * Test get_user_settings.
+	 *
+	 * @covers ::get_settings
+	 * @covers ::init_settings_from_options
+	 *
+	 * @uses ::cache_object
+	 * @uses ::init_settings_from_options
+	 * @uses ::maybe_fix_object
+	 */
+	public function test_get_settings_off() {
+
+		$this->prepareOptions( [
+			'typo_ignore_tags'                    => [ 'script' ],
+			'typo_ignore_classes'                 => [ 'noTypo' ],
+			'typo_ignore_ids'                     => [],
+			'typo_smart_characters'               => false,
+			'typo_smart_dashes'                   => false,
+			'typo_smart_dashes_style'             => 'international',
+			'typo_smart_ellipses'                 => false,
+			'typo_smart_math'                     => false,
+			'typo_smart_fractions'                => false,
+			'typo_smart_ordinals'                 => false,
+			'typo_smart_marks'                    => false,
+			'typo_smart_quotes'                   => false,
+			'typo_smart_diacritics'               => false,
+			'typo_diacritic_languages'            => 'en-US',
+			'typo_diacritic_custom_replacements'  => [],
+			'typo_smart_quotes_primary'           => 'doubleCurled',
+			'typo_smart_quotes_secondary'         => 'singleCurled',
+			'typo_single_character_word_spacing'  => false,
+			'typo_dash_spacing'                   => false,
+			'typo_fraction_spacing'               => false,
+			'typo_unit_spacing'                   => false,
+			'typo_numbered_abbreviations_spacing' => false,
+			'typo_french_punctuation_spacing'     => false,
+			'typo_units'                          => [],
+			'typo_space_collapse'                 => false,
+			'typo_prevent_widows'                 => false,
+			'typo_widow_min_length'               => 2,
+			'typo_widow_max_pull'                 => 2,
+			'typo_wrap_hyphens'                   => false,
+			'typo_wrap_emails'                    => false,
+			'typo_wrap_urls'                      => false,
+			'typo_wrap_min_after'                 => 2,
+			'typo_style_amps'                     => false,
+			'typo_style_caps'                     => false,
+			'typo_style_numbers'                  => false,
+			'typo_wrap_urls'                      => false,
+			'typo_style_hanging_punctuation'      => false,
+			'typo_style_initial_quotes'           => false,
+			'typo_initial_quote_tags'             => [],
+			'typo_enable_hyphenation'             => false,
+			'typo_hyphenate_headings'             => false,
+			'typo_hyphenate_caps'                 => false,
+			'typo_hyphenate_title_case'           => false,
+			'typo_hyphenate_compounds'            => false,
+			'typo_hyphenate_languages'            => 'en-US',
+			'typo_hyphenate_min_length'           => 2,
+			'typo_hyphenate_min_before'           => 2,
+			'typo_hyphenate_min_after'            => 2,
+			'typo_hyphenate_exceptions'           => [],
+			'typo_ignore_parser_errors'           => false,
+		] );
+
+		Functions\expect( 'wp_json_encode' )->once()->andReturn( '{ json: "value" }' );
+		Functions\expect( 'get_transient' )->once()->andReturn( false );
+		Functions\expect( 'set_transient' )->once()->andReturn( true );
+		Functions\expect( 'update_option' )->once()->andReturn( true );
+
+		$s = $this->wp_typo->get_settings();
+
+		$this->assertInstanceOf( \PHP_Typography\Settings::class, $s );
 	}
 
 	/**
@@ -264,6 +506,138 @@ class WP_Typography_Test extends TestCase {
 
 		$this->assertContainsOnly( 'string', $langs, 'The languages array should only contain strings.' );
 		$this->assertContainsOnly( 'string', array_keys( $langs ), 'The languages array should be indexed by language codes.' );
+	}
+
+	/**
+	 * Test filter.
+	 *
+	 * @covers ::filter
+	 *
+	 * @uses ::get_instance
+	 */
+	public function test_filter() {
+		$this->setStaticValue( \WP_Typography::class, '_instance', $this->wp_typo );
+		$this->wp_typo->shouldReceive( 'process' )->once()->with( 'foobar', false, false, null )->andReturn( 'barfoo' );
+		$this->assertSame( 'barfoo', \WP_Typography::filter( 'foobar', null ) );
+	}
+
+	/**
+	 * Test filter_title.
+	 *
+	 * @covers ::filter_title
+	 *
+	 * @uses ::get_instance
+	 */
+	public function test_filter_title() {
+		$this->setStaticValue( \WP_Typography::class, '_instance', $this->wp_typo );
+		$this->wp_typo->shouldReceive( 'process_title' )->once()->with( 'foobar', null )->andReturn( 'barfoo' );
+		$this->assertSame( 'barfoo', \WP_Typography::filter_title( 'foobar', null ) );
+	}
+
+	/**
+	 * Test filter_title_parts.
+	 *
+	 * @covers ::filter_title_parts
+	 *
+	 * @uses ::get_instance
+	 */
+	public function test_filter_title_parts() {
+		$this->setStaticValue( \WP_Typography::class, '_instance', $this->wp_typo );
+		$this->wp_typo->shouldReceive( 'process_title_parts' )->once()->with( 'foobar', null )->andReturn( 'barfoo' );
+		$this->assertSame( 'barfoo', \WP_Typography::filter_title_parts( 'foobar', null ) );
+	}
+
+	/**
+	 * Test filter_feed.
+	 *
+	 * @covers ::filter_feed
+	 *
+	 * @uses ::get_instance
+	 */
+	public function test_filter_feed() {
+		$this->setStaticValue( \WP_Typography::class, '_instance', $this->wp_typo );
+		$this->wp_typo->shouldReceive( 'process_feed' )->once()->with( 'foobar', false, null )->andReturn( 'barfoo' );
+		$this->assertSame( 'barfoo', \WP_Typography::filter_feed( 'foobar', null ) );
+	}
+
+	/**
+	 * Test filter_feed_title.
+	 *
+	 * @covers ::filter_feed_title
+	 *
+	 * @uses ::get_instance
+	 */
+	public function test_filter_feed_title() {
+		$this->setStaticValue( \WP_Typography::class, '_instance', $this->wp_typo );
+		$this->wp_typo->shouldReceive( 'process_feed' )->once()->with( 'foobar', true, null )->andReturn( 'barfoo' );
+		$this->assertSame( 'barfoo', \WP_Typography::filter_feed_title( 'foobar', null ) );
+	}
+
+	/**
+	 * Provide data for testing add_content_filters.
+	 *
+	 * @return array
+	 */
+	public function provide_init_data() {
+		return [
+			[ true, true, true, true ],
+			[ false, false, false, false ],
+			[ true, false, false, false ],
+			[ false, true, false, false ],
+			[ false, false, true, false ],
+			[ false, false, false, true ],
+		];
+	}
+
+	/**
+	 * Test init
+	 *
+	 * @covers ::init
+	 *
+	 * @uses ::run
+	 * @uses ::set_instance
+	 *
+	 * @dataProvider provide_init_data
+	 *
+	 * @param bool $restore_defaults The typo_restore_defaults value.
+	 * @param bool $clear_cache      The typo_clear_cache value.
+	 * @param bool $smart_characters The typo_smart_characters value.
+	 * @param bool $admin            Whether is_admin() should return true.
+	 */
+	public function test_init( $restore_defaults, $clear_cache, $smart_characters, $admin ) {
+		$this->prepareOptions( [
+			'typo_smart_characters' => $smart_characters,
+		] );
+		$this->wp_typo->run();
+
+		Functions\expect( 'get_option' )
+			->once()->with( 'typo_restore_defaults' )->andReturn( $restore_defaults )
+			->andAlsoExpectIt()->once()->with( 'typo_clear_cache' )->andReturn( $clear_cache )
+			->andAlsoExpectIt()->zeroOrMoreTimes();
+
+		Functions\expect( 'is_admin' )->atLeast()->once()->andReturn( $admin );
+
+		if ( $restore_defaults ) {
+			$this->wp_typo->shouldReceive( 'set_default_options' )->once()->with( true );
+		}
+
+		if ( $clear_cache ) {
+			$this->wp_typo->shouldReceive( 'clear_cache' )->once();
+		}
+
+		if ( ! $admin ) {
+			$this->wp_typo->shouldReceive( 'add_content_filters' )->once();
+
+			if ( $smart_characters ) {
+				Filters\expectAdded( 'run_wptexturize' );
+				Functions\expect( 'wptexturize' )->once()->with( ' ', true );
+			}
+		}
+
+		$this->wp_typo->init();
+
+		self::assertTrue( has_action( 'wp_head', [ $this->wp_typo, 'add_wp_head' ] ) );
+		self::assertTrue( has_action( 'wp_enqueue_scripts', [ $this->wp_typo, 'enqueue_scripts' ] ) );
 	}
 
 	/**
@@ -382,5 +756,386 @@ class WP_Typography_Test extends TestCase {
 				$this->assertEquals( $expected, $found, "Hook $hook" . ( $expected ? '' : ' not' ) . ' expected, but' . ( $found ? '' : ' not' ) . ' found.' );
 			}
 		}
+	}
+
+	/**
+	 * Test process_title.
+	 *
+	 * @covers ::process_title
+	 */
+	public function test_process_title() {
+		$this->wp_typo->shouldReceive( 'process' )->once()->with( 'foobar', true, false, null )->andReturn( 'barfoo' );
+
+		$this->assertSame( 'barfoo', $this->wp_typo->process_title( 'foobar', null ) );
+	}
+
+	/**
+	 * Test process_feed.
+	 *
+	 * @covers ::process_feed
+	 */
+	public function test_process_feed() {
+		$this->wp_typo->shouldReceive( 'process' )->once()->with( 'foobar', true, true, null )->andReturn( 'barfoo' );
+
+		$this->assertSame( 'barfoo', $this->wp_typo->process_feed( 'foobar', true, null ) );
+	}
+
+	/**
+	 * Test process_title_parts.
+	 *
+	 * @covers ::process_title_parts
+	 */
+	public function test_process_title_parts() {
+		$title_parts = [
+			'fo' . \PHP_Typography\U::SOFT_HYPHEN . 'o',
+			'bar',
+			'baz',
+		];
+
+		foreach ( $title_parts as $part ) {
+			$this->wp_typo->shouldReceive( 'process' )->once()->with( $part, true, true, null )->andReturn( $part . $part );
+		}
+
+		$this->assertSame( [ 'foofoo', 'barbar', 'bazbaz' ], $this->wp_typo->process_title_parts( $title_parts, null ) );
+	}
+
+	/**
+	 * Provide data for testing process.
+	 *
+	 * @return array
+	 */
+	public function provide_process_data() {
+		return [
+			[ true, true, true, null ],
+			[ false, false, false, null ],
+			[ false, true, false, null ],
+			[ false, false, true, null ],
+			[ true, false, true, null ],
+			[ false, false, false, m::mock( \PHP_Typography\Settings::class )->shouldReceive( 'get_hash' )->andReturn( 'another_fake_hash' )->getMock() ],
+		];
+	}
+
+	/**
+	 * Test process
+	 *
+	 * @covers ::process
+	 *
+	 * @uses ::run
+	 * @uses ::set_instance
+	 *
+	 * @dataProvider provide_process_data
+	 *
+	 * @param  bool     $is_title   Fragment is a title.
+	 * @param  bool     $force_feed Enforce feed processing.
+	 * @param  bool     $is_feed    Value for is_feed().
+	 * @param  Settings $settings   May be null.
+	 */
+	public function test_process( $is_title, $force_feed, $is_feed, $settings = null ) {
+		if ( ! defined( 'DAY_IN_SECONDS' ) ) {
+			define( 'DAY_IN_SECONDS', 999 );
+		}
+
+		Functions\expect( 'is_feed' )->andReturn( $is_feed );
+
+		if ( null === $settings ) {
+			$settings_mock = m::mock( \PHP_Typography\Settings::class )->shouldReceive( 'get_hash' )->andReturn( 'another_fake_hash' )->getMock();
+
+			$this->wp_typo->shouldReceive( 'get_settings' )->once()->andReturn( $settings_mock );
+		}
+
+		Filters\expectApplied( 'typo_settings' )->once()->with( m::type( \PHP_Typography\Settings::class ) )->andReturnFirstArg();
+		Filters\expectApplied( 'typo_processed_text_caching_duration' )->once()->with( m::type( 'int' ) )->andReturn( 5 );
+
+		$typo_mock = m::mock( \PHP_Typography\PHP_Typography::class );
+		if ( $is_feed || $force_feed ) {
+			$typo_mock->shouldReceive( 'process_feed' )->once()->with( 'text', m::type( \PHP_Typography\Settings::class ), $is_title )->andReturn( 'processed text' );
+		} else {
+			$typo_mock->shouldReceive( 'process' )->once()->with( 'text', m::type( \PHP_Typography\Settings::class ), $is_title )->andReturn( 'processed text' );
+		}
+
+		$this->wp_typo
+			->shouldReceive( 'get_cache' )->once()->andReturn( false )
+			->shouldReceive( 'get_typography_instance' )->once()->andReturn( $typo_mock )
+			->shouldReceive( 'set_cache' )->once();
+
+		$this->assertSame( 'processed text', $this->wp_typo->process( 'text', $is_title, $force_feed, $settings ) );
+	}
+
+	/**
+	 * Test set_transient.
+	 *
+	 * @covers ::set_transient
+	 */
+	public function test_set_transient() {
+		Functions\expect( 'set_transient' )->once()->with( 'my_transient', 'my_value', 666 )->andReturn( true );
+		Functions\expect( 'update_option' )->once()->with( 'typo_transient_keys', [
+			'my_transient' => true,
+		] )->andReturn( true );
+		$this->assertTrue( $this->wp_typo->set_transient( 'my_transient', 'my_value', 666 ) );
+
+		Functions\expect( 'set_transient' )->once()->with( 'my_other_transient', 'my_value', 666 )->andReturn( true );
+		Functions\expect( 'update_option' )->once()->with( 'typo_transient_keys', [
+			'my_transient' => true,
+			'my_other_transient' => true,
+		] )->andReturn( true );
+		$this->assertTrue( $this->wp_typo->set_transient( 'my_other_transient', 'my_value', 666 ) );
+
+		Functions\expect( 'set_transient' )->once()->with( 'my_third_transient', 'my_value', 666 )->andReturn( false );
+		$this->assertFalse( $this->wp_typo->set_transient( 'my_third_transient', 'my_value', 666 ) );
+	}
+
+	/**
+	 * Test set_cache.
+	 *
+	 * @covers ::set_cache
+	 */
+	public function test_set_cache() {
+		Functions\expect( 'wp_cache_set' )->once()->with( 'my_cache_key', 'my_value', 'wp-typography', 666 )->andReturn( true );
+		Functions\expect( 'update_option' )->once()->with( 'typo_cache_keys', [
+			'my_cache_key' => true,
+		] )->andReturn( true );
+		$this->assertTrue( $this->wp_typo->set_cache( 'my_cache_key', 'my_value', 666 ) );
+
+		Functions\expect( 'wp_cache_set' )->once()->with( 'my_other_cache_key', 'my_value', 'wp-typography', 666 )->andReturn( true );
+		Functions\expect( 'update_option' )->once()->with( 'typo_cache_keys', [
+			'my_cache_key' => true,
+			'my_other_cache_key' => true,
+		] )->andReturn( true );
+		$this->assertTrue( $this->wp_typo->set_cache( 'my_other_cache_key', 'my_value', 666 ) );
+
+		Functions\expect( 'wp_cache_set' )->once()->with( 'my_third_cache_key', 'my_value', 'wp-typography', 666 )->andReturn( false );
+		$this->assertFalse( $this->wp_typo->set_cache( 'my_third_cache_key', 'my_value', 666 ) );
+	}
+
+	/**
+	 * Test get_cache.
+	 *
+	 * @covers ::get_cache
+	 */
+	public function test_get_cache() {
+		Functions\expect( 'wp_cache_get' )->once()->with( 'my_cache_key', 'wp-typography', false, false )->andReturn( 'foo' );
+		$this->assertSame( 'foo', $this->wp_typo->get_cache( 'my_cache_key', $found ) );
+	}
+
+	/**
+	 * Test cache_object.
+	 *
+	 * @covers ::cache_object
+	 */
+	public function test_cache_object() {
+		$key = 'my_transient_key';
+		$object = new \stdClass();
+
+		$this->wp_typo->shouldReceive( 'set_transient' )->once()->with( $key, $object, m::type( 'int' ) );
+
+		$this->invokeMethod( $this->wp_typo, 'cache_object', [ $key, $object ] );
+
+		$this->assertTrue( 1 === Filters\applied( 'typo_php_typography_caching_duration' ) );
+		$this->assertTrue( 1 === Filters\applied( 'typo_php_typography_caching_enabled' ) );
+	}
+
+	/**
+	 * Test set_default_options.
+	 *
+	 * @covers ::set_default_options
+	 *
+	 * @uses ::run
+	 * @uses ::set_instance
+	 */
+	public function test_set_default_options() {
+		$this->wp_typo->run();
+
+		Functions\expect( 'get_option' )->atLeast()->once()->andReturn( false );
+		Functions\expect( 'update_option' )->atLeast()->once();
+
+		$this->wp_typo->set_default_options();
+		$this->assertTrue( true );
+	}
+
+	/**
+	 * Test set_default_options.
+	 *
+	 * @covers ::set_default_options
+	 *
+	 * @uses ::run
+	 * @uses ::set_instance
+	 */
+	public function test_set_default_options_force_defaults() {
+		$this->wp_typo->run();
+
+		Functions\expect( 'get_option' )->never();
+		Functions\expect( 'update_option' )->once()
+			->andAlsoExpectIt()->once()->with( 'typo_restore_defaults', false )
+			->andAlsoExpectIt()->once()->with( 'typo_clear_cache', false );
+
+		$this->wp_typo->set_default_options( true );
+		$this->assertTrue( true );
+	}
+
+
+	/**
+	 * Test get_default_options.
+	 *
+	 * @covers ::get_default_options
+	 *
+	 * @uses ::run
+	 * @uses ::set_instance
+	 */
+	public function test_get_default_options() {
+		$this->wp_typo->run();
+		$this->assertInternalType( 'array', $this->wp_typo->get_default_options() );
+	}
+
+	/**
+	 * Test clear_cache.
+	 *
+	 * @covers ::clear_cache
+	 *
+	 * @uses ::set_transient
+	 * @uses ::set_cache
+	 */
+	public function test_clear_cache() {
+		Functions\expect( 'set_transient' )->once()->andReturn( true );
+		Functions\expect( 'update_option' )->once();
+		$this->wp_typo->set_transient( 'foo', 'bar', 99 );
+
+		Functions\expect( 'wp_cache_set' )->once()->andReturn( true );
+		Functions\expect( 'update_option' )->once();
+		$this->wp_typo->set_cache( 'foo', 'bar', 99 );
+
+		Functions\expect( 'delete_transient' )->once();
+		Functions\expect( 'wp_cache_delete' )->once();
+		Functions\expect( 'update_option' )
+			->once()->with( 'typo_transient_keys', [] )
+			->andAlsoExpectIt()->once()->with( 'typo_cache_keys', [] )
+			->andAlsoExpectIt()->once()->with( 'typo_clear_cache', false );
+
+		$this->wp_typo->clear_cache();
+		$this->assertTrue( true );
+	}
+
+
+	/**
+	 * Test parser_errors_handler.
+	 *
+	 * @covers ::parser_errors_handler
+	 */
+	public function test_parser_errors_handler() {
+		$this->wp_typo->parser_errors_handler( [] );
+		$this->assertTrue( 1 === Filters\applied( 'typo_handle_parser_errors' ) );
+	}
+
+
+	/**
+	 * Test add_wp_head.
+	 *
+	 * @covers ::add_wp_head
+	 */
+	public function test_add_wp_head_css() {
+		$this->prepareOptions( [
+			'typo_style_css_include'                => true,
+			'typo_style_css'                        => 'my: css;',
+			'typo_hyphenate_safari_font_workaround' => false,
+		] );
+		Functions\expect( 'esc_html' )->once()->andReturnFirstArg();
+		$this->expectOutputString( "<style type=\"text/css\">\r\nmy: css;\r\n</style>\r\n" );
+		$this->wp_typo->add_wp_head();
+	}
+
+	/**
+	 * Test add_wp_head.
+	 *
+	 * @covers ::add_wp_head
+	 */
+	public function test_add_wp_head_safari_workaround() {
+		$this->prepareOptions( [
+			'typo_style_css_include'                => false,
+			'typo_hyphenate_safari_font_workaround' => true,
+		] );
+		$this->expectOutputString( "<style type=\"text/css\">body {-webkit-font-feature-settings: \"liga\";font-feature-settings: \"liga\";-ms-font-feature-settings: normal;}</style>\r\n" );
+		$this->wp_typo->add_wp_head();
+
+	}
+
+	/**
+	 * Test plugins_loaded.
+	 *
+	 * @covers ::plugins_loaded
+	 */
+	public function test_plugins_loaded() {
+		Functions\expect( 'load_plugin_textdomain' )->once();
+
+		$this->wp_typo->plugins_loaded();
+		$this->assertTrue( true );
+	}
+
+	/**
+	 * Test plugins_loaded.
+	 *
+	 * @covers ::plugins_loaded
+	 */
+	public function test_plugins_loaded_with_nextgen() {
+		Functions\expect( 'load_plugin_textdomain' )->once();
+		m::mock( 'C_NextGEN_Bootstrap' );
+
+		$this->wp_typo->plugins_loaded();
+		$this->assertAttributeSame( PHP_INT_MAX, 'filter_priority', $this->wp_typo );
+
+	}
+
+	/**
+	 * Test get_version.
+	 *
+	 * @covers ::get_version
+	 */
+	public function test_get_version() {
+		$this->assertInternalType( 'string', $this->wp_typo->get_version() );
+	}
+
+	/**
+	 * Test get_version_hash.
+	 *
+	 * @covers ::get_version_hash
+	 */
+	public function test_get_version_hash() {
+		$this->assertInternalType( 'string', $this->wp_typo->get_version_hash() );
+	}
+
+	/**
+	 * Test enqueue_scripts.
+	 *
+	 * @covers ::enqueue_scripts
+	 */
+	public function test_enqueue_scripts() {
+		$this->prepareOptions( [
+			'typo_hyphenate_clean_clipboard' => true,
+		] );
+
+		define( 'SCRIPT_DEBUG', false );
+
+		Functions\expect( 'plugin_dir_url' )->andReturn( 'dummy/path' );
+		Functions\expect( 'wp_enqueue_script' )
+			->once()
+			->with( 'jquery-selection', m::type( 'string' ), m::type( 'array' ), m::type( 'string' ), true )
+			->andAlsoExpectIt()->once()
+			->with( 'wp-typography-cleanup-clipboard', m::type( 'string' ), m::type( 'array' ), m::type( 'string' ), true );
+		$this->wp_typo->enqueue_scripts();
+
+		$this->assertTrue( true );
+	}
+
+	/**
+	 * Test maybe_fix_object.
+	 *
+	 * @covers ::maybe_fix_object
+	 */
+	public function test_maybe_fix_object() {
+		$fake_object_string = 'O:16:"SomeMissingClass":1:{s:1:"a";s:1:"b";}';
+		$fake_object = unserialize( $fake_object_string );
+
+		// Unfortunately, serialize and  unserialize cannot be mocked.
+		$object = $this->invokeMethod( $this->wp_typo, 'maybe_fix_object', [ $fake_object ] );
+
+		$this->assertTrue( $object !== $fake_object );
 	}
 }
