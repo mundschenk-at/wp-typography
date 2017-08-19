@@ -374,8 +374,8 @@ class WP_Typography {
 				// OK, we have to initialize the PHP_Typography instance manually.
 				$this->typo_settings = new Settings( false );
 
-				// Load our settings into the instance.
-				$this->init_settings( $this->typo_settings );
+				// Load our options into the Settings instance.
+				$this->init_settings_from_options( $this->typo_settings );
 
 				// Try again next time.
 				$this->cache_object( $transient, $this->typo_settings );
@@ -747,11 +747,11 @@ class WP_Typography {
 	}
 
 	/**
-	 * Initializes the Settings object for PHP_Typography from the plugin settings.
+	 * Initializes the Settings object for PHP_Typography from the plugin options.
 	 *
 	 * @param Settings $s Required.
 	 */
-	protected function init_settings( Settings $s ) {
+	protected function init_settings_from_options( Settings $s ) {
 		// Load configuration variables into our PHP_Typography class.
 		$s->set_tags_to_ignore( $this->options['typo_ignore_tags'] );
 		$s->set_classes_to_ignore( $this->options['typo_ignore_classes'] );
