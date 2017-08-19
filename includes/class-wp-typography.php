@@ -60,7 +60,7 @@ class WP_Typography {
 	 *
 	 * @var array
 	 */
-	private $settings;
+	protected $settings;
 
 	/**
 	 * The PHP_Typography instance doing the actual work.
@@ -683,7 +683,7 @@ class WP_Typography {
 	 * @param  string $transient Required.
 	 * @param  mixed  $object    Required.
 	 */
-	private function cache_object( $transient, $object ) {
+	protected function cache_object( $transient, $object ) {
 		/**
 		 * Filters the caching duration for the PHP_Typography engine state.
 		 *
@@ -711,7 +711,7 @@ class WP_Typography {
 	/**
 	 * Retrieves the PHP_Typography instance and ensure just-in-time initialization.
 	 */
-	private function get_typography_instance() {
+	protected function get_typography_instance() {
 
 		// Initialize PHP_Typography instance.
 		if ( empty( $this->typo ) ) {
@@ -751,7 +751,7 @@ class WP_Typography {
 	 *
 	 * @param Settings $s Required.
 	 */
-	private function init_settings( Settings $s ) {
+	protected function init_settings( Settings $s ) {
 		// Load configuration variables into our PHP_Typography class.
 		$s->set_tags_to_ignore( $this->settings['typo_ignore_tags'] );
 		$s->set_classes_to_ignore( $this->settings['typo_ignore_classes'] );
@@ -1004,7 +1004,7 @@ class WP_Typography {
 	 *
 	 * @return object         The object with its real class.
 	 */
-	private function maybe_fix_object( $object ) {
+	protected function maybe_fix_object( $object ) {
 		if ( ! is_object( $object ) && 'object' === gettype( $object ) ) {
 			$object = unserialize( serialize( $object ) ); // @codingStandardsIgnoreLine
 		}
