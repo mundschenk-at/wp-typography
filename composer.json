@@ -23,24 +23,36 @@
         "mundschenk-at/php-typography": "^5.0"
     },
     "require-dev": {
+        "phpstan/phpstan": "^0.8",
         "squizlabs/php_codesniffer": "^3.0.2",
-        "wp-coding-standards/wpcs": "^0.13",
+        "wp-coding-standards/wpcs": "dev-develop",
         "wimg/php-compatibility": "^8.0",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.4.1",
-        "phpstan/phpstan": "^0.8.0"
+        "phpunit/phpunit": "^6.4",
+        "brain/monkey": "^2.0@dev"
     },
 
     "minimum-stability": "dev",
+    "prefer-stable": true,
 
     "autoload": {
         "classmap": ["includes/"]
     },
+    "autoload-dev": {
+        "classmap": ["tests/"]
+    },
 
     "config": {
-        "classmap-authoritative": true
+        "classmap-authoritative": false
     },
 
     "scripts": {
+      "test": [
+          "phpunit --testsuite wp-Typography"
+      ],
+      "coverage": [
+          "phpunit --testsuite wp-Typography --coverage-html tests/coverage"
+      ],
       "check": [
           "@phpcs",
           "@phpstan"

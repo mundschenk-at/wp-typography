@@ -65,6 +65,6 @@ class Checkbox_Input extends Input {
 	 * @return string
 	 */
 	protected function value_markup( $value ) {
-		return "value='1' " . checked( $value, true, false );
+		return "value='1' " . \checked( $value, true, false );
 	}
 }

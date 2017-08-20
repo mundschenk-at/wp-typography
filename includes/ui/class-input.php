@@ -67,7 +67,7 @@ abstract class Input extends Control {
 	 * @return string
 	 */
 	protected function value_markup( $value ) {
-		return $value ? 'value="' . esc_attr( $value ) . '" ' : '';
+		return $value ? 'value="' . \esc_attr( $value ) . '" ' : '';
 	}
 
 	/**
@@ -77,7 +77,7 @@ abstract class Input extends Control {
 	 */
 	protected function id_and_class_markup() {
 		// Set default ID & name, no class (except for submit buttons).
-		return 'id="' . esc_attr( $this->id ) . '" name="' . esc_attr( $this->id ) . '" ';
+		return 'id="' . \esc_attr( $this->id ) . '" name="' . \esc_attr( $this->id ) . '" ';
 	}
 
 	/**
@@ -97,6 +97,6 @@ abstract class Input extends Control {
 			$id_and_class .= " $html_attributes";
 		}
 
-		printf( $control_markup, '<input type="' . esc_attr( $this->input_type ) . '" ' . $id_and_class . ' ' . $value . '/>' ); // WPCS: XSS ok.
+		printf( $control_markup, '<input type="' . \esc_attr( $this->input_type ) . '" ' . $id_and_class . ' ' . $value . '/>' ); // WPCS: XSS ok.
 	}
 }

@@ -58,7 +58,7 @@ class WP_Typography_Setup {
 	 * @param string        $slug   Required.
 	 * @param WP_Typography $plugin Required.
 	 */
-	function __construct( $slug, WP_Typography $plugin ) {
+	public function __construct( $slug, WP_Typography $plugin ) {
 		$this->plugin_slug = $slug;
 		$this->plugin = $plugin;
 	}
@@ -93,7 +93,7 @@ class WP_Typography_Setup {
 	 *
 	 * @param string $previous_version The version we are upgrading from.
 	 */
-	private function plugin_updated( $previous_version ) {
+	protected function plugin_updated( $previous_version ) {
 
 		// Each version should get it's own if-block.
 		if ( version_compare( $previous_version, '3.1.0-beta.2', '<' ) ) {
@@ -135,7 +135,7 @@ class WP_Typography_Setup {
 	 * @param string $option The new option name, e.g. 'my_new_option'.
 	 * @return string        An old-style option name, e.g. 'MyOldOption'.
 	 */
-	private function get_old_option_name( $option ) {
+	protected function get_old_option_name( $option ) {
 		$parts = explode( '_', $option );
 		$oldname = array_shift( $parts );
 
@@ -171,11 +171,10 @@ class WP_Typography_Setup {
 	 *
 	 * @since    3.1.0
 	 */
-	static function uninstall() {
-		$transient_list = get_option( 'typo_transient_keys' );
+	public static function uninstall() {
 
 		// Delete all our transients.
-		foreach ( $transient_list as $transient => $true ) {
+		foreach ( get_option( 'typo_transient_keys' ) as $transient => $true ) {
 			delete_transient( $transient );
 		}
 

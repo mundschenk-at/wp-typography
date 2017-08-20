@@ -64,7 +64,7 @@ class Textarea extends Control {
 	 * @return string
 	 */
 	protected function value_markup( $value ) {
-		return ! empty( $value ) ? esc_textarea( $value ) : '';
+		return ! empty( $value ) ? \esc_textarea( $value ) : '';
 	}
 
 	/**
@@ -76,17 +76,17 @@ class Textarea extends Control {
 	 */
 	protected function internal_render( $label, $help_text, $html_attributes ) {
 		$control_markup = '';
-		$help_text = wp_kses( $help_text, [
+		$help_text = \wp_kses( $help_text, [
 			'code' => [],
 		] );
 
 		// Generate markup for label.
 		if ( ! empty( $label ) ) {
-			$control_markup = '<label for="' . esc_attr( $this->id ) . '">' . esc_html( $label ) . '</label>';
+			$control_markup = '<label for="' . \esc_attr( $this->id ) . '">' . \esc_html( $label ) . '</label>';
 		}
 
 		// Add the <textarea> itself.
-		$control_markup .= '<textarea class="large-text" id="' . esc_attr( $this->id ) . '" name="' . esc_attr( $this->id ) . '" ' . $html_attributes . '>' . $this->value_markup( $this->get_value() ) . '</textarea>';
+		$control_markup .= '<textarea class="large-text" id="' . \esc_attr( $this->id ) . '" name="' . \esc_attr( $this->id ) . '" ' . $html_attributes . '>' . $this->value_markup( $this->get_value() ) . '</textarea>';
 
 		if ( ! empty( $help_text ) ) {
 			$control_markup .= '<p class="description">' . $help_text . '</p>';

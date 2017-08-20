@@ -163,7 +163,7 @@ abstract class Control {
 	protected function prepare_args( array $args, array $required ) {
 
 		// Check for required arguments.
-		$required = wp_parse_args( $required, [ 'tab_id' ] );
+		$required = \wp_parse_args( $required, [ 'tab_id' ] );
 
 		foreach ( $required as $property ) {
 			if ( ! isset( $args[ $property ] ) ) {
@@ -172,7 +172,7 @@ abstract class Control {
 		}
 
 		// Add default arguments.
-		$args = wp_parse_args( $args, [
+		$args = \wp_parse_args( $args, [
 			'section'     => $args['tab_id'],
 			'short'       => null,
 			'label'       => null,
@@ -191,7 +191,7 @@ abstract class Control {
 	 * @return mixed
 	 */
 	protected function get_value() {
-		return get_option( $this->id );
+		return \get_option( $this->id );
 	}
 
 	/**
@@ -210,18 +210,18 @@ abstract class Control {
 	 */
 	public function render() {
 		// Translate label & help_text.
-		$label     = isset( $this->label ) ? __( $this->label, 'wp-typography' ) : null; // @codingStandardsIgnoreLine.
-		$help_text = isset( $this->help_text ) ? __( $this->help_text, 'wp-typography' ) : null; // @codingStandardsIgnoreLine.
+		$label     = isset( $this->label ) ? \__( $this->label, 'wp-typography' ) : null; // @codingStandardsIgnoreLine.
+		$help_text = isset( $this->help_text ) ? \__( $this->help_text, 'wp-typography' ) : null; // @codingStandardsIgnoreLine.
 
 		if ( ! empty( $this->grouped_controls ) ) {
-			echo '<fieldset><legend class="screen-reader-text">' . esc_html( $this->short ) . '</legend>';
+			echo '<fieldset><legend class="screen-reader-text">' . \esc_html( $this->short ) . '</legend>';
 		}
 
 		// Flatten attributes to string.
 		$html_attributes = '';
 		if ( ! empty( $this->attributes ) ) {
 			foreach ( $this->attributes as $attr => $val ) {
-				$html_attributes .= esc_attr( $attr ) . '="' . esc_attr( $val ) . '"';
+				$html_attributes .= \esc_attr( $attr ) . '="' . \esc_attr( $val ) . '"';
 			}
 		}
 
@@ -267,12 +267,12 @@ abstract class Control {
 	 */
 	protected function control_markup( $label, $help_text ) {
 		$markup = '%1$s';
-		$help_text = wp_kses( $help_text, [
+		$help_text = \wp_kses( $help_text, [
 			'code' => [],
 		] );
 
 		if ( ( ! empty( $label ) || ! empty( $this->inline_help ) ) ) {
-			$markup = '<label for="' . esc_attr( $this->id ) . '">';
+			$markup = '<label for="' . \esc_attr( $this->id ) . '">';
 
 			if ( ! empty( $label ) ) {
 				$markup .= $label;
