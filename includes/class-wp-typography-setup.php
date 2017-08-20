@@ -172,10 +172,9 @@ class WP_Typography_Setup {
 	 * @since    3.1.0
 	 */
 	public static function uninstall() {
-		$transient_list = get_option( 'typo_transient_keys' );
 
 		// Delete all our transients.
-		foreach ( $transient_list as $transient => $true ) {
+		foreach ( get_option( 'typo_transient_keys' ) as $transient => $true ) {
 			delete_transient( $transient );
 		}
 
