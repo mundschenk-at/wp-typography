@@ -137,7 +137,7 @@ class WP_Typography_Requirements {
 	 *
 	 * @return boolean
 	 */
-	private function check_multibyte_support() {
+	protected function check_multibyte_support() {
 		return
 			function_exists( 'mb_strlen' ) &&
 			function_exists( 'mb_strtolower' ) &&
@@ -150,7 +150,7 @@ class WP_Typography_Requirements {
 	 *
 	 * @return boolean
 	 */
-	private function check_utf8_support() {
+	protected function check_utf8_support() {
 		return 'utf-8' === strtolower( get_bloginfo( 'charset' ) );
 	}
 
@@ -212,7 +212,7 @@ class WP_Typography_Requirements {
 	 *
 	 * @param string $format ... An `sprintf` format string, followd by an unspecified number of optional parameters.
 	 */
-	private function display_error_notice( $format ) {
+	protected function display_error_notice( $format ) {
 		if ( func_num_args() < 1 || empty( $format ) ) {
 			return; // abort.
 		}

@@ -847,7 +847,7 @@ class WP_Typography_Admin {
 	 *
 	 * @return string
 	 */
-	private function get_active_settings_tab() {
+	protected function get_active_settings_tab() {
 		// Check active tab.
 		$all_tabs = array_keys( $this->admin_form_tabs ); // PHP 5.3 workaround.
 
@@ -861,7 +861,7 @@ class WP_Typography_Admin {
 	 *
 	 * @return array
 	 */
-	private static function get_numeric_option_values( array $values ) {
+	protected static function get_numeric_option_values( array $values ) {
 		return array_combine( $values, $values );
 	}
 
@@ -872,7 +872,7 @@ class WP_Typography_Admin {
 	 *
 	 * @return mixed
 	 */
-	public function sanitize_restore_defaults( $input ) {
+	protected function sanitize_restore_defaults( $input ) {
 		return $this->trigger_admin_notice( 'typo_restore_defaults', 'defaults-restored', __( 'Settings reset to default values.', 'wp-typography' ), 'updated', $input );
 	}
 
@@ -883,7 +883,7 @@ class WP_Typography_Admin {
 	 *
 	 * @return mixed
 	 */
-	public function sanitize_clear_cache( $input ) {
+	protected function sanitize_clear_cache( $input ) {
 		return $this->trigger_admin_notice( 'typo_clear_cache', 'cache-cleared', __( 'Cached post content cleared.', 'wp-typography' ), 'notice-info', $input );
 	}
 
@@ -898,7 +898,7 @@ class WP_Typography_Admin {
 	 *
 	 * @return mixed The $input parameter.
 	 */
-	private function trigger_admin_notice( $setting_name, $notice_id, $message, $notice_level, $input ) {
+	protected function trigger_admin_notice( $setting_name, $notice_id, $message, $notice_level, $input ) {
 		if ( ! empty( $_POST[ $setting_name ] ) ) { // WPCS: CSRF ok. Input var okay.
 			add_settings_error( self::OPTION_GROUP . $this->get_active_settings_tab(), $notice_id, $message, $notice_level );
 		}
