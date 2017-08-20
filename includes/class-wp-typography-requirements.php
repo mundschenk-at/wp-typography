@@ -57,7 +57,6 @@ class WP_Typography_Requirements {
 	 */
 	private $install_requirements = array(
 		'PHP Version'       => '5.6.0',
-		'WordPress Version' => '4.4',
 		'Multibyte'         => true,
 		'UTF-8'             => true,
 	);
@@ -87,15 +86,9 @@ class WP_Typography_Requirements {
 	 * @return boolean
 	 */
 	public function check() {
-		global $wp_version;
 		$requirements_met = true;
 
-		if ( version_compare( $wp_version, $this->install_requirements['WordPress Version'], '<' ) ) {
-			if ( is_admin() ) {
-				add_action( 'admin_notices', array( $this, 'admin_notices_wp_version_incompatible' ) );
-			}
-			$requirements_met = false;
-		} elseif ( version_compare( PHP_VERSION, $this->install_requirements['PHP Version'], '<' ) ) {
+		if ( version_compare( PHP_VERSION, $this->install_requirements['PHP Version'], '<' ) ) {
 			if ( is_admin() ) {
 				add_action( 'admin_notices', array( $this, 'admin_notices_php_version_incompatible' ) );
 			}
@@ -152,21 +145,6 @@ class WP_Typography_Requirements {
 	 */
 	protected function check_utf8_support() {
 		return 'utf-8' === strtolower( get_bloginfo( 'charset' ) );
-	}
-
-	/**
-	 * Print 'WordPress version incompatible' admin notice
-	 */
-	public function admin_notices_wp_version_incompatible() {
-		global $wp_version;
-
-		$this->display_error_notice(
-			/* translators: 1: plugin name 2: target WordPress version number 3: actual WordPress version number */
-			__( 'The activated plugin %1$s requires WordPress version %2$s or later. You are running WordPress version %3$s. Please deactivate this plugin, or upgrade your installation of WordPress.', 'wp-typography' ),
-			"<strong>{$this->plugin_name}</strong>",
-			$this->install_requirements['WordPress Version'],
-			$wp_version
-		);
 	}
 
 	/**
