@@ -590,21 +590,14 @@ class WP_Typography {
 		// Caclulate hash if necessary.
 		$hash = isset( $hash ) ? $hash : $settings->get_hash();
 
-		/**
-		 * Filters the caching duration for processed text fragments.
-		 *
-		 * @since 3.2.0
-		 *
-		 * @param int $duration The duration in seconds. Defaults to 1 day.
-		 */
-		$duration = apply_filters( 'typo_processed_text_caching_duration', DAY_IN_SECONDS );
-		$found    = false;
-		$feed     = $force_feed || is_feed();
+		// Enable feed mode?
+		$feed = $force_feed || is_feed();
 
 		// Construct transient key.
 		$key  = 'typo_' . base64_encode( md5( $text, true ) . $hash ) . ( $feed ? 'f' : '' ) . ( $is_title ? 't' : 's' ) . $this->version_hash;
 
 		// Retrieve cached text.
+		$found          = false;
 		$processed_text = $this->get_cache( $key, $found );
 
 		if ( ! $found ) {
@@ -615,6 +608,15 @@ class WP_Typography {
 			} else {
 				$processed_text = $typo->process( $text, $settings, $is_title );
 			}
+
+			/**
+			 * Filters the caching duration for processed text fragments.
+			 *
+			 * @since 3.2.0
+			 *
+			 * @param int $duration The duration in seconds. Defaults to 1 day.
+			 */
+			$duration = apply_filters( 'typo_processed_text_caching_duration', DAY_IN_SECONDS );
 
 			// Save text fragment for later.
 			$this->set_cache( $key, $processed_text, $duration );
@@ -685,25 +687,22 @@ class WP_Typography {
 	 */
 	protected function cache_object( $transient, $object ) {
 		/**
-		 * Filters the caching duration for the PHP_Typography engine state.
-		 *
-		 * @since 3.2.0
-		 *
-		 * @param int $duration The duration in seconds. Defaults to 0 (no expiration).
-		 */
-		$duration = apply_filters( 'typo_php_typography_caching_duration', 0 );
-
-		/**
 		 * Filters whether the PHP_Typography engine state should be cached.
 		 *
 		 * @since 4.2.0
 		 *
 		 * @param bool $enabled Defaults to true.
 		 */
-		$caching_enabled = apply_filters( 'typo_php_typography_caching_enabled', true );
+		if ( apply_filters( 'typo_php_typography_caching_enabled', true ) ) {
+			/**
+			 * Filters the caching duration for the PHP_Typography engine state.
+			 *
+			 * @since 3.2.0
+			 *
+			 * @param int $duration The duration in seconds. Defaults to 0 (no expiration).
+			 */
+			$duration = apply_filters( 'typo_php_typography_caching_duration', 0 );
 
-		// Try again next time.
-		if ( $caching_enabled ) {
 			$this->set_transient( $transient, $object, $duration );
 		}
 	}
