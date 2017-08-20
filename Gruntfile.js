@@ -41,6 +41,14 @@ module.exports = function(grunt) {
 	        }
 	    },
 
+        composer : {
+            options : {
+                //usePhp: true,
+                flags: ['no-dev', 'classmap-authoritative'],
+                cwd: 'build',
+                //composerLocation: '/usr/local/bin/composer'
+            },
+        },
 
         copy: {
             main: {
@@ -54,8 +62,8 @@ module.exports = function(grunt) {
                         'includes/**',
                         'admin/**',
                         '!**/scss/**',
-                        'vendor/*',
-                        'vendor/composer/**/*.php',
+                        'composer.*',
+                        'vendor/composer/**',
                         'vendor/masterminds/html5/src/**/*.php',
                         'vendor/mundschenk-at/php-typography/src/**',
                         '!vendor/mundschenk-at/php-typography/src/bin/**',
@@ -69,11 +77,11 @@ module.exports = function(grunt) {
                     expand: true,
                     nonull: false,
                     src: [
-                        'vendor/**/LICENSE*',
-                        'vendor/**/README*',
-                        'vendor/**/CREDITS*',
-                        'vendor/**/COPYING*',
-                        'vendor/**/CHANGE*',
+                        'vendor/{composer,masterminds,mundschenk-at}/**/LICENSE*',
+                        'vendor/{composer,masterminds,mundschenk-at}/**/README*',
+                        'vendor/{composer,masterminds,mundschenk-at}/**/CREDITS*',
+                        'vendor/{composer,masterminds,mundschenk-at}/**/COPYING*',
+                        'vendor/{composer,masterminds,mundschenk-at}/**/CHANGE*',
                     ],
                     dest: 'build/'
                 }],
@@ -81,7 +89,8 @@ module.exports = function(grunt) {
         },
 
         clean: {
-            build: ["build/*"] //,
+            build: ["build/*"],
+            autoloader: [ "build/composer.*", "build/vendor/composer/*.json" ]
         },
 
         wp_deploy: {
@@ -276,6 +285,8 @@ module.exports = function(grunt) {
         'regex_extract:language_names',
         'copy:main',
         'copy:meta',
+        'composer:dump-autoload',
+        'clean:autoloader',
         'newer:delegate:sass:dist',
         'newer:postcss:dist',
         'newer:minify'
