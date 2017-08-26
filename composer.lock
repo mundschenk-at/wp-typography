@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Masterminds/html5-php.git",
-                "reference": "df71b47d1755e41e6ad29255caba7e13e7413139"
+                "reference": "e965886a79a560b4b00a4c471e2bdfafea23fdcb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Masterminds/html5-php/zipball/df71b47d1755e41e6ad29255caba7e13e7413139",
-                "reference": "df71b47d1755e41e6ad29255caba7e13e7413139",
+                "url": "https://api.github.com/repos/Masterminds/html5-php/zipball/e965886a79a560b4b00a4c471e2bdfafea23fdcb",
+                "reference": "e965886a79a560b4b00a4c471e2bdfafea23fdcb",
                 "shasum": ""
             },
             "require": {
@@ -69,20 +69,20 @@
                 "serializer",
                 "xml"
             ],
-            "time": "2017-07-26T14:10:45+00:00"
+            "time": "2017-08-25T09:45:13+00:00"
         },
         {
             "name": "mundschenk-at/php-typography",
-            "version": "v5.0.0",
+            "version": "v5.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mundschenk-at/php-typography.git",
-                "reference": "d70afd58b03b0527fb0582f4c8d63ec74c2b3630"
+                "reference": "dffb74c597e755bde5038dbc49922e2e6a206f98"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mundschenk-at/php-typography/zipball/d70afd58b03b0527fb0582f4c8d63ec74c2b3630",
-                "reference": "d70afd58b03b0527fb0582f4c8d63ec74c2b3630",
+                "url": "https://api.github.com/repos/mundschenk-at/php-typography/zipball/dffb74c597e755bde5038dbc49922e2e6a206f98",
+                "reference": "dffb74c597e755bde5038dbc49922e2e6a206f98",
                 "shasum": ""
             },
             "require": {
@@ -129,7 +129,7 @@
                 }
             ],
             "description": "A PHP library for improving your web typography",
-            "time": "2017-08-13T12:23:23+00:00"
+            "time": "2017-08-26T17:50:27+00:00"
         }
     ],
     "packages-dev": [
@@ -1399,16 +1399,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.8.3",
+            "version": "0.8.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "ccc046ca473dcdb5ce9225cc05d7808f2e327f40"
+                "reference": "7745ab983ff05e0c4ca2c94e26c113ab734db3ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/ccc046ca473dcdb5ce9225cc05d7808f2e327f40",
-                "reference": "ccc046ca473dcdb5ce9225cc05d7808f2e327f40",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/7745ab983ff05e0c4ca2c94e26c113ab734db3ce",
+                "reference": "7745ab983ff05e0c4ca2c94e26c113ab734db3ce",
                 "shasum": ""
             },
             "require": {
@@ -1449,7 +1449,7 @@
                 "MIT"
             ],
             "description": "PHPStan - PHP Static Analysis Tool",
-            "time": "2017-08-15T18:51:04+00:00"
+            "time": "2017-08-25T08:18:24+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -1654,16 +1654,16 @@
         },
         {
             "name": "phpunit/php-token-stream",
-            "version": "2.0.0",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-token-stream.git",
-                "reference": "ecb0b2cdaa0add708fe6f329ef65ae0c5225130b"
+                "reference": "9a02332089ac48e704c70f6cefed30c224e3c0b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/ecb0b2cdaa0add708fe6f329ef65ae0c5225130b",
-                "reference": "ecb0b2cdaa0add708fe6f329ef65ae0c5225130b",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/9a02332089ac48e704c70f6cefed30c224e3c0b0",
+                "reference": "9a02332089ac48e704c70f6cefed30c224e3c0b0",
                 "shasum": ""
             },
             "require": {
@@ -1699,7 +1699,7 @@
             "keywords": [
                 "tokenizer"
             ],
-            "time": "2017-08-03T14:17:41+00:00"
+            "time": "2017-08-20T05:47:52+00:00"
         },
         {
             "name": "phpunit/phpunit",
@@ -1707,12 +1707,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "d75ff2ab6c00f522d297e23b9aa44174baf7bc72"
+                "reference": "a1b5663a426b85854e97dce080a3546907836d5a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/d75ff2ab6c00f522d297e23b9aa44174baf7bc72",
-                "reference": "d75ff2ab6c00f522d297e23b9aa44174baf7bc72",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a1b5663a426b85854e97dce080a3546907836d5a",
+                "reference": "a1b5663a426b85854e97dce080a3546907836d5a",
                 "shasum": ""
             },
             "require": {
@@ -1783,7 +1783,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-08-18T07:47:41+00:00"
+            "time": "2017-08-24T07:24:58+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -2882,12 +2882,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git",
-                "reference": "c08acbe9ba171f2c40c68dbb4ea1d7676f7867ed"
+                "reference": "aebfb7a479f6f249cf6aa0c3d5bc8605768cb89a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WordPress-Coding-Standards/WordPress-Coding-Standards/zipball/c08acbe9ba171f2c40c68dbb4ea1d7676f7867ed",
-                "reference": "c08acbe9ba171f2c40c68dbb4ea1d7676f7867ed",
+                "url": "https://api.github.com/repos/WordPress-Coding-Standards/WordPress-Coding-Standards/zipball/aebfb7a479f6f249cf6aa0c3d5bc8605768cb89a",
+                "reference": "aebfb7a479f6f249cf6aa0c3d5bc8605768cb89a",
                 "shasum": ""
             },
             "require": {
@@ -2914,7 +2914,7 @@
                 "standards",
                 "wordpress"
             ],
-            "time": "2017-08-18T14:13:15+00:00"
+            "time": "2017-08-22T08:50:46+00:00"
         }
     ],
     "aliases": [],
