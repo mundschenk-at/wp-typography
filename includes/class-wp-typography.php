@@ -439,6 +439,9 @@ class WP_Typography {
 		// Apply our filters.
 		if ( ! is_admin() ) {
 			$this->add_content_filters();
+
+			// Save hyphenator cache on exit, if necessary.
+			add_action( 'shutdown', [ $this, 'save_hyphenator_cache_on_shutdown' ] );
 		}
 
 		// Add CSS Hook styling.
@@ -837,6 +840,15 @@ class WP_Typography {
 		}
 
 		return $this->typo;
+	}
+
+	/**
+	 * Save hyphenator cache for the next request.
+	 */
+	public function save_hyphenator_cache_on_shutdown() {
+		if ( $this->options['typo_enable_hyphenation'] && ! empty( $this->hyphenator_cache ) ) {
+			$this->cache_object( 'typo_php_hyphenator_cache_' . $this->version_hash, $this->hyphenator_cache );
+		}
 	}
 
 	/**
