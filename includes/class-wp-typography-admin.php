@@ -128,15 +128,6 @@ class WP_Typography_Admin {
 	private $admin_form_controls = [];
 
 	/**
-	 * A lookup table for cache keys.
-	 *
-	 * @since 3.5.0
-	 *
-	 * @var array
-	 */
-	private $cache_key_names = [];
-
-	/**
 	 * The plugin instance used for setting transients.
 	 *
 	 * @var WP_Typography
@@ -154,10 +145,6 @@ class WP_Typography_Admin {
 		$this->plugin_path       = plugin_dir_path( __DIR__ ) . basename( $this->local_plugin_path );
 		$this->version           = $plugin->get_version();
 		$this->plugin            = $plugin;
-
-		// Store cache key names.
-		$this->cache_key_names['hyphenate_languages'] = 'typo_hyphenate_languages_' . $plugin->get_version_hash();
-		$this->cache_key_names['diacritic_languages'] = 'typo_diacritic_languages_' . $plugin->get_version_hash();
 	}
 
 	/**
@@ -347,6 +334,14 @@ class WP_Typography_Admin {
 				'label'         => __( '%1$s Ignore errors in parsed HTML.', 'wp-typography' ),
 				'help_text'     => __( 'Unchecking will prevent processing completely if the HTML parser produces any errors for a given content part. You should only need to do this in case your site layout changes with wp-Typography enabled.', 'wp-typography' ),
 				'default'       => 1,
+			] ),
+			new UI\Checkbox_Input( self::OPTION_GROUP, 'typo_enable_multilingual_support', [
+				'tab_id'        => 'general-scope',
+				'short'         => __( 'Multilingual support', 'wp-typography' ),
+				/* translators: 1: checkbox HTML */
+				'label'         => __( '%1$s Enable support for using multiple languages on the same site.', 'wp-typography' ),
+				'help_text'     => __( 'Enable if you are using multilingual plugin like WPML or Polylang and want automatic hyphenation language, dash and quote style adjustments.', 'wp-typography' ),
+				'default'       => 0,
 			] ),
 			new UI\Checkbox_Input( self::OPTION_GROUP, 'typo_enable_hyphenation', [
 				'tab_id'        => 'hyphenation',
@@ -995,61 +990,10 @@ class WP_Typography_Admin {
 	 * Display the plugin options page.
 	 */
 	public function get_admin_page_content() {
-		$found = false;
-
-		// Try to load hyphenation language list from cache.
-		$languages = $this->plugin->get_cache( $this->cache_key_names['hyphenate_languages'], $found );
-
-		// Dynamically generate the list of hyphenation language patterns.
-		if ( false === $found ) {
-			$languages = self::translate_languages( PHP_Typography::get_hyphenation_languages() );
-
-			/**
-			 * Filter the caching duration for the language plugin lists.
-			 *
-			 * @since 3.2.0
-			 *
-			 * @param number $duration The duration in seconds. Defaults to 1 week.
-			 * @param string $list     The name language plugin list.
-			 */
-			$duration = apply_filters( 'typo_language_list_caching_duration', WEEK_IN_SECONDS, 'hyphenate_languages' );
-
-			// Cache translated hyphenation languages.
-			$this->plugin->set_cache( $this->cache_key_names['hyphenate_languages'], $languages, $duration );
-		}
-		$this->admin_form_controls['typo_hyphenate_languages']->set_options( $languages );
-
-		// Try to load diacritics language list from cache.
-		$languages = $this->plugin->get_cache( $this->cache_key_names['diacritic_languages'], $found );
-
-		// Dynamically generate the list of diacritics replacement languages.
-		if ( false === $found ) {
-			$languages = self::translate_languages( PHP_Typography::get_diacritic_languages() );
-
-			/** This filter is documented in class-wp-typography-admin.php */
-			$duration = apply_filters( 'typo_language_list_caching_duration', WEEK_IN_SECONDS, 'diacritic_languages' );
-
-			// Cache translated diactrics languages.
-			$this->plugin->set_cache( $this->cache_key_names['diacritic_languages'], $languages, $duration );
-		}
-		$this->admin_form_controls['typo_diacritic_languages']->set_options( $languages );
+		$this->admin_form_controls['typo_hyphenate_languages']->set_options( $this->plugin->load_hyphenation_languages() );
+		$this->admin_form_controls['typo_diacritic_languages']->set_options( $this->plugin->load_diacritic_languages() );
 
 		// Load the settings page HTML.
 		include_once dirname( __DIR__ ) . '/admin/partials/settings.php';
-	}
-
-	/**
-	 * Translate language list.
-	 *
-	 * @param array $languages An array in the form [ LANGUAGE_CODE => LANGUAGE ].
-	 *
-	 * @return array The same array with the language name translated.
-	 */
-	private static function translate_languages( array $languages ) {
-		array_walk( $languages, function( &$lang, $code ) {
-			$lang = _x( $lang, 'language name', 'wp-typography' );  // @codingStandardsIgnoreLine.
-		} );
-
-		return $languages;
 	}
 }

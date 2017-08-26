@@ -23,6 +23,7 @@ matrix:
         # aliased to 5.2.17
         - php: '5.2'
           env: CHECKING_PHP52=1
+          dist: precise
         # minimum version for activating wp-Typography 5.6.0, aliased to a recent 5.6.x version
         - php: '5.6'
         # aliased to a recent 7.0 version

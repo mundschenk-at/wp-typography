@@ -25,6 +25,7 @@
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
+use \WP_Typography\Settings\Multilingual;
 use \PHP_Typography\PHP_Typography;
 use \PHP_Typography\Hyphenator_Cache;
 use \PHP_Typography\Settings;
@@ -114,11 +115,25 @@ class WP_Typography {
 	private $default_settings;
 
 	/**
+	 * Whether the default settings have already been localized.
+	 *
+	 * @var bool
+	 */
+	private $default_settings_localized = false;
+
+	/**
 	 * The admin side handler object.
 	 *
 	 * @var WP_Typography_Admin
 	 */
 	private $admin;
+
+	/**
+	 * The multlingual support object.
+	 *
+	 * @var Multilingual
+	 */
+	private $multilingual;
 
 	/**
 	 * The priority for our filter hooks.
@@ -140,8 +155,9 @@ class WP_Typography {
 	 * @param string                    $version  The full plugin version string (e.g. "3.0.0-beta.2").
 	 * @param string                    $basename Optional. The result of plugin_basename() for the main plugin file. Default 'wp-typography/wp-typography.php'.
 	 * @param \WP_Typography_Admin|null $admin    Optional. Default null (which means a private instance will be created).
+	 * @param Multilingual|null         $multi    Optional. Default null (which means a private instance will be created).
 	 */
-	public function __construct( $version, $basename = 'wp-typography/wp-typography.php', WP_Typography_Admin $admin = null ) {
+	public function __construct( $version, $basename = 'wp-typography/wp-typography.php', WP_Typography_Admin $admin = null, Multilingual $multi = null ) {
 		// Basic set-up.
 		$this->version           = $version;
 		$this->version_hash      = $this->hash_version_string( $version );
@@ -151,6 +167,9 @@ class WP_Typography {
 
 		// Initialize admin interface handler.
 		$this->admin             = ( null === $admin ) ? new WP_Typography_Admin( $basename, $this ) : $admin;
+
+		// Initialize multilingual support.
+		$this->multilingual      = ( null === $multi ) ? new Multilingual( $this ) : $multi;
 	}
 
 	/**
@@ -170,7 +189,7 @@ class WP_Typography {
 		$this->admin->run();
 
 		// Keep default settings.
-		$this->default_settings  = $this->admin->get_default_settings();
+		$this->default_settings = $this->admin->get_default_settings();
 	}
 
 	/**
@@ -222,27 +241,96 @@ class WP_Typography {
 	/**
 	 * Retrieves the list of valid hyphenation languages.
 	 *
-	 * The language names are translation-ready but not translated yet.
-	 *
 	 * @since 4.0.0
+	 * @since 5.0.0 Language names are translated.
 	 *
-	 * @return array An array in the form of ( $language_code => $language ).
+	 * @return string[] An array in the form of ( $language_code => $language ).
 	 */
 	public static function get_hyphenation_languages() {
-		return PHP_Typography::get_hyphenation_languages();
+		return self::get_instance()->load_hyphenation_languages();
+	}
+
+	/**
+	 * Retrieves and caches the list of valid hyphenation languages.
+	 *
+	 * @since 5.0.0
+	 *
+	 * @return string[] An array in the form of ( $language_code => $language ).
+	 */
+	public function load_hyphenation_languages() {
+		return $this->load_languages( "typo_hyphenate_languages_{$this->version_hash}", [ PHP_Typography::class, 'get_hyphenation_languages' ], 'hyphenate' );
 	}
 
 	/**
 	 * Retrieves the list of valid diacritic replacement languages.
 	 *
-	 * The language names are translation-ready but not translated yet.
-	 *
 	 * @since 4.0.0
+	 * @since 5.0.0 Language names are translated.
 	 *
-	 * @return array An array in the form of ( $language_code => $language ).
+	 * @return string[] An array in the form of ( $language_code => $language ).
 	 */
 	public static function get_diacritic_languages() {
-		return PHP_Typography::get_diacritic_languages();
+		return self::get_instance()->load_diacritic_languages();
+	}
+
+	/**
+	 * Retrieves and caches the list of valid diacritic replacement languages.
+	 *
+	 * @since 5.0.0
+	 *
+	 * @return string[] An array in the form of ( $language_code => $language ).
+	 */
+	public function load_diacritic_languages() {
+		return $this->load_languages( "typo_diacritic_languages_{$this->version_hash}", [ PHP_Typography::class, 'get_diacritic_languages' ], 'diacritic' );
+	}
+
+	/**
+	 * Load and cache given language list.
+	 *
+	 * @param  string   $cache_key         A cache key.
+	 * @param  callable $get_language_list Retrieval function for the language list.
+	 * @param  string   $type              Either 'diacritic' or 'hyphenate'.
+	 *
+	 * @return string[]
+	 */
+	protected function load_languages( $cache_key, callable $get_language_list, $type ) {
+		// Try to load hyphenation language list from cache.
+		$languages = $this->get_cache( $cache_key, $found );
+
+		// Dynamically generate the list of hyphenation language patterns.
+		if ( false === $found ) {
+			$languages = self::translate_languages( $get_language_list() );
+
+			/**
+			 * Filter the caching duration for the language plugin lists.
+			 *
+			 * @since 3.2.0
+			 *
+			 * @param number $duration The duration in seconds. Defaults to 1 week.
+			 * @param string $list     The name language plugin list.
+			 */
+			$duration = apply_filters( 'typo_language_list_caching_duration', WEEK_IN_SECONDS, "{$type}_languages" );
+
+			// Cache translated hyphenation languages.
+			$this->set_cache( $cache_key, $languages, $duration );
+		}
+
+		return $languages;
+	}
+
+	/**
+	 * Translate language list.
+	 *
+	 * @param string[] $languages An array in the form [ LANGUAGE_CODE => LANGUAGE ].
+	 *
+	 * @return string[] The same array with the language name translated.
+	 */
+	private static function translate_languages( array $languages ) {
+		array_walk( $languages, function( &$lang, $code ) {
+			$lang = _x( $lang, 'language name', 'wp-typography' );  // @codingStandardsIgnoreLine.
+		} );
+
+		return $languages;
 	}
 
 	/**
@@ -319,6 +407,7 @@ class WP_Typography {
 	 * Loads the settings from the option table.
 	 */
 	public function init() {
+
 		// Restore defaults if necessary.
 		if ( get_option( 'typo_restore_defaults' ) ) {  // any truthy value will do.
 			$this->set_default_options( true );
@@ -330,8 +419,13 @@ class WP_Typography {
 		}
 
 		// Load settings.
-		foreach ( $this->default_settings as $key => $value ) {
+		foreach ( array_keys( $this->default_settings ) as $key ) {
 			$this->options[ $key ] = get_option( $key );
+		}
+
+		// Enable multilingual support.
+		if ( $this->options['typo_enable_multilingual_support'] ) {
+			add_filter( 'typo_settings', [ $this->multilingual, 'automatic_language_settings' ] );
 		}
 
 		// Disable wptexturize filter if it conflicts with our settings.
@@ -847,7 +941,7 @@ class WP_Typography {
 	 */
 	public function set_default_options( $force_defaults = false ) {
 		// Grab configuration variables.
-		foreach ( $this->default_settings as $key => $default ) {
+		foreach ( $this->get_default_options() as $key => $default ) {
 			// Set or update the options with the default value if necessary.
 			if ( $force_defaults || ! is_string( get_option( $key ) ) ) {
 				update_option( $key, $default );
@@ -867,6 +961,11 @@ class WP_Typography {
 	 * @return array
 	 */
 	public function get_default_options() {
+		if ( ! $this->default_settings_localized ) {
+			$this->default_settings = $this->multilingual->filter_defaults( $this->default_settings );
+			$this->default_settings_localized = true;
+		}
+
 		return $this->default_settings;
 	}
 
