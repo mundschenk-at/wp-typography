@@ -77,6 +77,19 @@ Please install the [wp-Typography Disable ACF Integration plugin](https://wordpr
 
 == Changelog ==
 
+= 5.0.0 - unreleased =
+* _Feature_: Proper multilingual support (automatic language switching). Tested with
+  - [Polylang](https://wordpress.org/plugins/polylang/),
+  - [MultilingualPress](https://wordpress.org/plugins/multilingual-press/), and
+  - [WPML](https://wpml.org).
+* _Feature_: Language-specific default settings.
+* _Change_: Updated to use version 5.0.1 of the new standalone composer package `mundschenk-at/php-typography`.
+* _Change_: Minimum PHP version increased to 5.6.0
+* _Change:_ Updated list of valid top-level domains.
+* _Bugfix_: French punctuation spacing after links (and other inline tags) fixed.
+* _Bugfix_: Lone ampersands are treated as single-character words.
+* _Bugfix_: Hyphenated words are properly de-widowed.
+
 = 4.2.2 - June 18, 2017 =
 * _Bugfix_: Properly clear cache on upgrade.
 * _Change_: Various internal performance improvements.
