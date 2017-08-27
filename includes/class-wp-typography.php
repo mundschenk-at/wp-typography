@@ -305,7 +305,7 @@ class WP_Typography {
 			$languages = self::translate_languages( $get_language_list() );
 
 			/**
-			 * Filter the caching duration for the language plugin lists.
+			 * Filters the caching duration for the language plugin lists.
 			 *
 			 * @since 3.2.0
 			 *
