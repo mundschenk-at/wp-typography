@@ -61,7 +61,12 @@ class Multilingual {
 	 */
 	public function __construct( WP_Typography $plugin ) {
 		$this->plugin = $plugin;
+	}
 
+	/**
+	 * Set up the various hooks for multilingual support.
+	 */
+	public function run() {
 		$this->locales = $this->initialize_locale_settings();
 	}
 
@@ -122,7 +127,7 @@ class Multilingual {
 		}
 
 		// Adjust diacritics replacement language.
-		$diacritics_language_match  = $this->match_language( $this->plugin->load_diacritic_languages(), $locale, $language, 'diacritics' );
+		$diacritics_language_match  = $this->match_language( $this->plugin->load_diacritic_languages(), $locale, $language, 'diacritic' );
 		if ( ! empty( $diacritics_language_match ) ) {
 			$settings->set_diacritic_language( $diacritics_language_match );
 		} else {
@@ -309,6 +314,8 @@ class Multilingual {
 		 *
 		 * Return a non-empty string to short-circuit the automatic locale detection.
 		 *
+		 * @since 5.0.0
+		 *
 		 * @param string $locale Default ''.
 		 */
 		$locale = apply_filters( 'typo_current_locale', '' );
@@ -332,13 +339,15 @@ class Multilingual {
 	 * @param  array  $languages An array of languages ( CODE => NAME ).
 	 * @param  string $locale    A locale string in the form en-US (i.e. with - instead of _).
 	 * @param  string $language  A 2-letter language code.
-	 * @param  string $type      Either "hyphenation" or "diacritics".
+	 * @param  string $type      Either "hyphenation" or "diacritic".
 	 *
 	 * @return String            An index in the languages array (or '' if not match was possible).
 	 */
 	protected function match_language( array $languages, $locale, $language, $type ) {
 		/**
 		 * Filters the matched language.
+		 *
+		 * @since 5.0.0
 		 *
 		 * @param string $match     The matched PHP-Typography language code. Default ''.
 		 * @param array  $languages {

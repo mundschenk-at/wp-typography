@@ -3,7 +3,7 @@ Contributors: pputzer
 Tags: typography, hyphenation, smart quotes, quote marks, formatting, typogrify, quotes, prettify, widows, orphans, small caps, diacritics
 Requires at least: 4.4
 Tested up to: 4.8
-Stable tag: 4.2.2
+Stable tag: 5.0.0
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
@@ -76,6 +76,20 @@ Please install the [wp-Typography Disable ACF Integration plugin](https://wordpr
 4. wp-Typography "Add CSS Hooks" settings page.
 
 == Changelog ==
+
+= 5.0.0 - August 27, 2017 =
+* _Feature_: Proper multilingual support (automatic language switching). Tested with
+  - [Polylang](https://wordpress.org/plugins/polylang/),
+  - [MultilingualPress](https://wordpress.org/plugins/multilingual-press/), and
+  - [WPML](https://wpml.org).
+* _Feature_: Language-specific default settings.
+* _Feature_: [Several new hooks](https://code.mundschenk.at/wp-typography/api/) added (including `typo_settings` to directly filter the settings).
+* _Change_: Updated to use version 5.0.1 of the new standalone composer package `mundschenk-at/php-typography`.
+* _Change_: Minimum PHP version increased to 5.6.0
+* _Change:_ Updated list of valid top-level domains.
+* _Bugfix_: French punctuation spacing after links (and other inline tags) fixed.
+* _Bugfix_: Lone ampersands are treated as single-character words.
+* _Bugfix_: Hyphenated words are properly de-widowed.
 
 = 4.2.2 - June 18, 2017 =
 * _Bugfix_: Properly clear cache on upgrade.

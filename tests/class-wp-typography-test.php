@@ -26,6 +26,8 @@ namespace WP_Typography\Tests;
 
 use WP_Typography_Admin;
 
+use PHP_Typography\Hyphenator_Cache;
+
 use Brain\Monkey\Actions;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
@@ -59,6 +61,13 @@ class WP_Typography_Test extends TestCase {
 	protected $wp_typo_admin;
 
 	/**
+	 * Test fixture.
+	 *
+	 * @var \WP_Typography\Settings\Multilingual
+	 */
+	protected $multi;
+
+	/**
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
@@ -74,8 +83,16 @@ class WP_Typography_Test extends TestCase {
 			->shouldReceive( 'get_default_settings' )->andReturn( [ 'dummy_settings' => 'bar' ] )->byDefault()
 			->getMock();
 
+		// Mock WP_Typography\Settings\Multlingual instance.
+		$this->multi = m::mock( \WP_Typography\Settings\Multilingual::class )
+			->shouldReceive( 'run' )->byDefault()
+			->shouldReceive( 'filter_defaults' )->andReturnUsing( function( array $defaults ) {
+				return $defaults;
+			} )->byDefault()
+			->getMock();
+
 		// Create instance.
-		$this->wp_typo = m::mock( \WP_Typography::class, [ '7.7.7', 'dummy/path', $this->wp_typo_admin ] )
+		$this->wp_typo = m::mock( \WP_Typography::class, [ '7.7.7', 'dummy/path', $this->wp_typo_admin, $this->multi ] )
 			->shouldAllowMockingProtectedMethods()
 			->makePartial();
 
@@ -99,7 +116,7 @@ class WP_Typography_Test extends TestCase {
 	 * @param array $options An array of set options.
 	 */
 	protected function prepareOptions( array $options ) {  // @codingStandardsIgnoreLine
-		// Reset singleton.
+		// Reset options.
 		$this->setValue( $this->wp_typo, 'options', $options );
 	}
 
@@ -112,13 +129,14 @@ class WP_Typography_Test extends TestCase {
 	 * @uses ::get_version
 	 * @uses ::get_version_hash
 	 * @uses \WP_Typography_Admin::__construct
+	 * @uses \WP_Typography\Settings\Multilingual::__construct
 	 */
 	public function test_constructor() {
 		Functions\expect( 'get_option' )
 			->once()->with( 'typo_transient_keys', [] )->andReturn( [] )->andAlsoExpectIt()
 			->once()->with( 'typo_cache_keys', [] )->andReturn( [] );
 
-		$typo = new \WP_Typography( '6.6.6', 'dummy/path', m::mock( \WP_Typography_Admin::class ) );
+		$typo = new \WP_Typography( '6.6.6', 'dummy/path', m::mock( \WP_Typography_Admin::class ), m::mock( \WP_Typography\Settings\Multilingual::class ) );
 
 		$this->assertInstanceOf( \WP_Typography::class, $typo );
 		$this->assertAttributeInstanceOf( \WP_Typography_Admin::class, 'admin', $typo );
@@ -137,6 +155,7 @@ class WP_Typography_Test extends TestCase {
 	 * @uses ::get_version_hash
 	 * @uses ::hash_version_string
 	 * @uses \WP_Typography_Admin::__construct
+	 * @uses \WP_Typography\Settings\Multilingual::__construct
 	 */
 	public function test_singleton() {
 		Functions\expect( 'get_option' )
@@ -146,7 +165,10 @@ class WP_Typography_Test extends TestCase {
 		$admin = m::mock( \WP_Typography_Admin::class );
 		$admin->shouldReceive( 'run' )->shouldReceive( 'get_default_settings' )->andReturn( [] );
 
-		$typo = new \WP_Typography( '6.6.6', 'dummy/path', $admin );
+		$multi = m::mock( \WP_Typography\Settings\Multilingual::class );
+		$multi->shouldReceive( 'run' );
+
+		$typo = new \WP_Typography( '6.6.6', 'dummy/path', $admin, $multi );
 		$typo->run();
 
 		$typo2 = \WP_Typography::get_instance();
@@ -171,6 +193,9 @@ class WP_Typography_Test extends TestCase {
 	 * @uses ::get_version_hash
 	 * @uses ::hash_version_string
 	 * @uses \WP_Typography_Admin::__construct
+	 * @uses \WP_Typography\Settings\Multilingual::__construct
+	 * @uses \WP_Typography\Settings\Multilingual::initialize_locale_settings
+	 * @uses \WP_Typography\Settings\Multilingual::run
 	 *
 	 * @expectedException \BadMethodCallException
 	 * @expectedExceptionMessage WP_Typography::get_instance called without prior plugin intialization.
@@ -203,7 +228,10 @@ class WP_Typography_Test extends TestCase {
 		$admin = m::mock( \WP_Typography_Admin::class );
 		$admin->shouldReceive( 'run' )->shouldReceive( 'get_default_settings' )->andReturn( [] );
 
-		$typo = new \WP_Typography( '6.6.6', 'dummy/path', $admin );
+		$multi = m::mock( \WP_Typography\Settings\Multilingual::class );
+		$multi->shouldReceive( 'run' );
+
+		$typo = new \WP_Typography( '6.6.6', 'dummy/path', $admin, $multi );
 		$typo->run();
 		$typo->run();
 	}
@@ -294,6 +322,7 @@ class WP_Typography_Test extends TestCase {
 			'typo_hyphenate_min_after'            => 2,
 			'typo_hyphenate_exceptions'           => [],
 			'typo_ignore_parser_errors'           => false,
+			'typo_enable_multilingual_support'    => false,
 		] );
 
 		Functions\expect( 'wp_json_encode' )->once()->andReturn( '{ json: "value" }' );
@@ -393,6 +422,7 @@ class WP_Typography_Test extends TestCase {
 			'typo_hyphenate_min_after'            => 2,
 			'typo_hyphenate_exceptions'           => [],
 			'typo_ignore_parser_errors'           => false,
+			'typo_enable_multilingual_support'    => false,
 		] );
 
 		Functions\expect( 'wp_json_encode' )->once()->andReturn( '{ json: "value" }' );
@@ -485,9 +515,14 @@ class WP_Typography_Test extends TestCase {
 	 *
 	 * @covers ::get_hyphenation_languages
 	 *
-	 * @uses \PHP_Typography\PHP_Typography::get_hyphenation_languages
+	 * @uses ::get_instance
 	 */
-	 public function test_get_hyphenation_languages() {
+	public function test_get_hyphenation_languages() {
+		// Set up singleton.
+		$this->setStaticValue( \WP_Typography::class, '_instance', $this->wp_typo );
+
+		$this->wp_typo->shouldReceive( 'load_hyphenation_languages' )->once()->andReturn( [ 'de' => 'German' ] );
+
 		$langs = \WP_Typography::get_hyphenation_languages();
 
 		$this->assertContainsOnly( 'string', $langs, 'The languages array should only contain strings.' );
@@ -499,10 +534,67 @@ class WP_Typography_Test extends TestCase {
 	 *
 	 * @covers ::get_diacritic_languages
 	 *
-	 * @uses \PHP_Typography\PHP_Typography::get_diacritic_languages
+	 * @uses ::get_instance
 	 */
-	 public function test_get_diacritic_languages() {
+	public function test_get_diacritic_languages() {
+		// Set up singleton.
+		$this->setStaticValue( \WP_Typography::class, '_instance', $this->wp_typo );
+
+		$this->wp_typo->shouldReceive( 'load_diacritic_languages' )->once()->andReturn( [ 'de' => 'German' ] );
+
 		$langs = \WP_Typography::get_diacritic_languages();
+
+		$this->assertContainsOnly( 'string', $langs, 'The languages array should only contain strings.' );
+		$this->assertContainsOnly( 'string', array_keys( $langs ), 'The languages array should be indexed by language codes.' );
+	}
+
+	/**
+	 * Test get_hyphenation_languages
+	 *
+	 * @covers ::load_hyphenation_languages
+	 * @covers ::load_languages
+	 * @covers ::translate_languages
+	 *
+	 * @uses \PHP_Typography\PHP_Typography::get_hyphenation_languages
+	 */
+	public function test_load_hyphenation_languages() {
+		Functions\when( '_x' )->returnArg();
+		if ( ! defined( 'WEEK_IN_SECONDS' ) ) {
+			define( 'WEEK_IN_SECONDS', 999 );
+		}
+
+		$this->wp_typo->shouldReceive( 'get_cache' )->once()->andReturnUsing( function( $key, &$found ) {
+			$found = false;
+			return [];
+		} )->shouldReceive( 'set_cache' )->once();
+
+		$langs = $this->wp_typo->load_hyphenation_languages();
+
+		$this->assertContainsOnly( 'string', $langs, 'The languages array should only contain strings.' );
+		$this->assertContainsOnly( 'string', array_keys( $langs ), 'The languages array should be indexed by language codes.' );
+	}
+
+	/**
+	 * Test get_hyphenation_languages
+	 *
+	 * @covers ::load_diacritic_languages
+	 * @covers ::load_languages
+	 * @covers ::translate_languages
+	 *
+	 * @uses \PHP_Typography\PHP_Typography::get_hyphenation_languages
+	 */
+	public function test_load_diacritic_languages() {
+		Functions\when( '_x' )->returnArg();
+		if ( ! defined( 'WEEK_IN_SECONDS' ) ) {
+			define( 'WEEK_IN_SECONDS', 999 );
+		}
+
+		$this->wp_typo->shouldReceive( 'get_cache' )->once()->andReturnUsing( function( $key, &$found ) {
+			$found = false;
+			return [];
+		} )->shouldReceive( 'set_cache' )->once();
+
+		$langs = $this->wp_typo->load_diacritic_languages();
 
 		$this->assertContainsOnly( 'string', $langs, 'The languages array should only contain strings.' );
 		$this->assertContainsOnly( 'string', array_keys( $langs ), 'The languages array should be indexed by language codes.' );
@@ -580,12 +672,13 @@ class WP_Typography_Test extends TestCase {
 	 */
 	public function provide_init_data() {
 		return [
-			[ true, true, true, true ],
-			[ false, false, false, false ],
-			[ true, false, false, false ],
-			[ false, true, false, false ],
-			[ false, false, true, false ],
-			[ false, false, false, true ],
+			[ true, true, true, true, true ],
+			[ false, false, false, false, false ],
+			[ true, false, false, false, false ],
+			[ false, true, false, false, false ],
+			[ false, false, true, false, false ],
+			[ false, false, false, true, false ],
+			[ false, false, false, false, true ],
 		];
 	}
 
@@ -603,10 +696,12 @@ class WP_Typography_Test extends TestCase {
 	 * @param bool $clear_cache      The typo_clear_cache value.
 	 * @param bool $smart_characters The typo_smart_characters value.
 	 * @param bool $admin            Whether is_admin() should return true.
+	 * @param bool $multilingual     The typo_enable_multilingual_support value.
 	 */
-	public function test_init( $restore_defaults, $clear_cache, $smart_characters, $admin ) {
+	public function test_init( $restore_defaults, $clear_cache, $smart_characters, $admin, $multilingual ) {
 		$this->prepareOptions( [
-			'typo_smart_characters' => $smart_characters,
+			'typo_smart_characters'            => $smart_characters,
+			'typo_enable_multilingual_support' => $multilingual,
 		] );
 		$this->wp_typo->run();
 
@@ -638,6 +733,8 @@ class WP_Typography_Test extends TestCase {
 
 		self::assertTrue( has_action( 'wp_head', [ $this->wp_typo, 'add_wp_head' ] ) );
 		self::assertTrue( has_action( 'wp_enqueue_scripts', [ $this->wp_typo, 'enqueue_scripts' ] ) );
+		self::assertSame( ! $admin, has_action( 'shutdown', [ $this->wp_typo, 'save_hyphenator_cache_on_shutdown' ] ) );
+		self::assertSame( $multilingual, has_filter( 'typo_settings', [ $this->multi, 'automatic_language_settings' ] ) );
 	}
 
 	/**
@@ -941,6 +1038,7 @@ class WP_Typography_Test extends TestCase {
 	 *
 	 * @uses ::run
 	 * @uses ::set_instance
+	 * @uses ::get_default_options
 	 */
 	public function test_set_default_options() {
 		$this->wp_typo->run();
@@ -959,6 +1057,7 @@ class WP_Typography_Test extends TestCase {
 	 *
 	 * @uses ::run
 	 * @uses ::set_instance
+	 * @uses ::get_default_options
 	 */
 	public function test_set_default_options_force_defaults() {
 		$this->wp_typo->run();
@@ -1137,5 +1236,49 @@ class WP_Typography_Test extends TestCase {
 		$object = $this->invokeMethod( $this->wp_typo, 'maybe_fix_object', [ $fake_object ] );
 
 		$this->assertTrue( $object !== $fake_object );
+	}
+
+	/**
+	 * Provide data for testing save_hyphenator_cache_on_shutdown.
+	 *
+	 * @return array
+	 */
+	public function provide_save_hyphenator_cache_on_shutdown_data() {
+		return [
+			[ true,  m::mock( Hyphenator_Cache::class ), true ],
+			[ false, m::mock( Hyphenator_Cache::class ), false ],
+			[ true,  null,                               false ],
+			[ false, null,                               false ],
+		];
+	}
+
+	/**
+	 * Test save_hyphenator_cache_on_shutdown.
+	 *
+	 * @covers ::save_hyphenator_cache_on_shutdown
+	 *
+	 * @dataProvider provide_save_hyphenator_cache_on_shutdown_data
+	 *
+	 * @param bool                  $enable_hyphenation The typo_enable_hyphenation value.
+	 * @param Hyphenator_Cache|null $hyphenator_cache   The hyphenator cache instance.
+	 * @param bool                  $expected           If the hyphenator cache should be saved.
+	 */
+	public function test_save_hyphenator_cache_on_shutdown( $enable_hyphenation, $hyphenator_cache, $expected ) {
+
+		$this->prepareOptions( [
+			'typo_enable_hyphenation' => $enable_hyphenation,
+		] );
+
+		$this->setValue( $this->wp_typo, 'hyphenator_cache', $hyphenator_cache );
+
+		if ( $expected ) {
+			$this->wp_typo->shouldReceive( 'cache_object' )->once();
+		} else {
+			$this->wp_typo->shouldReceive( 'cache_object' )->never();
+		}
+
+		$this->wp_typo->save_hyphenator_cache_on_shutdown();
+
+		$this->assertTrue( true );
 	}
 }
