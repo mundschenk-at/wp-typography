@@ -82,7 +82,7 @@ class WP_Typography {
 	 *
 	 * @var Hyphenator_Cache
 	 */
-	private $hyphenator_cache;
+	protected $hyphenator_cache;
 
 	/**
 	 * The transients set by the plugin (to clear on update).
@@ -187,6 +187,9 @@ class WP_Typography {
 
 		// Also run the backend UI.
 		$this->admin->run();
+
+		// Enable multilingual support.
+		$this->multilingual->run();
 
 		// Keep default settings.
 		$this->default_settings = $this->admin->get_default_settings();

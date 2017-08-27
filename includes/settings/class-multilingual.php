@@ -61,7 +61,12 @@ class Multilingual {
 	 */
 	public function __construct( WP_Typography $plugin ) {
 		$this->plugin = $plugin;
+	}
 
+	/**
+	 * Set up the various hooks for multilingual support.
+	 */
+	public function run() {
 		$this->locales = $this->initialize_locale_settings();
 	}
 
