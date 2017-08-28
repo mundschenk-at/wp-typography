@@ -73,16 +73,16 @@
         },
         {
             "name": "mundschenk-at/php-typography",
-            "version": "v5.0.1",
+            "version": "v5.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mundschenk-at/php-typography.git",
-                "reference": "dffb74c597e755bde5038dbc49922e2e6a206f98"
+                "reference": "8fb77db9aa795650b91e7f5ec4b288be72f585d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mundschenk-at/php-typography/zipball/dffb74c597e755bde5038dbc49922e2e6a206f98",
-                "reference": "dffb74c597e755bde5038dbc49922e2e6a206f98",
+                "url": "https://api.github.com/repos/mundschenk-at/php-typography/zipball/8fb77db9aa795650b91e7f5ec4b288be72f585d5",
+                "reference": "8fb77db9aa795650b91e7f5ec4b288be72f585d5",
                 "shasum": ""
             },
             "require": {
@@ -95,7 +95,7 @@
                 "dealerdirect/phpcodesniffer-composer-installer": "^0.4.1",
                 "ext-curl": "*",
                 "phpstan/phpstan": "^0.8.0",
-                "phpunit/phpunit": "6.*",
+                "phpunit/phpunit": "5.*||6.*",
                 "squizlabs/php_codesniffer": "^3.0.2",
                 "wimg/php-compatibility": "^8.0",
                 "wp-coding-standards/wpcs": "^0.13"
@@ -129,7 +129,7 @@
                 }
             ],
             "description": "A PHP library for improving your web typography",
-            "time": "2017-08-26T17:50:27+00:00"
+            "time": "2017-08-28T19:02:15+00:00"
         }
     ],
     "packages-dev": [

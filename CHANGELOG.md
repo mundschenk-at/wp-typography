@@ -1,5 +1,8 @@
 # Changes
 
+## 5.0.1 - August 28, 2017 =
+*   _Bugfix_: Fatal error on PHP 5.6.x (caused by using `__METHOD__` as a variable function) fixed (`mundschenk-at/php-typography` 5.0.2).
+
 ## 5.0.0 - August 27, 2017
 *   _Feature_: Proper multilingual support (automatic language switching). Tested with
     -   [Polylang](https://wordpress.org/plugins/polylang/),
