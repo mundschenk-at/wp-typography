@@ -867,7 +867,7 @@ class WP_Typography_Admin {
 	 *
 	 * @return mixed
 	 */
-	protected function sanitize_restore_defaults( $input ) {
+	public function sanitize_restore_defaults( $input ) {
 		return $this->trigger_admin_notice( 'typo_restore_defaults', 'defaults-restored', __( 'Settings reset to default values.', 'wp-typography' ), 'updated', $input );
 	}
 
@@ -878,7 +878,7 @@ class WP_Typography_Admin {
 	 *
 	 * @return mixed
 	 */
-	protected function sanitize_clear_cache( $input ) {
+	public function sanitize_clear_cache( $input ) {
 		return $this->trigger_admin_notice( 'typo_clear_cache', 'cache-cleared', __( 'Cached post content cleared.', 'wp-typography' ), 'notice-info', $input );
 	}
 
