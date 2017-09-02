@@ -470,7 +470,7 @@ class WP_Typography {
 			$transient = 'typo_php_settings_' . md5( wp_json_encode( $this->options ) ) . '_' . $this->version_hash;
 			$this->typo_settings = $this->maybe_fix_object( get_transient( $transient ) );
 
-			if ( empty( $this->typo_settings ) ) {
+			if ( ! $this->typo_settings instanceof Settings ) {
 				// OK, we have to initialize the PHP_Typography instance manually.
 				$this->typo_settings = new Settings( false );
 
@@ -817,7 +817,7 @@ class WP_Typography {
 			$transient = 'typo_php_' . md5( wp_json_encode( $this->options ) ) . '_' . $this->version_hash;
 			$this->typo = $this->maybe_fix_object( get_transient( $transient ) );
 
-			if ( empty( $this->typo ) ) {
+			if ( ! $this->typo instanceof PHP_Typography ) {
 				// OK, we have to initialize the PHP_Typography instance manually.
 				$this->typo = new PHP_Typography( PHP_Typography::INIT_NOW );
 
@@ -831,7 +831,7 @@ class WP_Typography {
 			$transient = 'typo_php_hyphenator_cache_' . $this->version_hash;
 			$this->hyphenator_cache = $this->maybe_fix_object( get_transient( $transient ) );
 
-			if ( empty( $this->hyphenator_cache ) ) {
+			if ( ! $this->hyphenator_cache instanceof Hyphenator_Cache ) {
 				$this->hyphenator_cache = $this->typo->get_hyphenator_cache();
 
 				// Try again next time.

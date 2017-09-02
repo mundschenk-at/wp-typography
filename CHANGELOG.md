@@ -1,6 +1,10 @@
 # Changes
 
-## 5.0.1 - August 28, 2017 =
+## 5.0.2 - September 02, 2017
+*   _Bugfix_: "Clear Cache" and "Restore Defaults" admin notices are now shown again.
+*   _Bugfix_: Object caching errors don't crash the site anymore.
+
+## 5.0.1 - August 28, 2017
 *   _Bugfix_: Fatal error on PHP 5.6.x (caused by using `__METHOD__` as a variable function) fixed (`mundschenk-at/php-typography` 5.0.2).
 
 ## 5.0.0 - August 27, 2017
