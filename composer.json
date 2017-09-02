@@ -20,7 +20,8 @@
 
     "require": {
         "php": ">=5.6.0",
-        "mundschenk-at/php-typography": "^5.0"
+        "mundschenk-at/php-typography": "^5.0",
+        "masterminds/html5": "2.x-dev#e965886a79a560b4b00a4c471e2bdfafea23fdcb"
     },
     "require-dev": {
         "phpstan/phpstan": "^0.8",
