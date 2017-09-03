@@ -444,8 +444,11 @@ class WP_Typography {
 			$this->add_content_filters();
 
 			// Save hyphenator cache on exit, if necessary.
-			add_action( 'shutdown', [ $this, 'save_hyphenator_cache_on_shutdown' ] );
+			add_action( 'shutdown', [ $this, 'save_hyphenator_cache_on_shutdown' ], 10 );
 		}
+
+		// Save cache and transient keys on shutdown.
+		add_action( 'shutdown', [ $this, 'save_cache_keys_on_shutdown' ], 99 );
 
 		// Add CSS Hook styling.
 		add_action( 'wp_head', [ $this, 'add_wp_head' ] );
@@ -740,7 +743,6 @@ class WP_Typography {
 		if ( $result ) {
 			// Store $transient as keys to prevent duplicates.
 			$this->transients[ $transient ] = true;
-			update_option( 'typo_transient_keys', $this->transients );
 		}
 
 		return $result;
@@ -761,7 +763,6 @@ class WP_Typography {
 		if ( $result ) {
 			// Store as keys to prevent duplicates.
 			$this->cache_keys[ $key ] = true;
-			update_option( 'typo_cache_keys', $this->cache_keys );
 		}
 
 		return $result;
@@ -852,6 +853,14 @@ class WP_Typography {
 		if ( $this->options['typo_enable_hyphenation'] && ! empty( $this->hyphenator_cache ) ) {
 			$this->cache_object( 'typo_php_hyphenator_cache_' . $this->version_hash, $this->hyphenator_cache );
 		}
+	}
+
+	/**
+	 * Save cache and transient keys for the next request.
+	 */
+	public function save_cache_keys_on_shutdown() {
+		update_option( 'typo_transient_keys', $this->transients );
+		update_option( 'typo_cache_keys',     $this->cache_keys );
 	}
 
 	/**
@@ -999,8 +1008,6 @@ class WP_Typography {
 
 		$this->transients = [];
 		$this->cache_keys = [];
-		update_option( 'typo_transient_keys', $this->transients );
-		update_option( 'typo_cache_keys', $this->cache_keys );
 		update_option( 'typo_clear_cache', false );
 	}
 

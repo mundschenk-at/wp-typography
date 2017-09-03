@@ -4,7 +4,7 @@ Tags: typography, hyphenation, smart quotes, quote marks, formatting, typogrify,
 Requires at least: 4.4
 Requires PHP: 5.6
 Tested up to: 4.8
-Stable tag: 5.0.2
+Stable tag: 5.0.3
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
@@ -77,6 +77,10 @@ Please install the [wp-Typography Disable ACF Integration plugin](https://wordpr
 
 == Upgrade Notice ==
 
+= 5.0.3 =
+The plugin now requires at least PHP 5.6. If you are still running an earlier version,
+please upgrade PHP or continue to use version 4.2.2.
+
 = 5.0.2 =
 The plugin now requires at least PHP 5.6. If you are still running an earlier version,
 please upgrade PHP or continue to use version 4.2.2.
@@ -90,6 +94,9 @@ The plugin now requires at least PHP 5.6. If you are still running an earlier ve
 please upgrade PHP or continue to use version 4.2.2.
 
 == Changelog ==
+
+= 5.0.3 - September 03, 2017 =
+*   _Bugfix_: Lower database write load by reducing option updates (props @jerzyk).
 
 = 5.0.2 - September 02, 2017 =
 * _Bugfix_: "Clear Cache" and "Restore Defaults" admin notices are now shown again.
