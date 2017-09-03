@@ -1,7 +1,7 @@
 # Changes
 
 ## 5.0.3 - September 03, 2017
-*   _Bugfix_: Reduce database write load due to option updates.
+*   _Bugfix_: Lower database write load by reducing option updates (props @jerzyk).
 
 ## 5.0.2 - September 02, 2017
 *   _Bugfix_: "Clear Cache" and "Restore Defaults" admin notices are now shown again.
