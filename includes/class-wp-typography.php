@@ -301,7 +301,7 @@ class WP_Typography {
 		$languages = $this->get_cache( $cache_key, $found );
 
 		// Dynamically generate the list of hyphenation language patterns.
-		if ( false === $found ) {
+		if ( false === $found || ! is_array( $languages ) ) {
 			$languages = self::translate_languages( $get_language_list() );
 
 			/**
