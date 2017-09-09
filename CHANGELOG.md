@@ -1,5 +1,8 @@
 # Changes
 
+## 5.0.4 - September 09, 2017
+*   _Bugfix_: Ensure proper typing for cached language plugin lists.
+
 ## 5.0.3 - September 03, 2017
 *   _Bugfix_: Lower database write load by reducing option updates (props @jerzyk).
 

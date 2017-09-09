@@ -26,7 +26,7 @@ Improve your web typography with:
 
 wp‐Typography has the following requirements:
 
-*   the host server must run PHP 5.4.0 or later
+*   the host server must run PHP 5.6.0 or later
 *   your installation of PHP must include the [mbstring extension](http://us3.php.net/manual/en/mbstring.installation.php) (most do)
 *   text must be encoded UTF‐8
 
