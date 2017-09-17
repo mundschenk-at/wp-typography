@@ -24,17 +24,17 @@
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
+namespace WP_Typography;
+
 /**
  * Fired during plugin de-/activation and uninstall.
  *
  * This class defines all code necessary to run during the plugin's setup and teardown.
  *
  * @since      3.1.0
- * @package    wpTypography
- * @subpackage wpTypography/includes
  * @author     Peter Putzer <github@mundschenk.at>
  */
-class WP_Typography_Setup {
+class Setup {
 
 	/**
 	 * The unique identifier of this plugin.
@@ -48,17 +48,17 @@ class WP_Typography_Setup {
 	 * The plugin object.
 	 *
 	 * @since    3.1.0
-	 * @var      WP_Typography $plugin The main plugin class instance.
+	 * @var      \WP_Typography $plugin The main plugin class instance.
 	 */
 	private $plugin;
 
 	/**
-	 * Create a new instace of WP_Typography_Setup.
+	 * Create a new instace of WP_Typography\Setup.
 	 *
-	 * @param string        $slug   Required.
-	 * @param WP_Typography $plugin Required.
+	 * @param string         $slug   Required.
+	 * @param \WP_Typography $plugin Required.
 	 */
-	public function __construct( $slug, WP_Typography $plugin ) {
+	public function __construct( $slug, \WP_Typography $plugin ) {
 		$this->plugin_slug = $slug;
 		$this->plugin = $plugin;
 	}
@@ -69,9 +69,9 @@ class WP_Typography_Setup {
 	 * @param string $plugin_file The full path and filename to the main plugin file.
 	 */
 	public function register( $plugin_file ) {
-		register_activation_hook( $plugin_file, [ $this, 'activate' ] );
+		register_activation_hook( $plugin_file,   [ $this, 'activate' ] );
 		register_deactivation_hook( $plugin_file, [ $this, 'deactivate' ] );
-		register_uninstall_hook( $plugin_file, __CLASS__ . '::uninstall' );
+		register_uninstall_hook( $plugin_file,    __CLASS__ . '::uninstall' );
 	}
 
 	/**

@@ -42,11 +42,9 @@ use \PHP_Typography\Arrays;
  * enqueue the admin-specific stylesheet and JavaScript.
  *
  * @since      3.1.0
- * @package    wpTypography
- * @subpackage wpTypography/includes
  * @author     Peter Putzer <github@mundschenk.at>
  */
-class WP_Typography_Admin {
+class Admin {
 	/**
 	 * The group name used for registering the plugin options.
 	 *
@@ -132,19 +130,19 @@ class WP_Typography_Admin {
 	/**
 	 * The plugin instance used for setting transients.
 	 *
-	 * @var WP_Typography
+	 * @var \WP_Typography
 	 */
 	private $plugin;
 
 	/**
-	 * Create a new instace of WP_Typography_Setup.
+	 * Create a new instace of admin backend.
 	 *
-	 * @param string        $basename The plugin slug.
-	 * @param WP_Typography $plugin   The plugin object.
+	 * @param string         $basename The plugin slug.
+	 * @param \WP_Typography $plugin   The plugin object.
 	 */
-	public function __construct( $basename, WP_Typography $plugin ) {
+	public function __construct( $basename, \WP_Typography $plugin ) {
 		$this->local_plugin_path = $basename;
-		$this->plugin_path       = plugin_dir_path( __DIR__ ) . basename( $this->local_plugin_path );
+		$this->plugin_path       = plugin_dir_path( dirname( __DIR__ ) ) . basename( $this->local_plugin_path );
 		$this->version           = $plugin->get_version();
 		$this->plugin            = $plugin;
 	}
@@ -762,7 +760,7 @@ class WP_Typography_Admin {
 				'attributes'    => [
 					'rows' => '10',
 				],
-				'default'       => file_get_contents( dirname( __DIR__ ) . '/admin/css/default-styles.css' ),
+				'default'       => file_get_contents( dirname( dirname( __DIR__ ) ) . '/admin/css/default-styles.css' ),
 			] ),
 		];
 
@@ -996,6 +994,6 @@ class WP_Typography_Admin {
 		$this->admin_form_controls['typo_diacritic_languages']->set_options( $this->plugin->load_diacritic_languages() );
 
 		// Load the settings page HTML.
-		include_once dirname( __DIR__ ) . '/admin/partials/settings.php';
+		include_once dirname( dirname( __DIR__ ) ) . '/admin/partials/settings.php';
 	}
 }

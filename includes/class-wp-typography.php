@@ -25,10 +25,14 @@
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
+use \WP_Typography\Admin;
+use \WP_Typography\Cache;
+use \WP_Typography\Transients;
 use \WP_Typography\Settings\Multilingual;
+
 use \PHP_Typography\PHP_Typography;
-use \PHP_Typography\Hyphenator_Cache;
 use \PHP_Typography\Settings;
+use \PHP_Typography\Hyphenator\Cache as Hyphenator_Cache;
 
 /**
  * Main wp-Typography plugin class. All WordPress specific code goes here.
@@ -41,13 +45,6 @@ class WP_Typography {
 	 * @var string $version
 	 */
 	private $version;
-
-	/**
-	 * A byte-encoded version number used as part of the key for transient caching
-	 *
-	 * @var string $version_hash
-	 */
-	private $version_hash;
 
 	/**
 	 * The result of plugin_basename() for the main plugin file (relative from plugins folder).
@@ -85,20 +82,22 @@ class WP_Typography {
 	protected $hyphenator_cache;
 
 	/**
-	 * The transients set by the plugin (to clear on update).
+	 * An abstraction of the WordPress transients API.
 	 *
-	 * @var array A hash with the transient keys set by the plugin stored as ( $key => true ).
+	 * @since 5.1.0
+	 *
+	 * @var Transients
 	 */
-	private $transients = [];
+	private $transients;
 
 	/**
-	 * The cache keys set by the plugin (to clear on update).
+	 * An abstraction of the WordPress object cache.
 	 *
-	 * @since 3.5.0
+	 * @since 5.1.0
 	 *
-	 * @var array A hash with the cache keys set by the plugin stored as ( $key => true ).
+	 * @var Cache
 	 */
-	private $cache_keys = [];
+	private $cache;
 
 	/**
 	 * The PHP_Typography configuration is not changed after initialization, so the settings hash can be cached.
@@ -124,7 +123,7 @@ class WP_Typography {
 	/**
 	 * The admin side handler object.
 	 *
-	 * @var WP_Typography_Admin
+	 * @var WP_Typography\Admin
 	 */
 	private $admin;
 
@@ -152,21 +151,26 @@ class WP_Typography {
 	/**
 	 * Sets up a new WP_Typography object.
 	 *
-	 * @param string                    $version  The full plugin version string (e.g. "3.0.0-beta.2").
-	 * @param string                    $basename Optional. The result of plugin_basename() for the main plugin file. Default 'wp-typography/wp-typography.php'.
-	 * @param \WP_Typography_Admin|null $admin    Optional. Default null (which means a private instance will be created).
-	 * @param Multilingual|null         $multi    Optional. Default null (which means a private instance will be created).
+	 * @since 5.1.0 Optional parameters $transients and $cache added.
+	 *
+	 * @param string            $version    The full plugin version string (e.g. "3.0.0-beta.2").
+	 * @param string            $basename   Optional. The result of plugin_basename() for the main plugin file. Default 'wp-typography/wp-typography.php'.
+	 * @param Admin|null        $admin      Optional. Default null (which means a private instance will be created).
+	 * @param Multilingual|null $multi      Optional. Default null (which means a private instance will be created).
+	 * @param Transients|null   $transients Optional. Default null (which means a private instance will be created).
+	 * @param Cache|null        $cache      Optional. Default null (which means a private instance will be created).
 	 */
-	public function __construct( $version, $basename = 'wp-typography/wp-typography.php', WP_Typography_Admin $admin = null, Multilingual $multi = null ) {
+	public function __construct( $version, $basename = 'wp-typography/wp-typography.php', Admin $admin = null, Multilingual $multi = null, Transients $transients = null, Cache $cache = null ) {
 		// Basic set-up.
 		$this->version           = $version;
-		$this->version_hash      = $this->hash_version_string( $version );
 		$this->local_plugin_path = $basename;
-		$this->transients        = get_option( 'typo_transient_keys', [] );
-		$this->cache_keys        = get_option( 'typo_cache_keys', [] );
+
+		// Initialize cache handlers.
+		$this->transients        = ( null === $transients ) ? new Transients() : $transients;
+		$this->cache             = ( null === $cache ) ? new Cache() : $cache;
 
 		// Initialize admin interface handler.
-		$this->admin             = ( null === $admin ) ? new WP_Typography_Admin( $basename, $this ) : $admin;
+		$this->admin             = ( null === $admin ) ? new WP_Typography\Admin( $basename, $this ) : $admin;
 
 		// Initialize multilingual support.
 		$this->multilingual      = ( null === $multi ) ? new Multilingual( $this ) : $multi;
@@ -261,7 +265,7 @@ class WP_Typography {
 	 * @return string[] An array in the form of ( $language_code => $language ).
 	 */
 	public function load_hyphenation_languages() {
-		return $this->load_languages( "typo_hyphenate_languages_{$this->version_hash}", [ PHP_Typography::class, 'get_hyphenation_languages' ], 'hyphenate' );
+		return $this->load_languages( 'hyphenate_languages', [ PHP_Typography::class, 'get_hyphenation_languages' ], 'hyphenate' );
 	}
 
 	/**
@@ -284,7 +288,7 @@ class WP_Typography {
 	 * @return string[] An array in the form of ( $language_code => $language ).
 	 */
 	public function load_diacritic_languages() {
-		return $this->load_languages( "typo_diacritic_languages_{$this->version_hash}", [ PHP_Typography::class, 'get_diacritic_languages' ], 'diacritic' );
+		return $this->load_languages( 'diacritic_languages', [ PHP_Typography::class, 'get_diacritic_languages' ], 'diacritic' );
 	}
 
 	/**
@@ -298,7 +302,7 @@ class WP_Typography {
 	 */
 	protected function load_languages( $cache_key, callable $get_language_list, $type ) {
 		// Try to load hyphenation language list from cache.
-		$languages = $this->get_cache( $cache_key, $found );
+		$languages = $this->cache->get( $cache_key, $found );
 
 		// Dynamically generate the list of hyphenation language patterns.
 		if ( false === $found || ! is_array( $languages ) ) {
@@ -315,7 +319,7 @@ class WP_Typography {
 			$duration = apply_filters( 'typo_language_list_caching_duration', WEEK_IN_SECONDS, "{$type}_languages" );
 
 			// Cache translated hyphenation languages.
-			$this->set_cache( $cache_key, $languages, $duration );
+			$this->cache->set( $cache_key, $languages, $duration );
 		}
 
 		return $languages;
@@ -447,9 +451,6 @@ class WP_Typography {
 			add_action( 'shutdown', [ $this, 'save_hyphenator_cache_on_shutdown' ], 10 );
 		}
 
-		// Save cache and transient keys on shutdown.
-		add_action( 'shutdown', [ $this, 'save_cache_keys_on_shutdown' ], 99 );
-
 		// Add CSS Hook styling.
 		add_action( 'wp_head', [ $this, 'add_wp_head' ] );
 
@@ -470,8 +471,8 @@ class WP_Typography {
 
 		// Initialize Settings instance.
 		if ( empty( $this->typo_settings ) ) {
-			$transient = 'typo_php_settings_' . md5( wp_json_encode( $this->options ) ) . '_' . $this->version_hash;
-			$this->typo_settings = $this->maybe_fix_object( get_transient( $transient ) );
+			$transient = 'php_settings_' . md5( wp_json_encode( $this->options ) );
+			$this->typo_settings = $this->maybe_fix_object( $this->transients->get_large_object( $transient ) );
 
 			if ( ! $this->typo_settings instanceof Settings ) {
 				// OK, we have to initialize the PHP_Typography instance manually.
@@ -485,7 +486,7 @@ class WP_Typography {
 			}
 
 			// Settings won't be touched again, so cache the hash.
-			$this->cached_settings_hash = $this->typo_settings->get_hash( 32 );
+			$this->cached_settings_hash = $this->typo_settings->get_hash( 32, false );
 		}
 
 		return $this->typo_settings;
@@ -691,19 +692,19 @@ class WP_Typography {
 		$settings = apply_filters( 'typo_settings', $settings );
 
 		// Caclulate hash if necessary.
-		$hash = isset( $hash ) ? $hash : $settings->get_hash();
+		$hash = isset( $hash ) ? $hash : $settings->get_hash( 32, false );
 
 		// Enable feed mode?
 		$feed = $force_feed || is_feed();
 
-		// Construct transient key.
-		$key  = 'typo_' . base64_encode( md5( $text, true ) . $hash ) . ( $feed ? 'f' : '' ) . ( $is_title ? 't' : 's' ) . $this->version_hash;
+		// Construct cache key.
+		$key = 'frag_' . md5( $text ) . '_' . $hash . '_' . ( $feed ? 'f' : '' ) . ( $is_title ? 't' : 's' );
 
 		// Retrieve cached text.
 		$found          = false;
-		$processed_text = $this->get_cache( $key, $found );
+		$processed_text = $this->cache->get( $key, $found );
 
-		if ( ! $found ) {
+		if ( empty( $found ) ) {
 			$typo = $this->get_typography_instance();
 
 			if ( $feed ) { // Feed readers are strange sometimes.
@@ -722,62 +723,10 @@ class WP_Typography {
 			$duration = apply_filters( 'typo_processed_text_caching_duration', DAY_IN_SECONDS );
 
 			// Save text fragment for later.
-			$this->set_cache( $key, $processed_text, $duration );
+			$this->cache->set( $key, $processed_text, $duration );
 		}
 
 		return $processed_text;
-	}
-
-	/**
-	 * Sets a transient and stores the key for clean-up.
-	 *
-	 * @param string $transient The transient key. Maximum length depends on WordPress version (for WP < 4.4 it is 45 characters).
-	 * @param mixed  $value     The value to store.
-	 * @param int    $duration  Optional. The duration in seconds. Default 1 second.
-	 *
-	 * @return bool True if the transient could be set successfully.
-	 */
-	public function set_transient( $transient, $value, $duration = 1 ) {
-		$result = set_transient( $transient, $value, $duration );
-
-		if ( $result ) {
-			// Store $transient as keys to prevent duplicates.
-			$this->transients[ $transient ] = true;
-		}
-
-		return $result;
-	}
-
-	/**
-	 * Sets an entry in the cache and stores the key.
-	 *
-	 * @param string $key       The cache key.
-	 * @param mixed  $value     The value to store.
-	 * @param int    $duration  Optional. The duration in seconds. Default 0 (no expiration).
-	 *
-	 * @return bool True if the cache could be set successfully.
-	 */
-	public function set_cache( $key, $value, $duration = 0 ) {
-		$result = wp_cache_set( $key, $value, 'wp-typography', $duration );
-
-		if ( $result ) {
-			// Store as keys to prevent duplicates.
-			$this->cache_keys[ $key ] = true;
-		}
-
-		return $result;
-	}
-
-	/**
-	 * Retrieves a cached value.
-	 *
-	 * @param string $key   The cache key.
-	 * @param bool   $found Whether the key was found in the cache. Disambiguates a return of false as a storable value. Passed by reference.
-	 *
-	 * @return mixed
-	 */
-	public function get_cache( $key, &$found ) {
-		return wp_cache_get( $key, 'wp-typography', false, $found );
 	}
 
 	/**
@@ -804,7 +753,7 @@ class WP_Typography {
 			 */
 			$duration = apply_filters( 'typo_php_typography_caching_duration', 0 );
 
-			$this->set_transient( $transient, $object, $duration );
+			$this->transients->set_large_object( $transient, $object, $duration );
 		}
 	}
 
@@ -815,8 +764,8 @@ class WP_Typography {
 
 		// Initialize PHP_Typography instance.
 		if ( empty( $this->typo ) ) {
-			$transient = 'typo_php_' . md5( wp_json_encode( $this->options ) ) . '_' . $this->version_hash;
-			$this->typo = $this->maybe_fix_object( get_transient( $transient ) );
+			$transient = 'php_' . md5( wp_json_encode( $this->options ) );
+			$this->typo = $this->maybe_fix_object( $this->transients->get_large_object( $transient ) );
 
 			if ( ! $this->typo instanceof PHP_Typography ) {
 				// OK, we have to initialize the PHP_Typography instance manually.
@@ -829,8 +778,8 @@ class WP_Typography {
 
 		// Also cache hyphenators (the pattern tries are expensive to build).
 		if ( $this->options['typo_enable_hyphenation'] && empty( $this->hyphenator_cache ) ) {
-			$transient = 'typo_php_hyphenator_cache_' . $this->version_hash;
-			$this->hyphenator_cache = $this->maybe_fix_object( get_transient( $transient ) );
+			$transient = 'php_hyphenator_cache';
+			$this->hyphenator_cache = $this->maybe_fix_object( $this->transients->get_large_object( $transient ) );
 
 			if ( ! $this->hyphenator_cache instanceof Hyphenator_Cache ) {
 				$this->hyphenator_cache = $this->typo->get_hyphenator_cache();
@@ -850,17 +799,9 @@ class WP_Typography {
 	 * Save hyphenator cache for the next request.
 	 */
 	public function save_hyphenator_cache_on_shutdown() {
-		if ( $this->options['typo_enable_hyphenation'] && ! empty( $this->hyphenator_cache ) ) {
-			$this->cache_object( 'typo_php_hyphenator_cache_' . $this->version_hash, $this->hyphenator_cache );
+		if ( $this->options['typo_enable_hyphenation'] && ! empty( $this->hyphenator_cache ) && $this->hyphenator_cache->has_changed() ) {
+			$this->cache_object( 'php_hyphenator_cache', $this->hyphenator_cache );
 		}
-	}
-
-	/**
-	 * Save cache and transient keys for the next request.
-	 */
-	public function save_cache_keys_on_shutdown() {
-		update_option( 'typo_transient_keys', $this->transients );
-		update_option( 'typo_cache_keys',     $this->cache_keys );
 	}
 
 	/**
@@ -997,17 +938,9 @@ class WP_Typography {
 	 * Clears all transients set by the plugin.
 	 */
 	public function clear_cache() {
-		// Delete all our transients.
-		foreach ( array_keys( $this->transients ) as $transient ) {
-			delete_transient( $transient );
-		}
-		// ... as well as cache keys.
-		foreach ( array_keys( $this->cache_keys ) as $key ) {
-			wp_cache_delete( $key, 'wp-typography' );
-		}
+		$this->transients->invalidate();
+		$this->cache->invalidate();
 
-		$this->transients = [];
-		$this->cache_keys = [];
 		update_option( 'typo_clear_cache', false );
 	}
 
@@ -1096,10 +1029,12 @@ class WP_Typography {
 	/**
 	 * Retrieves the plugin version hash.
 	 *
+	 * @deprecated 5.2.0
+	 *
 	 * @return string
 	 */
 	public function get_version_hash() {
-		return $this->version_hash;
+		return $this->hash_version_string( $this->version );
 	}
 
 	/**
