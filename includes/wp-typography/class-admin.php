@@ -26,6 +26,8 @@
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
+namespace WP_Typography;
+
 use \WP_Typography\UI;
 
 use \PHP_Typography\PHP_Typography;
