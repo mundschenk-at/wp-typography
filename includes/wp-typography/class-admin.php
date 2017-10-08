@@ -247,24 +247,24 @@ class Admin {
 		// Sections will be displayed in the order included.
 		return [
 			'general-scope'         => [
-				'heading'       => __( 'General Scope', 'wp-typography' ),
-				'description'   => __( 'By default, wp-Typography processes all post content and titles (but not the whole page). Certain HTML elements within your content can be exempted to prevent conflicts with your theme or other plugins.', 'wp-typography' ),
+				'heading'     => __( 'General Scope', 'wp-typography' ),
+				'description' => __( 'By default, wp-Typography processes all post content and titles (but not the whole page). Certain HTML elements within your content can be exempted to prevent conflicts with your theme or other plugins.', 'wp-typography' ),
 			],
 			'hyphenation'           => [
-				'heading'       => __( 'Hyphenation', 'wp-typography' ),
-				'description'   => __( 'Hyphenation rules are based on pre-computed dictionaries, but can be fine tuned. Custom hyphenations always override the patterns from the dictionary.', 'wp-typography' ),
+				'heading'     => __( 'Hyphenation', 'wp-typography' ),
+				'description' => __( 'Hyphenation rules are based on pre-computed dictionaries, but can be fine tuned. Custom hyphenations always override the patterns from the dictionary.', 'wp-typography' ),
 			],
 			'character-replacement' => [
-				'heading'       => __( 'Intelligent Character Replacement', 'wp-typography' ),
-				'description'   => __( 'Modern keyboards are still based on the limited character range of typewriters. This section allows you to selectively replace typewriter characters with better alternatives.', 'wp-typography' ),
+				'heading'     => __( 'Intelligent Character Replacement', 'wp-typography' ),
+				'description' => __( 'Modern keyboards are still based on the limited character range of typewriters. This section allows you to selectively replace typewriter characters with better alternatives.', 'wp-typography' ),
 			],
 			'space-control'         => [
-				'heading'       => __( 'Space Control', 'wp-typography' ),
-				'description'   => __( 'Take control of space. At least in your WordPress posts.', 'wp-typography' ),
+				'heading'     => __( 'Space Control', 'wp-typography' ),
+				'description' => __( 'Take control of space. At least in your WordPress posts.', 'wp-typography' ),
 			],
 			'css-hooks'             => [
-				'heading'       => __( 'CSS Hooks', 'wp-typography' ),
-				'description'   => __( 'To help with styling your posts, some additional CSS classes can be added automatically.', 'wp-typography' ),
+				'heading'     => __( 'CSS Hooks', 'wp-typography' ),
+				'description' => __( 'To help with styling your posts, some additional CSS classes can be added automatically.', 'wp-typography' ),
 			],
 		];
 	}
@@ -287,14 +287,14 @@ class Admin {
 		// Fieldsets will be displayed in the order included.
 		return [
 			'math-replacements' => [
-				'heading'       => __( 'Math & Numbers', 'wp-typography' ),
-				'description'   => __( 'Not all number formattings are appropriate for all languages.', 'wp-typography' ),
-				'tab_id'        => 'character-replacement',
+				'heading'     => __( 'Math & Numbers', 'wp-typography' ),
+				'description' => __( 'Not all number formattings are appropriate for all languages.', 'wp-typography' ),
+				'tab_id'      => 'character-replacement',
 			],
 			'enable-wrapping'   => [
-				'heading'       => __( 'Enable Wrapping', 'wp-typography' ),
-				'description'   => __( 'Sometimes you want to enable certain long words to wrap to a new line, while at other times you want to prevent wrapping.', 'wp-typography' ),
-				'tab_id'        => 'space-control',
+				'heading'     => __( 'Enable Wrapping', 'wp-typography' ),
+				'description' => __( 'Sometimes you want to enable certain long words to wrap to a new line, while at other times you want to prevent wrapping.', 'wp-typography' ),
+				'tab_id'      => 'space-control',
 			],
 		];
 	}
