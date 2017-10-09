@@ -126,6 +126,11 @@ class Setup {
 			\delete_option( 'typo_caching_limit' );
 		}
 
+		if ( \version_compare( $previous_version, '5.1.0', '<' ) ) {
+			\delete_option( 'typo_transient_keys' );
+			\delete_option( 'typo_cache_keys' );
+		}
+
 		\update_option( 'typo_installed_version', $this->plugin->get_version() );
 	}
 
@@ -174,10 +179,7 @@ class Setup {
 	public static function uninstall() {
 
 		// Delete all our transients.
-		foreach ( \get_option( 'typo_transient_keys' ) as $transient => $true ) {
-			\delete_transient( $transient );
-		}
-
-		\update_option( 'typo_transient_keys', [] );
+		$transients = new \WP_Typography\Transients();
+		$transients->invalidate();
 	}
 }
