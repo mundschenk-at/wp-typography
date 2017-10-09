@@ -35,22 +35,14 @@ namespace WP_Typography;
  */
 class Transients extends Abstract_Cache {
 
-	const INCREMENTOR_KEY = self::PREFIX . 'transients_incrementor';
-	const BACKLOG_KEY     = self::PREFIX . 'transients_keys';
-
-	/**
-	 * The transients set since the last call to `invalidate`.
-	 *
-	 * @var string[]
-	 */
-	protected $transient_keys = [];
+	const INCREMENTOR_KEY      = self::PREFIX . 'transients_incrementor';
+	const TRANSIENT_SQL_PREFIX = '_transient_';
 
 	/**
 	 * Create new cache instance.
 	 */
 	public function __construct() {
 		$this->incrementor    = \get_transient( self::INCREMENTOR_KEY );
-		$this->transient_keys = \get_option( self::BACKLOG_KEY, [] );
 
 		parent::__construct();
 	}
@@ -59,18 +51,36 @@ class Transients extends Abstract_Cache {
 	 * Invalidate all cached elements by reseting the incrementor.
 	 */
 	public function invalidate() {
-		// Clean up old transients.
-		foreach ( $this->transient_keys as $key => $ignored ) {
-			\delete_transient( $this->get_key( $key ) );
-		}
 
-		// Update key storage.
-		$this->transient_keys = [];
-		\update_option( self::BACKLOG_KEY, $this->transient_keys );
+		if ( ! \wp_using_ext_object_cache() ) {
+			// Clean up old transients.
+			foreach ( $this->get_keys_from_database() as $old_transient ) {
+				\delete_transient( $old_transient );
+			}
+		}
 
 		// Update incrementor.
 		$this->incrementor = time();
 		\set_transient( self::INCREMENTOR_KEY, $this->incrementor );
+	}
+
+	/**
+	 * Retrieves a list of transients set by the plugin from the options table.
+	 *
+	 * @return string[]
+	 */
+	public function get_keys_from_database() {
+		global $wpdb;
+
+		$results = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT option_name FROM {$wpdb->options} WHERE option_name like %s",
+				self::TRANSIENT_SQL_PREFIX . self::PREFIX . '%'
+			),
+			ARRAY_A
+		); // WPCS: db call ok, cache ok.
+
+		return \str_replace( self::TRANSIENT_SQL_PREFIX, '', \wp_list_pluck( $results, 'option_name' ) );
 	}
 
 	/**
@@ -115,8 +125,6 @@ class Transients extends Abstract_Cache {
 	 * @return bool True if the cache could be set successfully.
 	 */
 	public function set( $key, $value, $duration = 0 ) {
-		$this->store_transient_key( $key );
-
 		return \set_transient( $this->get_key( $key ), $value, $duration );
 	}
 
@@ -138,17 +146,5 @@ class Transients extends Abstract_Cache {
 		}
 
 		return $this->set( $key, \base64_encode( $compressed ), $duration );
-	}
-
-	/**
-	 * Store transient key for latter deletion.
-	 *
-	 * @param  string $key A transient key root (without prefix and incrementor).
-	 */
-	protected function store_transient_key( $key ) {
-		if ( ! isset( $this->transient_keys[ $key ] ) ) {
-			$this->transient_keys[ $key ] = true;
-			\update_option( self::BACKLOG_KEY, $this->transient_keys );
-		}
 	}
 }

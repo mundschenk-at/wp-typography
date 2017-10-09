@@ -157,15 +157,27 @@ class WP_Typography_Test extends TestCase {
 	 * @uses \WP_Typography\Cache::invalidate
 	 * @uses \WP_Typography\Transients::__construct
 	 * @uses \WP_Typography\Transients::invalidate
+	 * @uses \WP_Typography\Transients::get_keys_from_database
 	 * @uses \WP_Typography\Settings\Multilingual::__construct
 	 */
 	public function test_constructor() {
-		Functions\expect( 'get_option' )->once()->with( 'typo_transients_keys', [] )->andReturn( [] );
-		Functions\expect( 'update_option' )->once()->with( 'typo_transients_keys', [] )->andReturn( [] );
+		global $wpdb;
+
+		if ( ! defined( 'ARRAY_A' ) ) {
+			define( 'ARRAY_A', 'array' );
+		}
+
+		$wpdb = m::mock( 'wpdb' ); // WPCS: override ok.
+		$wpdb->options = 'wp_options';
+		$wpdb->shouldReceive( 'prepare' )->withAnyArgs()->andReturn( 'fake SQL string' )->byDefault();
+		$wpdb->shouldReceive( 'get_results' )->withAnyArgs()->andReturn( [] )->byDefault();
+
 		Functions\expect( 'get_transient' )->once()->with( 'typo_transients_incrementor' )->andReturn( false );
 		Functions\expect( 'set_transient' )->once()->andReturn( 0 );
 		Functions\expect( 'wp_cache_get' )->once()->with( 'typo_cache_incrementor', 'wp-typography' )->andReturn( 0 );
 		Functions\expect( 'wp_cache_set' )->once()->with( 'typo_cache_incrementor', m::type( 'int' ), 'wp-typography', 0 )->andReturn( true );
+		Functions\expect( 'wp_using_ext_object_cache' )->once()->andReturn( false );
+		Functions\expect( 'wp_list_pluck' )->once()->andReturn( [] );
 
 		$typo = new \WP_Typography( '6.6.6', 'dummy/path', m::mock( \WP_Typography\Admin::class ), m::mock( \WP_Typography\Settings\Multilingual::class ) );
 

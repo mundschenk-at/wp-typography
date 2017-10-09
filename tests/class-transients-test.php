@@ -56,10 +56,6 @@ class Transients_Test extends TestCase {
 	 */
 	protected function setUp() { // @codingStandardsIgnoreLine
 		Functions\expect( 'get_transient' )->once()->with( Transients::INCREMENTOR_KEY )->andReturn( 999 );
-		Functions\expect( 'get_option' )->once()->with( Transients::BACKLOG_KEY, [] )->andReturn( [
-			'bar' => true,
-			'baz' => true,
-		] );
 
 		$this->transients = m::mock( Transients::class, [] )->shouldAllowMockingProtectedMethods()->makePartial();
 
@@ -82,7 +78,6 @@ class Transients_Test extends TestCase {
 	 */
 	public function test___construct() {
 		Functions\expect( 'get_transient' )->once()->with( Transients::INCREMENTOR_KEY )->andReturn( 0 );
-		Functions\expect( 'get_option' )->once()->with( Transients::BACKLOG_KEY, [] )->andReturn( [] );
 
 		$transients = m::mock( Transients::class )->shouldAllowMockingProtectedMethods()->makePartial()
 			->shouldReceive( 'invalidate' )->once()
@@ -93,21 +88,69 @@ class Transients_Test extends TestCase {
 	}
 
 	/**
+	 * Provides data for testing invalidate.
+	 *
+	 * @return array
+	 */
+	public function provide_invalidate_data() {
+		return [
+			[ [ 'bar', 'baz' ], true ],
+			[ [ 'bar', 'baz' ], false ],
+		];
+	}
+
+	/**
 	 * Tests invalidate.
+	 *
+	 * @dataProvider provide_invalidate_data
 	 *
 	 * @covers ::invalidate
 	 *
 	 * @uses ::get_key
+	 *
+	 * @param string[] $expected_keys        An array of transient keys.
+	 * @param bool     $object_cache_enabled The result of wp_using_ext_object_cache().
 	 */
-	public function test_invalidate() {
-		Functions\expect( 'delete_transient' )->once()->with( $this->invokeMethod( $this->transients, 'get_key', [ 'bar' ] ) );
-		Functions\expect( 'delete_transient' )->once()->with( $this->invokeMethod( $this->transients, 'get_key', [ 'baz' ] ) );
-		Functions\expect( 'update_option' )->once()->with( Transients::BACKLOG_KEY, [] );
+	public function test_invalidate( $expected_keys, $object_cache_enabled ) {
+
+		if ( ! $object_cache_enabled ) {
+			$this->transients->shouldReceive( 'get_keys_from_database' )->once()->andReturn( $expected_keys );
+
+			foreach ( $expected_keys as $raw_key ) {
+				Functions\expect( 'delete_transient' )->once()->with( $raw_key );
+			}
+		}
+
 		Functions\expect( 'set_transient' )->once()->with( Transients::INCREMENTOR_KEY, m::type( 'int' ) );
+		Functions\expect( 'wp_using_ext_object_cache' )->once()->andReturn( $object_cache_enabled );
 
 		$this->transients->invalidate();
 
 		$this->assertTrue( true );
+	}
+
+	/**
+	 * Tests get_keys_from_database.
+	 *
+	 * @covers ::get_keys_from_database
+	 */
+	public function test_get_keys_from_database() {
+		$dummy_result = [ [ 'option_name' => Transients::TRANSIENT_SQL_PREFIX . 'typo_foobar' ] ];
+
+		global $wpdb;
+
+		if ( ! defined( 'ARRAY_A' ) ) {
+			define( 'ARRAY_A', 'array' );
+		}
+
+		$wpdb = m::mock( 'wpdb' ); // WPCS: override ok.
+		$wpdb->options = 'wp_options';
+		$wpdb->shouldReceive( 'prepare' )->with( m::type( 'string' ), Transients::TRANSIENT_SQL_PREFIX . Transients::PREFIX . '%' )->andReturn( 'fake SQL string' );
+		$wpdb->shouldReceive( 'get_results' )->with( 'fake SQL string', ARRAY_A )->andReturn( $dummy_result );
+
+		Functions\expect( 'wp_list_pluck' )->once()->with( $dummy_result, 'option_name' )->andReturn( [ 'typo_foobar' ] );
+
+		$this->assertSame( [ 'typo_foobar' ], $this->transients->get_keys_from_database() );
 	}
 
 	/**
@@ -138,7 +181,6 @@ class Transients_Test extends TestCase {
 		$duration = 99;
 
 		$this->transients->shouldReceive( 'get_key' )->once()->with( $raw_key )->andReturn( $key );
-		$this->transients->shouldReceive( 'store_transient_key' )->once()->with( $raw_key );
 
 		Functions\expect( 'set_transient' )->once()->with( $key, $value, $duration )->andReturn( true );
 
@@ -197,22 +239,5 @@ class Transients_Test extends TestCase {
 		$this->transients->shouldReceive( 'get' )->once()->with( $raw_key )->andReturn( \base64_encode( \serialize( new \stdClass() ) ) ); // @codingStandardsIgnoreLine
 
 		$this->assertFalse( $this->transients->get_large_object( $raw_key ) );
-	}
-
-	/**
-	 * Tests store_transient_key.
-	 *
-	 * @covers ::store_transient_key
-	 */
-	public function test_store_transient_key() {
-		$key  = 'foo';
-
-		Functions\expect( 'update_option' )->once()->with( Transients::BACKLOG_KEY, m::type( 'array' ) )->andReturn( true );
-
-		$this->invokeMethod( $this->transients, 'store_transient_key', [ $key ] );
-
-		$transient_keys = $this->getValue( $this->transients, 'transient_keys' );
-
-		$this->assertNotEmpty( $transient_keys[ $key ] );
 	}
 }
