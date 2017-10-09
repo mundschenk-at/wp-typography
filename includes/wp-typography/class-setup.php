@@ -60,7 +60,7 @@ class Setup {
 	 */
 	public function __construct( $slug, \WP_Typography $plugin ) {
 		$this->plugin_slug = $slug;
-		$this->plugin = $plugin;
+		$this->plugin      = $plugin;
 	}
 
 	/**
@@ -69,9 +69,9 @@ class Setup {
 	 * @param string $plugin_file The full path and filename to the main plugin file.
 	 */
 	public function register( $plugin_file ) {
-		register_activation_hook( $plugin_file,   [ $this, 'activate' ] );
-		register_deactivation_hook( $plugin_file, [ $this, 'deactivate' ] );
-		register_uninstall_hook( $plugin_file,    __CLASS__ . '::uninstall' );
+		\register_activation_hook( $plugin_file,   [ $this,     'activate' ] );
+		\register_deactivation_hook( $plugin_file, [ $this,     'deactivate' ] );
+		\register_uninstall_hook( $plugin_file,    [ __CLASS__, 'uninstall' ] );
 	}
 
 	/**
@@ -81,7 +81,7 @@ class Setup {
 	 */
 	public function activate() {
 		// Update option values & other stuff if necessary.
-		$this->plugin_updated( get_option( 'typo_installed_version' ) );
+		$this->plugin_updated( \get_option( 'typo_installed_version' ) );
 
 		// Load default options and clear the cache.
 		$this->plugin->set_default_options();
@@ -96,37 +96,37 @@ class Setup {
 	protected function plugin_updated( $previous_version ) {
 
 		// Each version should get it's own if-block.
-		if ( version_compare( $previous_version, '3.1.0-beta.2', '<' ) ) {
-			error_log( 'Upgrading wp-Typography from ' . ( $previous_version ? $previous_version : '< 3.1.0') ); // @codingStandardsIgnoreLine
+		if ( \version_compare( $previous_version, '3.1.0-beta.2', '<' ) ) {
+			\error_log( 'Upgrading wp-Typography from ' . ( $previous_version ? $previous_version : '< 3.1.0') ); // @codingStandardsIgnoreLine
 
 			foreach ( $this->plugin->get_default_options() as $option_name => $option ) {
 				$old_option = $this->get_old_option_name( $option_name );
-				$old_value = get_option( $old_option, 'UPGRADING_WP_TYPOGRAPHY' );
+				$old_value = \get_option( $old_option, 'UPGRADING_WP_TYPOGRAPHY' );
 
 				if ( 'UPGRADING_WP_TYPOGRAPHY' !== $old_value ) {
-					$result_update = update_option( $option_name, $old_value );
-					$result_delete = delete_option( $old_option );
+					$result_update = \update_option( $option_name, $old_value );
+					$result_delete = \delete_option( $old_option );
 
 					if ( ! $result_update || ! $result_delete ) {
-						error_log("Error while upgrading $old_option: " . ( $result_update ? '' : 'Update failed. ' .     // @codingStandardsIgnoreLine
-																		  ( $result_delete ? '' : 'Delete failed.') ) );
+						\error_log("Error while upgrading $old_option: " . ( $result_update ? '' : 'Update failed. ' .     // @codingStandardsIgnoreLine
+																		   ( $result_delete ? '' : 'Delete failed.') ) );
 					}
 				}
 			}
 		}
-		if ( version_compare( $previous_version, '3.2.0-beta.1', '<' ) ) {
-			delete_option( 'typo_disable_caching' );
+		if ( \version_compare( $previous_version, '3.2.0-beta.1', '<' ) ) {
+			\delete_option( 'typo_disable_caching' );
 		}
-		if ( version_compare( $previous_version, '3.3.0-alpha.2', '<' ) ) {
-			delete_option( 'typo_remove_ie6' );
-		}
-
-		if ( version_compare( $previous_version, '3.5.0-alpha.1', '<' ) ) {
-			delete_option( 'typo_enable_caching' );
-			delete_option( 'typo_caching_limit' );
+		if ( \version_compare( $previous_version, '3.3.0-alpha.2', '<' ) ) {
+			\delete_option( 'typo_remove_ie6' );
 		}
 
-		update_option( 'typo_installed_version', $this->plugin->get_version() );
+		if ( \version_compare( $previous_version, '3.5.0-alpha.1', '<' ) ) {
+			\delete_option( 'typo_enable_caching' );
+			\delete_option( 'typo_caching_limit' );
+		}
+
+		\update_option( 'typo_installed_version', $this->plugin->get_version() );
 	}
 
 	/**
@@ -136,8 +136,8 @@ class Setup {
 	 * @return string        An old-style option name, e.g. 'MyOldOption'.
 	 */
 	protected function get_old_option_name( $option ) {
-		$parts = explode( '_', $option );
-		$oldname = array_shift( $parts );
+		$parts   = \explode( '_', $option );
+		$oldname = \array_shift( $parts );
 
 		// Does not really seem to matter, but try
 		// to match the correct case.
@@ -151,7 +151,7 @@ class Setup {
 			} elseif ( 'ids' === $part ) {
 				$oldname .= 'IDs';
 			} else {
-				$oldname .= ucfirst( $part );
+				$oldname .= \ucfirst( $part );
 			}
 		}
 
@@ -174,10 +174,10 @@ class Setup {
 	public static function uninstall() {
 
 		// Delete all our transients.
-		foreach ( get_option( 'typo_transient_keys' ) as $transient => $true ) {
-			delete_transient( $transient );
+		foreach ( \get_option( 'typo_transient_keys' ) as $transient => $true ) {
+			\delete_transient( $transient );
 		}
 
-		update_option( 'typo_transient_keys', [] );
+		\update_option( 'typo_transient_keys', [] );
 	}
 }
