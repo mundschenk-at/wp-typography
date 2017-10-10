@@ -31,20 +31,20 @@ module.exports = function(grunt) {
             options: {}
         },
 
-	    phpcs: {
-	        plugin: {
-	            src: ['includes/**/*.php', 'admin/**/*.php']
-	        },
-	        options: {
-	        	bin: '/usr/local/opt/php-code-sniffer@2.9/bin/phpcs -p -s -v -n --ignore=includes/_language_names.php --ignore=tests/perf.php',
-	            standard: './phpcs.xml'
-	        }
-	    },
+  	    phpcs: {
+  	        plugin: {
+  	            src: ['includes/**/*.php', 'admin/**/*.php']
+  	        },
+  	        options: {
+  	        	bin: '/usr/local/opt/php-code-sniffer@2.9/bin/phpcs -p -s -v -n --ignore=includes/_language_names.php --ignore=tests/perf.php',
+  	            standard: './phpcs.xml'
+  	        }
+  	    },
 
         composer : {
             options : {
                 //usePhp: true,
-                flags: ['no-dev', 'classmap-authoritative'],
+                flags: ['quiet', 'no-dev', 'classmap-authoritative'],
                 cwd: 'build',
                 //composerLocation: '/usr/local/bin/composer'
             },

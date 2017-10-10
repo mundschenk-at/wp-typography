@@ -26,6 +26,8 @@
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
+namespace WP_Typography;
+
 use \WP_Typography\UI;
 
 use \PHP_Typography\PHP_Typography;
@@ -40,11 +42,9 @@ use \PHP_Typography\Arrays;
  * enqueue the admin-specific stylesheet and JavaScript.
  *
  * @since      3.1.0
- * @package    wpTypography
- * @subpackage wpTypography/includes
  * @author     Peter Putzer <github@mundschenk.at>
  */
-class WP_Typography_Admin {
+class Admin {
 	/**
 	 * The group name used for registering the plugin options.
 	 *
@@ -130,19 +130,19 @@ class WP_Typography_Admin {
 	/**
 	 * The plugin instance used for setting transients.
 	 *
-	 * @var WP_Typography
+	 * @var \WP_Typography
 	 */
 	private $plugin;
 
 	/**
-	 * Create a new instace of WP_Typography_Setup.
+	 * Create a new instace of admin backend.
 	 *
-	 * @param string        $basename The plugin slug.
-	 * @param WP_Typography $plugin   The plugin object.
+	 * @param string         $basename The plugin slug.
+	 * @param \WP_Typography $plugin   The plugin object.
 	 */
-	public function __construct( $basename, WP_Typography $plugin ) {
+	public function __construct( $basename, \WP_Typography $plugin ) {
 		$this->local_plugin_path = $basename;
-		$this->plugin_path       = plugin_dir_path( __DIR__ ) . basename( $this->local_plugin_path );
+		$this->plugin_path       = plugin_dir_path( dirname( __DIR__ ) ) . basename( $this->local_plugin_path );
 		$this->version           = $plugin->get_version();
 		$this->plugin            = $plugin;
 	}
@@ -247,24 +247,24 @@ class WP_Typography_Admin {
 		// Sections will be displayed in the order included.
 		return [
 			'general-scope'         => [
-				'heading'       => __( 'General Scope', 'wp-typography' ),
-				'description'   => __( 'By default, wp-Typography processes all post content and titles (but not the whole page). Certain HTML elements within your content can be exempted to prevent conflicts with your theme or other plugins.', 'wp-typography' ),
+				'heading'     => __( 'General Scope', 'wp-typography' ),
+				'description' => __( 'By default, wp-Typography processes all post content and titles (but not the whole page). Certain HTML elements within your content can be exempted to prevent conflicts with your theme or other plugins.', 'wp-typography' ),
 			],
 			'hyphenation'           => [
-				'heading'       => __( 'Hyphenation', 'wp-typography' ),
-				'description'   => __( 'Hyphenation rules are based on pre-computed dictionaries, but can be fine tuned. Custom hyphenations always override the patterns from the dictionary.', 'wp-typography' ),
+				'heading'     => __( 'Hyphenation', 'wp-typography' ),
+				'description' => __( 'Hyphenation rules are based on pre-computed dictionaries, but can be fine tuned. Custom hyphenations always override the patterns from the dictionary.', 'wp-typography' ),
 			],
 			'character-replacement' => [
-				'heading'       => __( 'Intelligent Character Replacement', 'wp-typography' ),
-				'description'   => __( 'Modern keyboards are still based on the limited character range of typewriters. This section allows you to selectively replace typewriter characters with better alternatives.', 'wp-typography' ),
+				'heading'     => __( 'Intelligent Character Replacement', 'wp-typography' ),
+				'description' => __( 'Modern keyboards are still based on the limited character range of typewriters. This section allows you to selectively replace typewriter characters with better alternatives.', 'wp-typography' ),
 			],
 			'space-control'         => [
-				'heading'       => __( 'Space Control', 'wp-typography' ),
-				'description'   => __( 'Take control of space. At least in your WordPress posts.', 'wp-typography' ),
+				'heading'     => __( 'Space Control', 'wp-typography' ),
+				'description' => __( 'Take control of space. At least in your WordPress posts.', 'wp-typography' ),
 			],
 			'css-hooks'             => [
-				'heading'       => __( 'CSS Hooks', 'wp-typography' ),
-				'description'   => __( 'To help with styling your posts, some additional CSS classes can be added automatically.', 'wp-typography' ),
+				'heading'     => __( 'CSS Hooks', 'wp-typography' ),
+				'description' => __( 'To help with styling your posts, some additional CSS classes can be added automatically.', 'wp-typography' ),
 			],
 		];
 	}
@@ -287,14 +287,14 @@ class WP_Typography_Admin {
 		// Fieldsets will be displayed in the order included.
 		return [
 			'math-replacements' => [
-				'heading'       => __( 'Math & Numbers', 'wp-typography' ),
-				'description'   => __( 'Not all number formattings are appropriate for all languages.', 'wp-typography' ),
-				'tab_id'        => 'character-replacement',
+				'heading'     => __( 'Math & Numbers', 'wp-typography' ),
+				'description' => __( 'Not all number formattings are appropriate for all languages.', 'wp-typography' ),
+				'tab_id'      => 'character-replacement',
 			],
 			'enable-wrapping'   => [
-				'heading'       => __( 'Enable Wrapping', 'wp-typography' ),
-				'description'   => __( 'Sometimes you want to enable certain long words to wrap to a new line, while at other times you want to prevent wrapping.', 'wp-typography' ),
-				'tab_id'        => 'space-control',
+				'heading'     => __( 'Enable Wrapping', 'wp-typography' ),
+				'description' => __( 'Sometimes you want to enable certain long words to wrap to a new line, while at other times you want to prevent wrapping.', 'wp-typography' ),
+				'tab_id'      => 'space-control',
 			],
 		];
 	}
@@ -760,7 +760,7 @@ class WP_Typography_Admin {
 				'attributes'    => [
 					'rows' => '10',
 				],
-				'default'       => file_get_contents( dirname( __DIR__ ) . '/admin/css/default-styles.css' ),
+				'default'       => file_get_contents( dirname( dirname( __DIR__ ) ) . '/admin/css/default-styles.css' ),
 			] ),
 		];
 
@@ -994,6 +994,6 @@ class WP_Typography_Admin {
 		$this->admin_form_controls['typo_diacritic_languages']->set_options( $this->plugin->load_diacritic_languages() );
 
 		// Load the settings page HTML.
-		include_once dirname( __DIR__ ) . '/admin/partials/settings.php';
+		include_once dirname( dirname( __DIR__ ) ) . '/admin/partials/settings.php';
 	}
 }

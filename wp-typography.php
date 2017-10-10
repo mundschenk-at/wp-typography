@@ -29,7 +29,7 @@
  *  Description: Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
  *  Author: Peter Putzer
  *  Author URI: https://code.mundschenk.at
- *  Version: 5.0.4
+ *  Version: 5.1.0-alpha
  *  License: GNU General Public License v2 or later
  *  License URI: https://www.gnu.org/licenses/gpl-2.0.html
  *  Text Domain: wp-typography
@@ -44,10 +44,10 @@
  *     Hamish Macpherson - http://www.hamstu.com/
  */
 
- /**
-  * Load requirements class in a PHP 5.2 compatible manner.
-  */
- require_once dirname( __FILE__ ) . '/includes/class-wp-typography-requirements.php';
+/**
+ * Load requirements class in a PHP 5.2 compatible manner.
+ */
+require_once dirname( __FILE__ ) . '/includes/class-wp-typography-requirements.php';
 
 /**
  * Load the plugin after checking for the necessary PHP version.
@@ -64,7 +64,7 @@ function run_wp_typography() {
 
 		// Load version from plugin data.
 		if ( ! function_exists( 'get_plugin_data' ) ) {
-			include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+			include_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 		$plugin_data = get_plugin_data( __FILE__, false, false );
 		$version = $plugin_data['Version'];
@@ -73,7 +73,8 @@ function run_wp_typography() {
 		$plugin = new WP_Typography( $version, plugin_basename( __FILE__ ) );
 
 		// Register activation & deactivation hooks.
-		$setup = new WP_Typography_Setup( 'wp-typography', $plugin );
+		$setup_class = 'WP_Typography\Setup'; // Workaround for PHP 5.2 syntax check.
+		$setup       = new $setup_class( 'wp-typography', $plugin );
 		$setup->register( __FILE__ );
 
 		// Start the plugin for real.

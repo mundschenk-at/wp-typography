@@ -24,7 +24,7 @@
 
 namespace WP_Typography\Tests;
 
-use WP_Typography_Admin;
+use WP_Typography\Admin;
 
 use PHP_Typography\Hyphenator_Cache;
 
@@ -42,7 +42,6 @@ use Mockery as m;
  *
  * @uses ::__construct
  * @uses ::hash_version_string
- * @uses ::set_transient
  */
 class WP_Typography_Test extends TestCase {
 
@@ -56,7 +55,7 @@ class WP_Typography_Test extends TestCase {
 	/**
 	 * Test fixture.
 	 *
-	 * @var \WP_Typography_Admin
+	 * @var \WP_Typography\Admin
 	 */
 	protected $wp_typo_admin;
 
@@ -68,17 +67,27 @@ class WP_Typography_Test extends TestCase {
 	protected $multi;
 
 	/**
+	 * Test fixture.
+	 *
+	 * @var \WP_Typography\Transients
+	 */
+	protected $transients;
+
+	/**
+	 * Test fixture.
+	 *
+	 * @var \WP_Typography\Cache
+	 */
+	protected $cache;
+
+	/**
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
 	protected function setUp() { // @codingStandardsIgnoreLine
 
-		Functions\expect( 'get_option' )
-			->once()->with( 'typo_transient_keys', [] )->andReturn( [] )->andAlsoExpectIt()
-			->once()->with( 'typo_cache_keys', [] )->andReturn( [] );
-
-		// Mock WP_Typography_Admin instance.
-		$this->wp_typo_admin = m::mock( \WP_Typography_Admin::class )
+		// Mock WP_Typography\Admin instance.
+		$this->wp_typo_admin = m::mock( \WP_Typography\Admin::class )
 			->shouldReceive( 'run' )->byDefault()
 			->shouldReceive( 'get_default_settings' )->andReturn( [ 'dummy_settings' => 'bar' ] )->byDefault()
 			->getMock();
@@ -91,8 +100,23 @@ class WP_Typography_Test extends TestCase {
 			} )->byDefault()
 			->getMock();
 
+		// Mock WP_Typography\Transients instance.
+		$this->transients = m::mock( \WP_Typography\Transients::class )
+			->shouldReceive( 'get' )->byDefault()->andReturn( false )
+			->shouldReceive( 'get_large_object' )->byDefault()->andReturn( false )
+			->shouldReceive( 'set' )->andReturn( false )->byDefault()
+			->shouldReceive( 'set_large_object' )->andReturn( false )->byDefault()
+			->getMock();
+
+		// Mock WP_Typography\Cache instance.
+		$this->cache = m::mock( \WP_Typography\Cache::class )
+			->shouldReceive( 'get' )->andReturn( false )->byDefault()
+			->shouldReceive( 'set' )->andReturn( false )->byDefault()
+			->shouldReceive( 'invalidate' )->byDefault()
+			->getMock();
+
 		// Create instance.
-		$this->wp_typo = m::mock( \WP_Typography::class, [ '7.7.7', 'dummy/path', $this->wp_typo_admin, $this->multi ] )
+		$this->wp_typo = m::mock( \WP_Typography::class, [ '7.7.7', 'dummy/path', $this->wp_typo_admin, $this->multi, $this->transients, $this->cache ] )
 			->shouldAllowMockingProtectedMethods()
 			->makePartial();
 
@@ -124,116 +148,42 @@ class WP_Typography_Test extends TestCase {
 	 * Tests constructor.
 	 *
 	 * @covers ::__construct
-	 * @covers ::hash_version_string
 	 *
 	 * @uses ::get_version
 	 * @uses ::get_version_hash
-	 * @uses \WP_Typography_Admin::__construct
+	 * @uses \WP_Typography\Admin::__construct
+	 * @uses \WP_Typography\Abstract_Cache::__construct
+	 * @uses \WP_Typography\Cache::__construct
+	 * @uses \WP_Typography\Cache::invalidate
+	 * @uses \WP_Typography\Transients::__construct
+	 * @uses \WP_Typography\Transients::invalidate
+	 * @uses \WP_Typography\Transients::get_keys_from_database
 	 * @uses \WP_Typography\Settings\Multilingual::__construct
 	 */
 	public function test_constructor() {
-		Functions\expect( 'get_option' )
-			->once()->with( 'typo_transient_keys', [] )->andReturn( [] )->andAlsoExpectIt()
-			->once()->with( 'typo_cache_keys', [] )->andReturn( [] );
+		global $wpdb;
 
-		$typo = new \WP_Typography( '6.6.6', 'dummy/path', m::mock( \WP_Typography_Admin::class ), m::mock( \WP_Typography\Settings\Multilingual::class ) );
+		if ( ! defined( 'ARRAY_A' ) ) {
+			define( 'ARRAY_A', 'array' );
+		}
+
+		$wpdb = m::mock( 'wpdb' ); // WPCS: override ok.
+		$wpdb->options = 'wp_options';
+		$wpdb->shouldReceive( 'prepare' )->withAnyArgs()->andReturn( 'fake SQL string' )->byDefault();
+		$wpdb->shouldReceive( 'get_results' )->withAnyArgs()->andReturn( [] )->byDefault();
+
+		Functions\expect( 'get_transient' )->once()->with( 'typo_transients_incrementor' )->andReturn( false );
+		Functions\expect( 'set_transient' )->once()->andReturn( 0 );
+		Functions\expect( 'wp_cache_get' )->once()->with( 'typo_cache_incrementor', 'wp-typography' )->andReturn( 0 );
+		Functions\expect( 'wp_cache_set' )->once()->with( 'typo_cache_incrementor', m::type( 'int' ), 'wp-typography', 0 )->andReturn( true );
+		Functions\expect( 'wp_using_ext_object_cache' )->once()->andReturn( false );
+		Functions\expect( 'wp_list_pluck' )->once()->andReturn( [] );
+
+		$typo = new \WP_Typography( '6.6.6', 'dummy/path', m::mock( \WP_Typography\Admin::class ), m::mock( \WP_Typography\Settings\Multilingual::class ) );
 
 		$this->assertInstanceOf( \WP_Typography::class, $typo );
-		$this->assertAttributeInstanceOf( \WP_Typography_Admin::class, 'admin', $typo );
+		$this->assertAttributeInstanceOf( \WP_Typography\Admin::class, 'admin', $typo );
 		$this->assertAttributeSame( '6.6.6', 'version', $typo );
-	}
-
-	/**
-	 * Tests singleton methods.
-	 *
-	 * @covers ::get_instance
-	 * @covers ::set_instance
-	 *
-	 * @uses ::__construct
-	 * @uses ::run
-	 * @uses ::get_version
-	 * @uses ::get_version_hash
-	 * @uses ::hash_version_string
-	 * @uses \WP_Typography_Admin::__construct
-	 * @uses \WP_Typography\Settings\Multilingual::__construct
-	 */
-	public function test_singleton() {
-		Functions\expect( 'get_option' )
-			->once()->with( 'typo_transient_keys', [] )->andReturn( [] )->andAlsoExpectIt()
-			->once()->with( 'typo_cache_keys', [] )->andReturn( [] );
-
-		$admin = m::mock( \WP_Typography_Admin::class );
-		$admin->shouldReceive( 'run' )->shouldReceive( 'get_default_settings' )->andReturn( [] );
-
-		$multi = m::mock( \WP_Typography\Settings\Multilingual::class );
-		$multi->shouldReceive( 'run' );
-
-		$typo = new \WP_Typography( '6.6.6', 'dummy/path', $admin, $multi );
-		$typo->run();
-
-		$typo2 = \WP_Typography::get_instance();
-		$this->assertSame( $typo, $typo2 );
-
-		$this->assertInstanceOf( \WP_Typography::class, $typo );
-		$this->assertAttributeInstanceOf( \WP_Typography_Admin::class, 'admin', $typo );
-		$this->assertAttributeSame( '6.6.6', 'version', $typo );
-
-		// Check ::get_instance (no underscore).
-		$typo3 = \WP_Typography::get_instance();
-		$this->assertSame( $typo, $typo3 );
-	}
-
-	/**
-	 * Tests ::get_instance without a previous call to ::_get_instance (i.e. _doing_it_wrong).
-	 *
-	 * @covers ::get_instance
-	 *
-	 * @uses ::__construct
-	 * @uses ::get_version
-	 * @uses ::get_version_hash
-	 * @uses ::hash_version_string
-	 * @uses \WP_Typography_Admin::__construct
-	 * @uses \WP_Typography\Settings\Multilingual::__construct
-	 * @uses \WP_Typography\Settings\Multilingual::initialize_locale_settings
-	 * @uses \WP_Typography\Settings\Multilingual::run
-	 *
-	 * @expectedException \BadMethodCallException
-	 * @expectedExceptionMessage WP_Typography::get_instance called without prior plugin intialization.
-	 */
-	public function test_get_instance_failing() {
-		$typo = \WP_Typography::get_instance();
-		$this->assertInstanceOf( \WP_Typography::class, $typo );
-	}
-
-	/**
-	 * Tests ::get_instance without a previous call to ::_get_instance (i.e. _doing_it_wrong).
-	 *
-	 * @covers ::set_instance
-	 *
-	 * @uses ::__construct
-	 * @uses ::run
-	 * @uses ::get_version
-	 * @uses ::get_version_hash
-	 * @uses ::hash_version_string
-	 * @uses \WP_Typography_Admin::__construct
-	 *
-	 * @expectedException \BadMethodCallException
-	 * @expectedExceptionMessage WP_Typography::set_instance called more than once.
-	 */
-	public function test_set_instance_failing() {
-		Functions\expect( 'get_option' )
-			->once()->with( 'typo_transient_keys', [] )->andReturn( [] )->andAlsoExpectIt()
-			->once()->with( 'typo_cache_keys', [] )->andReturn( [] );
-
-		$admin = m::mock( \WP_Typography_Admin::class );
-		$admin->shouldReceive( 'run' )->shouldReceive( 'get_default_settings' )->andReturn( [] );
-
-		$multi = m::mock( \WP_Typography\Settings\Multilingual::class );
-		$multi->shouldReceive( 'run' );
-
-		$typo = new \WP_Typography( '6.6.6', 'dummy/path', $admin, $multi );
-		$typo->run();
-		$typo->run();
 	}
 
 	/**
@@ -246,7 +196,7 @@ class WP_Typography_Test extends TestCase {
 	 * @uses ::get_version
 	 * @uses ::get_version_hash
 	 * @uses ::hash_version_string
-	 * @uses \WP_Typography_Admin::__construct
+	 * @uses \WP_Typography\Admin::__construct
 	 */
 	public function test_run() {
 		$this->wp_typo->run();
@@ -326,9 +276,6 @@ class WP_Typography_Test extends TestCase {
 		] );
 
 		Functions\expect( 'wp_json_encode' )->once()->andReturn( '{ json: "value" }' );
-		Functions\expect( 'get_transient' )->once()->andReturn( false );
-		Functions\expect( 'set_transient' )->once()->andReturn( true );
-		Functions\expect( 'update_option' )->once()->andReturn( true );
 
 		$s = \WP_Typography::get_user_settings();
 
@@ -352,7 +299,6 @@ class WP_Typography_Test extends TestCase {
 		] );
 
 		Functions\expect( 'wp_json_encode' )->once()->andReturn( '{ json: "value" }' );
-		Functions\expect( 'get_transient' )->twice()->andReturn( false );
 
 		$this->wp_typo->shouldReceive( 'cache_object' )->twice();
 
@@ -426,9 +372,6 @@ class WP_Typography_Test extends TestCase {
 		] );
 
 		Functions\expect( 'wp_json_encode' )->once()->andReturn( '{ json: "value" }' );
-		Functions\expect( 'get_transient' )->once()->andReturn( false );
-		Functions\expect( 'set_transient' )->once()->andReturn( true );
-		Functions\expect( 'update_option' )->once()->andReturn( true );
 
 		$s = $this->wp_typo->get_settings();
 
@@ -501,9 +444,6 @@ class WP_Typography_Test extends TestCase {
 		] );
 
 		Functions\expect( 'wp_json_encode' )->once()->andReturn( '{ json: "value" }' );
-		Functions\expect( 'get_transient' )->once()->andReturn( false );
-		Functions\expect( 'set_transient' )->once()->andReturn( true );
-		Functions\expect( 'update_option' )->once()->andReturn( true );
 
 		$s = $this->wp_typo->get_settings();
 
@@ -563,10 +503,10 @@ class WP_Typography_Test extends TestCase {
 			define( 'WEEK_IN_SECONDS', 999 );
 		}
 
-		$this->wp_typo->shouldReceive( 'get_cache' )->once()->andReturnUsing( function( $key, &$found ) {
+		$this->cache->shouldReceive( 'get' )->once()->andReturnUsing( function( $key, &$found ) {
 			$found = false;
 			return [];
-		} )->shouldReceive( 'set_cache' )->once();
+		} )->shouldReceive( 'set' )->once();
 
 		$langs = $this->wp_typo->load_hyphenation_languages();
 
@@ -589,10 +529,10 @@ class WP_Typography_Test extends TestCase {
 			define( 'WEEK_IN_SECONDS', 999 );
 		}
 
-		$this->wp_typo->shouldReceive( 'get_cache' )->once()->andReturnUsing( function( $key, &$found ) {
+		$this->cache->shouldReceive( 'get' )->once()->andReturnUsing( function( $key, &$found ) {
 			$found = false;
 			return [];
-		} )->shouldReceive( 'set_cache' )->once();
+		} )->shouldReceive( 'set' )->once();
 
 		$langs = $this->wp_typo->load_diacritic_languages();
 
@@ -950,10 +890,11 @@ class WP_Typography_Test extends TestCase {
 			$typo_mock->shouldReceive( 'process' )->once()->with( 'text', m::type( \PHP_Typography\Settings::class ), $is_title )->andReturn( 'processed text' );
 		}
 
-		$this->wp_typo
-			->shouldReceive( 'get_cache' )->once()->andReturn( false )
-			->shouldReceive( 'get_typography_instance' )->once()->andReturn( $typo_mock )
-			->shouldReceive( 'set_cache' )->once();
+		$this->wp_typo->shouldReceive( 'get_typography_instance' )->once()->andReturn( $typo_mock );
+
+		$this->cache
+			->shouldReceive( 'get' )->once()->andReturn( false )
+			->shouldReceive( 'set' )->once();
 
 		$this->assertSame( 'processed text', $this->wp_typo->process( 'text', $is_title, $force_feed, $settings ) );
 	}
@@ -963,7 +904,7 @@ class WP_Typography_Test extends TestCase {
 	 *
 	 * @covers ::set_transient
 	 */
-	public function test_set_transient() {
+	public function foo_test_set_transient() {
 		Functions\expect( 'set_transient' )->once()->with( 'my_transient', 'my_value', 666 )->andReturn( true );
 		Functions\expect( 'update_option' )->once()->with( 'typo_transient_keys', [
 			'my_transient' => true,
@@ -986,7 +927,7 @@ class WP_Typography_Test extends TestCase {
 	 *
 	 * @covers ::set_cache
 	 */
-	public function test_set_cache() {
+	public function foo_test_set_cache() {
 		Functions\expect( 'wp_cache_set' )->once()->with( 'my_cache_key', 'my_value', 'wp-typography', 666 )->andReturn( true );
 		Functions\expect( 'update_option' )->once()->with( 'typo_cache_keys', [
 			'my_cache_key' => true,
@@ -1009,7 +950,7 @@ class WP_Typography_Test extends TestCase {
 	 *
 	 * @covers ::get_cache
 	 */
-	public function test_get_cache() {
+	public function foo_test_get_cache() {
 		Functions\expect( 'wp_cache_get' )->once()->with( 'my_cache_key', 'wp-typography', false, false )->andReturn( 'foo' );
 		$this->assertSame( 'foo', $this->wp_typo->get_cache( 'my_cache_key', $found ) );
 	}
@@ -1020,15 +961,23 @@ class WP_Typography_Test extends TestCase {
 	 * @covers ::cache_object
 	 */
 	public function test_cache_object() {
-		$key = 'my_transient_key';
+		$key    = 'my_transient_key';
 		$object = new \stdClass();
+		$handle = 'my_handle';
 
-		$this->wp_typo->shouldReceive( 'set_transient' )->once()->with( $key, $object, m::type( 'int' ) );
+		$this->transients->shouldReceive( 'set_large_object' )->once()->with( $key, $object, m::type( 'int' ) );
 
-		$this->invokeMethod( $this->wp_typo, 'cache_object', [ $key, $object ] );
+		Filters\expectApplied( 'typo_php_typography_caching_enabled' )
+			->once()
+			->with( true, $handle );
+		Filters\expectApplied( 'typo_php_typography_caching_duration' )
+			->once()
+			->with( 0, $handle );
 
-		$this->assertTrue( 1 === Filters\applied( 'typo_php_typography_caching_duration' ) );
+		$this->invokeMethod( $this->wp_typo, 'cache_object', [ $key, $object, $handle ] );
+
 		$this->assertTrue( 1 === Filters\applied( 'typo_php_typography_caching_enabled' ) );
+		$this->assertTrue( 1 === Filters\applied( 'typo_php_typography_caching_duration' ) );
 	}
 
 	/**
@@ -1089,25 +1038,12 @@ class WP_Typography_Test extends TestCase {
 	 * Test clear_cache.
 	 *
 	 * @covers ::clear_cache
-	 *
-	 * @uses ::set_transient
-	 * @uses ::set_cache
 	 */
 	public function test_clear_cache() {
-		Functions\expect( 'set_transient' )->once()->andReturn( true );
-		Functions\expect( 'update_option' )->once();
-		$this->wp_typo->set_transient( 'foo', 'bar', 99 );
+		$this->transients->shouldReceive( 'invalidate' );
+		$this->cache->shouldReceive( 'invalidate' );
 
-		Functions\expect( 'wp_cache_set' )->once()->andReturn( true );
-		Functions\expect( 'update_option' )->once();
-		$this->wp_typo->set_cache( 'foo', 'bar', 99 );
-
-		Functions\expect( 'delete_transient' )->once();
-		Functions\expect( 'wp_cache_delete' )->once();
-		Functions\expect( 'update_option' )
-			->once()->with( 'typo_transient_keys', [] )
-			->andAlsoExpectIt()->once()->with( 'typo_cache_keys', [] )
-			->andAlsoExpectIt()->once()->with( 'typo_clear_cache', false );
+		Functions\expect( 'update_option' )->once()->with( 'typo_clear_cache', false );
 
 		$this->wp_typo->clear_cache();
 		$this->assertTrue( true );
@@ -1195,6 +1131,7 @@ class WP_Typography_Test extends TestCase {
 	 * Test get_version_hash.
 	 *
 	 * @covers ::get_version_hash
+	 * @covers ::hash_version_string
 	 */
 	public function test_get_version_hash() {
 		$this->assertInternalType( 'string', $this->wp_typo->get_version_hash() );
@@ -1264,6 +1201,10 @@ class WP_Typography_Test extends TestCase {
 	 * @param bool                  $expected           If the hyphenator cache should be saved.
 	 */
 	public function test_save_hyphenator_cache_on_shutdown( $enable_hyphenation, $hyphenator_cache, $expected ) {
+
+		if ( null !== $hyphenator_cache ) {
+			$hyphenator_cache->shouldReceive( 'has_changed' )->andReturn( $expected );
+		}
 
 		$this->prepareOptions( [
 			'typo_enable_hyphenation' => $enable_hyphenation,

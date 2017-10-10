@@ -121,7 +121,7 @@ abstract class Control {
 	 *
 	 * @var Control|null
 	 */
-	 protected $grouped_with = null;
+	protected $grouped_with = null;
 
 	/**
 	 * Create a new UI control object.
