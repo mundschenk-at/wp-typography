@@ -482,7 +482,7 @@ class WP_Typography {
 				$this->init_settings_from_options( $this->typo_settings );
 
 				// Try again next time.
-				$this->cache_object( $transient, $this->typo_settings );
+				$this->cache_object( $transient, $this->typo_settings, 'settings' );
 			}
 
 			// Settings won't be touched again, so cache the hash.
@@ -732,26 +732,33 @@ class WP_Typography {
 	/**
 	 * Cache the given object under the transient name.
 	 *
+	 * @since 5.1.0 $handle parameter added.
+	 *
 	 * @param  string $transient Required.
 	 * @param  mixed  $object    Required.
+	 * @param  string $handle    Optional. A name passed to the filters.
 	 */
-	protected function cache_object( $transient, $object ) {
+	protected function cache_object( $transient, $object, $handle = '' ) {
 		/**
 		 * Filters whether the PHP_Typography engine state should be cached.
 		 *
 		 * @since 4.2.0
+		 * @since 5.1.0 $handle parameter added.
 		 *
-		 * @param bool $enabled Defaults to true.
+		 * @param bool   $enabled Defaults to true.
+		 * @param string $handle  Optional. A name passed to the filters.
 		 */
-		if ( apply_filters( 'typo_php_typography_caching_enabled', true ) ) {
+		if ( apply_filters( 'typo_php_typography_caching_enabled', true, $handle ) ) {
 			/**
 			 * Filters the caching duration for the PHP_Typography engine state.
 			 *
 			 * @since 3.2.0
+			 * @since 5.1.0 $handle parameter added.
 			 *
-			 * @param int $duration The duration in seconds. Defaults to 0 (no expiration).
+			 * @param int    $duration The duration in seconds. Defaults to 0 (no expiration).
+			 * @param string $handle   Optional. A name passed to the filters.
 			 */
-			$duration = apply_filters( 'typo_php_typography_caching_duration', 0 );
+			$duration = apply_filters( 'typo_php_typography_caching_duration', 0, $handle );
 
 			$this->transients->set_large_object( $transient, $object, $duration );
 		}
@@ -772,7 +779,7 @@ class WP_Typography {
 				$this->typo = new PHP_Typography( PHP_Typography::INIT_NOW );
 
 				// Try again next time.
-				$this->cache_object( $transient, $this->typo );
+				$this->cache_object( $transient, $this->typo, 'typography' );
 			}
 		}
 
@@ -785,7 +792,7 @@ class WP_Typography {
 				$this->hyphenator_cache = $this->typo->get_hyphenator_cache();
 
 				// Try again next time.
-				$this->cache_object( $transient, $this->hyphenator_cache );
+				$this->cache_object( $transient, $this->hyphenator_cache, 'hyphenator_cache' );
 			}
 
 			// Let's use it!
@@ -800,7 +807,7 @@ class WP_Typography {
 	 */
 	public function save_hyphenator_cache_on_shutdown() {
 		if ( $this->options['typo_enable_hyphenation'] && ! empty( $this->hyphenator_cache ) && $this->hyphenator_cache->has_changed() ) {
-			$this->cache_object( 'php_hyphenator_cache', $this->hyphenator_cache );
+			$this->cache_object( 'php_hyphenator_cache', $this->hyphenator_cache, 'hyphenator_cache' );
 		}
 	}
 

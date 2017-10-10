@@ -961,15 +961,23 @@ class WP_Typography_Test extends TestCase {
 	 * @covers ::cache_object
 	 */
 	public function test_cache_object() {
-		$key = 'my_transient_key';
+		$key    = 'my_transient_key';
 		$object = new \stdClass();
+		$handle = 'my_handle';
 
 		$this->transients->shouldReceive( 'set_large_object' )->once()->with( $key, $object, m::type( 'int' ) );
 
-		$this->invokeMethod( $this->wp_typo, 'cache_object', [ $key, $object ] );
+		Filters\expectApplied( 'typo_php_typography_caching_enabled' )
+			->once()
+			->with( true, $handle );
+		Filters\expectApplied( 'typo_php_typography_caching_duration' )
+			->once()
+			->with( 0, $handle );
 
-		$this->assertTrue( 1 === Filters\applied( 'typo_php_typography_caching_duration' ) );
+		$this->invokeMethod( $this->wp_typo, 'cache_object', [ $key, $object, $handle ] );
+
 		$this->assertTrue( 1 === Filters\applied( 'typo_php_typography_caching_enabled' ) );
+		$this->assertTrue( 1 === Filters\applied( 'typo_php_typography_caching_duration' ) );
 	}
 
 	/**
