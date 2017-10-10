@@ -56,7 +56,7 @@ abstract class Input extends Control {
 	protected function __construct( $input_type, $option_group, $id, $tab_id, $section, $default, $short, $label = null, $help_text = null, $inline_help = false, $attributes = [] ) {
 		parent::__construct( $option_group, $id, $tab_id, $section, $default, $short, $label, $help_text, $inline_help, $attributes );
 
-		$this->input_type   = $input_type;
+		$this->input_type = $input_type;
 	}
 
 	/**

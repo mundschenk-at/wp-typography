@@ -35,7 +35,7 @@
 	<?php foreach ( $this->admin_form_tabs as $tab_id => $tab ) : ?>
 		<?php
 			$query_string = '?page=' . strtolower( $this->plugin_name ) . '&tab=' . $tab_id;
-			$classes = 'nav-tab' . ( $tab_id === $active_tab ? ' nav-tab-active' : '' );
+			$classes      = 'nav-tab' . ( $tab_id === $active_tab ? ' nav-tab-active' : '' );
 		?>
 		<a href="<?php echo esc_url( $query_string ); ?>" class="<?php echo esc_attr( $classes ); ?>"><?php echo esc_html( $tab['heading'] ); ?></a>
 	<?php endforeach; ?>

@@ -123,7 +123,7 @@ class WP_Typography {
 	/**
 	 * The admin side handler object.
 	 *
-	 * @var WP_Typography\Admin
+	 * @var Admin
 	 */
 	private $admin;
 
@@ -166,14 +166,14 @@ class WP_Typography {
 		$this->local_plugin_path = $basename;
 
 		// Initialize cache handlers.
-		$this->transients        = ( null === $transients ) ? new Transients() : $transients;
-		$this->cache             = ( null === $cache ) ? new Cache() : $cache;
+		$this->transients = ( null === $transients ) ? new Transients() : $transients;
+		$this->cache      = ( null === $cache ) ? new Cache() : $cache;
 
 		// Initialize admin interface handler.
-		$this->admin             = ( null === $admin ) ? new WP_Typography\Admin( $basename, $this ) : $admin;
+		$this->admin = ( null === $admin ) ? new Admin( $basename, $this ) : $admin;
 
 		// Initialize multilingual support.
-		$this->multilingual      = ( null === $multi ) ? new Multilingual( $this ) : $multi;
+		$this->multilingual = ( null === $multi ) ? new Multilingual( $this ) : $multi;
 	}
 
 	/**
@@ -471,7 +471,7 @@ class WP_Typography {
 
 		// Initialize Settings instance.
 		if ( empty( $this->typo_settings ) ) {
-			$transient = 'php_settings_' . md5( wp_json_encode( $this->options ) );
+			$transient           = 'php_settings_' . md5( wp_json_encode( $this->options ) );
 			$this->typo_settings = $this->maybe_fix_object( $this->transients->get_large_object( $transient ) );
 
 			if ( ! $this->typo_settings instanceof Settings ) {
@@ -771,7 +771,7 @@ class WP_Typography {
 
 		// Initialize PHP_Typography instance.
 		if ( empty( $this->typo ) ) {
-			$transient = 'php_' . md5( wp_json_encode( $this->options ) );
+			$transient  = 'php_' . md5( wp_json_encode( $this->options ) );
 			$this->typo = $this->maybe_fix_object( $this->transients->get_large_object( $transient ) );
 
 			if ( ! $this->typo instanceof PHP_Typography ) {
@@ -785,7 +785,7 @@ class WP_Typography {
 
 		// Also cache hyphenators (the pattern tries are expensive to build).
 		if ( $this->options['typo_enable_hyphenation'] && empty( $this->hyphenator_cache ) ) {
-			$transient = 'php_hyphenator_cache';
+			$transient              = 'php_hyphenator_cache';
 			$this->hyphenator_cache = $this->maybe_fix_object( $this->transients->get_large_object( $transient ) );
 
 			if ( ! $this->hyphenator_cache instanceof Hyphenator_Cache ) {
@@ -934,7 +934,7 @@ class WP_Typography {
 	 */
 	public function get_default_options() {
 		if ( ! $this->default_settings_localized ) {
-			$this->default_settings = $this->multilingual->filter_defaults( $this->default_settings );
+			$this->default_settings           = $this->multilingual->filter_defaults( $this->default_settings );
 			$this->default_settings_localized = true;
 		}
 

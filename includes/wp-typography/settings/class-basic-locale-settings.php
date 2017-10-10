@@ -38,7 +38,7 @@ use \PHP_Typography\Settings;
 class Basic_Locale_Settings extends Abstract_Locale_Settings {
 
 	const LANGUAGE_PRIORITY = 10;
-	const COUNTRY_PRIORITY = 100;
+	const COUNTRY_PRIORITY  = 100;
 	const MODIFIER_PRIORITY = 1000;
 
 	/**

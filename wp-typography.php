@@ -67,7 +67,7 @@ function run_wp_typography() {
 			include_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 		$plugin_data = get_plugin_data( __FILE__, false, false );
-		$version = $plugin_data['Version'];
+		$version     = $plugin_data['Version'];
 
 		// Create the plugin.
 		$plugin = new WP_Typography( $version, plugin_basename( __FILE__ ) );

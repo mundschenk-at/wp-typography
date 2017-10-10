@@ -76,7 +76,7 @@ class Textarea extends Control {
 	 */
 	protected function internal_render( $label, $help_text, $html_attributes ) {
 		$control_markup = '';
-		$help_text = \wp_kses( $help_text, [
+		$help_text      = \wp_kses( $help_text, [
 			'code' => [],
 		] );
 

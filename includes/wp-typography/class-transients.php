@@ -42,7 +42,7 @@ class Transients extends Abstract_Cache {
 	 * Create new cache instance.
 	 */
 	public function __construct() {
-		$this->incrementor    = \get_transient( self::INCREMENTOR_KEY );
+		$this->incrementor = \get_transient( self::INCREMENTOR_KEY );
 
 		parent::__construct();
 	}
