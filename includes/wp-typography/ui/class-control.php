@@ -266,7 +266,7 @@ abstract class Control {
 	 * @return string
 	 */
 	protected function control_markup( $label, $help_text ) {
-		$markup = '%1$s';
+		$markup    = '%1$s';
 		$help_text = \wp_kses( $help_text, [
 			'code' => [],
 		] );
@@ -303,7 +303,7 @@ abstract class Control {
 
 		// Add settings fields.
 		if ( empty( $this->grouped_with ) ) {
-			$short   = isset( $this->short ) ? $this->short : '';
+			$short = isset( $this->short ) ? $this->short : '';
 			add_settings_field( $this->id, $short, [ $this, 'render' ], $this->option_group . $this->tab_id, $this->section );
 		}
 	}
@@ -317,7 +317,7 @@ abstract class Control {
 		// Prevent self-references.
 		if ( $this !== $control ) {
 			$this->grouped_controls[] = $control;
-			$control->grouped_with     = $this;
+			$control->grouped_with    = $this;
 		}
 	}
 }

@@ -76,7 +76,7 @@ class WP_Typography_Requirements {
 	 * @param string $basename The result of plugin_basename() for the main plugin file.
 	 */
 	public function __construct( $name, $basename = 'wp-typography/wp-typography.php' ) {
-		$this->plugin_name = $name;
+		$this->plugin_name       = $name;
 		$this->local_plugin_path = $basename;
 	}
 
@@ -195,7 +195,7 @@ class WP_Typography_Requirements {
 			return; // abort.
 		}
 
-		$args = func_get_args();
+		$args   = func_get_args();
 		$format = array_shift( $args );
 
 		echo '<div class="error"><p>' . vsprintf( $format, $args ) . '</p></div>'; // WPCS: XSS OK.

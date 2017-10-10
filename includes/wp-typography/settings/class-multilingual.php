@@ -127,7 +127,7 @@ class Multilingual {
 		}
 
 		// Adjust diacritics replacement language.
-		$diacritics_language_match  = $this->match_language( $this->plugin->load_diacritic_languages(), $locale, $language, 'diacritic' );
+		$diacritics_language_match = $this->match_language( $this->plugin->load_diacritic_languages(), $locale, $language, 'diacritic' );
 		if ( ! empty( $diacritics_language_match ) ) {
 			$settings->set_diacritic_language( $diacritics_language_match );
 		} else {
@@ -172,7 +172,7 @@ class Multilingual {
 		}
 
 		// Adjust diacritics replacement language.
-		$diacritics_language_match  = $this->match_language( $this->plugin->load_diacritic_languages(), "$language-$country", $language, 'diacritics' );
+		$diacritics_language_match = $this->match_language( $this->plugin->load_diacritic_languages(), "$language-$country", $language, 'diacritics' );
 		if ( ! empty( $diacritics_language_match ) ) {
 			$defaults['typo_diacritic_languages'] = $diacritics_language_match;
 		}

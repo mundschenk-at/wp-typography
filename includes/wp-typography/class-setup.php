@@ -101,7 +101,7 @@ class Setup {
 
 			foreach ( $this->plugin->get_default_options() as $option_name => $option ) {
 				$old_option = $this->get_old_option_name( $option_name );
-				$old_value = \get_option( $old_option, 'UPGRADING_WP_TYPOGRAPHY' );
+				$old_value  = \get_option( $old_option, 'UPGRADING_WP_TYPOGRAPHY' );
 
 				if ( 'UPGRADING_WP_TYPOGRAPHY' !== $old_value ) {
 					$result_update = \update_option( $option_name, $old_value );
