@@ -63,16 +63,9 @@ class Admin {
 	/**
 	 * The result of plugin_basename() for the main plugin file (relative from plugins folder).
 	 *
-	 * @var string $local_plugin_path
+	 * @var string
 	 */
-	private $local_plugin_path;
-
-	/**
-	 * The absolute path to top-level directory for the plugin.
-	 *
-	 * @var string $plugin_path
-	 */
-	private $plugin_path;
+	private $plugin_basename;
 
 	/**
 	 * The full version string of the plugin.
@@ -141,10 +134,9 @@ class Admin {
 	 * @param \WP_Typography $plugin   The plugin object.
 	 */
 	public function __construct( $basename, \WP_Typography $plugin ) {
-		$this->local_plugin_path = $basename;
-		$this->plugin_path       = plugin_dir_path( dirname( __DIR__ ) ) . basename( $this->local_plugin_path );
-		$this->version           = $plugin->get_version();
-		$this->plugin            = $plugin;
+		$this->plugin_basename = $basename;
+		$this->version         = $plugin->get_version();
+		$this->plugin          = $plugin;
 	}
 
 	/**
@@ -163,7 +155,7 @@ class Admin {
 		add_action( 'admin_init', [ $this, 'register_the_settings' ] );
 
 		// Add filter hooks.
-		add_filter( 'plugin_action_links_' . $this->local_plugin_path, [ $this, 'plugin_action_links' ] );
+		add_filter( 'plugin_action_links_' . $this->plugin_basename, [ $this, 'plugin_action_links' ] );
 	}
 
 	/**
@@ -967,7 +959,7 @@ class Admin {
 	 * Enqueue stylesheet for options page.
 	 */
 	public function print_admin_styles() {
-		wp_enqueue_style( 'wp-typography-settings', plugins_url( 'admin/css/settings.css', $this->local_plugin_path ), [], $this->version, 'all' );
+		wp_enqueue_style( 'wp-typography-settings', plugins_url( 'admin/css/settings.css', $this->plugin_basename ), [], $this->version, 'all' );
 	}
 
 	/**
