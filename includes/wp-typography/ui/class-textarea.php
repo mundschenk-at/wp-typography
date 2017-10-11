@@ -26,6 +26,8 @@
 
 namespace WP_Typography\UI;
 
+use \WP_Typography\Options;
+
 /**
  * HTML <textarea> element.
  */
@@ -34,9 +36,10 @@ class Textarea extends Control {
 	/**
 	 * Create a new textarea control object.
 	 *
-	 * @param string $option_group Application-specific prefix.
-	 * @param string $id           Control ID (equivalent to option name). Required.
-	 * @param array  $args {
+	 * @param Options $options      Options API handler.
+	 * @param string  $option_group Application-specific prefix.
+	 * @param string  $id           Control ID (equivalent to option name). Required.
+	 * @param array   $args {
 	 *    Optional and required arguments.
 	 *
 	 *    @type string      $tab_id       Tab ID. Required.
@@ -51,10 +54,10 @@ class Textarea extends Control {
 	 *
 	 * @throws \InvalidArgumentException Missing argument.
 	 */
-	public function __construct( $option_group, $id, array $args ) {
+	public function __construct( Options $options, $option_group, $id, array $args ) {
 		$args = $this->prepare_args( $args, [ 'tab_id', 'default' ] );
 
-		parent::__construct( $option_group, $id, $args['tab_id'], $args['section'], $args['default'], $args['short'], null, $args['help_text'], false, $args['attributes'] );
+		parent::__construct( $options, $option_group, $id, $args['tab_id'], $args['section'], $args['default'], $args['short'], null, $args['help_text'], false, $args['attributes'] );
 	}
 
 	/**
@@ -76,17 +79,18 @@ class Textarea extends Control {
 	 */
 	protected function internal_render( $label, $help_text, $html_attributes ) {
 		$control_markup = '';
+		$id             = \esc_attr( $this->get_id() );
 		$help_text      = \wp_kses( $help_text, [
 			'code' => [],
 		] );
 
 		// Generate markup for label.
 		if ( ! empty( $label ) ) {
-			$control_markup = '<label for="' . \esc_attr( $this->id ) . '">' . \esc_html( $label ) . '</label>';
+			$control_markup = "<label for=\"{$id}\">" . \esc_html( $label ) . '</label>';
 		}
 
 		// Add the <textarea> itself.
-		$control_markup .= '<textarea class="large-text" id="' . \esc_attr( $this->id ) . '" name="' . \esc_attr( $this->id ) . '" ' . $html_attributes . '>' . $this->value_markup( $this->get_value() ) . '</textarea>';
+		$control_markup .= "<textarea class=\"large-text\" id=\"{$id}\" name=\"$id\" {$html_attributes}>{$this->value_markup( $this->get_value() )}</textarea>";
 
 		if ( ! empty( $help_text ) ) {
 			$control_markup .= '<p class="description">' . $help_text . '</p>';

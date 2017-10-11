@@ -26,6 +26,8 @@
 
 namespace WP_Typography\UI;
 
+use \WP_Typography\Options;
+
 /**
  * HTML <input> element.
  */
@@ -41,6 +43,7 @@ abstract class Input extends Control {
 	/**
 	 * Create a new input control object.
 	 *
+	 * @param Options     $options      Options API handler.
 	 * @param string      $input_type   HTML input type ('checkbox' etc.). Required.
 	 * @param string      $option_group Application-specific prefix.
 	 * @param string      $id           Control ID (equivalent to option name). Required.
@@ -53,8 +56,8 @@ abstract class Input extends Control {
 	 * @param bool        $inline_help  Optional. Display help inline. Default false.
 	 * @param array       $attributes   Optional. Default [].
 	 */
-	protected function __construct( $input_type, $option_group, $id, $tab_id, $section, $default, $short, $label = null, $help_text = null, $inline_help = false, $attributes = [] ) {
-		parent::__construct( $option_group, $id, $tab_id, $section, $default, $short, $label, $help_text, $inline_help, $attributes );
+	protected function __construct( Options $options, $input_type, $option_group, $id, $tab_id, $section, $default, $short, $label = null, $help_text = null, $inline_help = false, $attributes = [] ) {
+		parent::__construct( $options, $option_group, $id, $tab_id, $section, $default, $short, $label, $help_text, $inline_help, $attributes );
 
 		$this->input_type = $input_type;
 	}
@@ -76,8 +79,10 @@ abstract class Input extends Control {
 	 * @return string
 	 */
 	protected function id_and_class_markup() {
+		$id = \esc_attr( $this->get_id() );
+
 		// Set default ID & name, no class (except for submit buttons).
-		return 'id="' . \esc_attr( $this->id ) . '" name="' . \esc_attr( $this->id ) . '" ';
+		return "id=\"{$id}\" name=\"{$id}\" ";
 	}
 
 	/**

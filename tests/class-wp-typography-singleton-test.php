@@ -88,13 +88,11 @@ class WP_Typography_Singleton_Test extends TestCase {
 	 * @uses \WP_Typography\Admin::__construct
 	 * @uses \WP_Typography\Abstract_Cache::__construct
 	 * @uses \WP_Typography\Cache::__construct
+	 * @uses \WP_Typography\Options::__construct
 	 * @uses \WP_Typography\Transients::__construct
 	 * @uses \WP_Typography\Settings\Multilingual::__construct
 	 */
 	public function test_singleton() {
-
-		$admin = m::mock( \WP_Typography\Admin::class );
-		$admin->shouldReceive( 'run' )->shouldReceive( 'get_default_settings' )->andReturn( [] );
 
 		$multi = m::mock( \WP_Typography\Settings\Multilingual::class );
 		$multi->shouldReceive( 'run' );
@@ -114,7 +112,17 @@ class WP_Typography_Singleton_Test extends TestCase {
 			->shouldReceive( 'invalidate' )->byDefault()
 			->getMock();
 
-		$typo = new \WP_Typography( '6.6.6', 'dummy/path', $admin, $multi, $transients, $cache );
+		// Mock WP_Typography\Options instance.
+		$options = m::mock( \WP_Typography\Options::class )
+			->shouldReceive( 'get' )->andReturn( false )->byDefault()
+			->shouldReceive( 'set' )->andReturn( false )->byDefault()
+			->getMock();
+
+		// Mock WP_Typography\Admin instance.
+		$admin = m::mock( \WP_Typography\Admin::class, [ 'plugin_basename', $options ] );
+		$admin->shouldReceive( 'run' )->shouldReceive( 'get_default_settings' )->andReturn( [] );
+
+		$typo = new \WP_Typography( '6.6.6', 'dummy/path', $admin, $multi, $transients, $cache, $options );
 		$typo->run();
 
 		$typo2 = \WP_Typography::get_instance();
@@ -175,8 +183,9 @@ class WP_Typography_Singleton_Test extends TestCase {
 
 		$transients = m::mock( \WP_Typography\Transients::class );
 		$cache      = m::mock( \WP_Typography\Cache::class );
+		$options    = m::mock( \WP_Typography\Options::class );
 
-		$typo = new \WP_Typography( '6.6.6', 'dummy/path', $admin, $multi, $transients, $cache );
+		$typo = new \WP_Typography( '6.6.6', 'dummy/path', $admin, $multi, $transients, $cache, $options );
 		$typo->run();
 		$typo->run();
 	}
