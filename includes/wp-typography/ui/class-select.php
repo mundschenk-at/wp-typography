@@ -82,7 +82,7 @@ class Select extends Control {
 	 * @return mixed
 	 */
 	protected function get_value() {
-		$value = get_option( $this->id );
+		$value = \get_option( $this->id );
 
 		// Make sure $value is in $option_values if $option_values is set.
 		if ( isset( $this->options ) && ! isset( $this->options[ $value ] ) ) {
@@ -104,11 +104,11 @@ class Select extends Control {
 
 		$select_markup = '<select id="' . \esc_attr( $this->id ) . '" name="' . \esc_attr( $this->id ) . '" ' . $html_attributes . '>';
 		foreach ( $this->options as $option_value => $display ) {
-			$translated_display = esc_html__( $display, 'wp-typography' ); // @codingStandardsIgnoreLine.
-			$select_markup .= '<option value="' . \esc_attr( $option_value ) . '" ' . selected( $this->get_value(), $option_value, false ) . '>' . $translated_display . '</option>';
+			$translated_display = \esc_html__( $display, 'wp-typography' ); // @codingStandardsIgnoreLine.
+			$select_markup .= '<option value="' . \esc_attr( $option_value ) . '" ' . \selected( $this->get_value(), $option_value, false ) . '>' . $translated_display . '</option>';
 		}
 		$select_markup .= '</select>';
 
-		printf( $control_markup, $select_markup ); // WPCS: XSS ok.
+		\printf( $control_markup, $select_markup ); // WPCS: XSS ok.
 	}
 }

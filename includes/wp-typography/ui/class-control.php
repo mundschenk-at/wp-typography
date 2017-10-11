@@ -299,12 +299,12 @@ abstract class Control {
 	 */
 	public function register() {
 		// Register setting.
-		register_setting( $this->option_group . $this->tab_id, $this->id );
+		\register_setting( $this->option_group . $this->tab_id, $this->id );
 
 		// Add settings fields.
 		if ( empty( $this->grouped_with ) ) {
 			$short = isset( $this->short ) ? $this->short : '';
-			add_settings_field( $this->id, $short, [ $this, 'render' ], $this->option_group . $this->tab_id, $this->section );
+			\add_settings_field( $this->id, $short, [ $this, 'render' ], $this->option_group . $this->tab_id, $this->section );
 		}
 	}
 

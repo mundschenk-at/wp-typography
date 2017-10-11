@@ -191,10 +191,10 @@ class Admin {
 	 */
 	private function initialize_resource_links() {
 		return [
-			__( 'Plugin Home', 'wp-typography' ) => 'https://code.mundschenk.at/wp-typography/',
-			__( 'FAQs',        'wp-typography' ) => 'https://code.mundschenk.at/wp-typography/frequently-asked-questions/',
-			__( 'Changelog',   'wp-typography' ) => 'https://code.mundschenk.at/wp-typography/changes/',
-			__( 'License',     'wp-typography' ) => 'https://code.mundschenk.at/wp-typography/license/',
+			\__( 'Plugin Home', 'wp-typography' ) => 'https://code.mundschenk.at/wp-typography/',
+			\__( 'FAQs',        'wp-typography' ) => 'https://code.mundschenk.at/wp-typography/frequently-asked-questions/',
+			\__( 'Changelog',   'wp-typography' ) => 'https://code.mundschenk.at/wp-typography/changes/',
+			\__( 'License',     'wp-typography' ) => 'https://code.mundschenk.at/wp-typography/license/',
 		];
 	}
 
@@ -804,12 +804,12 @@ class Admin {
 			$control->register();
 
 			// Prevent spurious saves.
-			add_filter( 'pre_update_option_' . $control_id , [ $this, 'filter_update_option' ], 10, 2 );
+			\add_filter( 'pre_update_option_' . $control_id, [ $this, 'filter_update_option' ], 10, 2 );
 		}
 
 		foreach ( $this->admin_form_tabs as $tab_id => $tab ) {
-			register_setting( self::OPTION_GROUP . $tab_id, 'typo_restore_defaults', [ $this, 'sanitize_restore_defaults' ] );
-			register_setting( self::OPTION_GROUP . $tab_id, 'typo_clear_cache',      [ $this, 'sanitize_clear_cache' ] );
+			\register_setting( self::OPTION_GROUP . $tab_id, 'typo_restore_defaults', [ $this, 'sanitize_restore_defaults' ] );
+			\register_setting( self::OPTION_GROUP . $tab_id, 'typo_clear_cache',      [ $this, 'sanitize_clear_cache' ] );
 		}
 	}
 
@@ -836,7 +836,7 @@ class Admin {
 	 */
 	protected function get_active_settings_tab() {
 		// Check active tab.
-		$all_tabs = array_keys( $this->admin_form_tabs ); // PHP 5.3 workaround.
+		$all_tabs = \array_keys( $this->admin_form_tabs ); // PHP 5.3 workaround.
 
 		return ! empty( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : $all_tabs[0]; // WPCS: CSRF ok. Input var okay.
 	}
@@ -849,7 +849,7 @@ class Admin {
 	 * @return array
 	 */
 	protected static function get_numeric_option_values( array $values ) {
-		return array_combine( $values, $values );
+		return \array_combine( $values, $values );
 	}
 
 	/**
@@ -887,7 +887,7 @@ class Admin {
 	 */
 	protected function trigger_admin_notice( $setting_name, $notice_id, $message, $notice_level, $input ) {
 		if ( ! empty( $_POST[ $setting_name ] ) ) { // WPCS: CSRF ok. Input var okay.
-			add_settings_error( self::OPTION_GROUP . $this->get_active_settings_tab(), $notice_id, $message, $notice_level );
+			\add_settings_error( self::OPTION_GROUP . $this->get_active_settings_tab(), $notice_id, $message, $notice_level );
 		}
 
 		return $input;
@@ -897,30 +897,30 @@ class Admin {
 	 * Add an options page for the plugin settings.
 	 */
 	public function add_options_page() {
-		$page = add_options_page( $this->plugin_name, $this->plugin_name, 'manage_options', strtolower( $this->plugin_name ), [ $this, 'get_admin_page_content' ] );
+		$page = \add_options_page( $this->plugin_name, $this->plugin_name, 'manage_options', strtolower( $this->plugin_name ), [ $this, 'get_admin_page_content' ] );
 
 		// General sections for each tab.
 		foreach ( $this->admin_form_tabs as $tab_id => $tab ) {
-			add_settings_section( $tab_id, '', [ $this, 'print_settings_section' ], self::OPTION_GROUP . $tab_id );
+			\add_settings_section( $tab_id, '', [ $this, 'print_settings_section' ], self::OPTION_GROUP . $tab_id );
 		}
 
 		// Additional sections.
 		foreach ( $this->admin_form_sections as $section_id => $section ) {
-			add_settings_section( $section_id, $section['heading'], [ $this, 'print_settings_section' ], self::OPTION_GROUP . $section['tab_id'] );
+			\add_settings_section( $section_id, $section['heading'], [ $this, 'print_settings_section' ], self::OPTION_GROUP . $section['tab_id'] );
 		}
 
 		// Add help tab.
-		add_action( 'load-' . $page, [ $this, 'add_context_help' ] );
+		\add_action( 'load-' . $page, [ $this, 'add_context_help' ] );
 
 		// Using registered $page handle to hook stylesheet loading.
-		add_action( 'admin_print_styles-' . $page, [ $this, 'print_admin_styles' ] );
+		\add_action( 'admin_print_styles-' . $page, [ $this, 'print_admin_styles' ] );
 	}
 
 	/**
 	 * Add context-sensitive help to the settings page.
 	 */
 	public function add_context_help() {
-		$screen = get_current_screen();
+		$screen = \get_current_screen();
 
 		foreach ( $this->admin_help_pages as $help_id => $help ) {
 			$screen->add_help_tab( [
@@ -933,7 +933,7 @@ class Admin {
 		// Create sidebar.
 		$sidebar = '<p>' . __( 'Useful resources:', 'wp-typography' ) . '</p><ul>';
 		foreach ( $this->admin_resource_links as $anchor => $url ) {
-			$sidebar .= '<li><a href="' . esc_url( $url ) . '">' . __( $anchor, 'wp-typography' ) . '</a></li>';  // @codingStandardsIgnoreLine.
+			$sidebar .= '<li><a href="' . \esc_url( $url ) . '">' . \__( $anchor, 'wp-typography' ) . '</a></li>';  // @codingStandardsIgnoreLine.
 		}
 		$sidebar .= '</ul>';
 
@@ -949,9 +949,9 @@ class Admin {
 		$section_id = ! empty( $section['id'] ) ? $section['id'] : '';
 
 		if ( ! empty( $this->admin_form_tabs[ $section_id ]['description'] ) ) {
-			echo '<p>' . esc_html( $this->admin_form_tabs[ $section_id ]['description'] ) . '</p>';
+			echo '<p>' . \esc_html( $this->admin_form_tabs[ $section_id ]['description'] ) . '</p>';
 		} elseif ( ! empty( $this->admin_form_sections[ $section_id ]['description'] ) ) {
-			echo '<p>' . esc_html( $this->admin_form_sections[ $section_id ]['description'] ) . '</p>';
+			echo '<p>' . \esc_html( $this->admin_form_sections[ $section_id ]['description'] ) . '</p>';
 		}
 	}
 
@@ -959,7 +959,7 @@ class Admin {
 	 * Enqueue stylesheet for options page.
 	 */
 	public function print_admin_styles() {
-		wp_enqueue_style( 'wp-typography-settings', plugins_url( 'admin/css/settings.css', $this->plugin_basename ), [], $this->version, 'all' );
+		\wp_enqueue_style( 'wp-typography-settings', \plugins_url( 'admin/css/settings.css', $this->plugin_basename ), [], $this->version, 'all' );
 	}
 
 	/**
@@ -969,11 +969,11 @@ class Admin {
 	 * @return array An array of links.
 	 */
 	public function plugin_action_links( $links ) {
-		$adminurl = trailingslashit( admin_url() );
+		$adminurl = \trailingslashit( \admin_url() );
 
 		// Add link "Settings" to the plugin in /wp-admin/plugins.php.
-		$settings_link = '<a href="' . $adminurl . 'options-general.php?page=' . strtolower( $this->plugin_name ) . '">' . __( 'Settings' , 'wp-typography' ) . '</a>';
-		array_unshift( $links, $settings_link );
+		$settings_link = '<a href="' . $adminurl . 'options-general.php?page=' . strtolower( $this->plugin_name ) . '">' . __( 'Settings', 'wp-typography' ) . '</a>';
+		\array_unshift( $links, $settings_link );
 
 		return $links;
 	}
@@ -986,6 +986,6 @@ class Admin {
 		$this->admin_form_controls['typo_diacritic_languages']->set_options( $this->plugin->load_diacritic_languages() );
 
 		// Load the settings page HTML.
-		include_once dirname( dirname( __DIR__ ) ) . '/admin/partials/settings.php';
+		include_once \dirname( \dirname( __DIR__ ) ) . '/admin/partials/settings.php';
 	}
 }
