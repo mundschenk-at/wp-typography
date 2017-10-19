@@ -26,6 +26,9 @@
 
 namespace WP_Typography;
 
+use \WP_Typography\Options;
+use \WP_Typography\Settings\Plugin_Configuration as Config;
+
 /**
  * Fired during plugin de-/activation and uninstall.
  *
@@ -35,6 +38,13 @@ namespace WP_Typography;
  * @author     Peter Putzer <github@mundschenk.at>
  */
 class Setup {
+
+	/**
+	 * Special option value for detecting non-existing options during upgrades.
+	 *
+	 * @var string
+	 */
+	const UPGRADING = 'UPGRADING_WP_TYPOGRAPHY';
 
 	/**
 	 * The unique identifier of this plugin.
@@ -81,7 +91,7 @@ class Setup {
 	 */
 	public function activate() {
 		// Update option values & other stuff if necessary.
-		$this->plugin_updated( \get_option( 'typo_installed_version' ) );
+		$this->plugin_updated( \get_option( Options::PREFIX . '_' . Options::INSTALLED_VERSION ) );
 
 		// Load default options and clear the cache.
 		$this->plugin->set_default_options();
@@ -100,10 +110,10 @@ class Setup {
 			\error_log( 'Upgrading wp-Typography from ' . ( $previous_version ? $previous_version : '< 3.1.0') ); // @codingStandardsIgnoreLine
 
 			foreach ( $this->plugin->get_default_options() as $option_name => $option ) {
-				$old_option = $this->get_old_option_name( $option_name );
-				$old_value  = \get_option( $old_option, 'UPGRADING_WP_TYPOGRAPHY' );
+				$old_option = $this->get_old_option_name( Options::PREFIX . "_{$option_name}" );
+				$old_value  = \get_option( $old_option, self::UPGRADING );
 
-				if ( 'UPGRADING_WP_TYPOGRAPHY' !== $old_value ) {
+				if ( self::UPGRADING !== $old_value ) {
 					$result_update = \update_option( $option_name, $old_value );
 					$result_delete = \delete_option( $old_option );
 
@@ -129,10 +139,44 @@ class Setup {
 		if ( \version_compare( $previous_version, '5.1.0', '<' ) ) {
 			\delete_option( 'typo_transient_keys' );
 			\delete_option( 'typo_cache_keys' );
+
+			$this->upgrade_options_to_array();
 		}
 
-		\update_option( 'typo_installed_version', $this->plugin->get_version() );
+		$this->set_installed_version();
 	}
+
+	/**
+	 * Move all old options to the new array.
+	 *
+	 * @since 5.2.0
+	 */
+	protected function upgrade_options_to_array() {
+		$config = $this->plugin->get_default_options();
+
+		foreach ( $config as $option_name => $default_value ) {
+			$old_option = Options::PREFIX . "_{$option_name}";
+			$old_value  = \get_option( $old_option, self::UPGRADING );
+
+			if ( self::UPGRADING !== $old_value ) {
+				$config[ $option_name ] = $old_value;
+
+				\delete_option( $old_option );
+			}
+		}
+
+		\update_option( Option::CONFIGURATION, $config );
+	}
+
+	/**
+	 * Update installed version option.
+	 *
+	 * @since 5.2.0
+	 */
+	protected function set_installed_version() {
+		\update_option( Options::PREFIX . '_' . Options::INSTALLED_VERSION, $this->plugin->get_version() );
+	}
+
 
 	/**
 	 * Convert option names in the WordPress style to their legacy form.

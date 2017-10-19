@@ -37,9 +37,10 @@ class Options {
 
 	const PREFIX = 'typo';
 
-	const RESTORE_DEFAULTS = 'restore_defaults';
-	const CLEAR_CACHE      = 'clear_cache';
-	const CONFIGURATION    = 'configuration';
+	const RESTORE_DEFAULTS  = 'restore_defaults';
+	const CLEAR_CACHE       = 'clear_cache';
+	const CONFIGURATION     = 'configuration';
+	const INSTALLED_VERSION = 'installed_version';
 
 	/**
 	 * Create new Options instance.
