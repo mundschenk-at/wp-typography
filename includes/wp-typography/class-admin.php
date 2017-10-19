@@ -365,8 +365,7 @@ class Admin {
 			} elseif ( ! empty( $_REQUEST['option_page'] ) && 0 === \strpos( \sanitize_key( $_REQUEST['option_page'] ), self::OPTION_GROUP ) ) { // WPCS: CSRF ok. Input var okay.
 				$this->active_tab = \substr( \sanitize_key( $_REQUEST['option_page'] ), \strlen( self::OPTION_GROUP ) ); // WPCS: CSRF ok. Input var okay.
 			} else {
-				$all_tabs         = \array_keys( $this->admin_form_tabs ); // PHP 5.3 workaround.
-				$this->active_tab = $all_tabs[0];
+				$this->active_tab = (string) \array_keys( $this->admin_form_tabs )[0];
 			}
 		}
 
