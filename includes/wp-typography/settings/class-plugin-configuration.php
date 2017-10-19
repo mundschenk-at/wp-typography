@@ -384,7 +384,7 @@ abstract class Plugin_Configuration {
 				self::SMART_MATH                       => [
 					'ui'            => UI\Checkbox_Input::class,
 					'tab_id'        => UI\Tabs::CHARACTER_REPLACEMENT,
-					'section'       => 'math-replacements',
+					'section'       => UI\Sections::MATH_REPLACEMENTS,
 					'short'         => \__( 'Math symbols', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Transform exponents [ <code>3^2</code> ] to pretty exponents [ <code>3<sup>2</sup></code> ] and math symbols [ <code>(2x6)/3=4</code> ] to correct symbols [ <code>(2&#215;6)&#247;3=4</code> ].', 'wp-typography' ),
@@ -393,7 +393,7 @@ abstract class Plugin_Configuration {
 				self::SMART_FRACTIONS                  => [
 					'ui'            => UI\Checkbox_Input::class,
 					'tab_id'        => UI\Tabs::CHARACTER_REPLACEMENT,
-					'section'       => 'math-replacements',
+					'section'       => UI\Sections::MATH_REPLACEMENTS,
 					'short'         => \__( 'Fractions', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Transform fractions [ <code>1/2</code> ] to  pretty fractions [ <code><sup>1</sup>&#8260;<sub>2</sub></code> ].', 'wp-typography' ),
@@ -403,7 +403,7 @@ abstract class Plugin_Configuration {
 				self::SMART_ORDINALS                   => [
 					'ui'            => UI\Checkbox_Input::class,
 					'tab_id'        => UI\Tabs::CHARACTER_REPLACEMENT,
-					'section'       => 'math-replacements',
+					'section'       => UI\Sections::MATH_REPLACEMENTS,
 					'short'         => \__( 'Ordinal numbers', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Transform ordinal suffixes [ <code>1st</code> ] to  pretty ordinals [ <code>1<sup>st</sup></code> ].', 'wp-typography' ),
@@ -484,7 +484,7 @@ abstract class Plugin_Configuration {
 				self::WRAP_HYPHENS                     => [
 					'ui'            => UI\Checkbox_Input::class,
 					'tab_id'        => UI\Tabs::SPACE_CONTROL,
-					'section'       => 'enable-wrapping',
+					'section'       => UI\Sections::LINE_WRAPPING,
 					'short'         => \__( 'Hyphens', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Enable wrapping after hard hyphens.', 'wp-typography' ),
@@ -495,7 +495,7 @@ abstract class Plugin_Configuration {
 				self::WRAP_EMAILS                      => [
 					'ui'            => UI\Checkbox_Input::class,
 					'tab_id'        => UI\Tabs::SPACE_CONTROL,
-					'section'       => 'enable-wrapping',
+					'section'       => UI\Sections::LINE_WRAPPING,
 					'short'         => \__( 'Email addresses', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Enable wrapping of long email addresses.', 'wp-typography' ),
@@ -506,7 +506,7 @@ abstract class Plugin_Configuration {
 				self::WRAP_URLS                        => [
 					'ui'            => UI\Checkbox_Input::class,
 					'tab_id'        => UI\Tabs::SPACE_CONTROL,
-					'section'       => 'enable-wrapping',
+					'section'       => UI\Sections::LINE_WRAPPING,
 					'short'         => \__( 'URLs', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Enable wrapping of long URLs.', 'wp-typography' ),
@@ -517,7 +517,7 @@ abstract class Plugin_Configuration {
 				self::WRAP_MIN_AFTER                   => [
 					'ui'            => UI\Select::class,
 					'tab_id'        => UI\Tabs::SPACE_CONTROL,
-					'section'       => 'enable-wrapping',
+					'section'       => UI\Sections::LINE_WRAPPING,
 					/* translators: 1: number dropdown */
 					'label'         => \__( 'Keep at least the last %1$s characters of a URL together.', 'wp-typography' ),
 					'option_values' => self::get_numeric_option_values( [ 3, 4, 5, 6, 7, 8, 9, 10 ] ),
@@ -526,7 +526,7 @@ abstract class Plugin_Configuration {
 				self::PREVENT_WIDOWS                   => [
 					'ui'            => UI\Checkbox_Input::class,
 					'tab_id'        => UI\Tabs::SPACE_CONTROL,
-					'section'       => 'enable-wrapping',
+					'section'       => UI\Sections::LINE_WRAPPING,
 					'short'         => \__( 'Widows', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Prevent widows.', 'wp-typography' ),
@@ -537,7 +537,7 @@ abstract class Plugin_Configuration {
 				self::WIDOW_MIN_LENGTH                 => [
 					'ui'            => UI\Select::class,
 					'tab_id'        => UI\Tabs::SPACE_CONTROL,
-					'section'       => 'enable-wrapping',
+					'section'       => UI\Sections::LINE_WRAPPING,
 					/* translators: 1: number dropdown */
 					'label'         => \__( 'Only protect widows with %1$s or fewer letters.', 'wp-typography' ),
 					'option_values' => self::get_numeric_option_values( [ 4, 5, 6, 7, 8, 9, 10, 100 ] ),
@@ -546,7 +546,7 @@ abstract class Plugin_Configuration {
 				self::WIDOW_MAX_PULL                   => [
 					'ui'            => UI\Select::class,
 					'tab_id'        => UI\Tabs::SPACE_CONTROL,
-					'section'       => 'enable-wrapping',
+					'section'       => UI\Sections::LINE_WRAPPING,
 					/* translators: 1: number dropdown */
 					'label'         => \__( 'Pull at most %1$s letters from the previous line to keep the widow company.', 'wp-typography' ),
 					'option_values' => self::get_numeric_option_values( [ 4, 5, 6, 7, 8, 9, 10, 100 ] ),

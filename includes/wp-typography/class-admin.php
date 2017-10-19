@@ -178,7 +178,7 @@ class Admin {
 		$this->admin_resource_links = $this->initialize_resource_links();
 		$this->admin_help_pages     = $this->initialize_help_pages();
 		$this->admin_form_tabs      = UI\Tabs::get_tabs();
-		$this->admin_form_sections  = $this->initialize_form_sections();
+		$this->admin_form_sections  = UI\Sections::get_sections();
 		$this->admin_form_controls  = $this->initialize_controls();
 
 		// Add action hooks.
@@ -225,36 +225,6 @@ class Admin {
 					'</p><p>' .
 					__( 'Please keep in mind that technically, WordPress applies the typographic fixes on the individual content parts used in your site templates, e.g. <code>the_title</code>, <code>the_content</code>, not the page as a whole. For this reason, HTML tags (including classes and IDs) from the theme\'s template files cannot be used to limit the scope of wp-Typography\'s processing.', 'wp-typography' ) .
 					'</p>',
-			],
-		];
-	}
-
-	/**
-	 * Initialize displayable strings for the plugin settings page.
-	 *
-	 * @return array {
-	 *         @type array $id {
-	 *               The form ID.
-	 *
-	 *               @type string $heading     Section name (translated).
-	 *               @type string $description Section description (translated).
-	 *               @type string $tab_id      Tab ID.
-	 *         }
-	 * }
-	 */
-	private function initialize_form_sections() {
-
-		// Fieldsets will be displayed in the order included.
-		return [
-			'math-replacements' => [
-				'heading'     => \__( 'Math & Numbers', 'wp-typography' ),
-				'description' => \__( 'Not all number formattings are appropriate for all languages.', 'wp-typography' ),
-				'tab_id'      => UI\Tab::CHARACTER_REPLACEMENT,
-			],
-			'enable-wrapping'   => [
-				'heading'     => \__( 'Enable Wrapping', 'wp-typography' ),
-				'description' => \__( 'Sometimes you want to enable certain long words to wrap to a new line, while at other times you want to prevent wrapping.', 'wp-typography' ),
-				'tab_id'      => UI\Tab::SPACE_CONTROL,
 			],
 		];
 	}
