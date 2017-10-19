@@ -37,7 +37,7 @@ abstract class Sections {
 
 	// Section ID constants.
 	const MATH_REPLACEMENTS = 'math-replacements';
-	const LINE_WRAPPING     = 'enable-wrapping';
+	const LINE_WRAPPING     = 'line-wrapping';
 
 	/**
 	 * The defaults array.
@@ -68,7 +68,7 @@ abstract class Sections {
 					'tab_id'      => Tabs::CHARACTER_REPLACEMENT,
 				],
 				self::LINE_WRAPPING     => [
-					'heading'     => \__( 'Enable Wrapping', 'wp-typography' ),
+					'heading'     => \__( 'Line Wrapping', 'wp-typography' ),
 					'description' => \__( 'Sometimes you want to enable certain long words to wrap to a new line, while at other times you want to prevent wrapping.', 'wp-typography' ),
 					'tab_id'      => Tabs::SPACE_CONTROL,
 				],
