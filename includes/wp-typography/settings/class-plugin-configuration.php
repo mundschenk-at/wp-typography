@@ -115,28 +115,28 @@ abstract class Plugin_Configuration {
 			self::$defaults = [ // @codeCoverageIgnore
 				self::IGNORE_TAGS                      => [
 					'ui'            => UI\Textarea::class,
-					'tab_id'        => 'general-scope',
+					'tab_id'        => UI\Tabs::GENERAL_SCOPE,
 					'short'         => \__( 'Ignore HTML elements', 'wp-typography' ),
 					'help_text'     => \__( 'Separate tag names with spaces; do not include the <code>&lt;</code> or <code>&gt;</code>. The content of these HTML elements will not be processed.', 'wp-typography' ),
 					'default'       => 'code head kbd object option pre samp script style textarea title var math',
 				],
 				self::IGNORE_CLASSES                   => [
 					'ui'            => UI\Textarea::class,
-					'tab_id'        => 'general-scope',
+					'tab_id'        => UI\Tabs::GENERAL_SCOPE,
 					'short'         => \__( 'Ignore CSS classes', 'wp-typography' ),
 					'help_text'     => \__( 'Separate class names with spaces. Elements with these classes will not be processed.', 'wp-typography' ),
 					'default'       => 'vcard noTypo',
 				],
 				self::IGNORE_IDS                       => [
 					'ui'            => UI\Textarea::class,
-					'tab_id'        => 'general-scope',
+					'tab_id'        => UI\Tabs::GENERAL_SCOPE,
 					'short'         => \__( 'Ignore IDs', 'wp-typography' ),
 					'help_text'     => \__( 'Separate ID names with spaces. Elements with these IDs will not be processed.', 'wp-typography' ),
 					'default'       => '',
 				],
 				self::IGNORE_PARSER_ERRORS             => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'general-scope',
+					'tab_id'        => UI\Tabs::GENERAL_SCOPE,
 					'short'         => \__( 'Parser errors', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Ignore errors in parsed HTML.', 'wp-typography' ),
@@ -145,7 +145,7 @@ abstract class Plugin_Configuration {
 				],
 				self::ENABLE_MULTILINGUAL_SUPPORT      => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'general-scope',
+					'tab_id'        => UI\Tabs::GENERAL_SCOPE,
 					'short'         => \__( 'Multilingual support', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Enable support for using multiple languages on the same site.', 'wp-typography' ),
@@ -154,7 +154,7 @@ abstract class Plugin_Configuration {
 				],
 				self::ENABLE_HYPHENATION               => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'hyphenation',
+					'tab_id'        => UI\Tabs::HYPHENATION,
 					'short'         => \__( 'Hyphenation', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Enable hyphenation.', 'wp-typography' ),
@@ -162,7 +162,7 @@ abstract class Plugin_Configuration {
 				],
 				self::HYPHENATE_LANGUAGES              => [
 					'ui'            => UI\Select::class,
-					'tab_id'        => 'hyphenation',
+					'tab_id'        => UI\Tabs::HYPHENATION,
 					/* translators: 1: language dropdown */
 					'label'         => \__( 'Language for hyphenation rules: %1$s', 'wp-typography' ),
 					'option_values' => [], // Automatically detected and listed in __construct.
@@ -170,7 +170,7 @@ abstract class Plugin_Configuration {
 				],
 				self::HYPHENATE_HEADINGS               => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'hyphenation',
+					'tab_id'        => UI\Tabs::HYPHENATION,
 					'short'         => \__( 'Special cases', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Hyphenate headings.', 'wp-typography' ),
@@ -179,7 +179,7 @@ abstract class Plugin_Configuration {
 				],
 				self::HYPHENATE_TITLE_CASE             => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'hyphenation',
+					'tab_id'        => UI\Tabs::HYPHENATION,
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Allow hyphenation of words that begin with a capital letter.', 'wp-typography' ),
 					'help_text'     => \__( 'Uncheck to avoid hyphenation of proper nouns.', 'wp-typography' ),
@@ -187,7 +187,7 @@ abstract class Plugin_Configuration {
 				],
 				self::HYPHENATE_COMPOUNDS              => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'hyphenation',
+					'tab_id'        => UI\Tabs::HYPHENATION,
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Allow hyphenation of the components of hyphenated compound words.', 'wp-typography' ),
 					'help_text'     => \__( 'Uncheck to disallow the hyphenation of the words making up a hyphenated compound (e.g. <code>editor-in-chief</code>).', 'wp-typography' ),
@@ -195,14 +195,14 @@ abstract class Plugin_Configuration {
 				],
 				self::HYPHENATE_CAPS                   => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'hyphenation',
+					'tab_id'        => UI\Tabs::HYPHENATION,
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Hyphenate words in ALL CAPS.', 'wp-typography' ),
 					'default'       => 0,
 				],
 				self::HYPHENATE_MIN_LENGTH             => [
 					'ui'            => UI\Select::class,
-					'tab_id'        => 'hyphenation',
+					'tab_id'        => UI\Tabs::HYPHENATION,
 					'short'         => \__( 'Character limits', 'wp-typography' ),
 					/* translators: 1: number dropdown */
 					'label'         => \__( 'Do not hyphenate words with less than %1$s letters.', 'wp-typography' ),
@@ -211,7 +211,7 @@ abstract class Plugin_Configuration {
 				],
 				self::HYPHENATE_MIN_BEFORE             => [
 					'ui'            => UI\Select::class,
-					'tab_id'        => 'hyphenation',
+					'tab_id'        => UI\Tabs::HYPHENATION,
 					/* translators: 1: number dropdown */
 					'label'         => \__( 'Keep at least %1$s letters before hyphenation.', 'wp-typography' ),
 					'option_values' => self::get_numeric_option_values( [ 2, 3, 4, 5 ] ),
@@ -219,7 +219,7 @@ abstract class Plugin_Configuration {
 				],
 				self::HYPHENATE_MIN_AFTER              => [
 					'ui'            => UI\Select::class,
-					'tab_id'        => 'hyphenation',
+					'tab_id'        => UI\Tabs::HYPHENATION,
 					/* translators: 1: number dropdown */
 					'label'         => \__( 'Keep at least %1$s letters after hyphenation.', 'wp-typography' ),
 					'option_values' => self::get_numeric_option_values( [ 2, 3, 4, 5 ] ),
@@ -227,7 +227,7 @@ abstract class Plugin_Configuration {
 				],
 				self::HYPHENATE_EXCEPTIONS             => [
 					'ui'            => UI\Textarea::class,
-					'tab_id'        => 'hyphenation',
+					'tab_id'        => UI\Tabs::HYPHENATION,
 					'short'         => \__( 'Exception list', 'wp-typography' ),
 					'help_text'     => \__( 'Mark allowed hyphenations with "-"; separate words with spaces.', 'wp-typography' ),
 					'attributes'    => [
@@ -237,7 +237,7 @@ abstract class Plugin_Configuration {
 				],
 				self::HYPHENATE_CLEAN_CLIPBOARD        => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'hyphenation',
+					'tab_id'        => UI\Tabs::HYPHENATION,
 					'short'         => \__( 'Browser support', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Remove hyphenation when copying to clipboard', 'wp-typography' ),
@@ -246,7 +246,7 @@ abstract class Plugin_Configuration {
 				],
 				self::HYPHENATE_SAFARI_FONT_WORKAROUND => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'hyphenation',
+					'tab_id'        => UI\Tabs::HYPHENATION,
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Add workaround for Safari hyphenation bug', 'wp-typography' ),
 					'help_text'     => \__( 'Safari displays weird ligature-like characters with some fonts (like Open Sans) when hyhpenation is enabled. Inserts <code>-webkit-font-feature-settings: "liga", "dlig";</code> as inline CSS workaround.', 'wp-typography' ),
@@ -254,7 +254,7 @@ abstract class Plugin_Configuration {
 				],
 				self::SMART_CHARACTERS                 => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'character-replacement',
+					'tab_id'        => UI\Tabs::CHARACTER_REPLACEMENT,
 					'short'         => \__( 'Intelligent character replacement', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Override WordPress\' automatic character handling with your preferences here.', 'wp-typography' ),
@@ -262,7 +262,7 @@ abstract class Plugin_Configuration {
 				],
 				self::SMART_QUOTES                     => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'character-replacement',
+					'tab_id'        => UI\Tabs::CHARACTER_REPLACEMENT,
 					'short'         => \__( 'Smart quotes', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Transform straight quotes [ <code>\'</code> <code>"</code> ] to typographically correct characters as detailed below.', 'wp-typography' ),
@@ -270,7 +270,7 @@ abstract class Plugin_Configuration {
 				],
 				self::SMART_QUOTES_PRIMARY             => [
 					'ui'            => UI\Select::class,
-					'tab_id'        => 'character-replacement',
+					'tab_id'        => UI\Tabs::CHARACTER_REPLACEMENT,
 					/* translators: 1: style dropdown */
 					'label'         => \__( 'Primary quotation style: Convert <code>"foo"</code> to %1$s.', 'wp-typography' ),
 					'option_values' => [
@@ -294,7 +294,7 @@ abstract class Plugin_Configuration {
 				],
 				self::SMART_QUOTES_SECONDARY           => [
 					'ui'            => UI\Select::class,
-					'tab_id'        => 'character-replacement',
+					'tab_id'        => UI\Tabs::CHARACTER_REPLACEMENT,
 					/* translators: 1: style dropdown */
 					'label'         => \__( "Secondary quotation style: Convert <code>'foo'</code> to %1\$s.", 'wp-typography' ),
 					'option_values' => [
@@ -318,7 +318,7 @@ abstract class Plugin_Configuration {
 				],
 				self::SMART_DASHES                     => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'character-replacement',
+					'tab_id'        => UI\Tabs::CHARACTER_REPLACEMENT,
 					'short'         => \__( 'Smart dashes', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Transform minus-hyphens [ <code>-</code> <code>--</code> ] to contextually appropriate dashes, minus signs, and hyphens [ <code>&ndash;</code> <code>&mdash;</code> <code>&#8722;</code> <code>&#8208;</code> ].', 'wp-typography' ),
@@ -326,7 +326,7 @@ abstract class Plugin_Configuration {
 				],
 				self::SMART_DASHES_STYLE               => [
 					'ui'            => UI\Select::class,
-					'tab_id'        => 'character-replacement',
+					'tab_id'        => UI\Tabs::CHARACTER_REPLACEMENT,
 					/* translators: 1: style dropdown */
 					'label'         => \__( 'Use the %1$s style for dashes.', 'wp-typography' ),
 					'help_text'     => \__( 'In the US, the em dash&#8202;&mdash;&#8202;with no or very little spacing&#8202;&mdash;&#8202;is used for parenthetical expressions, while internationally, the en dash &ndash; with spaces &ndash; is more prevalent.', 'wp-typography' ),
@@ -338,7 +338,7 @@ abstract class Plugin_Configuration {
 				],
 				self::SMART_DIACRITICS                 => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'character-replacement',
+					'tab_id'        => UI\Tabs::CHARACTER_REPLACEMENT,
 					'short'         => \__( 'Smart diacritics', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Force diacritics where appropriate.', 'wp-typography' ),
@@ -348,7 +348,7 @@ abstract class Plugin_Configuration {
 				],
 				self::DIACRITIC_LANGUAGES              => [
 					'ui'            => UI\Select::class,
-					'tab_id'        => 'character-replacement',
+					'tab_id'        => UI\Tabs::CHARACTER_REPLACEMENT,
 					/* translators: 1: language dropdown */
 					'label'         => \__( 'Language for diacritic replacements: %1$s', 'wp-typography' ),
 					'help_text'     => \__( 'Language definitions will purposefully not process words that have alternate meaning without diacritics like <code>resume</code>/<code>résumé</code>, <code>divorce</code>/<code>divorcé</code>, and <code>expose</code>/<code>exposé</code>.', 'wp-typography' ),
@@ -357,7 +357,7 @@ abstract class Plugin_Configuration {
 				],
 				self::DIACRITIC_CUSTOM_REPLACEMENTS    => [
 					'ui'            => UI\Textarea::class,
-					'tab_id'        => 'character-replacement',
+					'tab_id'        => UI\Tabs::CHARACTER_REPLACEMENT,
 					'label'         => \__( 'Custom diacritic word replacements:', 'wp-typography' ),
 					'help_text'     => \__( 'Must be formatted <code>"word to replace"=>"replacement word",</code>. The entries are case-sensitive.', 'wp-typography' ),
 					'attributes'    => [
@@ -367,7 +367,7 @@ abstract class Plugin_Configuration {
 				],
 				self::SMART_ELLIPSES                   => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'character-replacement',
+					'tab_id'        => UI\Tabs::CHARACTER_REPLACEMENT,
 					'short'         => \__( 'Ellipses', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Transform three periods [ <code>...</code> ] to  ellipses [ <code>&hellip;</code> ].', 'wp-typography' ),
@@ -375,7 +375,7 @@ abstract class Plugin_Configuration {
 				],
 				self::SMART_MARKS                      => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'character-replacement',
+					'tab_id'        => UI\Tabs::CHARACTER_REPLACEMENT,
 					'short'         => \__( 'Registration marks', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Transform registration marks [ <code>(c)</code> <code>(r)</code> <code>(tm)</code> <code>(sm)</code> <code>(p)</code> ] to  proper characters [ <code>©</code> <code>®</code> <code>™</code> <code>℠</code> <code>℗</code> ].', 'wp-typography' ),
@@ -383,7 +383,7 @@ abstract class Plugin_Configuration {
 				],
 				self::SMART_MATH                       => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'character-replacement',
+					'tab_id'        => UI\Tabs::CHARACTER_REPLACEMENT,
 					'section'       => 'math-replacements',
 					'short'         => \__( 'Math symbols', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
@@ -392,7 +392,7 @@ abstract class Plugin_Configuration {
 				],
 				self::SMART_FRACTIONS                  => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'character-replacement',
+					'tab_id'        => UI\Tabs::CHARACTER_REPLACEMENT,
 					'section'       => 'math-replacements',
 					'short'         => \__( 'Fractions', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
@@ -402,7 +402,7 @@ abstract class Plugin_Configuration {
 				],
 				self::SMART_ORDINALS                   => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'character-replacement',
+					'tab_id'        => UI\Tabs::CHARACTER_REPLACEMENT,
 					'section'       => 'math-replacements',
 					'short'         => \__( 'Ordinal numbers', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
@@ -411,7 +411,7 @@ abstract class Plugin_Configuration {
 				],
 				self::SINGLE_CHARACTER_WORD_SPACING    => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'space-control',
+					'tab_id'        => UI\Tabs::SPACE_CONTROL,
 					'short'         => \__( 'Single character words', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Prevent single character words from residing at the end of a line of text (unless it is a widow).', 'wp-typography' ),
@@ -419,7 +419,7 @@ abstract class Plugin_Configuration {
 				],
 				self::DASH_SPACING                     => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'space-control',
+					'tab_id'        => UI\Tabs::SPACE_CONTROL,
 					'short'         => \__( 'Dashes', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Force thin spaces between em &amp; en dashes and adjoining words.', 'wp-typography' ),
@@ -427,7 +427,7 @@ abstract class Plugin_Configuration {
 				],
 				self::FRACTION_SPACING                 => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'space-control',
+					'tab_id'        => UI\Tabs::SPACE_CONTROL,
 					'short'         => \__( 'Fractions', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Keep integers with adjoining fractions.', 'wp-typography' ),
@@ -437,7 +437,7 @@ abstract class Plugin_Configuration {
 				],
 				self::SPACE_COLLAPSE                   => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'space-control',
+					'tab_id'        => UI\Tabs::SPACE_CONTROL,
 					'short'         => \__( 'Adjacent spacing', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Collapse adjacent spacing to a single character.', 'wp-typography' ),
@@ -446,7 +446,7 @@ abstract class Plugin_Configuration {
 				],
 				self::FRENCH_PUNCTUATION_SPACING       => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'space-control',
+					'tab_id'        => UI\Tabs::SPACE_CONTROL,
 					'short'         => \__( 'French punctuation', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Apply French punctuation rules.', 'wp-typography' ),
@@ -456,7 +456,7 @@ abstract class Plugin_Configuration {
 				],
 				self::NUMBERED_ABBREVIATIONS_SPACING   => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'space-control',
+					'tab_id'        => UI\Tabs::SPACE_CONTROL,
 					'short'         => \__( 'Numbered abbreviations', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Keep abbreviations containing numbers together.', 'wp-typography' ),
@@ -466,7 +466,7 @@ abstract class Plugin_Configuration {
 				],
 				self::UNIT_SPACING                     => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'space-control',
+					'tab_id'        => UI\Tabs::SPACE_CONTROL,
 					'short'         => \__( 'Values &amp; Units', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Keep values and units together.', 'wp-typography' ),
@@ -476,14 +476,14 @@ abstract class Plugin_Configuration {
 				],
 				self::UNITS                            => [
 					'ui'            => UI\Textarea::class,
-					'tab_id'        => 'space-control',
+					'tab_id'        => UI\Tabs::SPACE_CONTROL,
 					'label'         => \__( 'Additional unit names:', 'wp-typography' ),
 					'help_text'     => \__( 'Separate unit names with spaces. We already look for a large list; fill in any holes here.', 'wp-typography' ),
 					'default'       => 'hectare fortnight',
 				],
 				self::WRAP_HYPHENS                     => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'space-control',
+					'tab_id'        => UI\Tabs::SPACE_CONTROL,
 					'section'       => 'enable-wrapping',
 					'short'         => \__( 'Hyphens', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
@@ -494,7 +494,7 @@ abstract class Plugin_Configuration {
 				],
 				self::WRAP_EMAILS                      => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'space-control',
+					'tab_id'        => UI\Tabs::SPACE_CONTROL,
 					'section'       => 'enable-wrapping',
 					'short'         => \__( 'Email addresses', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
@@ -505,7 +505,7 @@ abstract class Plugin_Configuration {
 				],
 				self::WRAP_URLS                        => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'space-control',
+					'tab_id'        => UI\Tabs::SPACE_CONTROL,
 					'section'       => 'enable-wrapping',
 					'short'         => \__( 'URLs', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
@@ -516,7 +516,7 @@ abstract class Plugin_Configuration {
 				],
 				self::WRAP_MIN_AFTER                   => [
 					'ui'            => UI\Select::class,
-					'tab_id'        => 'space-control',
+					'tab_id'        => UI\Tabs::SPACE_CONTROL,
 					'section'       => 'enable-wrapping',
 					/* translators: 1: number dropdown */
 					'label'         => \__( 'Keep at least the last %1$s characters of a URL together.', 'wp-typography' ),
@@ -525,7 +525,7 @@ abstract class Plugin_Configuration {
 				],
 				self::PREVENT_WIDOWS                   => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'space-control',
+					'tab_id'        => UI\Tabs::SPACE_CONTROL,
 					'section'       => 'enable-wrapping',
 					'short'         => \__( 'Widows', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
@@ -536,7 +536,7 @@ abstract class Plugin_Configuration {
 				],
 				self::WIDOW_MIN_LENGTH                 => [
 					'ui'            => UI\Select::class,
-					'tab_id'        => 'space-control',
+					'tab_id'        => UI\Tabs::SPACE_CONTROL,
 					'section'       => 'enable-wrapping',
 					/* translators: 1: number dropdown */
 					'label'         => \__( 'Only protect widows with %1$s or fewer letters.', 'wp-typography' ),
@@ -545,7 +545,7 @@ abstract class Plugin_Configuration {
 				],
 				self::WIDOW_MAX_PULL                   => [
 					'ui'            => UI\Select::class,
-					'tab_id'        => 'space-control',
+					'tab_id'        => UI\Tabs::SPACE_CONTROL,
 					'section'       => 'enable-wrapping',
 					/* translators: 1: number dropdown */
 					'label'         => \__( 'Pull at most %1$s letters from the previous line to keep the widow company.', 'wp-typography' ),
@@ -554,7 +554,7 @@ abstract class Plugin_Configuration {
 				],
 				self::STYLE_AMPS                       => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'css-hooks',
+					'tab_id'        => UI\Tabs::CSS_HOOKS,
 					'short'         => \__( 'Ampersands', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Wrap ampersands [ <code>&amp;</code> ] with <code>&lt;span class="amp"&gt;</code>.', 'wp-typography' ),
@@ -562,7 +562,7 @@ abstract class Plugin_Configuration {
 				],
 				self::STYLE_CAPS                       => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'css-hooks',
+					'tab_id'        => UI\Tabs::CSS_HOOKS,
 					'short'         => \__( 'Caps', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Wrap acronyms (all capitals) with <code>&lt;span class="caps"&gt;</code>.', 'wp-typography' ),
@@ -570,7 +570,7 @@ abstract class Plugin_Configuration {
 				],
 				self::STYLE_NUMBERS                    => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'css-hooks',
+					'tab_id'        => UI\Tabs::CSS_HOOKS,
 					'short'         => \__( 'Numbers', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Wrap digits [ <code>0123456789</code> ] with <code>&lt;span class="numbers"&gt;</code>.', 'wp-typography' ),
@@ -578,7 +578,7 @@ abstract class Plugin_Configuration {
 				],
 				self::STYLE_HANGING_PUNCTUATION        => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'css-hooks',
+					'tab_id'        => UI\Tabs::CSS_HOOKS,
 					'short'         => \__( 'Hanging punctuation', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Wrap small punctuation marks.', 'wp-typography' ),
@@ -587,7 +587,7 @@ abstract class Plugin_Configuration {
 				],
 				self::STYLE_INITIAL_QUOTES             => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'css-hooks',
+					'tab_id'        => UI\Tabs::CSS_HOOKS,
 					'short'         => \__( 'Initial quotes', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Wrap initial quotes.', 'wp-typography' ),
@@ -596,14 +596,14 @@ abstract class Plugin_Configuration {
 				],
 				self::INITIAL_QUOTE_TAGS               => [
 					'ui'            => UI\Textarea::class,
-					'tab_id'        => 'css-hooks',
+					'tab_id'        => UI\Tabs::CSS_HOOKS,
 					'label'         => \__( 'Limit styling of initial quotes to these <strong>HTML elements</strong>:', 'wp-typography' ),
 					'help_text'     => \__( 'Separate tag names with spaces; do not include the <code>&lt;</code> or <code>&gt;</code>.', 'wp-typography' ),
 					'default'       => 'p h1 h2 h3 h4 h5 h6 blockquote li dd dt',
 				],
 				self::STYLE_CSS_INCLUDE                => [
 					'ui'            => UI\Checkbox_Input::class,
-					'tab_id'        => 'css-hooks',
+					'tab_id'        => UI\Tabs::CSS_HOOKS,
 					'short'         => \__( 'Styles', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Include styling for CSS hooks.', 'wp-typography' ),
@@ -612,7 +612,7 @@ abstract class Plugin_Configuration {
 				],
 				self::STYLE_CSS                        => [
 					'ui'            => UI\Textarea::class,
-					'tab_id'        => 'css-hooks',
+					'tab_id'        => UI\Tabs::CSS_HOOKS,
 					'label'         => \__( 'Styling for CSS hooks:', 'wp-typography' ),
 					'help_text'     => \__( 'This will only be applied if explicitly selected with the preceding option.', 'wp-typography' ),
 					'attributes'    => [

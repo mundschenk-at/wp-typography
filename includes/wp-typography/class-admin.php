@@ -177,7 +177,7 @@ class Admin {
 		// Initialize admin form.
 		$this->admin_resource_links = $this->initialize_resource_links();
 		$this->admin_help_pages     = $this->initialize_help_pages();
-		$this->admin_form_tabs      = $this->initialize_form_tabs();
+		$this->admin_form_tabs      = UI\Tabs::get_tabs();
 		$this->admin_form_sections  = $this->initialize_form_sections();
 		$this->admin_form_controls  = $this->initialize_controls();
 
@@ -233,45 +233,6 @@ class Admin {
 	 * Initialize displayable strings for the plugin settings page.
 	 *
 	 * @return array {
-	 *      @type array $id {
-	 *            The tab ID.
-	 *
-	 *            @type string $heading     Tab heading (translated).
-	 *            @type string $description Tab description (translated).
-	 *      }
-	 * }
-	 */
-	private function initialize_form_tabs() {
-
-		// Sections will be displayed in the order included.
-		return [
-			'general-scope'         => [
-				'heading'     => \__( 'General Scope', 'wp-typography' ),
-				'description' => \__( 'By default, wp-Typography processes all post content and titles (but not the whole page). Certain HTML elements within your content can be exempted to prevent conflicts with your theme or other plugins.', 'wp-typography' ),
-			],
-			'hyphenation'           => [
-				'heading'     => \__( 'Hyphenation', 'wp-typography' ),
-				'description' => \__( 'Hyphenation rules are based on pre-computed dictionaries, but can be fine tuned. Custom hyphenations always override the patterns from the dictionary.', 'wp-typography' ),
-			],
-			'character-replacement' => [
-				'heading'     => \__( 'Intelligent Character Replacement', 'wp-typography' ),
-				'description' => \__( 'Modern keyboards are still based on the limited character range of typewriters. This section allows you to selectively replace typewriter characters with better alternatives.', 'wp-typography' ),
-			],
-			'space-control'         => [
-				'heading'     => \__( 'Space Control', 'wp-typography' ),
-				'description' => \__( 'Take control of space. At least in your WordPress posts.', 'wp-typography' ),
-			],
-			'css-hooks'             => [
-				'heading'     => \__( 'CSS Hooks', 'wp-typography' ),
-				'description' => \__( 'To help with styling your posts, some additional CSS classes can be added automatically.', 'wp-typography' ),
-			],
-		];
-	}
-
-	/**
-	 * Initialize displayable strings for the plugin settings page.
-	 *
-	 * @return array {
 	 *         @type array $id {
 	 *               The form ID.
 	 *
@@ -288,12 +249,12 @@ class Admin {
 			'math-replacements' => [
 				'heading'     => \__( 'Math & Numbers', 'wp-typography' ),
 				'description' => \__( 'Not all number formattings are appropriate for all languages.', 'wp-typography' ),
-				'tab_id'      => 'character-replacement',
+				'tab_id'      => UI\Tab::CHARACTER_REPLACEMENT,
 			],
 			'enable-wrapping'   => [
 				'heading'     => \__( 'Enable Wrapping', 'wp-typography' ),
 				'description' => \__( 'Sometimes you want to enable certain long words to wrap to a new line, while at other times you want to prevent wrapping.', 'wp-typography' ),
-				'tab_id'      => 'space-control',
+				'tab_id'      => UI\Tab::SPACE_CONTROL,
 			],
 		];
 	}
