@@ -27,6 +27,8 @@
 namespace WP_Typography\Settings;
 
 use \WP_Typography;
+use \WP_Typography\Settings\Plugin_Configuration as Config;
+
 use \PHP_Typography\Settings;
 use \PHP_Typography\Settings\Dash_Style;
 use \PHP_Typography\Settings\Quote_Style;
@@ -166,15 +168,15 @@ class Multilingual {
 		// Adjust hyphenation language.
 		$hyphenation_language_match = $this->match_language( $this->plugin->load_hyphenation_languages(), "$language-$country", $language, 'hyphenation' );
 		if ( ! empty( $hyphenation_language_match ) ) {
-			$defaults['typo_hyphenate_languages'] = $hyphenation_language_match;
+			$defaults[ Config::HYPHENATE_LANGUAGES ] = $hyphenation_language_match;
 		} else {
-			$defaults['typo_enable_hyphenation'] = false;
+			$defaults[ Config::ENABLE_HYPHENATION ] = false;
 		}
 
 		// Adjust diacritics replacement language.
 		$diacritics_language_match = $this->match_language( $this->plugin->load_diacritic_languages(), "$language-$country", $language, 'diacritics' );
 		if ( ! empty( $diacritics_language_match ) ) {
-			$defaults['typo_diacritic_languages'] = $diacritics_language_match;
+			$defaults[ Config::DIACRITIC_LANGUAGES ] = $diacritics_language_match;
 		}
 
 		return $defaults;

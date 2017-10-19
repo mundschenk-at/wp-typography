@@ -26,6 +26,8 @@
 
 namespace WP_Typography\UI;
 
+use \WP_Typography\Options;
+
 /**
  * HTML <select> element.
  */
@@ -35,14 +37,15 @@ class Select extends Control {
 	 *
 	 * @var array
 	 */
-	protected $options;
+	protected $option_values;
 
 	/**
 	 * Create a new select control object.
 	 *
-	 * @param string $option_group Application-specific prefix.
-	 * @param string $id           Control ID (equivalent to option name). Required.
-	 * @param array  $args {
+	 * @param Options $options      Options API handler.
+	 * @param string  $option_group Application-specific prefix.
+	 * @param string  $id           Control ID (equivalent to option name). Required.
+	 * @param array   $args {
 	 *    Optional and required arguments.
 	 *
 	 *    @type string      $tab_id        Tab ID. Required.
@@ -58,21 +61,21 @@ class Select extends Control {
 	 *
 	 * @throws \InvalidArgumentException Missing argument.
 	 */
-	public function __construct( $option_group, $id, array $args ) {
+	public function __construct( Options $options, $option_group, $id, array $args ) {
 		$args = $this->prepare_args( $args, [ 'tab_id', 'default', 'option_values' ] );
 
-		parent::__construct( $option_group, $id, $args['tab_id'], $args['section'], $args['default'], $args['short'], $args['label'], $args['help_text'], $args['inline_help'], $args['attributes'] );
+		parent::__construct( $options, $option_group, $id, $args['tab_id'], $args['section'], $args['default'], $args['short'], $args['label'], $args['help_text'], $args['inline_help'], $args['attributes'] );
 
-		$this->options = $args['option_values'];
+		$this->option_values = $args['option_values'];
 	}
 
 	/**
 	 * Set selectable options.
 	 *
-	 * @param array $options An array of VALUE => DISPLAY.
+	 * @param array $option_values An array of VALUE => DISPLAY.
 	 */
-	public function set_options( array $options ) {
-		$this->options = $options;
+	public function set_option_values( array $option_values ) {
+		$this->option_values = $option_values;
 	}
 
 	/**
@@ -82,10 +85,11 @@ class Select extends Control {
 	 * @return mixed
 	 */
 	protected function get_value() {
-		$value = get_option( $this->id );
+		$config = $this->options->get( Options::CONFIGURATION );
+		$value  = $config[ $this->id ];
 
 		// Make sure $value is in $option_values if $option_values is set.
-		if ( isset( $this->options ) && ! isset( $this->options[ $value ] ) ) {
+		if ( isset( $this->option_values ) && ! isset( $this->option_values[ $value ] ) ) {
 			$value = null;
 		}
 
@@ -101,14 +105,15 @@ class Select extends Control {
 	 */
 	protected function internal_render( $label, $help_text, $html_attributes ) {
 		$control_markup = $this->control_markup( $label, $help_text );
+		$id             = \esc_attr( $this->get_id() );
+		$select_markup  = "<select id=\"{$id}\" name=\"{$id}\" {$html_attributes}>";
 
-		$select_markup = '<select id="' . \esc_attr( $this->id ) . '" name="' . \esc_attr( $this->id ) . '" ' . $html_attributes . '>';
-		foreach ( $this->options as $option_value => $display ) {
-			$translated_display = esc_html__( $display, 'wp-typography' ); // @codingStandardsIgnoreLine.
-			$select_markup .= '<option value="' . \esc_attr( $option_value ) . '" ' . selected( $this->get_value(), $option_value, false ) . '>' . $translated_display . '</option>';
+		foreach ( $this->option_values as $option_value => $display ) {
+			$translated_display = \esc_html__( $display, 'wp-typography' ); // @codingStandardsIgnoreLine.
+			$select_markup .= '<option value="' . \esc_attr( $option_value ) . '" ' . \selected( $this->get_value(), $option_value, false ) . '>' . $translated_display . '</option>';
 		}
 		$select_markup .= '</select>';
 
-		printf( $control_markup, $select_markup ); // WPCS: XSS ok.
+		\printf( $control_markup, $select_markup ); // WPCS: XSS ok.
 	}
 }

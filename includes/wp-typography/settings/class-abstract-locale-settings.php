@@ -26,6 +26,8 @@
 
 namespace WP_Typography\Settings;
 
+use \WP_Typography\Settings\Plugin_Configuration as Config;
+
 use \PHP_Typography\Settings;
 
 /**
@@ -115,10 +117,10 @@ abstract class Abstract_Locale_Settings implements Locale_Settings {
 	 * @return array
 	 */
 	public function adjust_defaults( array $defaults ) {
-		$defaults['typo_smart_quotes_primary']       = $this->primary_quote_style;
-		$defaults['typo_smart_quotes_secondary']     = $this->secondary_quote_style;
-		$defaults['typo_french_punctuation_spacing'] = $this->french_punctuation;
-		$defaults['typo_smart_dashes_style']         = $this->dash_style;
+		$defaults[ Config::SMART_QUOTES_PRIMARY ]       = $this->primary_quote_style;
+		$defaults[ Config::SMART_QUOTES_SECONDARY ]     = $this->secondary_quote_style;
+		$defaults[ Config::FRENCH_PUNCTUATION_SPACING ] = $this->french_punctuation;
+		$defaults[ Config::SMART_DASHES_STYLE ]         = $this->dash_style;
 
 		return $defaults;
 	}

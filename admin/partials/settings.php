@@ -25,8 +25,10 @@
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
+use \WP_Typography\Options;
+
 ?><div class='wrap'>
-	<h1><?php echo esc_html( sprintf( /* translators: settings page headline, %s is the plugin name */ __( '%s Settings', 'wp-typography' ), $this->plugin_name ) ); ?></h1>
+	<h1><?php echo \esc_html( \sprintf( /* translators: settings page headline, %s is the plugin name */ \__( '%s Settings', 'wp-typography' ), $this->plugin_name ) ); ?></h1>
 	<?php
 		// Check active tab.
 		$active_tab = $this->get_active_settings_tab();
@@ -34,32 +36,32 @@
 	<h2 class="nav-tab-wrapper">
 	<?php foreach ( $this->admin_form_tabs as $tab_id => $tab ) : ?>
 		<?php
-			$query_string = '?page=' . strtolower( $this->plugin_name ) . '&tab=' . $tab_id;
+			$query_string = '?page=' . \strtolower( $this->plugin_name ) . '&tab=' . $tab_id;
 			$classes      = 'nav-tab' . ( $tab_id === $active_tab ? ' nav-tab-active' : '' );
 		?>
-		<a href="<?php echo esc_url( $query_string ); ?>" class="<?php echo esc_attr( $classes ); ?>"><?php echo esc_html( $tab['heading'] ); ?></a>
+		<a href="<?php echo \esc_url( $query_string ); ?>" class="<?php echo \esc_attr( $classes ); ?>"><?php echo \esc_html( $tab['heading'] ); ?></a>
 	<?php endforeach; ?>
 	</h2>
 
 	<form method="post" action="options.php">
-		<?php settings_fields( self::OPTION_GROUP . $active_tab ); ?>
-		<?php do_settings_sections( self::OPTION_GROUP . $active_tab ); ?>
+		<?php \settings_fields( self::OPTION_GROUP . $active_tab ); ?>
+		<?php \do_settings_sections( self::OPTION_GROUP . $active_tab ); ?>
 
 		<p class="submit">
 			<?php
-				submit_button( __( 'Save Changes', 'wp-typography' ), 'primary', 'save_changes', false, [
+				\submit_button( \__( 'Save Changes', 'wp-typography' ), 'primary', 'save_changes', false, [
 					'tabindex' => 1,
 				] );
 			?>
 			<span class="aux-buttons">
 				<?php
-					submit_button( __( 'Restore Defaults', 'wp-typography' ), 'delete', 'typo_restore_defaults', false, [
+					\submit_button( \__( 'Restore Defaults', 'wp-typography' ), 'delete', $this->options->get_name( Options::RESTORE_DEFAULTS ), false, [
 						'tabindex' => 2,
 					] );
 				?>
 				<?php
 					// The whitespace is necessary.
-					submit_button( __( 'Clear Cache', 'wp-typography' ), 'secondary', 'typo_clear_cache', false, [
+					\submit_button( \__( 'Clear Cache', 'wp-typography' ), 'secondary', $this->options->get_name( Options::CLEAR_CACHE ), false, [
 						'tabindex' => 3,
 					] );
 				?>

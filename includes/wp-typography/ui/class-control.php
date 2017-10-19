@@ -26,6 +26,8 @@
 
 namespace WP_Typography\UI;
 
+use \WP_Typography\Options;
+
 /**
  * Abstract base class for HTML controls.
  */
@@ -124,8 +126,18 @@ abstract class Control {
 	protected $grouped_with = null;
 
 	/**
+	 * An abstraction of the WordPress Options API.
+	 *
+	 * @since 5.1.0
+	 *
+	 * @var Options
+	 */
+	protected $options;
+
+	/**
 	 * Create a new UI control object.
 	 *
+	 * @param Options     $options      Options API handler.
 	 * @param string      $option_group Application-specific prefix.
 	 * @param string      $id           Control ID (equivalent to option name). Required.
 	 * @param string      $tab_id       Tab ID. Required.
@@ -137,7 +149,8 @@ abstract class Control {
 	 * @param bool        $inline_help  Optional. Display help inline. Default false.
 	 * @param array       $attributes   Optional. Default [].
 	 */
-	protected function __construct( $option_group, $id, $tab_id, $section, $default, $short = null, $label = null, $help_text = null, $inline_help = false, $attributes = [] ) {
+	protected function __construct( Options $options, $option_group, $id, $tab_id, $section, $default, $short = null, $label = null, $help_text = null, $inline_help = false, $attributes = [] ) {
+		$this->options      = $options;
 		$this->option_group = $option_group;
 		$this->id           = $id;
 		$this->tab_id       = $tab_id;
@@ -191,7 +204,9 @@ abstract class Control {
 	 * @return mixed
 	 */
 	protected function get_value() {
-		return \get_option( $this->id );
+		$options = $this->options->get( Options::CONFIGURATION );
+
+		return $options[ $this->id ];
 	}
 
 	/**
@@ -242,7 +257,7 @@ abstract class Control {
 	/**
 	 * Retrieve default value.
 	 *
-	 * @var string|int
+	 * @return string|int
 	 */
 	public function get_default() {
 		return $this->default;
@@ -251,10 +266,10 @@ abstract class Control {
 	/**
 	 * Retrieve control ID.
 	 *
-	 * @var string
+	 * @return string
 	 */
 	public function get_id() {
-		return $this->id;
+		return "{$this->options->get_name( Options::CONFIGURATION )}[{$this->id}]";
 	}
 
 	/**
@@ -298,13 +313,11 @@ abstract class Control {
 	 * Register the control with the settings API.
 	 */
 	public function register() {
-		// Register setting.
-		register_setting( $this->option_group . $this->tab_id, $this->id );
 
 		// Add settings fields.
 		if ( empty( $this->grouped_with ) ) {
 			$short = isset( $this->short ) ? $this->short : '';
-			add_settings_field( $this->id, $short, [ $this, 'render' ], $this->option_group . $this->tab_id, $this->section );
+			\add_settings_field( $this->get_id(), $short, [ $this, 'render' ], $this->option_group . $this->tab_id, $this->section );
 		}
 	}
 
