@@ -28,6 +28,8 @@
 use \WP_Typography\Admin;
 use \WP_Typography\Cache;
 use \WP_Typography\Options;
+use \WP_Typography\Plugin_Component;
+use \WP_Typography\Setup;
 use \WP_Typography\Transients;
 use \WP_Typography\Settings\Plugin_Configuration as Config;
 use \WP_Typography\Settings\Multilingual;
@@ -127,13 +129,6 @@ class WP_Typography {
 	private $default_settings;
 
 	/**
-	 * The admin side handler object.
-	 *
-	 * @var Admin
-	 */
-	private $admin;
-
-	/**
 	 * The multlingual support object.
 	 *
 	 * @var Multilingual
@@ -148,6 +143,13 @@ class WP_Typography {
 	private $filter_priority = 9999;
 
 	/**
+	 * The plugin components in order of execution.
+	 *
+	 * @var Plugin_Component[]
+	 */
+	private $plugin_components = [];
+
+	/**
 	 * The singleton instance.
 	 *
 	 * @var WP_Typography
@@ -158,19 +160,22 @@ class WP_Typography {
 	 * Sets up a new WP_Typography object.
 	 *
 	 * @since 5.1.0 Optional parameters $transients, $cache and $options added.
+	 *              The parameter $plugin_path has been changed to be the full path
+	 *              of the main plugin file.
 	 *
-	 * @param string            $version    The full plugin version string (e.g. "3.0.0-beta.2").
-	 * @param string            $basename   Optional. The result of plugin_basename() for the main plugin file. Default 'wp-typography/wp-typography.php'.
-	 * @param Admin|null        $admin      Optional. Default null (which means a private instance will be created).
-	 * @param Multilingual|null $multi      Optional. Default null (which means a private instance will be created).
-	 * @param Transients|null   $transients Optional. Default null (which means a private instance will be created).
-	 * @param Cache|null        $cache      Optional. Default null (which means a private instance will be created).
-	 * @param Options|null      $options    Optional. Default null (which means a private instance will be created).
+	 * @param string            $version     The full plugin version string (e.g. "3.0.0-beta.2").
+	 * @param string            $plugin_path Optional. The full path for the main plugin file. Default ''.
+	 * @param Setup|null        $setup       Optional. Default null (which means a private instance will be created).
+	 * @param Admin|null        $admin       Optional. Default null (which means a private instance will be created).
+	 * @param Multilingual|null $multi       Optional. Default null (which means a private instance will be created).
+	 * @param Transients|null   $transients  Optional. Default null (which means a private instance will be created).
+	 * @param Cache|null        $cache       Optional. Default null (which means a private instance will be created).
+	 * @param Options|null      $options     Optional. Default null (which means a private instance will be created).
 	 */
-	public function __construct( $version, $basename = 'wp-typography/wp-typography.php', Admin $admin = null, Multilingual $multi = null, Transients $transients = null, Cache $cache = null, Options $options = null ) {
+	public function __construct( $version, $plugin_path = '', Setup $setup = null, Admin $admin = null, Multilingual $multi = null, Transients $transients = null, Cache $cache = null, Options $options = null ) {
 		// Basic set-up.
 		$this->version           = $version;
-		$this->local_plugin_path = $basename;
+		$this->local_plugin_path = plugin_basename( $plugin_path );
 
 		// Initialize cache handlers.
 		$this->transients = ( null === $transients ) ? new Transients() : $transients;
@@ -179,11 +184,15 @@ class WP_Typography {
 		// Initialize Options API handler.
 		$this->options = ( null === $options ) ? new Options() : $options;
 
+		// Initialize activation/deactivation handler.
+		$this->plugin_components[] = ( null === $setup ) ? new Setup( $plugin_path ) : $setup;
+
 		// Initialize admin interface handler.
-		$this->admin = ( null === $admin ) ? new Admin( $basename, $this->options ) : $admin;
+		$this->plugin_components[] = ( null === $admin ) ? new Admin( $this->local_plugin_path, $this->options ) : $admin;
 
 		// Initialize multilingual support.
-		$this->multilingual = ( null === $multi ) ? new Multilingual( $this ) : $multi;
+		$this->multilingual        = ( null === $multi ) ? new Multilingual() : $multi;
+		$this->plugin_components[] = $this->multilingual;
 	}
 
 	/**
@@ -199,11 +208,10 @@ class WP_Typography {
 		// Load settings.
 		add_action( 'init', [ $this, 'init' ] );
 
-		// Also run the backend UI.
-		$this->admin->run( $this );
-
-		// Enable multilingual support.
-		$this->multilingual->run();
+		// Run all the plugin components.
+		foreach ( $this->plugin_components as $component ) {
+			$component->run( $this );
+		}
 	}
 
 	/**

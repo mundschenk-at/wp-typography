@@ -27,6 +27,7 @@
 namespace WP_Typography\Settings;
 
 use \WP_Typography;
+use \WP_Typography\Plugin_Component;
 use \WP_Typography\Settings\Plugin_Configuration as Config;
 
 use \PHP_Typography\Settings;
@@ -40,7 +41,7 @@ use \PHP_Typography\Settings\Quote_Style;
  *
  * @author Peter Putzer <github@mundschenk.at>
  */
-class Multilingual {
+class Multilingual implements Plugin_Component {
 
 	/**
 	 * The plugin instance.
@@ -58,17 +59,17 @@ class Multilingual {
 
 	/**
 	 * Creates a new instance.
-	 *
-	 * @param WP_Typography $plugin The main plugin instance.
 	 */
-	public function __construct( WP_Typography $plugin ) {
-		$this->plugin = $plugin;
+	public function __construct() {
 	}
 
 	/**
 	 * Set up the various hooks for multilingual support.
+	 *
+	 * @param WP_Typography $plugin The main plugin instance.
 	 */
-	public function run() {
+	public function run( WP_Typography $plugin ) {
+		$this->plugin  = $plugin;
 		$this->locales = $this->initialize_locale_settings();
 	}
 

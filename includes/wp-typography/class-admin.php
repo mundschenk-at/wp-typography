@@ -46,7 +46,7 @@ use \PHP_Typography\Arrays;
  * @since      3.1.0
  * @author     Peter Putzer <github@mundschenk.at>
  */
-class Admin {
+class Admin implements Plugin_Component {
 	/**
 	 * The group name used for registering the plugin options.
 	 *
