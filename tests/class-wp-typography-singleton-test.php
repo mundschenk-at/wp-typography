@@ -88,6 +88,7 @@ class WP_Typography_Singleton_Test extends TestCase {
 	 * @uses \WP_Typography\Admin::__construct
 	 * @uses \WP_Typography\Abstract_Cache::__construct
 	 * @uses \WP_Typography\Cache::__construct
+	 * @uses \WP_Typography\Public_Interface::__construct
 	 * @uses \WP_Typography\Options::__construct
 	 * @uses \WP_Typography\Setup::__construct
 	 * @uses \WP_Typography\Transients::__construct
@@ -128,7 +129,11 @@ class WP_Typography_Singleton_Test extends TestCase {
 		$admin = m::mock( \WP_Typography\Admin::class, [ 'plugin_basename', $options ] );
 		$admin->shouldReceive( 'run' )->shouldReceive( 'get_default_settings' )->andReturn( [] );
 
-		$typo = new \WP_Typography( '6.6.6', $setup, $admin, $multi, $transients, $cache, $options );
+		// Mock WP_Typography\Public_Interface instance.
+		$public_if = m::mock( \WP_Typography\Public_Interface::class, [ 'plugin_basename' ] );
+		$public_if->shouldReceive( 'run' )->byDefault();
+
+		$typo = new \WP_Typography( '6.6.6', $setup, $admin, $public_if, $multi, $transients, $cache, $options );
 		$typo->run();
 
 		$typo2 = \WP_Typography::get_instance();
@@ -187,6 +192,9 @@ class WP_Typography_Singleton_Test extends TestCase {
 		$admin = m::mock( \WP_Typography\Admin::class );
 		$admin->shouldReceive( 'run' )->shouldReceive( 'get_default_settings' )->andReturn( [] );
 
+		$public_if = m::mock( \WP_Typography\Public_Interface::class );
+		$public_if->shouldReceive( 'run' );
+
 		$multi = m::mock( \WP_Typography\Settings\Multilingual::class );
 		$multi->shouldReceive( 'run' );
 
@@ -194,7 +202,7 @@ class WP_Typography_Singleton_Test extends TestCase {
 		$cache      = m::mock( \WP_Typography\Cache::class );
 		$options    = m::mock( \WP_Typography\Options::class );
 
-		$typo = new \WP_Typography( '6.6.6', $setup, $admin, $multi, $transients, $cache, $options );
+		$typo = new \WP_Typography( '6.6.6', $setup, $admin, $public_if, $multi, $transients, $cache, $options );
 		$typo->run();
 		$typo->run();
 	}

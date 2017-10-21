@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b72f518ef15b91fe03ee660b48ace68e",
+    "content-hash": "f62daacd08641bec2e1694e300156c0c",
     "packages": [
         {
             "name": "level-2/dice",

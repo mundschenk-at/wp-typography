@@ -29,6 +29,7 @@ use \WP_Typography\Admin;
 use \WP_Typography\Cache;
 use \WP_Typography\Options;
 use \WP_Typography\Plugin_Component;
+use \WP_Typography\Public_Interface;
 use \WP_Typography\Setup;
 use \WP_Typography\Transients;
 use \WP_Typography\Settings\Plugin_Configuration as Config;
@@ -129,13 +130,6 @@ class WP_Typography {
 	private $multilingual;
 
 	/**
-	 * The priority for our filter hooks.
-	 *
-	 * @var int
-	 */
-	private $filter_priority = 9999;
-
-	/**
 	 * The plugin components in order of execution.
 	 *
 	 * @var Plugin_Component[]
@@ -156,15 +150,16 @@ class WP_Typography {
 	 *              The parameter $plugin_path has been changed to be the full path
 	 *              of the main plugin file.
 	 *
-	 * @param string       $version     The full plugin version string (e.g. "3.0.0-beta.2").
-	 * @param Setup        $setup       Required.
-	 * @param Admin        $admin       Required.
-	 * @param Multilingual $multi       Required.
-	 * @param Transients   $transients  Required.
-	 * @param Cache        $cache       Required.
-	 * @param Options      $options     Required.
+	 * @param string           $version     The full plugin version string (e.g. "3.0.0-beta.2").
+	 * @param Setup            $setup       Required.
+	 * @param Admin            $admin       Required.
+	 * @param Public_Interface $public_if   Required.
+	 * @param Multilingual     $multi       Required.
+	 * @param Transients       $transients  Required.
+	 * @param Cache            $cache       Required.
+	 * @param Options          $options     Required.
 	 */
-	public function __construct( $version, Setup $setup, Admin $admin, Multilingual $multi, Transients $transients, Cache $cache, Options $options ) {
+	public function __construct( $version, Setup $setup, Admin $admin, Public_Interface $public_if, Multilingual $multi, Transients $transients, Cache $cache, Options $options ) {
 		// Basic set-up.
 		$this->version = $version;
 
@@ -177,6 +172,9 @@ class WP_Typography {
 
 		// Initialize activation/deactivation handler.
 		$this->plugin_components[] = $setup;
+
+		// Initialize public interface handler.
+		$this->plugin_components[] = $public_if;
 
 		// Initialize admin interface handler.
 		$this->plugin_components[] = $admin;
@@ -192,9 +190,6 @@ class WP_Typography {
 	public function run() {
 		// Set plugin singleton.
 		self::set_instance( $this );
-
-		// Ensure that our translations are loaded.
-		add_action( 'plugins_loaded', [ $this, 'plugins_loaded' ] );
 
 		// Load settings.
 		add_action( 'init', [ $this, 'init' ] );
@@ -432,42 +427,32 @@ class WP_Typography {
 		}
 
 		// Load settings.
-		$config = $this->options->get( Options::CONFIGURATION );
-		if ( is_array( $config ) ) {
-			$this->config = $config;
-		} else {
-			// The configuration array has been corrupted.
-			$this->set_default_options( true );
-		}
+		$this->get_config();
 
 		// Enable multilingual support.
 		if ( $this->config[ Config::ENABLE_MULTILINGUAL_SUPPORT ] ) {
 			add_filter( 'typo_settings', [ $this->multilingual, 'automatic_language_settings' ] );
 		}
-
-		// Disable wptexturize filter if it conflicts with our settings.
-		if ( $this->config[ Config::SMART_CHARACTERS ] && ! is_admin() ) {
-			add_filter( 'run_wptexturize', '__return_false' );
-
-			// Ensure that wptexturize is actually off by forcing a re-evaluation (some plugins call it too early).
-			wptexturize( ' ', true ); // Argument must not be empty string!
-		}
-
-		// Apply our filters.
-		if ( ! is_admin() ) {
-			$this->add_content_filters();
-
-			// Save hyphenator cache on exit, if necessary.
-			add_action( 'shutdown', [ $this, 'save_hyphenator_cache_on_shutdown' ], 10 );
-		}
-
-		// Add CSS Hook styling.
-		add_action( 'wp_head', [ $this, 'add_wp_head' ] );
-
-		// Optionally enable clipboard clean-up.
-		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 	}
 
+	/**
+	 * Retrieves the plugin configuration.
+	 *
+	 * @return array
+	 */
+	public function get_config() {
+		if ( empty( $this->config ) ) {
+			$config = $this->options->get( Options::CONFIGURATION );
+			if ( is_array( $config ) ) {
+				$this->config = $config;
+			} else {
+				// The configuration array has been corrupted.
+				$this->set_default_options( true );
+			}
+		}
+
+		return $this->config;
+	}
 
 	/**
 	 * Retrieves the internal Settings object for the preferences set via the
@@ -500,124 +485,6 @@ class WP_Typography {
 		}
 
 		return $this->typo_settings;
-	}
-
-	/**
-	 * Adds content filter handlers.
-	 */
-	public function add_content_filters() {
-		/**
-		 * Filters the priority used for wp-Typography's text processing filters.
-		 *
-		 * When NextGen Gallery is detected, the priority is set to PHP_INT_MAX.
-		 *
-		 * @since 3.2.0
-		 *
-		 * @param int $priority The filter priority. Default 9999.
-		 */
-		$priority = apply_filters( 'typo_filter_priority', $this->filter_priority );
-
-		// Add filters for "full" content.
-		/**
-		 * Disables automatic filtering by wp-Typography.
-		 *
-		 * @since 3.6.0
-		 *
-		 * @param bool   $disable      Whether to disable automatic filtering. Default false.
-		 * @param string $filter_group Which filters to disable. Possible values 'content', 'heading', 'title', 'acf'.
-		 */
-		if ( ! apply_filters( 'typo_disable_filtering', false, 'content' ) ) {
-			$this->enable_content_filters( $priority );
-		}
-
-		// Add filters for headings.
-		/** This filter is documented in class-wp-typography.php */
-		if ( ! apply_filters( 'typo_disable_filtering', false, 'heading' ) ) {
-			$this->enable_heading_filters( $priority );
-		}
-
-		// Extra care needs to be taken with the <title> tag.
-		/** This filter is documented in class-wp-typography.php */
-		if ( ! apply_filters( 'typo_disable_filtering', false, 'title' ) ) {
-			$this->enable_title_filters( $priority );
-		}
-
-		// Add filters for third-party plugins.
-		/** This filter is documented in class-wp-typography.php */
-		if ( class_exists( 'acf' ) && function_exists( 'acf_get_setting' ) && ! apply_filters( 'typo_disable_filtering', false, 'acf' ) ) {
-			$this->enable_acf_filters( $priority );
-		}
-	}
-
-	/**
-	 * Enable the content (body) filters.
-	 *
-	 * @param int $priority Filter priority.
-	 */
-	private function enable_content_filters( $priority ) {
-		add_filter( 'comment_author',    [ $this, 'process' ], $priority );
-		add_filter( 'comment_text',      [ $this, 'process' ], $priority );
-		add_filter( 'comment_text',      [ $this, 'process' ], $priority );
-		add_filter( 'the_content',       [ $this, 'process' ], $priority );
-		add_filter( 'term_name',         [ $this, 'process' ], $priority );
-		add_filter( 'term_description',  [ $this, 'process' ], $priority );
-		add_filter( 'link_name',         [ $this, 'process' ], $priority );
-		add_filter( 'the_excerpt',       [ $this, 'process' ], $priority );
-		add_filter( 'the_excerpt_embed', [ $this, 'process' ], $priority );
-		add_filter( 'widget_text',       [ $this, 'process' ], $priority );
-	}
-
-	/**
-	 * Enable the heading filters.
-	 *
-	 * @param int $priority Filter priority.
-	 */
-	private function enable_heading_filters( $priority ) {
-		add_filter( 'the_title',            [ $this, 'process_title' ], $priority );
-		add_filter( 'single_post_title',    [ $this, 'process_title' ], $priority );
-		add_filter( 'single_cat_title',     [ $this, 'process_title' ], $priority );
-		add_filter( 'single_tag_title',     [ $this, 'process_title' ], $priority );
-		add_filter( 'single_month_title',   [ $this, 'process_title' ], $priority );
-		add_filter( 'single_month_title',   [ $this, 'process_title' ], $priority );
-		add_filter( 'nav_menu_attr_title',  [ $this, 'process_title' ], $priority );
-		add_filter( 'nav_menu_description', [ $this, 'process_title' ], $priority );
-		add_filter( 'widget_title',         [ $this, 'process_title' ], $priority );
-		add_filter( 'list_cats',            [ $this, 'process_title' ], $priority );
-	}
-
-	/**
-	 * Enable the title (not heading) filters.
-	 *
-	 * @param int $priority Filter priority.
-	 */
-	private function enable_title_filters( $priority ) {
-		add_filter( 'wp_title',             [ $this, 'process_feed' ],        $priority ); // WP < 4.4.
-		add_filter( 'document_title_parts', [ $this, 'process_title_parts' ], $priority );
-		add_filter( 'wp_title_parts',       [ $this, 'process_title_parts' ], $priority ); // WP < 4.4.
-	}
-
-	/**
-	 * Enable the Advanced Custom Fields (https://www.advancedcustomfields.com) filters.
-	 *
-	 * @param int $priority Filter priority.
-	 */
-	private function enable_acf_filters( $priority ) {
-		$acf_version = intval( acf_get_setting( 'version' ) );
-
-		if ( 5 === $acf_version ) {
-			// Advanced Custom Fields Pro (version 5).
-			$acf_prefix = 'acf/format_value';
-		} elseif ( 4 === $acf_version ) {
-			// Advanced Custom Fields (version 4).
-			$acf_prefix = 'acf/format_value_for_api';
-		}
-
-		// Other ACF versions (i.e. < 4) are not supported.
-		if ( ! empty( $acf_prefix ) ) {
-			add_filter( "{$acf_prefix}/type=wysiwyg",  [ $this, 'process' ],       $priority );
-			add_filter( "{$acf_prefix}/type=textarea", [ $this, 'process' ],       $priority );
-			add_filter( "{$acf_prefix}/type=text",     [ $this, 'process_title' ], $priority );
-		}
 	}
 
 	/**
@@ -987,32 +854,6 @@ class WP_Typography {
 	}
 
 	/**
-	 * Prints CSS and JS depending on plugin options.
-	 */
-	public function add_wp_head() {
-		if ( $this->config[ Config::STYLE_CSS_INCLUDE ] && '' !== trim( $this->config[ Config::STYLE_CSS ] ) ) {
-			echo '<style type="text/css">' . "\r\n";
-			echo esc_html( $this->config[ Config::STYLE_CSS ] ) . "\r\n";
-			echo "</style>\r\n";
-		}
-
-		if ( $this->config[ Config::HYPHENATE_SAFARI_FONT_WORKAROUND ] ) {
-			echo "<style type=\"text/css\">body {-webkit-font-feature-settings: \"liga\";font-feature-settings: \"liga\";-ms-font-feature-settings: normal;}</style>\r\n";
-		}
-	}
-
-	/**
-	 * Loads translations and checks for other plugins.
-	 */
-	public function plugins_loaded() {
-
-		// Check for NextGEN Gallery and use insane filter priority if activated.
-		if ( class_exists( 'C_NextGEN_Bootstrap' ) ) {
-			$this->filter_priority = PHP_INT_MAX;
-		}
-	}
-
-	/**
 	 * Encodes the given version string (in the form "3.0.0-beta.1") to a representation suitable for hashing.
 	 *
 	 * The current implementation works as follows:
@@ -1057,19 +898,6 @@ class WP_Typography {
 	 */
 	public function get_version_hash() {
 		return $this->hash_version_string( $this->version );
-	}
-
-	/**
-	 * Enqueues frontend JavaScript files.
-	 */
-	public function enqueue_scripts() {
-		if ( $this->config[ Config::HYPHENATE_CLEAN_CLIPBOARD ] ) {
-			// Set up file suffix.
-			$suffix = SCRIPT_DEBUG ? '' : '.min';
-
-			wp_enqueue_script( 'jquery-selection',                plugin_dir_url( $this->local_plugin_path ) . "js/jquery.selection$suffix.js", [ 'jquery' ],                     $this->version, true );
-			wp_enqueue_script( 'wp-typography-cleanup-clipboard', plugin_dir_url( $this->local_plugin_path ) . "js/clean_clipboard$suffix.js",  [ 'jquery', 'jquery-selection' ], $this->version, true );
-		}
 	}
 
 	/**

@@ -45,6 +45,7 @@ use Mockery as m;
  * @uses ::__construct
  * @uses ::hash_version_string
  * @uses \WP_Typography\Admin::__construct
+ * @uses \WP_Typography\Public_Interface::__construct
  * @uses \WP_Typography\Setup::__construct
  */
 class WP_Typography_Test extends TestCase {
@@ -62,6 +63,13 @@ class WP_Typography_Test extends TestCase {
 	 * @var \WP_Typography\Admin
 	 */
 	protected $wp_typo_admin;
+
+	/**
+	 * Test fixture.
+	 *
+	 * @var \WP_Typography\Public_Interface
+	 */
+	protected $public_if;
 
 	/**
 	 * Test fixture.
@@ -144,8 +152,13 @@ class WP_Typography_Test extends TestCase {
 			->shouldReceive( 'get_default_settings' )->andReturn( [ 'dummy_settings' => 'bar' ] )->byDefault()
 			->getMock();
 
+		// Mock WP_Typography\Public_Interface instance.
+		$this->public_if = m::mock( \WP_Typography\Public_Interface::class, [ 'plugin_basename' ] )
+			->shouldReceive( 'run' )->byDefault()
+			->getMock();
+
 		// Create instance.
-		$this->wp_typo = m::mock( \WP_Typography::class, [ '7.7.7', $this->setup, $this->wp_typo_admin, $this->multi, $this->transients, $this->cache, $this->options ] )
+		$this->wp_typo = m::mock( \WP_Typography::class, [ '7.7.7', $this->setup, $this->wp_typo_admin, $this->public_if, $this->multi, $this->transients, $this->cache, $this->options ] )
 			->shouldAllowMockingProtectedMethods()
 			->makePartial();
 
@@ -188,6 +201,7 @@ class WP_Typography_Test extends TestCase {
 	 * @uses \WP_Typography\Abstract_Cache::__construct
 	 * @uses \WP_Typography\Cache::__construct
 	 * @uses \WP_Typography\Cache::invalidate
+	 * @uses \WP_Typography\Public_Interface::__construct
 	 * @uses \WP_Typography\Options::__construct
 	 * @uses \WP_Typography\Setup::__construct
 	 * @uses \WP_Typography\Transients::__construct
@@ -196,25 +210,17 @@ class WP_Typography_Test extends TestCase {
 	 * @uses \WP_Typography\Settings\Multilingual::__construct
 	 */
 	public function test_constructor() {
-		global $wpdb;
 
-		if ( ! defined( 'ARRAY_A' ) ) {
-			define( 'ARRAY_A', 'array' );
-		}
-
-		$wpdb          = m::mock( 'wpdb' ); // WPCS: override ok.
-		$wpdb->options = 'wp_options';
-		$wpdb->shouldReceive( 'prepare' )->withAnyArgs()->andReturn( 'fake SQL string' )->byDefault();
-		$wpdb->shouldReceive( 'get_results' )->withAnyArgs()->andReturn( [] )->byDefault();
-
-		Functions\expect( 'get_transient' )->once()->with( 'typo_transients_incrementor' )->andReturn( false );
-		Functions\expect( 'set_transient' )->once()->andReturn( 0 );
-		Functions\expect( 'wp_cache_get' )->once()->with( 'typo_cache_incrementor', 'wp-typography' )->andReturn( 0 );
-		Functions\expect( 'wp_cache_set' )->once()->with( 'typo_cache_incrementor', m::type( 'int' ), 'wp-typography', 0 )->andReturn( true );
-		Functions\expect( 'wp_using_ext_object_cache' )->once()->andReturn( false );
-		Functions\expect( 'wp_list_pluck' )->once()->andReturn( [] );
-
-		$typo = new \WP_Typography( '6.6.6', m::mock( \WP_Typography\Setup::class ), m::mock( \WP_Typography\Admin::class ), m::mock( \WP_Typography\Settings\Multilingual::class ) );
+		$typo = new \WP_Typography(
+			'6.6.6',
+			m::mock( \WP_Typography\Setup::class ),
+			m::mock( \WP_Typography\Admin::class ),
+			m::mock( \WP_Typography\Public_Interface::class ),
+			m::mock( \WP_Typography\Settings\Multilingual::class ),
+			m::mock( \WP_Typography\Transients::class ),
+			m::mock( \WP_Typography\Cache::class ),
+			m::mock( \WP_Typography\Options::class )
+		);
 
 		$this->assertInstanceOf( \WP_Typography::class, $typo );
 		$this->assertAttributeSame( '6.6.6', 'version', $typo );
@@ -231,13 +237,13 @@ class WP_Typography_Test extends TestCase {
 	 * @uses ::get_version_hash
 	 * @uses ::hash_version_string
 	 * @uses \WP_Typography\Admin::__construct
+	 * @uses \WP_Typography\Public_Interface::__construct
 	 * @uses \WP_Typography\Setup::__construct
 	 */
 	public function test_run() {
 		$this->wp_typo->run();
 
-		$this->assertTrue( has_action( 'plugins_loaded', get_class( $this->wp_typo ) . '->plugins_loaded()', 10 ) );
-		$this->assertTrue( has_action( 'init',           get_class( $this->wp_typo ) . '->init()',           10 ) );
+		$this->assertTrue( has_action( 'init', get_class( $this->wp_typo ) . '->init()', 10 ) );
 	}
 
 	/**
@@ -671,13 +677,13 @@ class WP_Typography_Test extends TestCase {
 	 */
 	public function provide_init_data() {
 		return [
-			[ true, true, true, true, true, true ],
-			[ false, false, false, false, false, true ],
-			[ true, false, false, false, false, false ],
-			[ false, true, false, false, false, false ],
-			[ false, false, true, false, false, true ],
-			[ false, false, false, true, false, false ],
-			[ false, false, false, false, true, false ],
+			[ true, true, true, true ],
+			[ false, false, false, false ],
+			[ true, false, false, false ],
+			[ false, true, false, false ],
+			[ false, false, true, false ],
+			[ false, false, false, false ],
+			[ false, false, false, true ],
 		];
 	}
 
@@ -694,28 +700,19 @@ class WP_Typography_Test extends TestCase {
 	 * @param bool $restore_defaults The typo_restore_defaults value.
 	 * @param bool $clear_cache      The typo_clear_cache value.
 	 * @param bool $smart_characters The typo_smart_characters value.
-	 * @param bool $admin            Whether is_admin() should return true.
 	 * @param bool $multilingual     The typo_enable_multilingual_support value.
-	 * @param bool $get_config       Whether the plugin configuration can be retrieved successfully.
 	 */
-	public function test_init( $restore_defaults, $clear_cache, $smart_characters, $admin, $multilingual, $get_config ) {
+	public function test_init( $restore_defaults, $clear_cache, $smart_characters, $multilingual ) {
 		$settings = $this->prepareOptions( [
 			Config::SMART_CHARACTERS            => $smart_characters,
 			Config::ENABLE_MULTILINGUAL_SUPPORT => $multilingual,
 		] );
 		$this->wp_typo->run();
 
-		Functions\expect( 'is_admin' )->atLeast()->once()->andReturn( $admin );
-
 		$this->options->shouldReceive( 'get' )->once()->with( Options::RESTORE_DEFAULTS )->andReturn( $restore_defaults );
 		$this->options->shouldReceive( 'get' )->once()->with( Options::CLEAR_CACHE )->andReturn( $clear_cache );
 
-		if ( $get_config ) {
-			$this->options->shouldReceive( 'get' )->once()->with( Options::CONFIGURATION )->andReturn( $settings );
-		} else {
-			$this->options->shouldReceive( 'get' )->once()->with( Options::CONFIGURATION )->andReturn( '' );
-			$this->wp_typo->shouldReceive( 'set_default_options' )->once()->with( true );
-		}
+		$this->wp_typo->shouldReceive( 'get_config' )->once();
 
 		if ( $restore_defaults ) {
 			$this->wp_typo->shouldReceive( 'set_default_options' )->once()->with( true );
@@ -725,139 +722,9 @@ class WP_Typography_Test extends TestCase {
 			$this->wp_typo->shouldReceive( 'clear_cache' )->once();
 		}
 
-		if ( ! $admin ) {
-			$this->wp_typo->shouldReceive( 'add_content_filters' )->once();
-
-			if ( $smart_characters ) {
-				Filters\expectAdded( 'run_wptexturize' );
-				Functions\expect( 'wptexturize' )->once()->with( ' ', true );
-			}
-		}
-
 		$this->wp_typo->init();
 
-		self::assertTrue( has_action( 'wp_head', [ $this->wp_typo, 'add_wp_head' ] ) );
-		self::assertTrue( has_action( 'wp_enqueue_scripts', [ $this->wp_typo, 'enqueue_scripts' ] ) );
-		self::assertSame( ! $admin, has_action( 'shutdown', [ $this->wp_typo, 'save_hyphenator_cache_on_shutdown' ] ) );
 		self::assertSame( $multilingual, has_filter( 'typo_settings', [ $this->multi, 'automatic_language_settings' ] ) );
-	}
-
-	/**
-	 * Provide data for testing add_content_filters.
-	 *
-	 * @return array
-	 */
-	public function provide_add_content_filters_data() {
-		return [
-			[ true, true, true, 0, false ],
-			[ false, false, false, 0, false ],
-			[ true, false, false, 5, false ],
-			[ true, false, false, 4, true ],
-			[ false, false, false, 4, false ],
-		];
-	}
-
-	/**
-	 * Test add_content_filters
-	 *
-	 * @covers ::add_content_filters
-	 * @covers ::enable_content_filters
-	 * @covers ::enable_heading_filters
-	 * @covers ::enable_title_filters
-	 * @covers ::enable_acf_filters
-	 *
-	 * @dataProvider provide_add_content_filters_data
-	 *
-	 * @param bool $content     Disable content filters if true.
-	 * @param bool $heading     Disable heading filters if true.
-	 * @param bool $title       Disable title filters if true.
-	 * @param int  $acf_version Simulated ACF version.
-	 * @param bool $acf         Disable ACF filters if true.
-	 */
-	public function test_add_content_filters( $content, $heading, $title, $acf_version, $acf ) {
-
-		$content_hooks = [
-			'comment_author',
-			'comment_text',
-			'the_content',
-			'term_name',
-			'term_description',
-			'link_name',
-			'the_excerpt',
-			'the_excerpt_embed',
-			'widget_text',
-		];
-		$heading_hooks = [
-			'the_title',
-			'single_post_title',
-			'single_cat_title',
-			'single_tag_title',
-			'single_month_title',
-			'nav_menu_attr_title',
-			'nav_menu_description',
-			'widget_title',
-			'list_cats',
-		];
-		$title_hooks   = [
-			'wp_title'             => 'process_feed',
-			'document_title_parts' => 'process_title_parts',
-			'wp_title_parts'       => 'process_title_parts',
-		];
-		$acf_hooks     = [
-			4 => [
-				'acf/format_value_for_api/type=wysiwyg'  => 'process',
-				'acf/format_value_for_api/type=textarea' => 'process',
-				'acf/format_value_for_api/type=text'     => 'process_title',
-			],
-			5 => [
-				'acf/format_value/type=wysiwyg'  => 'process',
-				'acf/format_value/type=textarea' => 'process',
-				'acf/format_value/type=text'     => 'process_title',
-			],
-		];
-
-		Filters\expectApplied( 'typo_filter_priority' )->once();
-		Filters\expectApplied( 'typo_disable_filtering' )->once()->with( false, 'content' )->andReturn( $content );
-		Filters\expectApplied( 'typo_disable_filtering' )->once()->with( false, 'heading' )->andReturn( $heading );
-		Filters\expectApplied( 'typo_disable_filtering' )->once()->with( false, 'title' )->andReturn( $title );
-
-		if ( $acf_version > 0 ) {
-			m::mock( 'acf' );
-
-			Filters\expectApplied( 'typo_disable_filtering' )->once()->with( false, 'acf' )->andReturn( $acf );
-
-			if ( ! $acf ) {
-				Functions\expect( 'acf_get_setting' )->once()->with( 'version' )->andReturn( $acf_version );
-			}
-		}
-
-		$this->wp_typo->add_content_filters();
-
-		$expected = ! $content;
-		foreach ( $content_hooks as $hook ) {
-			$found = has_filter( $hook, get_class( $this->wp_typo ) . '->process()' );
-			$this->assertEquals( $expected, $found, "Hook $hook" . ( $expected ? '' : ' not' ) . ' expected, but' . ( $found ? '' : ' not' ) . ' found.' );
-		}
-
-		$expected = ! $heading;
-		foreach ( $heading_hooks as $hook ) {
-			$found = has_filter( $hook, get_class( $this->wp_typo ) . '->process_title()' );
-			$this->assertEquals( $expected, $found, "Hook $hook" . ( $expected ? '' : ' not' ) . ' expected, but' . ( $found ? '' : ' not' ) . ' found.' );
-		}
-
-		$expected = ! $title;
-		foreach ( $title_hooks as $hook => $method ) {
-			$found = has_filter( $hook, get_class( $this->wp_typo ) . "->$method()" );
-			$this->assertEquals( $expected, $found, "Hook $hook" . ( $expected ? '' : ' not' ) . ' expected, but' . ( $found ? '' : ' not' ) . ' found.' );
-		}
-
-		foreach ( array_keys( $acf_hooks ) as $version ) {
-			$expected = $acf_version === $version && ! $acf;
-			foreach ( $acf_hooks[ $version ] as $hook => $method ) {
-				$found = has_filter( $hook, get_class( $this->wp_typo ) . "->$method()" );
-				$this->assertEquals( $expected, $found, "Hook $hook" . ( $expected ? '' : ' not' ) . ' expected, but' . ( $found ? '' : ' not' ) . ' found.' );
-			}
-		}
 	}
 
 	/**
@@ -1136,64 +1003,6 @@ class WP_Typography_Test extends TestCase {
 		$this->assertTrue( 1 === Filters\applied( 'typo_handle_parser_errors' ) );
 	}
 
-
-	/**
-	 * Test add_wp_head.
-	 *
-	 * @covers ::add_wp_head
-	 */
-	public function test_add_wp_head_css() {
-		$this->prepareOptions( [
-			Config::STYLE_CSS_INCLUDE                => true,
-			Config::STYLE_CSS                        => 'my: css;',
-			Config::HYPHENATE_SAFARI_FONT_WORKAROUND => false,
-		] );
-		Functions\expect( 'esc_html' )->once()->andReturnFirstArg();
-		$this->expectOutputString( "<style type=\"text/css\">\r\nmy: css;\r\n</style>\r\n" );
-		$this->wp_typo->add_wp_head();
-	}
-
-	/**
-	 * Test add_wp_head.
-	 *
-	 * @covers ::add_wp_head
-	 */
-	public function test_add_wp_head_safari_workaround() {
-		$this->prepareOptions( [
-			Config::STYLE_CSS_INCLUDE                => false,
-			Config::HYPHENATE_SAFARI_FONT_WORKAROUND => true,
-		] );
-		$this->expectOutputString( "<style type=\"text/css\">body {-webkit-font-feature-settings: \"liga\";font-feature-settings: \"liga\";-ms-font-feature-settings: normal;}</style>\r\n" );
-		$this->wp_typo->add_wp_head();
-
-	}
-
-	/**
-	 * Test plugins_loaded.
-	 *
-	 * @covers ::plugins_loaded
-	 */
-	public function test_plugins_loaded() {
-		Functions\expect( 'load_plugin_textdomain' )->once();
-
-		$this->wp_typo->plugins_loaded();
-		$this->assertTrue( true );
-	}
-
-	/**
-	 * Test plugins_loaded.
-	 *
-	 * @covers ::plugins_loaded
-	 */
-	public function test_plugins_loaded_with_nextgen() {
-		Functions\expect( 'load_plugin_textdomain' )->once();
-		m::mock( 'C_NextGEN_Bootstrap' );
-
-		$this->wp_typo->plugins_loaded();
-		$this->assertAttributeSame( PHP_INT_MAX, 'filter_priority', $this->wp_typo );
-
-	}
-
 	/**
 	 * Test get_version.
 	 *
@@ -1211,29 +1020,6 @@ class WP_Typography_Test extends TestCase {
 	 */
 	public function test_get_version_hash() {
 		$this->assertInternalType( 'string', $this->wp_typo->get_version_hash() );
-	}
-
-	/**
-	 * Test enqueue_scripts.
-	 *
-	 * @covers ::enqueue_scripts
-	 */
-	public function test_enqueue_scripts() {
-		$this->prepareOptions( [
-			Config::HYPHENATE_CLEAN_CLIPBOARD => true,
-		] );
-
-		define( 'SCRIPT_DEBUG', false );
-
-		Functions\expect( 'plugin_dir_url' )->andReturn( 'dummy/path' );
-		Functions\expect( 'wp_enqueue_script' )
-			->once()
-			->with( 'jquery-selection', m::type( 'string' ), m::type( 'array' ), m::type( 'string' ), true )
-			->andAlsoExpectIt()->once()
-			->with( 'wp-typography-cleanup-clipboard', m::type( 'string' ), m::type( 'array' ), m::type( 'string' ), true );
-		$this->wp_typo->enqueue_scripts();
-
-		$this->assertTrue( true );
 	}
 
 	/**
