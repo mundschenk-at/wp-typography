@@ -4,8 +4,51 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "06573036cfbeeca024dc987f39adab31",
+    "content-hash": "b72f518ef15b91fe03ee660b48ace68e",
     "packages": [
+        {
+            "name": "level-2/dice",
+            "version": "2.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Level-2/Dice.git",
+                "reference": "fee948c67e8881f081627f6b1791b841d2e5bd0e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Level-2/Dice/zipball/fee948c67e8881f081627f6b1791b841d2e5bd0e",
+                "reference": "fee948c67e8881f081627f6b1791b841d2e5bd0e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Dice\\": "./"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Tom Butler",
+                    "email": "tom@r.je"
+                }
+            ],
+            "description": "A minimalist Dependency injection container (DIC) for PHP. Please note: This branch is only compatible with PHP5.6. 5.5, 5.4 and 5.3 compatible version is available as a separate branch on github. ",
+            "homepage": "http://r.je/dice.html",
+            "keywords": [
+                "dependency injection",
+                "dependency injection container",
+                "di",
+                "ioc"
+            ],
+            "time": "2015-12-13T17:24:53+00:00"
+        },
         {
             "name": "masterminds/html5",
             "version": "2.3.0",
@@ -140,12 +183,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/antecedent/patchwork.git",
-                "reference": "ee5e6d669b9e379cff7b42c005c55e7b8c33b9d8"
+                "reference": "818d0f04b5ebc1bdd002155db391de49628d2325"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antecedent/patchwork/zipball/ee5e6d669b9e379cff7b42c005c55e7b8c33b9d8",
-                "reference": "ee5e6d669b9e379cff7b42c005c55e7b8c33b9d8",
+                "url": "https://api.github.com/repos/antecedent/patchwork/zipball/818d0f04b5ebc1bdd002155db391de49628d2325",
+                "reference": "818d0f04b5ebc1bdd002155db391de49628d2325",
                 "shasum": ""
             },
             "require": {
@@ -173,7 +216,7 @@
                 "runkit",
                 "testing"
             ],
-            "time": "2017-09-11T13:43:30+00:00"
+            "time": "2017-10-21T11:35:12+00:00"
         },
         {
             "name": "brain/monkey",
@@ -516,37 +559,40 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.6.1",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "8e6e04167378abf1ddb4d3522d8755c5fd90d102"
+                "reference": "3b8a3a99ba1f6a3952ac2747d989303cbd6b7a3e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/8e6e04167378abf1ddb4d3522d8755c5fd90d102",
-                "reference": "8e6e04167378abf1ddb4d3522d8755c5fd90d102",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/3b8a3a99ba1f6a3952ac2747d989303cbd6b7a3e",
+                "reference": "3b8a3a99ba1f6a3952ac2747d989303cbd6b7a3e",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.4.0"
+                "php": "^5.6 || ^7.0"
             },
             "require-dev": {
-                "doctrine/collections": "1.*",
-                "phpunit/phpunit": "~4.1"
+                "doctrine/collections": "^1.0",
+                "doctrine/common": "^2.6",
+                "phpunit/phpunit": "^4.1"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
                     "DeepCopy\\": "src/DeepCopy/"
-                }
+                },
+                "files": [
+                    "src/DeepCopy/deep_copy.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "Create deep copies (clones) of your objects",
-            "homepage": "https://github.com/myclabs/DeepCopy",
             "keywords": [
                 "clone",
                 "copy",
@@ -554,7 +600,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2017-04-12T18:52:22+00:00"
+            "time": "2017-10-19T19:58:43+00:00"
         },
         {
             "name": "nette/bootstrap",
@@ -2912,12 +2958,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git",
-                "reference": "3f1c0c0acf87de4976c30d70a4341362e568aad1"
+                "reference": "d7d8e96a820c52e5eec60098463b2d7f74eb451d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WordPress-Coding-Standards/WordPress-Coding-Standards/zipball/3f1c0c0acf87de4976c30d70a4341362e568aad1",
-                "reference": "3f1c0c0acf87de4976c30d70a4341362e568aad1",
+                "url": "https://api.github.com/repos/WordPress-Coding-Standards/WordPress-Coding-Standards/zipball/d7d8e96a820c52e5eec60098463b2d7f74eb451d",
+                "reference": "d7d8e96a820c52e5eec60098463b2d7f74eb451d",
                 "shasum": ""
             },
             "require": {
@@ -2944,7 +2990,7 @@
                 "standards",
                 "wordpress"
             ],
-            "time": "2017-10-19T07:10:50+00:00"
+            "time": "2017-10-20T13:10:25+00:00"
         }
     ],
     "aliases": [

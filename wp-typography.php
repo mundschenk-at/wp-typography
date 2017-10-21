@@ -70,7 +70,7 @@ function run_wp_typography() {
 		$version     = $plugin_data['Version'];
 
 		// Create the plugin.
-		$plugin = new WP_Typography( $version, __FILE__ );
+		$plugin = WP_Typography_Factory::get( __FILE__ )->create( 'WP_Typography', array( $version ) );
 
 		// Start the plugin for real.
 		$plugin->run();

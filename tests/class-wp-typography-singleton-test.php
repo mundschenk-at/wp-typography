@@ -128,8 +128,7 @@ class WP_Typography_Singleton_Test extends TestCase {
 		$admin = m::mock( \WP_Typography\Admin::class, [ 'plugin_basename', $options ] );
 		$admin->shouldReceive( 'run' )->shouldReceive( 'get_default_settings' )->andReturn( [] );
 
-		Functions\expect( 'plugin_basename' )->once()->with( m::type( 'string' ) )->andReturn( 'base/name' );
-		$typo = new \WP_Typography( '6.6.6', 'dummy/path', $setup, $admin, $multi, $transients, $cache, $options );
+		$typo = new \WP_Typography( '6.6.6', $setup, $admin, $multi, $transients, $cache, $options );
 		$typo->run();
 
 		$typo2 = \WP_Typography::get_instance();
@@ -195,9 +194,7 @@ class WP_Typography_Singleton_Test extends TestCase {
 		$cache      = m::mock( \WP_Typography\Cache::class );
 		$options    = m::mock( \WP_Typography\Options::class );
 
-		Functions\expect( 'plugin_basename' )->once()->with( m::type( 'string' ) )->andReturn( 'base/name' );
-
-		$typo = new \WP_Typography( '6.6.6', 'dummy/path', $setup, $admin, $multi, $transients, $cache, $options );
+		$typo = new \WP_Typography( '6.6.6', $setup, $admin, $multi, $transients, $cache, $options );
 		$typo->run();
 		$typo->run();
 	}

@@ -53,13 +53,6 @@ class WP_Typography {
 	private $version;
 
 	/**
-	 * The result of plugin_basename() for the main plugin file (relative from plugins folder).
-	 *
-	 * @var string $local_plugin_path
-	 */
-	private $local_plugin_path;
-
-	/**
 	 * A hash containing the various plugin settings.
 	 *
 	 * @var array
@@ -163,35 +156,33 @@ class WP_Typography {
 	 *              The parameter $plugin_path has been changed to be the full path
 	 *              of the main plugin file.
 	 *
-	 * @param string            $version     The full plugin version string (e.g. "3.0.0-beta.2").
-	 * @param string            $plugin_path Optional. The full path for the main plugin file. Default ''.
-	 * @param Setup|null        $setup       Optional. Default null (which means a private instance will be created).
-	 * @param Admin|null        $admin       Optional. Default null (which means a private instance will be created).
-	 * @param Multilingual|null $multi       Optional. Default null (which means a private instance will be created).
-	 * @param Transients|null   $transients  Optional. Default null (which means a private instance will be created).
-	 * @param Cache|null        $cache       Optional. Default null (which means a private instance will be created).
-	 * @param Options|null      $options     Optional. Default null (which means a private instance will be created).
+	 * @param string       $version     The full plugin version string (e.g. "3.0.0-beta.2").
+	 * @param Setup        $setup       Required.
+	 * @param Admin        $admin       Required.
+	 * @param Multilingual $multi       Required.
+	 * @param Transients   $transients  Required.
+	 * @param Cache        $cache       Required.
+	 * @param Options      $options     Required.
 	 */
-	public function __construct( $version, $plugin_path = '', Setup $setup = null, Admin $admin = null, Multilingual $multi = null, Transients $transients = null, Cache $cache = null, Options $options = null ) {
+	public function __construct( $version, Setup $setup, Admin $admin, Multilingual $multi, Transients $transients, Cache $cache, Options $options ) {
 		// Basic set-up.
-		$this->version           = $version;
-		$this->local_plugin_path = plugin_basename( $plugin_path );
+		$this->version = $version;
 
 		// Initialize cache handlers.
-		$this->transients = ( null === $transients ) ? new Transients() : $transients;
-		$this->cache      = ( null === $cache ) ? new Cache() : $cache;
+		$this->transients = $transients;
+		$this->cache      = $cache;
 
 		// Initialize Options API handler.
-		$this->options = ( null === $options ) ? new Options() : $options;
+		$this->options = $options;
 
 		// Initialize activation/deactivation handler.
-		$this->plugin_components[] = ( null === $setup ) ? new Setup( $plugin_path ) : $setup;
+		$this->plugin_components[] = $setup;
 
 		// Initialize admin interface handler.
-		$this->plugin_components[] = ( null === $admin ) ? new Admin( $this->local_plugin_path, $this->options ) : $admin;
+		$this->plugin_components[] = $admin;
 
 		// Initialize multilingual support.
-		$this->multilingual        = ( null === $multi ) ? new Multilingual() : $multi;
+		$this->multilingual        = $multi;
 		$this->plugin_components[] = $this->multilingual;
 	}
 

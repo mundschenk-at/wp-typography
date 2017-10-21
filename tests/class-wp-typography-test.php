@@ -145,8 +145,7 @@ class WP_Typography_Test extends TestCase {
 			->getMock();
 
 		// Create instance.
-		Functions\expect( 'plugin_basename' )->once()->with( m::type( 'string' ) )->andReturn( 'base/name' );
-		$this->wp_typo = m::mock( \WP_Typography::class, [ '7.7.7', 'dummy/path', $this->setup, $this->wp_typo_admin, $this->multi, $this->transients, $this->cache, $this->options ] )
+		$this->wp_typo = m::mock( \WP_Typography::class, [ '7.7.7', $this->setup, $this->wp_typo_admin, $this->multi, $this->transients, $this->cache, $this->options ] )
 			->shouldAllowMockingProtectedMethods()
 			->makePartial();
 
@@ -214,9 +213,8 @@ class WP_Typography_Test extends TestCase {
 		Functions\expect( 'wp_cache_set' )->once()->with( 'typo_cache_incrementor', m::type( 'int' ), 'wp-typography', 0 )->andReturn( true );
 		Functions\expect( 'wp_using_ext_object_cache' )->once()->andReturn( false );
 		Functions\expect( 'wp_list_pluck' )->once()->andReturn( [] );
-		Functions\expect( 'plugin_basename' )->once()->with( m::type( 'string' ) )->andReturn( 'base/name' );
 
-		$typo = new \WP_Typography( '6.6.6', '/dummy/path', m::mock( \WP_Typography\Setup::class ), m::mock( \WP_Typography\Admin::class ), m::mock( \WP_Typography\Settings\Multilingual::class ) );
+		$typo = new \WP_Typography( '6.6.6', m::mock( \WP_Typography\Setup::class ), m::mock( \WP_Typography\Admin::class ), m::mock( \WP_Typography\Settings\Multilingual::class ) );
 
 		$this->assertInstanceOf( \WP_Typography::class, $typo );
 		$this->assertAttributeSame( '6.6.6', 'version', $typo );
@@ -338,6 +336,32 @@ class WP_Typography_Test extends TestCase {
 		$this->wp_typo->shouldReceive( 'cache_object' )->twice();
 
 		$this->assertInstanceOf( \PHP_Typography\PHP_Typography::class, $this->invokeMethod( $this->wp_typo, 'get_typography_instance' ) );
+	}
+
+	/**
+	 * Test get_config.
+	 *
+	 * @covers ::get_config
+	 */
+	public function test_get_config() {
+
+		$this->options->shouldReceive( 'get' )->once()->with( Options::CONFIGURATION )->andReturn( [ 'foo' => 'bar' ] );
+
+		$this->assertInternalType( 'array', $this->wp_typo->get_config() );
+	}
+
+	/**
+	 * Test get_config with corrupted option.
+	 *
+	 * @covers ::get_config
+	 */
+	public function test_get_config_corrupted() {
+
+		$this->options->shouldReceive( 'get' )->once()->with( Options::CONFIGURATION )->andReturn( 'wrong' );
+		$this->wp_typo->shouldReceive( 'set_default_options' )->once()->with( true );
+
+		// IRL set_default_options would fix the config object.
+		$this->assertSame( null, $this->wp_typo->get_config() );
 	}
 
 	/**

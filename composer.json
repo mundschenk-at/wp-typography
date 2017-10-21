@@ -20,7 +20,8 @@
 
     "require": {
         "php": ">=5.6.0",
-        "mundschenk-at/php-typography": "master-dev"
+        "mundschenk-at/php-typography": "master-dev",
+        "level-2/dice": "^2.0.3"
     },
     "require-dev": {
         "phpstan/phpstan": "^0.8",
