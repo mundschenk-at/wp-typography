@@ -1014,8 +1014,6 @@ class WP_Typography {
 	 * Loads translations and checks for other plugins.
 	 */
 	public function plugins_loaded() {
-		// Load our translations.
-		load_plugin_textdomain( 'wp-typography', false, dirname( $this->local_plugin_path ) . '/translations/' );
 
 		// Check for NextGEN Gallery and use insane filter priority if activated.
 		if ( class_exists( 'C_NextGEN_Bootstrap' ) ) {
