@@ -24,7 +24,7 @@
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-namespace WP_Typography;
+namespace WP_Typography\Components;
 
 use \WP_Typography\Options;
 use \WP_Typography\Settings\Plugin_Configuration as Config;

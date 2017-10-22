@@ -26,7 +26,7 @@
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-namespace WP_Typography;
+namespace WP_Typography\Components;
 
 use \WP_Typography\Options;
 use \WP_Typography\UI;
@@ -46,7 +46,7 @@ use \PHP_Typography\Arrays;
  * @since      3.1.0
  * @author     Peter Putzer <github@mundschenk.at>
  */
-class Admin implements Plugin_Component {
+class Admin_Interface implements Plugin_Component {
 	/**
 	 * The group name used for registering the plugin options.
 	 *
@@ -75,6 +75,14 @@ class Admin implements Plugin_Component {
 	 * @var string
 	 */
 	private $plugin_basename;
+
+	/**
+	 * The full path to the main plugin file.
+	 *
+	 * @since 5.1.0
+	 * @var   string
+	 */
+	private $plugin_file;
 
 	/**
 	 * The full version string of the plugin.
@@ -153,10 +161,12 @@ class Admin implements Plugin_Component {
 	/**
 	 * Create a new instace of admin backend.
 	 *
-	 * @param string  $basename The plugin slug.
-	 * @param Options $options  The Options API handler.
+	 * @param string  $basename    The result of plugin_basename() for the main plugin file.
+	 * @param string  $plugin_path The full path to the main plugin file.
+	 * @param Options $options     The Options API handler.
 	 */
-	public function __construct( $basename, Options $options ) {
+	public function __construct( $basename, $plugin_path, Options $options ) {
+		$this->plugin_file     = $plugin_path;
 		$this->plugin_basename = $basename;
 		$this->options         = $options;
 	}
@@ -495,6 +505,6 @@ class Admin implements Plugin_Component {
 		$this->admin_form_controls[ Config::DIACRITIC_LANGUAGES ]->set_option_values( $this->plugin->load_diacritic_languages() );
 
 		// Load the settings page HTML.
-		include_once \dirname( \dirname( __DIR__ ) ) . '/admin/partials/settings.php';
+		include_once \dirname( $this->plugin_file ) . '/admin/partials/settings.php';
 	}
 }

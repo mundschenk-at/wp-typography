@@ -26,13 +26,14 @@
 
 use \Dice\Dice;
 
-use \WP_Typography\Admin;
 use \WP_Typography\Cache;
 use \WP_Typography\Options;
-use \WP_Typography\Public_Interface;
-use \WP_Typography\Setup;
 use \WP_Typography\Transients;
-use \WP_Typography\Settings\Multilingual;
+
+use \WP_Typography\Components\Admin_Interface;
+use \WP_Typography\Components\Multilingual;
+use \WP_Typography\Components\Public_Interface;
+use \WP_Typography\Components\Setup;
 
 /**
  * A factory for creating WP_Typography instances via dependency injection.
@@ -74,8 +75,8 @@ abstract class WP_Typography_Factory {
 
 			// Additional parameters for compoennts.
 			$plugin_basename = \plugin_basename( $full_plugin_path );
-			self::$factory->addRule( Admin::class, [
-				'constructParams' => [ $plugin_basename ],
+			self::$factory->addRule( Admin_Interface::class, [
+				'constructParams' => [ $plugin_basename, $full_plugin_path ],
 			] );
 			self::$factory->addRule( Public_Interface::class, [
 				'constructParams' => [ $plugin_basename ],

@@ -24,7 +24,7 @@
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-namespace WP_Typography;
+namespace WP_Typography\Components;
 
 /**
  * Implements an interface for plugin components.

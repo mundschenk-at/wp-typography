@@ -25,15 +25,17 @@
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-use \WP_Typography\Admin;
 use \WP_Typography\Cache;
 use \WP_Typography\Options;
-use \WP_Typography\Plugin_Component;
-use \WP_Typography\Public_Interface;
-use \WP_Typography\Setup;
 use \WP_Typography\Transients;
+
+use \WP_Typography\Components\Admin_Interface;
+use \WP_Typography\Components\Multilingual;
+use \WP_Typography\Components\Plugin_Component;
+use \WP_Typography\Components\Public_Interface;
+use \WP_Typography\Components\Setup;
+
 use \WP_Typography\Settings\Plugin_Configuration as Config;
-use \WP_Typography\Settings\Multilingual;
 
 use \PHP_Typography\PHP_Typography;
 use \PHP_Typography\Settings;
@@ -152,14 +154,14 @@ class WP_Typography {
 	 *
 	 * @param string           $version     The full plugin version string (e.g. "3.0.0-beta.2").
 	 * @param Setup            $setup       Required.
-	 * @param Admin            $admin       Required.
+	 * @param Admin_Interface  $admin       Required.
 	 * @param Public_Interface $public_if   Required.
 	 * @param Multilingual     $multi       Required.
 	 * @param Transients       $transients  Required.
 	 * @param Cache            $cache       Required.
 	 * @param Options          $options     Required.
 	 */
-	public function __construct( $version, Setup $setup, Admin $admin, Public_Interface $public_if, Multilingual $multi, Transients $transients, Cache $cache, Options $options ) {
+	public function __construct( $version, Setup $setup, Admin_Interface $admin, Public_Interface $public_if, Multilingual $multi, Transients $transients, Cache $cache, Options $options ) {
 		// Basic set-up.
 		$this->version = $version;
 

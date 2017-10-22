@@ -24,7 +24,7 @@
 
 namespace WP_Typography\Tests;
 
-use WP_Typography\Public_Interface;
+use WP_Typography\Components\Public_Interface;
 use WP_Typography\Settings\Plugin_Configuration as Config;
 
 use Brain\Monkey\Actions;
@@ -36,14 +36,14 @@ use Mockery as m;
 /**
  * Public_Interface unit test for the singleton methods.
  *
- * @coversDefaultClass \WP_Typography\Public_Interface
- * @usesDefaultClass \WP_Typography\Public_Interface
+ * @coversDefaultClass \WP_Typography\Components\Public_Interface
+ * @usesDefaultClass \WP_Typography\Components\Public_Interface
  *
  * @uses ::__construct
  * @uses ::run
  */
 class Public_Interface_Test extends TestCase {
-
+	
 	/**
 	 * Test fixture.
 	 *
@@ -56,8 +56,8 @@ class Public_Interface_Test extends TestCase {
 	 * This method is called before a test is executed.
 	 */
 	protected function setUp() { // @codingStandardsIgnoreLine
-		// Mock WP_Typography\Public_Interface instance.
-		$this->public_if = m::mock( \WP_Typography\Public_Interface::class, [ 'plugin_basename' ] )
+		// Mock WP_Typography\Components\Public_Interface instance.
+		$this->public_if = m::mock( Public_Interface::class, [ 'plugin_basename' ] )
 			->shouldAllowMockingProtectedMethods()->makePartial();
 
 		Functions\expect( 'is_admin' )->once()->andReturn( false );
@@ -96,7 +96,7 @@ class Public_Interface_Test extends TestCase {
 	 * @covers ::__construct
 	 */
 	public function test_constructor() {
-		$public_if = m::mock( \WP_Typography\Public_Interface::class, [ 'plugin_basename' ] );
+		$public_if = m::mock( Public_Interface::class, [ 'plugin_basename' ] );
 
 		$this->assertAttributeSame( 'plugin_basename', 'plugin_basename', $public_if );
 	}

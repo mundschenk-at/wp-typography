@@ -24,8 +24,8 @@
 
 namespace WP_Typography\Tests;
 
-use WP_Typography\Admin;
 use WP_Typography\Options;
+use WP_Typography\Components\Admin_Interface;
 use WP_Typography\Settings\Plugin_Configuration as Config;
 
 use PHP_Typography\Hyphenator_Cache;
@@ -44,9 +44,9 @@ use Mockery as m;
  *
  * @uses ::__construct
  * @uses ::hash_version_string
- * @uses \WP_Typography\Admin::__construct
- * @uses \WP_Typography\Public_Interface::__construct
- * @uses \WP_Typography\Setup::__construct
+ * @uses \WP_Typography\Components\Admin_Interface::__construct
+ * @uses \WP_Typography\Components\Public_Interface::__construct
+ * @uses \WP_Typography\Components\Setup::__construct
  */
 class WP_Typography_Test extends TestCase {
 
@@ -60,28 +60,28 @@ class WP_Typography_Test extends TestCase {
 	/**
 	 * Test fixture.
 	 *
-	 * @var \WP_Typography\Admin
+	 * @var \WP_Typography\Components\Admin_Interface
 	 */
 	protected $wp_typo_admin;
 
 	/**
 	 * Test fixture.
 	 *
-	 * @var \WP_Typography\Public_Interface
+	 * @var \WP_Typography\Components\Public_Interface
 	 */
 	protected $public_if;
 
 	/**
 	 * Test fixture.
 	 *
-	 * @var \WP_Typography\Setup
+	 * @var \WP_Typography\Components\Setup
 	 */
 	protected $setup;
 
 	/**
 	 * Test fixture.
 	 *
-	 * @var \WP_Typography\Settings\Multilingual
+	 * @var \WP_Typography\Components\Multilingual
 	 */
 	protected $multi;
 
@@ -113,15 +113,15 @@ class WP_Typography_Test extends TestCase {
 	protected function setUp() { // @codingStandardsIgnoreLine
 
 		// Mock WP_Typography\Settings\Multlingual instance.
-		$this->multi = m::mock( \WP_Typography\Settings\Multilingual::class )
+		$this->multi = m::mock( \WP_Typography\Components\Multilingual::class )
 			->shouldReceive( 'run' )->byDefault()
 			->shouldReceive( 'filter_defaults' )->andReturnUsing( function( array $defaults ) {
 				return $defaults;
 			} )->byDefault()
 			->getMock();
 
-		// Mock WP_Typography\Setup instance.
-		$this->setup = m::mock( \WP_Typography\Setup::class, [ '/some/path' ] )
+		// Mock WP_Typography\Components\Setup instance.
+		$this->setup = m::mock( \WP_Typography\Components\Setup::class, [ '/some/path' ] )
 			->shouldReceive( 'run' )->byDefault()
 			->getMock();
 
@@ -146,14 +146,14 @@ class WP_Typography_Test extends TestCase {
 			->shouldReceive( 'set' )->andReturn( false )->byDefault()
 			->getMock();
 
-		// Mock WP_Typography\Admin instance.
-		$this->wp_typo_admin = m::mock( \WP_Typography\Admin::class, [ 'plugin_basename', $this->options ] )
+		// Mock WP_Typography\Components\Admin_Interface instance.
+		$this->wp_typo_admin = m::mock( \WP_Typography\Components\Admin_Interface::class, [ 'plugin_basename', '/plugin/path', $this->options ] )
 			->shouldReceive( 'run' )->byDefault()
 			->shouldReceive( 'get_default_settings' )->andReturn( [ 'dummy_settings' => 'bar' ] )->byDefault()
 			->getMock();
 
-		// Mock WP_Typography\Public_Interface instance.
-		$this->public_if = m::mock( \WP_Typography\Public_Interface::class, [ 'plugin_basename' ] )
+		// Mock WP_Typography\Components\Public_Interface instance.
+		$this->public_if = m::mock( \WP_Typography\Components\Public_Interface::class, [ 'plugin_basename' ] )
 			->shouldReceive( 'run' )->byDefault()
 			->getMock();
 
@@ -197,26 +197,26 @@ class WP_Typography_Test extends TestCase {
 	 *
 	 * @uses ::get_version
 	 * @uses ::get_version_hash
-	 * @uses \WP_Typography\Admin::__construct
+	 * @uses \WP_Typography\Components\Admin_Interface::__construct
 	 * @uses \WP_Typography\Abstract_Cache::__construct
 	 * @uses \WP_Typography\Cache::__construct
 	 * @uses \WP_Typography\Cache::invalidate
-	 * @uses \WP_Typography\Public_Interface::__construct
+	 * @uses \WP_Typography\Components\Public_Interface::__construct
 	 * @uses \WP_Typography\Options::__construct
-	 * @uses \WP_Typography\Setup::__construct
+	 * @uses \WP_Typography\Components\Setup::__construct
 	 * @uses \WP_Typography\Transients::__construct
 	 * @uses \WP_Typography\Transients::invalidate
 	 * @uses \WP_Typography\Transients::get_keys_from_database
-	 * @uses \WP_Typography\Settings\Multilingual::__construct
+	 * @uses \WP_Typography\Components\Multilingual::__construct
 	 */
 	public function test_constructor() {
 
 		$typo = new \WP_Typography(
 			'6.6.6',
-			m::mock( \WP_Typography\Setup::class ),
-			m::mock( \WP_Typography\Admin::class ),
-			m::mock( \WP_Typography\Public_Interface::class ),
-			m::mock( \WP_Typography\Settings\Multilingual::class ),
+			m::mock( \WP_Typography\Components\Setup::class ),
+			m::mock( \WP_Typography\Components\Admin_Interface::class ),
+			m::mock( \WP_Typography\Components\Public_Interface::class ),
+			m::mock( \WP_Typography\Components\Multilingual::class ),
 			m::mock( \WP_Typography\Transients::class ),
 			m::mock( \WP_Typography\Cache::class ),
 			m::mock( \WP_Typography\Options::class )
@@ -236,9 +236,9 @@ class WP_Typography_Test extends TestCase {
 	 * @uses ::get_version
 	 * @uses ::get_version_hash
 	 * @uses ::hash_version_string
-	 * @uses \WP_Typography\Admin::__construct
-	 * @uses \WP_Typography\Public_Interface::__construct
-	 * @uses \WP_Typography\Setup::__construct
+	 * @uses \WP_Typography\Components\Admin_Interface::__construct
+	 * @uses \WP_Typography\Components\Public_Interface::__construct
+	 * @uses \WP_Typography\Components\Setup::__construct
 	 */
 	public function test_run() {
 		$this->wp_typo->run();
