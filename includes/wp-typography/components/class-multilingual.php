@@ -24,9 +24,12 @@
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-namespace WP_Typography\Settings;
+namespace WP_Typography\Components;
 
 use \WP_Typography;
+
+use \WP_Typography\Settings\Basic_Locale_Settings;
+use \WP_Typography\Settings\Locale_Settings;
 use \WP_Typography\Settings\Plugin_Configuration as Config;
 
 use \PHP_Typography\Settings;
@@ -40,14 +43,7 @@ use \PHP_Typography\Settings\Quote_Style;
  *
  * @author Peter Putzer <github@mundschenk.at>
  */
-class Multilingual {
-
-	/**
-	 * The plugin instance.
-	 *
-	 * @var WP_Typography
-	 */
-	protected $plugin;
+class Multilingual implements Plugin_Component {
 
 	/**
 	 * An array of Locale_Settings.
@@ -57,18 +53,36 @@ class Multilingual {
 	protected $locales = [];
 
 	/**
-	 * Creates a new instance.
+	 * The list of available hyhphenation languages.
 	 *
-	 * @param WP_Typography $plugin The main plugin instance.
+	 * @var string[]
 	 */
-	public function __construct( WP_Typography $plugin ) {
-		$this->plugin = $plugin;
+	protected $hyphenation_languages;
+
+	/**
+	 * The list of available diacritics replacement languages.
+	 *
+	 * @var string[]
+	 */
+	protected $diacritic_languages;
+
+	/**
+	 * Creates a new instance.
+	 */
+	public function __construct() {
 	}
 
 	/**
 	 * Set up the various hooks for multilingual support.
+	 *
+	 * @param WP_Typography $plugin The main plugin instance.
 	 */
-	public function run() {
+	public function run( WP_Typography $plugin ) {
+		// Translation of language names is irrelevant here.
+		$this->hyphenation_languages = $plugin->load_hyphenation_languages();
+		$this->diacritic_languages   = $plugin->load_diacritic_languages();
+
+		// Initialize locales.
 		$this->locales = $this->initialize_locale_settings();
 	}
 
@@ -121,7 +135,7 @@ class Multilingual {
 		list( $locale, $language, $country, $modifier ) = $this->get_current_locale();
 
 		// Adjust hyphenation language.
-		$hyphenation_language_match = $this->match_language( $this->plugin->load_hyphenation_languages(), $locale, $language, 'hyphenation' );
+		$hyphenation_language_match = $this->match_language( $this->hyphenation_languages, $locale, $language, 'hyphenation' );
 		if ( ! empty( $hyphenation_language_match ) ) {
 			$settings->set_hyphenation_language( $hyphenation_language_match );
 		} else {
@@ -129,7 +143,7 @@ class Multilingual {
 		}
 
 		// Adjust diacritics replacement language.
-		$diacritics_language_match = $this->match_language( $this->plugin->load_diacritic_languages(), $locale, $language, 'diacritic' );
+		$diacritics_language_match = $this->match_language( $this->diacritic_languages, $locale, $language, 'diacritic' );
 		if ( ! empty( $diacritics_language_match ) ) {
 			$settings->set_diacritic_language( $diacritics_language_match );
 		} else {
@@ -166,7 +180,7 @@ class Multilingual {
 		}
 
 		// Adjust hyphenation language.
-		$hyphenation_language_match = $this->match_language( $this->plugin->load_hyphenation_languages(), "$language-$country", $language, 'hyphenation' );
+		$hyphenation_language_match = $this->match_language( $this->hyphenation_languages, "$language-$country", $language, 'hyphenation' );
 		if ( ! empty( $hyphenation_language_match ) ) {
 			$defaults[ Config::HYPHENATE_LANGUAGES ] = $hyphenation_language_match;
 		} else {
@@ -174,7 +188,7 @@ class Multilingual {
 		}
 
 		// Adjust diacritics replacement language.
-		$diacritics_language_match = $this->match_language( $this->plugin->load_diacritic_languages(), "$language-$country", $language, 'diacritics' );
+		$diacritics_language_match = $this->match_language( $this->diacritic_languages, "$language-$country", $language, 'diacritics' );
 		if ( ! empty( $diacritics_language_match ) ) {
 			$defaults[ Config::DIACRITIC_LANGUAGES ] = $diacritics_language_match;
 		}

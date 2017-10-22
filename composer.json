@@ -20,7 +20,8 @@
 
     "require": {
         "php": ">=5.6.0",
-        "mundschenk-at/php-typography": "master-dev"
+        "mundschenk-at/php-typography": "master-dev",
+        "level-2/dice": "^2.0.3"
     },
     "require-dev": {
         "phpstan/phpstan": "^0.8",
@@ -30,7 +31,7 @@
         "dealerdirect/phpcodesniffer-composer-installer": "^0.4.1",
         "phpunit/phpunit": "^6.4",
         "brain/monkey": "^2.0@dev",
-        "antecedent/patchwork": "dev-master as 2.1.5"
+        "antecedent/patchwork": "dev-master#ee5e6d669b9e379cff7b42c005c55e7b8c33b9d8 as 2.1.5"
     },
 
     "minimum-stability": "dev",

@@ -70,12 +70,7 @@ function run_wp_typography() {
 		$version     = $plugin_data['Version'];
 
 		// Create the plugin.
-		$plugin = new WP_Typography( $version, plugin_basename( __FILE__ ) );
-
-		// Register activation & deactivation hooks.
-		$setup_class = 'WP_Typography\Setup'; // Workaround for PHP 5.2 syntax check.
-		$setup       = new $setup_class( 'wp-typography', $plugin );
-		$setup->register( __FILE__ );
+		$plugin = WP_Typography_Factory::get( __FILE__ )->create( 'WP_Typography', array( $version ) );
 
 		// Start the plugin for real.
 		$plugin->run();

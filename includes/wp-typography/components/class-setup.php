@@ -24,7 +24,7 @@
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-namespace WP_Typography;
+namespace WP_Typography\Components;
 
 use \WP_Typography\Options;
 use \WP_Typography\Settings\Plugin_Configuration as Config;
@@ -34,10 +34,12 @@ use \WP_Typography\Settings\Plugin_Configuration as Config;
  *
  * This class defines all code necessary to run during the plugin's setup and teardown.
  *
- * @since      3.1.0
- * @author     Peter Putzer <github@mundschenk.at>
+ * @since 3.1.0
+ * @since 5.1.0 Now implements the Plugin_Component interface.
+ *
+ * @author Peter Putzer <github@mundschenk.at>
  */
-class Setup {
+class Setup implements Plugin_Component {
 
 	/**
 	 * Special option value for detecting non-existing options during upgrades.
@@ -47,12 +49,12 @@ class Setup {
 	const UPGRADING = 'UPGRADING_WP_TYPOGRAPHY';
 
 	/**
-	 * The unique identifier of this plugin.
+	 * The full path to the main plugin file.
 	 *
-	 * @since    3.1.0
-	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
+	 * @since 5.1.0
+	 * @var   string
 	 */
-	private $plugin_slug;
+	private $plugin_file;
 
 	/**
 	 * The plugin object.
@@ -65,23 +67,23 @@ class Setup {
 	/**
 	 * Create a new instace of WP_Typography\Setup.
 	 *
-	 * @param string         $slug   Required.
-	 * @param \WP_Typography $plugin Required.
+	 * @param string $plugin_path The full path to the main plugin file.
 	 */
-	public function __construct( $slug, \WP_Typography $plugin ) {
-		$this->plugin_slug = $slug;
-		$this->plugin      = $plugin;
+	public function __construct( $plugin_path ) {
+		$this->plugin_file = $plugin_path;
 	}
 
 	/**
-	 * Register the de-/activation/uninstall hooks for the plugin.
+	 * Registers the de-/activation/uninstall hooks for the plugin.
 	 *
-	 * @param string $plugin_file The full path and filename to the main plugin file.
+	 * @param \WP_Typography $plugin The plugin instance.
 	 */
-	public function register( $plugin_file ) {
-		\register_activation_hook( $plugin_file,   [ $this,     'activate' ] );
-		\register_deactivation_hook( $plugin_file, [ $this,     'deactivate' ] );
-		\register_uninstall_hook( $plugin_file,    [ __CLASS__, 'uninstall' ] );
+	public function run( \WP_Typography $plugin ) {
+		$this->plugin = $plugin;
+
+		\register_activation_hook( $this->plugin_file,   [ $this,     'activate' ] );
+		\register_deactivation_hook( $this->plugin_file, [ $this,     'deactivate' ] );
+		\register_uninstall_hook( $this->plugin_file,    [ __CLASS__, 'uninstall' ] );
 	}
 
 	/**
