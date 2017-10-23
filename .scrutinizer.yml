@@ -27,11 +27,7 @@ build:
             version: 7.1
     tests:
         override:
-            -
-                command: .scrutinizer/phpcs-run
-                analysis:
-                    file: /tmp/analysis_result_phpcs
-                    format: 'general-checkstyle'     # The supported format by Scrutinizer
+            - phpcs-run -p wp-typography.php includes/ admin/ --extensions=php
 
 
 tools:
