@@ -22,10 +22,12 @@
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-namespace WP_Typography\Tests;
+namespace WP_Typography\Tests\Components;
 
 use WP_Typography\Components\Public_Interface;
 use WP_Typography\Settings\Plugin_Configuration as Config;
+
+use WP_Typography\Tests\TestCase;
 
 use Brain\Monkey\Actions;
 use Brain\Monkey\Filters;
@@ -43,7 +45,7 @@ use Mockery as m;
  * @uses ::run
  */
 class Public_Interface_Test extends TestCase {
-	
+
 	/**
 	 * Test fixture.
 	 *

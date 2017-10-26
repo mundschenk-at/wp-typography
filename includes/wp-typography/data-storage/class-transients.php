@@ -24,7 +24,7 @@
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-namespace WP_Typography;
+namespace WP_Typography\Data_Storage;
 
 /**
  * Implements an interface to the transients API for wp-Typography.

@@ -22,9 +22,11 @@
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-namespace WP_Typography\Tests;
+namespace WP_Typography\Tests\Data_Storage;
 
-use WP_Typography\Abstract_Cache;
+use WP_Typography\Data_Storage\Abstract_Cache;
+
+use WP_Typography\Tests\TestCase;
 
 use Brain\Monkey\Actions;
 use Brain\Monkey\Filters;
@@ -33,10 +35,10 @@ use Brain\Monkey\Functions;
 use Mockery as m;
 
 /**
- * WP_Typography\Abstract_Cache unit test for the singleton methods.
+ * WP_Typography\Data_Storage\Abstract_Cache unit test for the singleton methods.
  *
- * @coversDefaultClass \WP_Typography\Abstract_Cache
- * @usesDefaultClass \WP_Typography\Abstract_Cache
+ * @coversDefaultClass \WP_Typography\Data_Storage\Abstract_Cache
+ * @usesDefaultClass \WP_Typography\Data_Storage\Abstract_Cache
  *
  * @uses ::__construct
  */

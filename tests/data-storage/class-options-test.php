@@ -22,9 +22,11 @@
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-namespace WP_Typography\Tests;
+namespace WP_Typography\Tests\Data_Storage;
 
-use WP_Typography\Options;
+use WP_Typography\Data_Storage\Options;
+
+use WP_Typography\Tests\TestCase;
 
 use Brain\Monkey\Actions;
 use Brain\Monkey\Filters;
@@ -33,20 +35,20 @@ use Brain\Monkey\Functions;
 use Mockery as m;
 
 /**
- * WP_Typography\Options unit test for the singleton methods.
+ * WP_Typography\Data_Storage\Options unit test for the singleton methods.
  *
- * @coversDefaultClass \WP_Typography\Options
- * @usesDefaultClass \WP_Typography\Options
+ * @coversDefaultClass \WP_Typography\Data_Storage\Options
+ * @usesDefaultClass \WP_Typography\Data_Storage\Options
  *
  * @uses ::__construct
- * @uses \WP_Typography\Abstract_Cache::__construct
+ * @uses \WP_Typography\Data_Storage\Abstract_Cache::__construct
  */
 class Options_Test extends TestCase {
 
 	/**
 	 * Test fixture.
 	 *
-	 * @var \WP_Typography\Cache
+	 * @var \WP_Typography\Data_Storage\Cache
 	 */
 	protected $options;
 
@@ -72,7 +74,7 @@ class Options_Test extends TestCase {
 	 *
 	 * @covers ::__construct
 	 *
-	 * @uses \WP_Typography\Abstract_Cache::__construct
+	 * @uses \WP_Typography\Data_Storage\Abstract_Cache::__construct
 	 */
 	public function test___construct() {
 		$cache = m::mock( Options::class, [] )->makePartial();

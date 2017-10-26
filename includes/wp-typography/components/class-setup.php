@@ -26,7 +26,7 @@
 
 namespace WP_Typography\Components;
 
-use \WP_Typography\Options;
+use \WP_Typography\Data_Storage\Options;
 use \WP_Typography\Settings\Plugin_Configuration as Config;
 
 /**
@@ -225,7 +225,7 @@ class Setup implements Plugin_Component {
 	public static function uninstall() {
 
 		// Delete all our transients.
-		$transients = new \WP_Typography\Transients();
+		$transients = new \WP_Typography\Data_Storage\Transients();
 		$transients->invalidate();
 	}
 }
