@@ -134,4 +134,20 @@ class Cache_Test extends TestCase {
 
 		$this->assertTrue( $this->cache->set( $raw_key, $value, $duration ) );
 	}
+
+	/**
+	 * Tests delete.
+	 *
+	 * @covers ::delete
+	 *
+	 * @uses ::get_key
+	 */
+	public function test_delete() {
+		$raw_key = 'foo';
+		$key     = $this->invokeMethod( $this->cache, 'get_key', [ $raw_key ] );
+
+		Functions\expect( 'wp_cache_delete' )->once()->with( $key, Cache::GROUP )->andReturn( true );
+
+		$this->assertTrue( $this->cache->delete( $raw_key ) );
+	}
 }

@@ -147,4 +147,15 @@ class Transients extends Abstract_Cache {
 
 		return $this->set( $key, \base64_encode( $compressed ), $duration );
 	}
+
+	/**
+	 * Deletes an entry from the cache.
+	 *
+	 * @param string $key The cache key root.
+	 *
+	 * @return bool True on successful removal, false on failure.
+	 */
+	public function delete( $key ) {
+		return \delete_transient( $this->get_key( $key ) );
+	}
 }

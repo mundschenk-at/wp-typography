@@ -81,6 +81,15 @@ abstract class Abstract_Cache {
 	abstract public function set( $key, $value, $duration = 0 );
 
 	/**
+	 * Deletes an entry from the cache.
+	 *
+	 * @param string $key The cache key root.
+	 *
+	 * @return bool True on successful removal, false on failure.
+	 */
+	abstract public function delete( $key );
+
+	/**
 	 * Retrieves the complete key to use.
 	 *
 	 * @param  string $key The cache key root.

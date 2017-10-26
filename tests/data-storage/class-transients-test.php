@@ -145,7 +145,7 @@ class Transients_Test extends TestCase {
 			define( 'ARRAY_A', 'array' );
 		}
 
-		$wpdb = m::mock( 'wpdb' ); // WPCS: override ok.
+		$wpdb          = m::mock( 'wpdb' ); // WPCS: override ok.
 		$wpdb->options = 'wp_options';
 		$wpdb->shouldReceive( 'prepare' )->with( m::type( 'string' ), Transients::TRANSIENT_SQL_PREFIX . Transients::PREFIX . '%' )->andReturn( 'fake SQL string' );
 		$wpdb->shouldReceive( 'get_results' )->with( 'fake SQL string', ARRAY_A )->andReturn( $dummy_result );
@@ -210,7 +210,7 @@ class Transients_Test extends TestCase {
 	 * @covers ::get_large_object
 	 */
 	public function test_get_large_object() {
-		$raw_key  = 'foo';
+		$raw_key = 'foo';
 
 		$this->transients->shouldReceive( 'get' )->once()->with( $raw_key )->andReturn( \base64_encode( \gzencode( \serialize( new \stdClass() ) ) ) ); // @codingStandardsIgnoreLine
 
@@ -223,7 +223,7 @@ class Transients_Test extends TestCase {
 	 * @covers ::get_large_object
 	 */
 	public function test_get_large_object_not_found() {
-		$raw_key  = 'foo';
+		$raw_key = 'foo';
 
 		$this->transients->shouldReceive( 'get' )->once()->with( $raw_key )->andReturn( false );
 
@@ -236,10 +236,26 @@ class Transients_Test extends TestCase {
 	 * @covers ::get_large_object
 	 */
 	public function test_get_large_object_uncompression_failing() {
-		$raw_key  = 'foo';
+		$raw_key = 'foo';
 
 		$this->transients->shouldReceive( 'get' )->once()->with( $raw_key )->andReturn( \base64_encode( \serialize( new \stdClass() ) ) ); // @codingStandardsIgnoreLine
 
 		$this->assertFalse( $this->transients->get_large_object( $raw_key ) );
+	}
+
+	/**
+	 * Tests delete.
+	 *
+	 * @covers ::delete
+	 *
+	 * @uses ::get_key
+	 */
+	public function test_delete() {
+		$raw_key = 'foo';
+		$key     = $this->invokeMethod( $this->transients, 'get_key', [ $raw_key ] );
+
+		Functions\expect( 'delete_transient' )->once()->with( $key )->andReturn( true );
+
+		$this->assertTrue( $this->transients->delete( $raw_key ) );
 	}
 }
