@@ -120,8 +120,14 @@ class WP_Typography_Test extends TestCase {
 			} )->byDefault()
 			->getMock();
 
+		// Mock WP_Typography\Data_Storage\Options instance.
+		$this->options = m::mock( \WP_Typography\Data_Storage\Options::class )
+			->shouldReceive( 'get' )->andReturn( false )->byDefault()
+			->shouldReceive( 'set' )->andReturn( false )->byDefault()
+			->getMock();
+
 		// Mock WP_Typography\Components\Setup instance.
-		$this->setup = m::mock( \WP_Typography\Components\Setup::class, [ '/some/path' ] )
+		$this->setup = m::mock( \WP_Typography\Components\Setup::class, [ '/some/path', $this->options ] )
 			->shouldReceive( 'run' )->byDefault()
 			->getMock();
 
@@ -138,12 +144,6 @@ class WP_Typography_Test extends TestCase {
 			->shouldReceive( 'get' )->andReturn( false )->byDefault()
 			->shouldReceive( 'set' )->andReturn( false )->byDefault()
 			->shouldReceive( 'invalidate' )->byDefault()
-			->getMock();
-
-		// Mock WP_Typography\Data_Storage\Options instance.
-		$this->options = m::mock( \WP_Typography\Data_Storage\Options::class )
-			->shouldReceive( 'get' )->andReturn( false )->byDefault()
-			->shouldReceive( 'set' )->andReturn( false )->byDefault()
 			->getMock();
 
 		// Mock WP_Typography\Components\Admin_Interface instance.

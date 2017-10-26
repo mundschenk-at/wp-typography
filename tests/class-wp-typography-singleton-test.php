@@ -100,8 +100,14 @@ class WP_Typography_Singleton_Test extends TestCase {
 		$multi = m::mock( \WP_Typography\Components\Multilingual::class );
 		$multi->shouldReceive( 'run' );
 
+		// Mock WP_Typography\Data_Storage\Options instance.
+		$options = m::mock( \WP_Typography\Data_Storage\Options::class )
+			->shouldReceive( 'get' )->andReturn( false )->byDefault()
+			->shouldReceive( 'set' )->andReturn( false )->byDefault()
+			->getMock();
+
 		// Mock WP_Typography\Components\Setup instance.
-		$setup = m::mock( \WP_Typography\Components\Setup::class, [ '/some/path' ] )
+		$setup = m::mock( \WP_Typography\Components\Setup::class, [ '/some/path', $options ] )
 			->shouldReceive( 'run' )->byDefault()
 			->getMock();
 
@@ -118,12 +124,6 @@ class WP_Typography_Singleton_Test extends TestCase {
 			->shouldReceive( 'get' )->andReturn( false )->byDefault()
 			->shouldReceive( 'set' )->andReturn( false )->byDefault()
 			->shouldReceive( 'invalidate' )->byDefault()
-			->getMock();
-
-		// Mock WP_Typography\Data_Storage\Options instance.
-		$options = m::mock( \WP_Typography\Data_Storage\Options::class )
-			->shouldReceive( 'get' )->andReturn( false )->byDefault()
-			->shouldReceive( 'set' )->andReturn( false )->byDefault()
 			->getMock();
 
 		// Mock WP_Typography\Components\Admin_Interface instance.
