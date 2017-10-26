@@ -22,9 +22,11 @@
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-namespace WP_Typography\Tests;
+namespace WP_Typography\Tests\Data_Storage;
 
-use WP_Typography\Cache;
+use WP_Typography\Data_Storage\Cache;
+
+use WP_Typography\Tests\TestCase;
 
 use Brain\Monkey\Actions;
 use Brain\Monkey\Filters;
@@ -33,20 +35,20 @@ use Brain\Monkey\Functions;
 use Mockery as m;
 
 /**
- * WP_Typography\Cache unit test for the singleton methods.
+ * WP_Typography\Data_Storage\Cache unit test for the singleton methods.
  *
- * @coversDefaultClass \WP_Typography\Cache
- * @usesDefaultClass \WP_Typography\Cache
+ * @coversDefaultClass \WP_Typography\Data_Storage\Cache
+ * @usesDefaultClass \WP_Typography\Data_Storage\Cache
  *
  * @uses ::__construct
- * @uses \WP_Typography\Abstract_Cache::__construct
+ * @uses \WP_Typography\Data_Storage\Abstract_Cache::__construct
  */
 class Cache_Test extends TestCase {
 
 	/**
 	 * Test fixture.
 	 *
-	 * @var \WP_Typography\Cache
+	 * @var \WP_Typography\Data_Storage\Cache
 	 */
 	protected $cache;
 
@@ -72,7 +74,7 @@ class Cache_Test extends TestCase {
 	 *
 	 * @covers ::__construct
 	 *
-	 * @uses \WP_Typography\Abstract_Cache::__construct
+	 * @uses \WP_Typography\Data_Storage\Abstract_Cache::__construct
 	 */
 	public function test___construct() {
 		Functions\expect( 'wp_cache_get' )->once()->with( Cache::INCREMENTOR_KEY, Cache::GROUP )->andReturn( 0 );
@@ -131,5 +133,21 @@ class Cache_Test extends TestCase {
 		Functions\expect( 'wp_cache_set' )->once()->with( $key, $value, Cache::GROUP, $duration )->andReturn( true );
 
 		$this->assertTrue( $this->cache->set( $raw_key, $value, $duration ) );
+	}
+
+	/**
+	 * Tests delete.
+	 *
+	 * @covers ::delete
+	 *
+	 * @uses ::get_key
+	 */
+	public function test_delete() {
+		$raw_key = 'foo';
+		$key     = $this->invokeMethod( $this->cache, 'get_key', [ $raw_key ] );
+
+		Functions\expect( 'wp_cache_delete' )->once()->with( $key, Cache::GROUP )->andReturn( true );
+
+		$this->assertTrue( $this->cache->delete( $raw_key ) );
 	}
 }

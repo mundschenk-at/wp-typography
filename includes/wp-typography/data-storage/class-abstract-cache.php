@@ -24,7 +24,7 @@
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-namespace WP_Typography;
+namespace WP_Typography\Data_Storage;
 
 /**
  * Implements a generic caching mechanism for wp-Typography.
@@ -79,6 +79,15 @@ abstract class Abstract_Cache {
 	 * @return bool True if the cache could be set successfully.
 	 */
 	abstract public function set( $key, $value, $duration = 0 );
+
+	/**
+	 * Deletes an entry from the cache.
+	 *
+	 * @param string $key The cache key root.
+	 *
+	 * @return bool True on successful removal, false on failure.
+	 */
+	abstract public function delete( $key );
 
 	/**
 	 * Retrieves the complete key to use.

@@ -2958,12 +2958,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git",
-                "reference": "d7d8e96a820c52e5eec60098463b2d7f74eb451d"
+                "reference": "108304ea0ac597bbc549c863fc6f5962d55ce157"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WordPress-Coding-Standards/WordPress-Coding-Standards/zipball/d7d8e96a820c52e5eec60098463b2d7f74eb451d",
-                "reference": "d7d8e96a820c52e5eec60098463b2d7f74eb451d",
+                "url": "https://api.github.com/repos/WordPress-Coding-Standards/WordPress-Coding-Standards/zipball/108304ea0ac597bbc549c863fc6f5962d55ce157",
+                "reference": "108304ea0ac597bbc549c863fc6f5962d55ce157",
                 "shasum": ""
             },
             "require": {
@@ -2990,7 +2990,7 @@
                 "standards",
                 "wordpress"
             ],
-            "time": "2017-10-20T13:10:25+00:00"
+            "time": "2017-10-26T13:18:20+00:00"
         }
     ],
     "aliases": [

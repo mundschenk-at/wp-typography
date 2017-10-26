@@ -25,9 +25,9 @@
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-use \WP_Typography\Cache;
-use \WP_Typography\Options;
-use \WP_Typography\Transients;
+use \WP_Typography\Data_Storage\Cache;
+use \WP_Typography\Data_Storage\Options;
+use \WP_Typography\Data_Storage\Transients;
 
 use \WP_Typography\Components\Admin_Interface;
 use \WP_Typography\Components\Multilingual;

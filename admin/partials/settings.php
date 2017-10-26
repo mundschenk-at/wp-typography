@@ -25,7 +25,7 @@
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-use \WP_Typography\Options;
+use \WP_Typography\Data_Storage\Options;
 
 ?><div class='wrap'>
 	<h1><?php echo \esc_html( \sprintf( /* translators: settings page headline, %s is the plugin name */ \__( '%s Settings', 'wp-typography' ), $this->plugin_name ) ); ?></h1>

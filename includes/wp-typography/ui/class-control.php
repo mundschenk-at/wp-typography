@@ -26,7 +26,7 @@
 
 namespace WP_Typography\UI;
 
-use \WP_Typography\Options;
+use \WP_Typography\Data_Storage\Options;
 
 /**
  * Abstract base class for HTML controls.

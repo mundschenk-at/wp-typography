@@ -87,12 +87,12 @@ class WP_Typography_Singleton_Test extends TestCase {
 	 * @uses ::get_version_hash
 	 * @uses ::hash_version_string
 	 * @uses \WP_Typography\Components\Admin_Interface::__construct
-	 * @uses \WP_Typography\Abstract_Cache::__construct
-	 * @uses \WP_Typography\Cache::__construct
+	 * @uses \WP_Typography\Data_Storage\Abstract_Cache::__construct
+	 * @uses \WP_Typography\Data_Storage\Cache::__construct
 	 * @uses \WP_Typography\Components\Public_Interface::__construct
-	 * @uses \WP_Typography\Options::__construct
+	 * @uses \WP_Typography\Data_Storage\Options::__construct
 	 * @uses \WP_Typography\Components\Setup::__construct
-	 * @uses \WP_Typography\Transients::__construct
+	 * @uses \WP_Typography\Data_Storage\Transients::__construct
 	 * @uses \WP_Typography\Components\Multilingual::__construct
 	 */
 	public function test_singleton() {
@@ -100,30 +100,30 @@ class WP_Typography_Singleton_Test extends TestCase {
 		$multi = m::mock( \WP_Typography\Components\Multilingual::class );
 		$multi->shouldReceive( 'run' );
 
+		// Mock WP_Typography\Data_Storage\Options instance.
+		$options = m::mock( \WP_Typography\Data_Storage\Options::class )
+			->shouldReceive( 'get' )->andReturn( false )->byDefault()
+			->shouldReceive( 'set' )->andReturn( false )->byDefault()
+			->getMock();
+
 		// Mock WP_Typography\Components\Setup instance.
-		$setup = m::mock( \WP_Typography\Components\Setup::class, [ '/some/path' ] )
+		$setup = m::mock( \WP_Typography\Components\Setup::class, [ '/some/path', $options ] )
 			->shouldReceive( 'run' )->byDefault()
 			->getMock();
 
-		// Mock WP_Typography\Transients instance.
-		$transients = m::mock( \WP_Typography\Transients::class )
+		// Mock WP_Typography\Data_Storage\Transients instance.
+		$transients = m::mock( \WP_Typography\Data_Storage\Transients::class )
 			->shouldReceive( 'get' )->byDefault()->andReturn( false )
 			->shouldReceive( 'get_large_object' )->byDefault()->andReturn( false )
 			->shouldReceive( 'set' )->andReturn( false )->byDefault()
 			->shouldReceive( 'set_large_object' )->andReturn( false )->byDefault()
 			->getMock();
 
-		// Mock WP_Typography\Cache instance.
-		$cache = m::mock( \WP_Typography\Cache::class )
+		// Mock WP_Typography\Data_Storage\Cache instance.
+		$cache = m::mock( \WP_Typography\Data_Storage\Cache::class )
 			->shouldReceive( 'get' )->andReturn( false )->byDefault()
 			->shouldReceive( 'set' )->andReturn( false )->byDefault()
 			->shouldReceive( 'invalidate' )->byDefault()
-			->getMock();
-
-		// Mock WP_Typography\Options instance.
-		$options = m::mock( \WP_Typography\Options::class )
-			->shouldReceive( 'get' )->andReturn( false )->byDefault()
-			->shouldReceive( 'set' )->andReturn( false )->byDefault()
 			->getMock();
 
 		// Mock WP_Typography\Components\Admin_Interface instance.
@@ -199,9 +199,9 @@ class WP_Typography_Singleton_Test extends TestCase {
 		$multi = m::mock( \WP_Typography\Components\Multilingual::class );
 		$multi->shouldReceive( 'run' );
 
-		$transients = m::mock( \WP_Typography\Transients::class );
-		$cache      = m::mock( \WP_Typography\Cache::class );
-		$options    = m::mock( \WP_Typography\Options::class );
+		$transients = m::mock( \WP_Typography\Data_Storage\Transients::class );
+		$cache      = m::mock( \WP_Typography\Data_Storage\Cache::class );
+		$options    = m::mock( \WP_Typography\Data_Storage\Options::class );
 
 		$typo = new \WP_Typography( '6.6.6', $setup, $admin, $public_if, $multi, $transients, $cache, $options );
 		$typo->run();

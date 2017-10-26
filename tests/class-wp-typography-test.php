@@ -24,7 +24,7 @@
 
 namespace WP_Typography\Tests;
 
-use WP_Typography\Options;
+use WP_Typography\Data_Storage\Options;
 use WP_Typography\Components\Admin_Interface;
 use WP_Typography\Settings\Plugin_Configuration as Config;
 
@@ -88,21 +88,21 @@ class WP_Typography_Test extends TestCase {
 	/**
 	 * Test fixture.
 	 *
-	 * @var \WP_Typography\Transients
+	 * @var \WP_Typography\Data_Storage\Transients
 	 */
 	protected $transients;
 
 	/**
 	 * Test fixture.
 	 *
-	 * @var \WP_Typography\Cache
+	 * @var \WP_Typography\Data_Storage\Cache
 	 */
 	protected $cache;
 
 	/**
 	 * Test fixture.
 	 *
-	 * @var \WP_Typography\Options
+	 * @var \WP_Typography\Data_Storage\Options
 	 */
 	protected $options;
 
@@ -120,30 +120,30 @@ class WP_Typography_Test extends TestCase {
 			} )->byDefault()
 			->getMock();
 
+		// Mock WP_Typography\Data_Storage\Options instance.
+		$this->options = m::mock( \WP_Typography\Data_Storage\Options::class )
+			->shouldReceive( 'get' )->andReturn( false )->byDefault()
+			->shouldReceive( 'set' )->andReturn( false )->byDefault()
+			->getMock();
+
 		// Mock WP_Typography\Components\Setup instance.
-		$this->setup = m::mock( \WP_Typography\Components\Setup::class, [ '/some/path' ] )
+		$this->setup = m::mock( \WP_Typography\Components\Setup::class, [ '/some/path', $this->options ] )
 			->shouldReceive( 'run' )->byDefault()
 			->getMock();
 
-		// Mock WP_Typography\Transients instance.
-		$this->transients = m::mock( \WP_Typography\Transients::class )
+		// Mock WP_Typography\Data_Storage\Transients instance.
+		$this->transients = m::mock( \WP_Typography\Data_Storage\Transients::class )
 			->shouldReceive( 'get' )->byDefault()->andReturn( false )
 			->shouldReceive( 'get_large_object' )->byDefault()->andReturn( false )
 			->shouldReceive( 'set' )->andReturn( false )->byDefault()
 			->shouldReceive( 'set_large_object' )->andReturn( false )->byDefault()
 			->getMock();
 
-		// Mock WP_Typography\Cache instance.
-		$this->cache = m::mock( \WP_Typography\Cache::class )
+		// Mock WP_Typography\Data_Storage\Cache instance.
+		$this->cache = m::mock( \WP_Typography\Data_Storage\Cache::class )
 			->shouldReceive( 'get' )->andReturn( false )->byDefault()
 			->shouldReceive( 'set' )->andReturn( false )->byDefault()
 			->shouldReceive( 'invalidate' )->byDefault()
-			->getMock();
-
-		// Mock WP_Typography\Options instance.
-		$this->options = m::mock( \WP_Typography\Options::class )
-			->shouldReceive( 'get' )->andReturn( false )->byDefault()
-			->shouldReceive( 'set' )->andReturn( false )->byDefault()
 			->getMock();
 
 		// Mock WP_Typography\Components\Admin_Interface instance.
@@ -198,15 +198,15 @@ class WP_Typography_Test extends TestCase {
 	 * @uses ::get_version
 	 * @uses ::get_version_hash
 	 * @uses \WP_Typography\Components\Admin_Interface::__construct
-	 * @uses \WP_Typography\Abstract_Cache::__construct
-	 * @uses \WP_Typography\Cache::__construct
-	 * @uses \WP_Typography\Cache::invalidate
+	 * @uses \WP_Typography\Data_Storage\Abstract_Cache::__construct
+	 * @uses \WP_Typography\Data_Storage\Cache::__construct
+	 * @uses \WP_Typography\Data_Storage\Cache::invalidate
 	 * @uses \WP_Typography\Components\Public_Interface::__construct
-	 * @uses \WP_Typography\Options::__construct
+	 * @uses \WP_Typography\Data_Storage\Options::__construct
 	 * @uses \WP_Typography\Components\Setup::__construct
-	 * @uses \WP_Typography\Transients::__construct
-	 * @uses \WP_Typography\Transients::invalidate
-	 * @uses \WP_Typography\Transients::get_keys_from_database
+	 * @uses \WP_Typography\Data_Storage\Transients::__construct
+	 * @uses \WP_Typography\Data_Storage\Transients::invalidate
+	 * @uses \WP_Typography\Data_Storage\Transients::get_keys_from_database
 	 * @uses \WP_Typography\Components\Multilingual::__construct
 	 */
 	public function test_constructor() {
@@ -217,9 +217,9 @@ class WP_Typography_Test extends TestCase {
 			m::mock( \WP_Typography\Components\Admin_Interface::class ),
 			m::mock( \WP_Typography\Components\Public_Interface::class ),
 			m::mock( \WP_Typography\Components\Multilingual::class ),
-			m::mock( \WP_Typography\Transients::class ),
-			m::mock( \WP_Typography\Cache::class ),
-			m::mock( \WP_Typography\Options::class )
+			m::mock( \WP_Typography\Data_Storage\Transients::class ),
+			m::mock( \WP_Typography\Data_Storage\Cache::class ),
+			m::mock( \WP_Typography\Data_Storage\Options::class )
 		);
 
 		$this->assertInstanceOf( \WP_Typography::class, $typo );

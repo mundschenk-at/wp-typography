@@ -24,7 +24,7 @@
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-namespace WP_Typography;
+namespace WP_Typography\Data_Storage;
 
 /**
  * Implements an inteface to the object cache for wp-Typography.
@@ -78,5 +78,16 @@ class Cache extends Abstract_Cache {
 	 */
 	public function set( $key, $value, $duration = 0 ) {
 		return \wp_cache_set( $this->get_key( $key ), $value, self::GROUP, $duration );
+	}
+
+	/**
+	 * Deletes an entry from the cache.
+	 *
+	 * @param string $key The cache key root.
+	 *
+	 * @return bool True on successful removal, false on failure.
+	 */
+	public function delete( $key ) {
+		return \wp_cache_delete( $this->get_key( $key ), self::GROUP );
 	}
 }
