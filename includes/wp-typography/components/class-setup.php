@@ -99,9 +99,13 @@ class Setup implements Plugin_Component {
 	public function run( \WP_Typography $plugin ) {
 		$this->plugin = $plugin;
 
+		// Register various hooks.
 		\register_activation_hook( $this->plugin_file,   [ $this,     'activate' ] );
 		\register_deactivation_hook( $this->plugin_file, [ $this,     'deactivate' ] );
 		\register_uninstall_hook( $this->plugin_file,    [ __CLASS__, 'uninstall' ] );
+
+		// Run necessary upgrade actions.
+		\add_action( 'plugins_loaded', [ $this, 'plugin_update_check' ] );
 	}
 
 	/**
@@ -110,12 +114,22 @@ class Setup implements Plugin_Component {
 	 * @since 3.1.0
 	 */
 	public function activate() {
-		// Update option values & other stuff if necessary.
-		$this->plugin_updated( $this->options->get( Options::INSTALLED_VERSION ) );
-
-		// Load default options and clear the cache.
+		// Load default values for any new options and clear the cache.
 		$this->plugin->set_default_options();
 		$this->plugin->clear_cache();
+	}
+
+	/**
+	 * Run necessary upgrade actions.
+	 *
+	 * @since 5.1.0
+	 */
+	public function plugin_update_check() {
+		$installed_version = $this->options->get( Options::INSTALLED_VERSION );
+
+		if ( $this->plugin->get_version() !== $installed_version ) {
+			$this->plugin_updated( $installed_version );
+		}
 	}
 
 	/**
@@ -140,7 +154,7 @@ class Setup implements Plugin_Component {
 		}
 
 		// Upgrade from version 5.0.0 or lower.
-		if ( \version_compare( $previous_version, '5.1.0', '<' ) ) {
+		if ( \version_compare( $previous_version, '5.1.0-alpha.2', '<' ) ) {
 			$this->upgrade_options_5_1();
 		}
 

@@ -125,6 +125,8 @@ class Setup_Test extends TestCase {
 		Functions\expect( 'register_deactivation_hook' )->once();
 		Functions\expect( 'register_uninstall_hook' )->once();
 
+		Actions\expectAdded( 'plugins_loaded' )->with( [ $this->setup, 'plugin_update_check' ] )->once();
+
 		$this->setup->run( $this->plugin );
 
 		$this->assertAttributeSame( $this->plugin, 'plugin', $this->setup );
@@ -136,10 +138,6 @@ class Setup_Test extends TestCase {
 	 * @covers ::activate
 	 */
 	public function test_activate() {
-		$this->options->shouldReceive( 'get' )->with( Options::INSTALLED_VERSION )->once()->andReturn( '7.7.7' );
-
-		$this->setup->shouldReceive( 'plugin_updated' )->with( '7.7.7' )->once();
-
 		$this->plugin->shouldReceive( 'set_default_options' )->once();
 		$this->plugin->shouldReceive( 'clear_cache' )->once();
 
@@ -221,6 +219,20 @@ class Setup_Test extends TestCase {
 		$this->options->shouldReceive( 'set' )->with( Options::INSTALLED_VERSION, '9.9.9' )->once();
 
 		$this->assertNull( $this->invokeMethod( $this->setup, 'set_installed_version' ) );
+	}
+
+	/**
+	 * Test plugin_update_check.
+	 *
+	 * @covers ::plugin_update_check
+	 */
+	public function test_plugin_update_check() {
+
+		$this->options->shouldReceive( 'get' )->with( Options::INSTALLED_VERSION )->once()->andReturn( '7.7.7' );
+		$this->plugin->shouldReceive( 'get_version' )->once()->andReturn( '6.6.6' );
+		$this->setup->shouldReceive( 'plugin_updated' )->with( '7.7.7' )->once();
+
+		$this->assertNull( $this->setup->plugin_update_check() );
 	}
 
 	/**
