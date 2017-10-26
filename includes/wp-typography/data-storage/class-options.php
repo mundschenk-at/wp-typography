@@ -53,11 +53,12 @@ class Options {
 	 *
 	 * @param string $option  The option name (without the plugin-specific prefix).
 	 * @param mixed  $default Optional. Default value to return if the option does not exist. Default null.
+	 * @param bool   $raw     Optional. Use the raw option name (i.e. don't call get_name). Default false.
 	 *
 	 * @return mixed Value set for the option.
 	 */
-	public function get( $option, $default = null ) {
-		$value = \get_option( $this->get_name( $option ), $default );
+	public function get( $option, $default = null, $raw = false ) {
+		$value = \get_option( $raw ? $option : $this->get_name( $option ), $default );
 
 		if ( is_array( $default ) && '' === $value ) {
 			$value = [];
@@ -75,22 +76,24 @@ class Options {
 	 *                         starts up. For existing options, $autoload can only
 	 *                         be updated using update_option() if $value is also
 	 *                         changed. Default true.
+	 * @param bool   $raw      Optional. Use the raw option name (i.e. don't call get_name). Default false.
 	 *
 	 * @return bool False if value was not updated and true if value was updated.
 	 */
-	public function set( $option, $value, $autoload = true ) {
-		return \update_option( $this->get_name( $option ), $value, $autoload );
+	public function set( $option, $value, $autoload = true, $raw = false ) {
+		return \update_option( $raw ? $option : $this->get_name( $option ), $value, $autoload );
 	}
 
 	/**
 	 * Deletes an option.
 	 *
 	 * @param string $option The option name (without the plugin-specific prefix).
+	 * @param bool   $raw    Optional. Use the raw option name (i.e. don't call get_name). Default false.
 	 *
 	 * @return bool True, if option is successfully deleted. False on failure.
 	 */
-	public function delete( $option ) {
-		return \delete_option( $this->get_name( $option ) );
+	public function delete( $option, $raw = false ) {
+		return \delete_option( $raw ? $option : $this->get_name( $option ) );
 	}
 
 	/**

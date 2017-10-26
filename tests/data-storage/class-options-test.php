@@ -117,6 +117,21 @@ class Options_Test extends TestCase {
 	}
 
 	/**
+	 * Tests get.
+	 *
+	 * @covers ::get
+	 */
+	public function test_get_raw() {
+		$raw_key = 'foo';
+		$default = 'something';
+
+		Functions\expect( 'get_option' )->once()->with( $raw_key, $default )->andReturn( 'bar' );
+		$this->options->shouldReceive( 'get_name' )->never();
+
+		$this->assertSame( 'bar', $this->options->get( $raw_key, $default, true ) );
+	}
+
+	/**
 	 * Tests delete.
 	 *
 	 * @covers ::delete
@@ -130,6 +145,20 @@ class Options_Test extends TestCase {
 		Functions\expect( 'delete_option' )->once()->with( $key )->andReturn( true );
 
 		$this->assertTrue( $this->options->delete( $raw_key ) );
+	}
+
+	/**
+	 * Tests delete.
+	 *
+	 * @covers ::delete
+	 */
+	public function test_delete_raw() {
+		$raw_key = 'foo';
+
+		Functions\expect( 'delete_option' )->once()->with( $raw_key )->andReturn( true );
+		$this->options->shouldReceive( 'get_name' )->never();
+
+		$this->assertTrue( $this->options->delete( $raw_key, true ) );
 	}
 
 	/**
@@ -147,6 +176,21 @@ class Options_Test extends TestCase {
 		Functions\expect( 'update_option' )->once()->with( $key, $value, true )->andReturn( true );
 
 		$this->assertTrue( $this->options->set( $raw_key, $value ) );
+	}
+
+	/**
+	 * Tests set.
+	 *
+	 * @covers ::set
+	 */
+	public function test_set_raw() {
+		$value   = 'bar';
+		$raw_key = 'foo';
+
+		Functions\expect( 'update_option' )->once()->with( $raw_key, $value, true )->andReturn( true );
+		$this->options->shouldReceive( 'get_name' )->never();
+
+		$this->assertTrue( $this->options->set( $raw_key, $value, true, true ) );
 	}
 
 	/**
