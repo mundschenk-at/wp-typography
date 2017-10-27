@@ -66,16 +66,6 @@ class WP_Typography_Singleton_Test extends TestCase {
 	}
 
 	/**
-	 * Prepare WP_Typography options for a test.
-	 *
-	 * @param array $options An array of set options.
-	 */
-	protected function prepareOptions( array $options ) {  // @codingStandardsIgnoreLine
-		// Reset options.
-		$this->setValue( $this->wp_typo, 'options', $options );
-	}
-
-	/**
 	 * Tests singleton methods.
 	 *
 	 * @covers ::get_instance
