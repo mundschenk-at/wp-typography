@@ -198,6 +198,6 @@ class WP_Typography_Requirements {
 		$args   = func_get_args();
 		$format = array_shift( $args );
 
-		echo '<div class="error"><p>' . vsprintf( $format, $args ) . '</p></div>'; // WPCS: XSS OK.
+		echo '<div class="notice notice-error"><p>' . vsprintf( $format, $args ) . '</p></div>'; // WPCS: XSS OK.
 	}
 }
