@@ -30,7 +30,6 @@
  *
  * Included checks:
  *    - PHP version
- *    - WordPress version
  *    - mb_string extension
  *    - UTF-8 encoding
  *
@@ -49,11 +48,10 @@ class WP_Typography_Requirements {
 	/**
 	 * The minimum requirements for running the plugins. Must contain:
 	 *  - 'PHP Version'
-	 *  - 'WordPress Version'
 	 *  - 'Multibyte'
 	 *  - 'UTF-8'
 	 *
-	 * @var array A Hash containing the version requirements for the plugin.
+	 * @var array A hash containing the version requirements for the plugin.
 	 */
 	private $install_requirements = array(
 		'PHP Version' => '5.6.0',
@@ -81,9 +79,9 @@ class WP_Typography_Requirements {
 	}
 
 	/**
-	 * Check if all runtime requirements for the plugin are met.
+	 * Checks if all runtime requirements for the plugin are met.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function check() {
 		$requirements_met = true;
@@ -119,16 +117,16 @@ class WP_Typography_Requirements {
 	}
 
 	/**
-	 * Deactivate the plugin.
+	 * Deactivates the plugin.
 	 */
 	public function deactivate_plugin() {
-		deactivate_plugins( plugin_basename( $this->local_plugin_path ) );
+		deactivate_plugins( plugin_basename( $this->plugin_basename ) );
 	}
 
 	/**
-	 * Check if multibyte functions are supported.
+	 * Checks if multibyte functions are supported.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function check_multibyte_support() {
 		return
@@ -139,9 +137,9 @@ class WP_Typography_Requirements {
 	}
 
 	/**
-	 * Check if the blog charset is set to UTF-8.
+	 * Checks if the blog charset is set to UTF-8.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function check_utf8_support() {
 		return 'utf-8' === strtolower( get_bloginfo( 'charset' ) );
@@ -161,7 +159,7 @@ class WP_Typography_Requirements {
 	}
 
 	/**
-	 * Print 'mbstring extension missing' admin notice
+	 * Prints 'mbstring extension missing' admin notice
 	 */
 	public function admin_notices_mbstring_incompatible() {
 		$this->display_error_notice(
@@ -174,7 +172,7 @@ class WP_Typography_Requirements {
 	}
 
 	/**
-	 * Print 'Charset incompatible' admin notice
+	 * Prints 'Charset incompatible' admin notice
 	 */
 	public function admin_notices_charset_incompatible() {
 		$this->display_error_notice(
@@ -187,7 +185,7 @@ class WP_Typography_Requirements {
 	}
 
 	/**
-	 * Show an error message in the admin area.
+	 * Shows an error message in the admin area.
 	 *
 	 * @param string $format ... An `sprintf` format string, followd by an unspecified number of optional parameters.
 	 */
