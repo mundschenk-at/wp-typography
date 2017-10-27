@@ -309,7 +309,7 @@ class WP_Typography_Test extends TestCase {
 			Config::HYPHENATE_MIN_LENGTH           => 2,
 			Config::HYPHENATE_MIN_BEFORE           => 2,
 			Config::HYPHENATE_MIN_AFTER            => 2,
-			Config::HYPHENATION_EXCEPTIONS         => [],
+			Config::HYPHENATE_EXCEPTIONS           => [],
 			Config::IGNORE_PARSER_ERRORS           => false,
 			Config::ENABLE_MULTILINGUAL_SUPPORT    => false,
 		] );
@@ -431,7 +431,7 @@ class WP_Typography_Test extends TestCase {
 			Config::HYPHENATE_MIN_LENGTH           => 2,
 			Config::HYPHENATE_MIN_BEFORE           => 2,
 			Config::HYPHENATE_MIN_AFTER            => 2,
-			Config::HYPHENATION_EXCEPTIONS         => [],
+			Config::HYPHENATE_EXCEPTIONS         => [],
 			Config::IGNORE_PARSER_ERRORS           => false,
 			Config::ENABLE_MULTILINGUAL_SUPPORT    => false,
 		] );
@@ -504,7 +504,7 @@ class WP_Typography_Test extends TestCase {
 			Config::HYPHENATE_MIN_LENGTH           => 2,
 			Config::HYPHENATE_MIN_BEFORE           => 2,
 			Config::HYPHENATE_MIN_AFTER            => 2,
-			Config::HYPHENATION_EXCEPTIONS         => [],
+			Config::HYPHENATE_EXCEPTIONS         => [],
 			Config::IGNORE_PARSER_ERRORS           => false,
 		] );
 

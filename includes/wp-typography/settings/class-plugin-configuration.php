@@ -95,7 +95,6 @@ abstract class Plugin_Configuration {
 	const HYPHENATE_EXCEPTIONS             = 'hyphenate_exceptions';
 	const HYPHENATE_CLEAN_CLIPBOARD        = 'hyphenate_clean_clipboard';
 	const HYPHENATE_SAFARI_FONT_WORKAROUND = 'hyphenate_safari_font_workaround';
-	const HYPHENATION_EXCEPTIONS           = 'hyphenation_exceptions';
 	const IGNORE_PARSER_ERRORS             = 'ignore_parser_errors';
 
 	/**

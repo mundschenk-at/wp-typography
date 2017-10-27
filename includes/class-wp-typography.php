@@ -765,7 +765,7 @@ class WP_Typography {
 			$s->set_min_length_hyphenation( $this->config[ Config::HYPHENATE_MIN_LENGTH ] );
 			$s->set_min_before_hyphenation( $this->config[ Config::HYPHENATE_MIN_BEFORE ] );
 			$s->set_min_after_hyphenation( $this->config[ Config::HYPHENATE_MIN_AFTER ] );
-			$s->set_hyphenation_exceptions( $this->config[ Config::HYPHENATION_EXCEPTIONS ] );
+			$s->set_hyphenation_exceptions( $this->config[ Config::HYPHENATE_EXCEPTIONS ] );
 		} else { // save some cycles.
 			$s->set_hyphenation( $this->config[ Config::ENABLE_HYPHENATION ] );
 		}
