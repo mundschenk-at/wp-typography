@@ -177,20 +177,6 @@ class WP_Typography_Test extends TestCase {
 	}
 
 	/**
-	 * Prepare WP_Typography options for a test.
-	 *
-	 * @param array $options An array of set options.
-	 *
-	 * @return array The options array.
-	 */
-	protected function prepareOptions( array $options ) {  // @codingStandardsIgnoreLine
-		// Reset options.
-		$this->setValue( $this->wp_typo, 'config', $options );
-
-		return $options;
-	}
-
-	/**
 	 * Tests constructor.
 	 *
 	 * @covers ::__construct
@@ -251,75 +237,18 @@ class WP_Typography_Test extends TestCase {
 	 *
 	 * @covers ::get_user_settings
 	 *
-	 * @uses ::get_settings
-	 * @uses ::init_settings_from_options
 	 * @uses ::get_instance
-	 * @uses ::cache_object
-	 * @uses ::init_settings_from_options
-	 * @uses ::maybe_fix_object
 	 */
 	public function test_get_user_settings() {
 		$this->setStaticValue( \WP_Typography::class, '_instance', $this->wp_typo );
 
-		$this->prepareOptions( [
-			Config::IGNORE_TAGS                    => [ 'script' ],
-			Config::IGNORE_CLASSES                 => [ 'noTypo' ],
-			Config::IGNORE_IDS                     => [],
-			Config::SMART_CHARACTERS               => true,
-			Config::SMART_DASHES                   => false,
-			Config::SMART_DASHES_STYLE             => 'international',
-			Config::SMART_ELLIPSES                 => false,
-			Config::SMART_MATH                     => false,
-			Config::SMART_FRACTIONS                => false,
-			Config::SMART_ORDINALS                 => false,
-			Config::SMART_MARKS                    => false,
-			Config::SMART_QUOTES                   => false,
-			Config::SMART_DIACRITICS               => false,
-			Config::DIACRITIC_LANGUAGES            => 'en-US',
-			Config::DIACRITIC_CUSTOM_REPLACEMENTS  => [],
-			Config::SMART_QUOTES_PRIMARY           => 'doubleCurled',
-			Config::SMART_QUOTES_SECONDARY         => 'singleCurled',
-			Config::SINGLE_CHARACTER_WORD_SPACING  => false,
-			Config::DASH_SPACING                   => false,
-			Config::FRACTION_SPACING               => false,
-			Config::UNIT_SPACING                   => false,
-			Config::NUMBERED_ABBREVIATIONS_SPACING => false,
-			Config::FRENCH_PUNCTUATION_SPACING     => false,
-			Config::UNITS                          => [],
-			Config::SPACE_COLLAPSE                 => false,
-			Config::PREVENT_WIDOWS                 => false,
-			Config::WIDOW_MIN_LENGTH               => 2,
-			Config::WIDOW_MAX_PULL                 => 2,
-			Config::WRAP_HYPHENS                   => false,
-			Config::WRAP_EMAILS                    => false,
-			Config::WRAP_URLS                      => false,
-			Config::WRAP_MIN_AFTER                 => 2,
-			Config::STYLE_AMPS                     => false,
-			Config::STYLE_CAPS                     => false,
-			Config::STYLE_NUMBERS                  => false,
-			Config::STYLE_HANGING_PUNCTUATION      => false,
-			Config::STYLE_INITIAL_QUOTES           => false,
-			Config::INITIAL_QUOTE_TAGS             => [],
-			Config::ENABLE_HYPHENATION             => true,
-			Config::HYPHENATE_HEADINGS             => false,
-			Config::HYPHENATE_CAPS                 => false,
-			Config::HYPHENATE_TITLE_CASE           => false,
-			Config::HYPHENATE_COMPOUNDS            => false,
-			Config::HYPHENATE_LANGUAGES            => 'en-US',
-			Config::HYPHENATE_MIN_LENGTH           => 2,
-			Config::HYPHENATE_MIN_BEFORE           => 2,
-			Config::HYPHENATE_MIN_AFTER            => 2,
-			Config::HYPHENATION_EXCEPTIONS         => [],
-			Config::IGNORE_PARSER_ERRORS           => false,
-			Config::ENABLE_MULTILINGUAL_SUPPORT    => false,
-		] );
+		$object = new \stdClass();
 
-		Functions\expect( 'wp_json_encode' )->once()->andReturn( '{ json: "value" }' );
+		$this->wp_typo->shouldReceive( 'get_settings' )->once()->andReturn( $object );
 
 		$s = \WP_Typography::get_user_settings();
 
-		$this->assertInstanceOf( \PHP_Typography\Settings::class, $s );
-		$this->assertAttributeNotSame( $s, 'typo_settings', $this->wp_typo );
+		$this->assertNotSame( $object, $s );
 
 		// Reset singleton.
 		$this->setStaticValue( \WP_Typography::class, '_instance', null );
@@ -333,7 +262,7 @@ class WP_Typography_Test extends TestCase {
 	 * @uses ::maybe_fix_object
 	 */
 	public function test_get_typography_instance() {
-		$this->prepareOptions( [
+		$this->wp_typo->shouldReceive( 'get_config' )->once()->andReturn( [
 			Config::ENABLE_HYPHENATION => true,
 		] );
 
@@ -382,7 +311,7 @@ class WP_Typography_Test extends TestCase {
 	 */
 	public function test_get_settings() {
 
-		$this->prepareOptions( [
+		$this->wp_typo->shouldReceive( 'get_config' )->once()->andReturn( [
 			Config::IGNORE_TAGS                    => [ 'script' ],
 			Config::IGNORE_CLASSES                 => [ 'noTypo' ],
 			Config::IGNORE_IDS                     => [],
@@ -431,7 +360,7 @@ class WP_Typography_Test extends TestCase {
 			Config::HYPHENATE_MIN_LENGTH           => 2,
 			Config::HYPHENATE_MIN_BEFORE           => 2,
 			Config::HYPHENATE_MIN_AFTER            => 2,
-			Config::HYPHENATION_EXCEPTIONS         => [],
+			Config::HYPHENATE_EXCEPTIONS           => [],
 			Config::IGNORE_PARSER_ERRORS           => false,
 			Config::ENABLE_MULTILINGUAL_SUPPORT    => false,
 		] );
@@ -455,7 +384,7 @@ class WP_Typography_Test extends TestCase {
 	 */
 	public function test_get_settings_off() {
 
-		$this->prepareOptions( [
+		$this->wp_typo->shouldReceive( 'get_config' )->once()->andReturn( [
 			Config::IGNORE_TAGS                    => [ 'script' ],
 			Config::IGNORE_CLASSES                 => [ 'noTypo' ],
 			Config::IGNORE_IDS                     => [],
@@ -504,7 +433,7 @@ class WP_Typography_Test extends TestCase {
 			Config::HYPHENATE_MIN_LENGTH           => 2,
 			Config::HYPHENATE_MIN_BEFORE           => 2,
 			Config::HYPHENATE_MIN_AFTER            => 2,
-			Config::HYPHENATION_EXCEPTIONS         => [],
+			Config::HYPHENATE_EXCEPTIONS         => [],
 			Config::IGNORE_PARSER_ERRORS           => false,
 		] );
 
@@ -703,16 +632,15 @@ class WP_Typography_Test extends TestCase {
 	 * @param bool $multilingual     The typo_enable_multilingual_support value.
 	 */
 	public function test_init( $restore_defaults, $clear_cache, $smart_characters, $multilingual ) {
-		$settings = $this->prepareOptions( [
-			Config::SMART_CHARACTERS            => $smart_characters,
-			Config::ENABLE_MULTILINGUAL_SUPPORT => $multilingual,
-		] );
 		$this->wp_typo->run();
 
 		$this->options->shouldReceive( 'get' )->once()->with( Options::RESTORE_DEFAULTS )->andReturn( $restore_defaults );
 		$this->options->shouldReceive( 'get' )->once()->with( Options::CLEAR_CACHE )->andReturn( $clear_cache );
 
-		$this->wp_typo->shouldReceive( 'get_config' )->once();
+		$this->wp_typo->shouldReceive( 'get_config' )->once()->andReturn( [
+			Config::SMART_CHARACTERS            => $smart_characters,
+			Config::ENABLE_MULTILINGUAL_SUPPORT => $multilingual,
+		] );
 
 		if ( $restore_defaults ) {
 			$this->wp_typo->shouldReceive( 'set_default_options' )->once()->with( true );
@@ -1067,10 +995,6 @@ class WP_Typography_Test extends TestCase {
 		if ( null !== $hyphenator_cache ) {
 			$hyphenator_cache->shouldReceive( 'has_changed' )->andReturn( $expected );
 		}
-
-		$this->prepareOptions( [
-			Config::ENABLE_HYPHENATION => $enable_hyphenation,
-		] );
 
 		$this->setValue( $this->wp_typo, 'hyphenator_cache', $hyphenator_cache );
 

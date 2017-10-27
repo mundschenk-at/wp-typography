@@ -60,7 +60,7 @@ class WP_Typography {
 	 *
 	 * @var array
 	 */
-	protected $config;
+	private $config;
 
 	/**
 	 * The PHP_Typography instance doing the actual work.
@@ -429,10 +429,10 @@ class WP_Typography {
 		}
 
 		// Load settings.
-		$this->get_config();
+		$config = $this->get_config();
 
 		// Enable multilingual support.
-		if ( $this->config[ Config::ENABLE_MULTILINGUAL_SUPPORT ] ) {
+		if ( $config[ Config::ENABLE_MULTILINGUAL_SUPPORT ] ) {
 			add_filter( 'typo_settings', [ $this->multilingual, 'automatic_language_settings' ] );
 		}
 	}
@@ -468,7 +468,8 @@ class WP_Typography {
 
 		// Initialize Settings instance.
 		if ( empty( $this->typo_settings ) ) {
-			$transient           = 'php_settings_' . md5( wp_json_encode( $this->config ) );
+			$config              = $this->get_config();
+			$transient           = 'php_settings_' . md5( wp_json_encode( $config ) );
 			$this->typo_settings = $this->maybe_fix_object( $this->transients->get_large_object( $transient ) );
 
 			if ( ! $this->typo_settings instanceof Settings ) {
@@ -476,7 +477,7 @@ class WP_Typography {
 				$this->typo_settings = new Settings( false );
 
 				// Load our options into the Settings instance.
-				$this->init_settings_from_options( $this->typo_settings );
+				$this->init_settings_from_options( $this->typo_settings, $config );
 
 				// Try again next time.
 				$this->cache_object( $transient, $this->typo_settings, 'settings' );
@@ -648,9 +649,12 @@ class WP_Typography {
 	 */
 	protected function get_typography_instance() {
 
+		// Retrieve options.
+		$config = $this->get_config();
+
 		// Initialize PHP_Typography instance.
 		if ( empty( $this->typo ) ) {
-			$transient  = 'php_' . md5( wp_json_encode( $this->config ) );
+			$transient  = 'php_' . md5( wp_json_encode( $config ) );
 			$this->typo = $this->maybe_fix_object( $this->transients->get_large_object( $transient ) );
 
 			if ( ! $this->typo instanceof PHP_Typography ) {
@@ -663,7 +667,7 @@ class WP_Typography {
 		}
 
 		// Also cache hyphenators (the pattern tries are expensive to build).
-		if ( $this->config[ Config::ENABLE_HYPHENATION ] && empty( $this->hyphenator_cache ) ) {
+		if ( $config[ Config::ENABLE_HYPHENATION ] && empty( $this->hyphenator_cache ) ) {
 			$transient              = 'php_hyphenator_cache';
 			$this->hyphenator_cache = $this->maybe_fix_object( $this->transients->get_large_object( $transient ) );
 
@@ -685,7 +689,7 @@ class WP_Typography {
 	 * Save hyphenator cache for the next request.
 	 */
 	public function save_hyphenator_cache_on_shutdown() {
-		if ( $this->config[ Config::ENABLE_HYPHENATION ] && ! empty( $this->hyphenator_cache ) && $this->hyphenator_cache->has_changed() ) {
+		if ( ! empty( $this->hyphenator_cache ) && $this->hyphenator_cache->has_changed() ) {
 			$this->cache_object( 'php_hyphenator_cache', $this->hyphenator_cache, 'hyphenator_cache' );
 		}
 	}
@@ -693,34 +697,36 @@ class WP_Typography {
 	/**
 	 * Initializes the Settings object for PHP_Typography from the plugin options.
 	 *
-	 * @param Settings $s Required.
+	 * @param Settings $s      The settings instance to initialize.
+	 * @param array    $config The array of configuration entries.
 	 */
-	protected function init_settings_from_options( Settings $s ) {
-		// Load configuration variables into our PHP_Typography class.
-		$s->set_tags_to_ignore( $this->config[ Config::IGNORE_TAGS ] );
-		$s->set_classes_to_ignore( $this->config[ Config::IGNORE_CLASSES ] );
-		$s->set_ids_to_ignore( $this->config[ Config::IGNORE_IDS ] );
+	protected function init_settings_from_options( Settings $s, array $config ) {
 
-		if ( $this->config[ Config::SMART_CHARACTERS ] ) {
-			$s->set_smart_dashes( $this->config[ Config::SMART_DASHES ] );
-			$s->set_smart_dashes_style( $this->config[ Config::SMART_DASHES_STYLE ] );
-			$s->set_smart_ellipses( $this->config[ Config::SMART_ELLIPSES ] );
-			$s->set_smart_math( $this->config[ Config::SMART_MATH ] );
+		// Load configuration variables into our PHP_Typography class.
+		$s->set_tags_to_ignore( $config[ Config::IGNORE_TAGS ] );
+		$s->set_classes_to_ignore( $config[ Config::IGNORE_CLASSES ] );
+		$s->set_ids_to_ignore( $config[ Config::IGNORE_IDS ] );
+
+		if ( $config[ Config::SMART_CHARACTERS ] ) {
+			$s->set_smart_dashes( $config[ Config::SMART_DASHES ] );
+			$s->set_smart_dashes_style( $config[ Config::SMART_DASHES_STYLE ] );
+			$s->set_smart_ellipses( $config[ Config::SMART_ELLIPSES ] );
+			$s->set_smart_math( $config[ Config::SMART_MATH ] );
 
 			// Note: smart_exponents was grouped with smart_math for the WordPress plugin,
 			// but does not have to be done that way for other ports.
-			$s->set_smart_exponents( $this->config[ Config::SMART_MATH ] );
-			$s->set_smart_fractions( $this->config[ Config::SMART_FRACTIONS ] );
-			$s->set_smart_ordinal_suffix( $this->config[ Config::SMART_ORDINALS ] );
-			$s->set_smart_marks( $this->config[ Config::SMART_MARKS ] );
-			$s->set_smart_quotes( $this->config[ Config::SMART_QUOTES ] );
+			$s->set_smart_exponents( $config[ Config::SMART_MATH ] );
+			$s->set_smart_fractions( $config[ Config::SMART_FRACTIONS ] );
+			$s->set_smart_ordinal_suffix( $config[ Config::SMART_ORDINALS ] );
+			$s->set_smart_marks( $config[ Config::SMART_MARKS ] );
+			$s->set_smart_quotes( $config[ Config::SMART_QUOTES ] );
 
-			$s->set_smart_diacritics( $this->config[ Config::SMART_DIACRITICS ] );
-			$s->set_diacritic_language( $this->config[ Config::DIACRITIC_LANGUAGES ] );
-			$s->set_diacritic_custom_replacements( $this->config[ Config::DIACRITIC_CUSTOM_REPLACEMENTS ] );
+			$s->set_smart_diacritics( $config[ Config::SMART_DIACRITICS ] );
+			$s->set_diacritic_language( $config[ Config::DIACRITIC_LANGUAGES ] );
+			$s->set_diacritic_custom_replacements( $config[ Config::DIACRITIC_CUSTOM_REPLACEMENTS ] );
 
-			$s->set_smart_quotes_primary( $this->config[ Config::SMART_QUOTES_PRIMARY ] );
-			$s->set_smart_quotes_secondary( $this->config[ Config::SMART_QUOTES_SECONDARY ] );
+			$s->set_smart_quotes_primary( $config[ Config::SMART_QUOTES_PRIMARY ] );
+			$s->set_smart_quotes_secondary( $config[ Config::SMART_QUOTES_SECONDARY ] );
 		} else {
 			$s->set_smart_dashes( false );
 			$s->set_smart_ellipses( false );
@@ -733,41 +739,41 @@ class WP_Typography {
 			$s->set_smart_diacritics( false );
 		}
 
-		$s->set_single_character_word_spacing( $this->config[ Config::SINGLE_CHARACTER_WORD_SPACING ] );
-		$s->set_dash_spacing( $this->config[ Config::DASH_SPACING ] );
-		$s->set_fraction_spacing( $this->config[ Config::FRACTION_SPACING ] );
-		$s->set_unit_spacing( $this->config[ Config::UNIT_SPACING ] );
-		$s->set_numbered_abbreviation_spacing( $this->config[ Config::NUMBERED_ABBREVIATIONS_SPACING ] );
-		$s->set_french_punctuation_spacing( $this->config[ Config::FRENCH_PUNCTUATION_SPACING ] );
-		$s->set_units( $this->config[ Config::UNITS ] );
-		$s->set_space_collapse( $this->config[ Config::SPACE_COLLAPSE ] );
-		$s->set_dewidow( $this->config[ Config::PREVENT_WIDOWS ] );
-		$s->set_max_dewidow_length( $this->config[ Config::WIDOW_MIN_LENGTH ] );
-		$s->set_max_dewidow_pull( $this->config[ Config::WIDOW_MAX_PULL ] );
-		$s->set_wrap_hard_hyphens( $this->config[ Config::WRAP_HYPHENS ] );
-		$s->set_email_wrap( $this->config[ Config::WRAP_EMAILS ] );
-		$s->set_url_wrap( $this->config[ Config::WRAP_URLS ] );
-		$s->set_min_after_url_wrap( $this->config[ Config::WRAP_MIN_AFTER ] );
-		$s->set_style_ampersands( $this->config[ Config::STYLE_AMPS ] );
-		$s->set_style_caps( $this->config[ Config::STYLE_CAPS ] );
-		$s->set_style_numbers( $this->config[ Config::STYLE_NUMBERS ] );
-		$s->set_style_hanging_punctuation( $this->config[ Config::STYLE_HANGING_PUNCTUATION ] );
-		$s->set_style_initial_quotes( $this->config[ Config::STYLE_INITIAL_QUOTES ] );
-		$s->set_initial_quote_tags( $this->config[ Config::INITIAL_QUOTE_TAGS ] );
+		$s->set_single_character_word_spacing( $config[ Config::SINGLE_CHARACTER_WORD_SPACING ] );
+		$s->set_dash_spacing( $config[ Config::DASH_SPACING ] );
+		$s->set_fraction_spacing( $config[ Config::FRACTION_SPACING ] );
+		$s->set_unit_spacing( $config[ Config::UNIT_SPACING ] );
+		$s->set_numbered_abbreviation_spacing( $config[ Config::NUMBERED_ABBREVIATIONS_SPACING ] );
+		$s->set_french_punctuation_spacing( $config[ Config::FRENCH_PUNCTUATION_SPACING ] );
+		$s->set_units( $config[ Config::UNITS ] );
+		$s->set_space_collapse( $config[ Config::SPACE_COLLAPSE ] );
+		$s->set_dewidow( $config[ Config::PREVENT_WIDOWS ] );
+		$s->set_max_dewidow_length( $config[ Config::WIDOW_MIN_LENGTH ] );
+		$s->set_max_dewidow_pull( $config[ Config::WIDOW_MAX_PULL ] );
+		$s->set_wrap_hard_hyphens( $config[ Config::WRAP_HYPHENS ] );
+		$s->set_email_wrap( $config[ Config::WRAP_EMAILS ] );
+		$s->set_url_wrap( $config[ Config::WRAP_URLS ] );
+		$s->set_min_after_url_wrap( $config[ Config::WRAP_MIN_AFTER ] );
+		$s->set_style_ampersands( $config[ Config::STYLE_AMPS ] );
+		$s->set_style_caps( $config[ Config::STYLE_CAPS ] );
+		$s->set_style_numbers( $config[ Config::STYLE_NUMBERS ] );
+		$s->set_style_hanging_punctuation( $config[ Config::STYLE_HANGING_PUNCTUATION ] );
+		$s->set_style_initial_quotes( $config[ Config::STYLE_INITIAL_QUOTES ] );
+		$s->set_initial_quote_tags( $config[ Config::INITIAL_QUOTE_TAGS ] );
 
-		if ( $this->config[ Config::ENABLE_HYPHENATION ] ) {
-			$s->set_hyphenation( $this->config[ Config::ENABLE_HYPHENATION ] );
-			$s->set_hyphenate_headings( $this->config[ Config::HYPHENATE_HEADINGS ] );
-			$s->set_hyphenate_all_caps( $this->config[ Config::HYPHENATE_CAPS ] );
-			$s->set_hyphenate_title_case( $this->config[ Config::HYPHENATE_TITLE_CASE ] );
-			$s->set_hyphenate_compounds( $this->config[ Config::HYPHENATE_COMPOUNDS ] );
-			$s->set_hyphenation_language( $this->config[ Config::HYPHENATE_LANGUAGES ] );
-			$s->set_min_length_hyphenation( $this->config[ Config::HYPHENATE_MIN_LENGTH ] );
-			$s->set_min_before_hyphenation( $this->config[ Config::HYPHENATE_MIN_BEFORE ] );
-			$s->set_min_after_hyphenation( $this->config[ Config::HYPHENATE_MIN_AFTER ] );
-			$s->set_hyphenation_exceptions( $this->config[ Config::HYPHENATION_EXCEPTIONS ] );
+		if ( $config[ Config::ENABLE_HYPHENATION ] ) {
+			$s->set_hyphenation( $config[ Config::ENABLE_HYPHENATION ] );
+			$s->set_hyphenate_headings( $config[ Config::HYPHENATE_HEADINGS ] );
+			$s->set_hyphenate_all_caps( $config[ Config::HYPHENATE_CAPS ] );
+			$s->set_hyphenate_title_case( $config[ Config::HYPHENATE_TITLE_CASE ] );
+			$s->set_hyphenate_compounds( $config[ Config::HYPHENATE_COMPOUNDS ] );
+			$s->set_hyphenation_language( $config[ Config::HYPHENATE_LANGUAGES ] );
+			$s->set_min_length_hyphenation( $config[ Config::HYPHENATE_MIN_LENGTH ] );
+			$s->set_min_before_hyphenation( $config[ Config::HYPHENATE_MIN_BEFORE ] );
+			$s->set_min_after_hyphenation( $config[ Config::HYPHENATE_MIN_AFTER ] );
+			$s->set_hyphenation_exceptions( $config[ Config::HYPHENATE_EXCEPTIONS ] );
 		} else { // save some cycles.
-			$s->set_hyphenation( $this->config[ Config::ENABLE_HYPHENATION ] );
+			$s->set_hyphenation( $config[ Config::ENABLE_HYPHENATION ] );
 		}
 
 		/**
@@ -779,7 +785,7 @@ class WP_Typography {
 		 *
 		 * @param bool $ignore Default false.
 		 */
-		$s->set_ignore_parser_errors( $this->config[ Config::IGNORE_PARSER_ERRORS ] || apply_filters( 'typo_ignore_parser_errors', false ) );
+		$s->set_ignore_parser_errors( $config[ Config::IGNORE_PARSER_ERRORS ] || apply_filters( 'typo_ignore_parser_errors', false ) );
 
 		// Make parser errors filterable on an individual level.
 		$s->set_parser_errors_handler( [ $this, 'parser_errors_handler' ] );
