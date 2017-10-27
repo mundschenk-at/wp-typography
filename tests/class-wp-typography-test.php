@@ -366,6 +366,8 @@ class WP_Typography_Test extends TestCase {
 		] );
 
 		Functions\expect( 'wp_json_encode' )->once()->andReturn( '{ json: "value" }' );
+		Filters\expectApplied( 'typo_narrow_no_break_space' )->with( false )->once();
+		Filters\expectApplied( 'typo_ignore_parser_errors' )->with( false )->once();
 
 		$s = $this->wp_typo->get_settings();
 
@@ -382,7 +384,7 @@ class WP_Typography_Test extends TestCase {
 	 * @uses ::init_settings_from_options
 	 * @uses ::maybe_fix_object
 	 */
-	public function test_get_settings_off() {
+	public function test_get_settings_hyphenation_off() {
 
 		$this->wp_typo->shouldReceive( 'get_config' )->once()->andReturn( [
 			Config::IGNORE_TAGS                    => [ 'script' ],
@@ -433,11 +435,13 @@ class WP_Typography_Test extends TestCase {
 			Config::HYPHENATE_MIN_LENGTH           => 2,
 			Config::HYPHENATE_MIN_BEFORE           => 2,
 			Config::HYPHENATE_MIN_AFTER            => 2,
-			Config::HYPHENATE_EXCEPTIONS         => [],
+			Config::HYPHENATE_EXCEPTIONS           => [],
 			Config::IGNORE_PARSER_ERRORS           => false,
 		] );
 
 		Functions\expect( 'wp_json_encode' )->once()->andReturn( '{ json: "value" }' );
+		Filters\expectApplied( 'typo_narrow_no_break_space' )->with( false )->once();
+		Filters\expectApplied( 'typo_ignore_parser_errors' )->with( false )->once();
 
 		$s = $this->wp_typo->get_settings();
 

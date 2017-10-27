@@ -739,6 +739,7 @@ class WP_Typography {
 			$s->set_smart_diacritics( false );
 		}
 
+		// Space control.
 		$s->set_single_character_word_spacing( $config[ Config::SINGLE_CHARACTER_WORD_SPACING ] );
 		$s->set_dash_spacing( $config[ Config::DASH_SPACING ] );
 		$s->set_fraction_spacing( $config[ Config::FRACTION_SPACING ] );
@@ -750,10 +751,27 @@ class WP_Typography {
 		$s->set_dewidow( $config[ Config::PREVENT_WIDOWS ] );
 		$s->set_max_dewidow_length( $config[ Config::WIDOW_MIN_LENGTH ] );
 		$s->set_max_dewidow_pull( $config[ Config::WIDOW_MAX_PULL ] );
+
+		/**
+		 * Filters whether to use the NARROW NO-BREAK SPACE character (U+202F, &#8239;)
+		 * where appropriate.
+		 *
+		 * Historically, browser and/or font support for this character has been limited,
+		 * so by default it is replaced by the normal (non-narrow) NO-BREAK SPACE (U+00A0, &nbsp;).
+		 *
+		 * @since 5.1.0
+		 *
+		 * @param bool $enable Default false.
+		 */
+		$s->set_true_no_break_narrow_space( apply_filters( 'typo_narrow_no_break_space', false ) );
+
+		// Line wrapping.
 		$s->set_wrap_hard_hyphens( $config[ Config::WRAP_HYPHENS ] );
 		$s->set_email_wrap( $config[ Config::WRAP_EMAILS ] );
 		$s->set_url_wrap( $config[ Config::WRAP_URLS ] );
 		$s->set_min_after_url_wrap( $config[ Config::WRAP_MIN_AFTER ] );
+
+		// CSS hooks.
 		$s->set_style_ampersands( $config[ Config::STYLE_AMPS ] );
 		$s->set_style_caps( $config[ Config::STYLE_CAPS ] );
 		$s->set_style_numbers( $config[ Config::STYLE_NUMBERS ] );
