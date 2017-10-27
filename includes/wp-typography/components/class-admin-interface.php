@@ -181,22 +181,25 @@ class Admin_Interface implements Plugin_Component {
 		$this->version = $plugin->get_version();
 		$this->plugin  = $plugin;
 
-		// Set up default options.
-		$this->defaults = Config::get_defaults();
+		if ( \is_admin() ) {
 
-		// Initialize admin form.
-		$this->admin_resource_links = $this->initialize_resource_links();
-		$this->admin_help_pages     = $this->initialize_help_pages();
-		$this->admin_form_tabs      = UI\Tabs::get_tabs();
-		$this->admin_form_sections  = UI\Sections::get_sections();
-		$this->admin_form_controls  = $this->initialize_controls();
+			// Set up default options.
+			$this->defaults = Config::get_defaults();
 
-		// Add action hooks.
-		\add_action( 'admin_menu', [ $this, 'add_options_page' ] );
-		\add_action( 'admin_init', [ $this, 'register_the_settings' ] );
+			// Initialize admin form.
+			$this->admin_resource_links = $this->initialize_resource_links();
+			$this->admin_help_pages     = $this->initialize_help_pages();
+			$this->admin_form_tabs      = UI\Tabs::get_tabs();
+			$this->admin_form_sections  = UI\Sections::get_sections();
+			$this->admin_form_controls  = $this->initialize_controls();
 
-		// Add filter hooks.
-		\add_filter( 'plugin_action_links_' . $this->plugin_basename, [ $this, 'plugin_action_links' ] );
+			// Add action hooks.
+			\add_action( 'admin_menu', [ $this, 'add_options_page' ] );
+			\add_action( 'admin_init', [ $this, 'register_the_settings' ] );
+
+			// Add filter hooks.
+			\add_filter( 'plugin_action_links_' . $this->plugin_basename, [ $this, 'plugin_action_links' ] );
+		}
 	}
 
 	/**
