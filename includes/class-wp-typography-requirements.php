@@ -168,7 +168,8 @@ class WP_Typography_Requirements {
 			/* translators: 1: plugin name 2: mbstring documentation URL */
 			__( 'The activated plugin %1$s requires the mbstring PHP extension to be enabled on your server. Please deactivate this plugin, or <a href="%2$s">enable the extension</a>.', 'wp-typography' ),
 			"<strong>{$this->plugin_name}</strong>",
-			'http://www.php.net/manual/en/mbstring.installation.php'
+			/* translators: URL with mbstring PHP extension installation instructions */
+			__( 'http://www.php.net/manual/en/mbstring.installation.php', 'wp-typography' )
 		);
 	}
 
