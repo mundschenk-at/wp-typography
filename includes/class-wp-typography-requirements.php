@@ -38,14 +38,6 @@
 class WP_Typography_Requirements {
 
 	/**
-	 * The user-visible name of the plugin.
-	 *
-	 * @todo Should the plugin name be translated?
-	 * @var string $plugin_name
-	 */
-	private $plugin_name = 'wp-Typography';
-
-	/**
 	 * The minimum requirements for running the plugins. Must contain:
 	 *  - 'PHP Version'
 	 *  - 'Multibyte'
@@ -60,12 +52,19 @@ class WP_Typography_Requirements {
 	);
 
 	/**
-	 * The result of plugin_basename() for the main plugin file.
-	 * (Relative from plugins folder.)
+	 * The user-visible name of the plugin.
 	 *
-	 * @var string $local_plugin_path
+	 * @todo Should the plugin name be translated?
+	 * @var string
 	 */
-	private $local_plugin_path;
+	private $plugin_name;
+
+	/**
+	 * The result of plugin_basename() for the main plugin file (relative from plugins folder).
+	 *
+	 * @var string
+	 */
+	private $plugin_basename;
 
 	/**
 	 * Sets up a new WP_Typography_Requirements object.
@@ -73,9 +72,9 @@ class WP_Typography_Requirements {
 	 * @param string $name     The plugin name.
 	 * @param string $basename The result of plugin_basename() for the main plugin file.
 	 */
-	public function __construct( $name, $basename = 'wp-typography/wp-typography.php' ) {
-		$this->plugin_name       = $name;
-		$this->local_plugin_path = $basename;
+	public function __construct( $name, $basename ) {
+		$this->plugin_name     = $name;
+		$this->plugin_basename = $basename;
 	}
 
 	/**
@@ -105,7 +104,7 @@ class WP_Typography_Requirements {
 
 		if ( ! $requirements_met && is_admin() ) {
 			// Load text domain to ensure translated admin notices.
-			load_plugin_textdomain( 'wp-typography', false, dirname( $this->local_plugin_path ) . '/translations/' );
+			load_plugin_textdomain( 'wp-typography', false, dirname( $this->plugin_basename ) . '/translations/' );
 
 			/*
 				Not sure if we should actually auto-deactivate the plugin.
