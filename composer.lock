@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f62daacd08641bec2e1694e300156c0c",
+    "content-hash": "80ef5dc43ad4e6aedf8cc3b99f2512b7",
     "packages": [
         {
             "name": "level-2/dice",
@@ -116,16 +116,16 @@
         },
         {
             "name": "mundschenk-at/php-typography",
-            "version": "dev-master",
+            "version": "v5.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mundschenk-at/php-typography.git",
-                "reference": "fb64a62b869344bdeb752c65e6e0afb498efe924"
+                "reference": "68568a7c570ce902b65d40a0509295a13b54885f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mundschenk-at/php-typography/zipball/fb64a62b869344bdeb752c65e6e0afb498efe924",
-                "reference": "fb64a62b869344bdeb752c65e6e0afb498efe924",
+                "url": "https://api.github.com/repos/mundschenk-at/php-typography/zipball/68568a7c570ce902b65d40a0509295a13b54885f",
+                "reference": "68568a7c570ce902b65d40a0509295a13b54885f",
                 "shasum": ""
             },
             "require": {
@@ -173,7 +173,7 @@
                 }
             ],
             "description": "A PHP library for improving your web typography",
-            "time": "2017-09-30T11:17:16+00:00"
+            "time": "2017-10-27T18:33:56+00:00"
         }
     ],
     "packages-dev": [
@@ -3003,7 +3003,6 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
-        "mundschenk-at/php-typography": 20,
         "wp-coding-standards/wpcs": 20,
         "brain/monkey": 20,
         "antecedent/patchwork": 20
