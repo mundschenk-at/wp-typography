@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f62daacd08641bec2e1694e300156c0c",
+    "content-hash": "80ef5dc43ad4e6aedf8cc3b99f2512b7",
     "packages": [
         {
             "name": "level-2/dice",
@@ -116,7 +116,7 @@
         },
         {
             "name": "mundschenk-at/php-typography",
-            "version": "dev-master",
+            "version": "v5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mundschenk-at/php-typography.git",
@@ -3003,7 +3003,6 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
-        "mundschenk-at/php-typography": 20,
         "wp-coding-standards/wpcs": 20,
         "brain/monkey": 20,
         "antecedent/patchwork": 20
