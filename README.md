@@ -30,7 +30,7 @@ wp‐Typography has the following requirements:
 *   your installation of PHP must include the [mbstring extension](http://us3.php.net/manual/en/mbstring.installation.php) (most do)
 *   text must be encoded UTF‐8
 
-wp-Typography can easily be ported to any other PHP based content management system. The subdirectory `php-typography` assembles all typographic functionality (without any WordPress specific code) in an object oriented format that is ready for WordPress independent use.
+wp-Typography can easily be ported to any other PHP-based content management system. The Composer package [`mundschenk-at/php-typography`](https://github.com/mundschenk-at/php-typography) assembles all typographic functionality (without any WordPress-specific code) in an object oriented format that is ready use.
 
 View the [wp-Typography homepage](https://code.mundschenk.at/wp-typography/ "wp-Typography Homepage") for more information.
 

@@ -1,11 +1,7 @@
 'use strict';
 module.exports = function(grunt) {
 
-    // load all tasks
-    require('load-grunt-tasks')(grunt, {
-        scope: 'devDependencies'
-    });
-
+    // Initialize configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
@@ -31,22 +27,18 @@ module.exports = function(grunt) {
             options: {}
         },
 
-  	    phpcs: {
-  	        plugin: {
-  	            src: ['includes/**/*.php', 'admin/**/*.php']
-  	        },
-  	        options: {
-  	        	bin: '/usr/local/opt/php-code-sniffer@2.9/bin/phpcs -p -s -v -n --ignore=includes/_language_names.php --ignore=tests/perf.php',
-  	            standard: './phpcs.xml'
-  	        }
-  	    },
-
         composer : {
-            options : {
-                //usePhp: true,
-                flags: ['quiet', 'no-dev', 'classmap-authoritative'],
-                cwd: 'build',
-                //composerLocation: '/usr/local/bin/composer'
+            build : {
+                options : {
+                    flags: ['quiet', 'no-dev', 'classmap-authoritative'],
+                    cwd: 'build',
+                },
+            },
+            dev : {
+                options : {
+                    flags: [],
+                    cwd: '.',
+                },
             },
         },
 
@@ -96,6 +88,7 @@ module.exports = function(grunt) {
 
         wp_deploy: {
             options: {
+                svn_url: "https://plugins.svn.wordpress.org/{plugin-slug}/",
                 plugin_slug: 'wp-typography',
                 // svn_user: 'your-wp-repo-username',
                 build_dir: 'build', //relative path to your build directory
@@ -254,6 +247,12 @@ module.exports = function(grunt) {
         },
     });
 
+    // load all standard tasks
+    require('load-grunt-tasks')(grunt, {
+        scope: 'devDependencies'
+    });
+
+
     // delegate stuff
     grunt.registerTask('delegate', function() {
         grunt.task.run(this.args.join(':'));
@@ -280,13 +279,16 @@ module.exports = function(grunt) {
         });
     });
 
+    grunt.registerTask('phpcs', [
+        'composer:dev:phpcs',
+    ]);
+
     grunt.registerTask('build', [
-        //		'wp_readme_to_markdown',
         'clean:build',
         'regex_extract:language_names',
         'copy:main',
         'copy:meta',
-        'composer:dump-autoload',
+        'composer:build:dump-autoload',
         'clean:autoloader',
         'newer:delegate:sass:dist',
         'newer:postcss:dist',
