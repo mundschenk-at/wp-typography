@@ -193,9 +193,10 @@ class WP_Typography_Requirements {
 			return; // abort.
 		}
 
-		$args   = func_get_args();
-		$format = array_shift( $args );
+		$args    = func_get_args();
+		$format  = array_shift( $args );
+		$message = vsprintf( $format, $args );
 
-		echo '<div class="notice notice-error"><p>' . vsprintf( $format, $args ) . '</p></div>'; // WPCS: XSS OK.
+		require dirname( dirname( __FILE__ ) ) . '/admin/partials/requirements-error-notice.php';
 	}
 }
