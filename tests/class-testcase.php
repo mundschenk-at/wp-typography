@@ -77,7 +77,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase {
 	 */
 	protected function invokeMethod( $object, $method_name, array $parameters = [] ) {
 		$reflection = new \ReflectionClass( get_class( $object ) );
-		$method = $reflection->getMethod( $method_name );
+		$method     = $reflection->getMethod( $method_name );
 		$method->setAccessible( true );
 
 		return $method->invokeArgs( $object, $parameters );
@@ -94,7 +94,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase {
 	 */
 	protected function invokeStaticMethod( $classname, $method_name, array $parameters = [] ) {
 		$reflection = new \ReflectionClass( $classname );
-		$method = $reflection->getMethod( $method_name );
+		$method     = $reflection->getMethod( $method_name );
 		$method->setAccessible( true );
 
 		return $method->invokeArgs( null, $parameters );
@@ -109,7 +109,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase {
 	 */
 	protected function setStaticValue( $classname, $property_name, $value ) {
 		$reflection = new \ReflectionClass( $classname );
-		$property = $reflection->getProperty( $property_name );
+		$property   = $reflection->getProperty( $property_name );
 		$property->setAccessible( true );
 		$property->setValue( $value );
 	}
@@ -123,7 +123,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase {
 	 */
 	protected function setValue( $object, $property_name, $value ) {
 		$reflection = new \ReflectionClass( get_class( $object ) );
-		$property = $reflection->getProperty( $property_name );
+		$property   = $reflection->getProperty( $property_name );
 		$property->setAccessible( true );
 		$property->setValue( $object, $value );
 	}
@@ -138,7 +138,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase {
 	 */
 	protected function getStaticValue( $classname, $property_name ) {
 		$reflection = new \ReflectionClass( $classname );
-		$property = $reflection->getProperty( $property_name );
+		$property   = $reflection->getProperty( $property_name );
 		$property->setAccessible( true );
 
 		return $property->getValue();
@@ -154,7 +154,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase {
 	 */
 	protected function getValue( $object, $property_name ) {
 		$reflection = new \ReflectionClass( get_class( $object ) );
-		$property = $reflection->getProperty( $property_name );
+		$property   = $reflection->getProperty( $property_name );
 		$property->setAccessible( true );
 
 		return $property->getValue( $object );
@@ -169,7 +169,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase {
 	 * @param string $message   Optional. Default ''.
 	 */
 	protected function assertAttributeArrayHasKey( $key, $attribute, $object, $message = '' ) {
-		$ref = new \ReflectionClass( get_class( $object ) );
+		$ref  = new \ReflectionClass( get_class( $object ) );
 		$prop = $ref->getProperty( $attribute );
 		$prop->setAccessible( true );
 
@@ -185,7 +185,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase {
 	 * @param string $message   Optional. Default ''.
 	 */
 	protected function assertAttributeArrayNotHasKey( $key, $attribute, $object, $message = '' ) {
-		$ref = new \ReflectionClass( get_class( $object ) );
+		$ref  = new \ReflectionClass( get_class( $object ) );
 		$prop = $ref->getProperty( $attribute );
 		$prop->setAccessible( true );
 

@@ -60,7 +60,7 @@
           "@phpstan"
       ],
       "phpcs": [
-          "phpcs -p -s includes/ --ignore='includes/_language_names.php' --extensions=php"
+          "phpcs -p -s includes/ admin/partials tests/ --ignore='includes/_language_names.php' --extensions=php"
       ],
       "phpstan": [
           "phpstan analyse --configuration=.phpstan.neon --level=7 --ansi includes/",
