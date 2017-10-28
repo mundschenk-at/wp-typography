@@ -39,16 +39,16 @@ class WP_Typography_Requirements {
 
 	/**
 	 * The minimum requirements for running the plugins. Must contain:
-	 *  - 'PHP Version'
+	 *  - 'PHP'
 	 *  - 'Multibyte'
 	 *  - 'UTF-8'
 	 *
 	 * @var array A hash containing the version requirements for the plugin.
 	 */
 	private $install_requirements = array(
-		'PHP Version' => '5.6.0',
-		'Multibyte'   => true,
-		'UTF-8'       => true,
+		'PHP'       => '5.6.0',
+		'Multibyte' => true,
+		'UTF-8'     => true,
 	);
 
 	/**
@@ -60,21 +60,22 @@ class WP_Typography_Requirements {
 	private $plugin_name;
 
 	/**
-	 * The result of plugin_basename() for the main plugin file (relative from plugins folder).
+	 * The full path to the main plugin file.
 	 *
-	 * @var string
+	 * @since 5.1.0
+	 * @var   string
 	 */
-	private $plugin_basename;
+	private $plugin_file;
 
 	/**
 	 * Sets up a new WP_Typography_Requirements object.
 	 *
-	 * @param string $name     The plugin name.
-	 * @param string $basename The result of plugin_basename() for the main plugin file.
+	 * @param string $name        The plugin name.
+	 * @param string $plugin_path The full path to the main plugin file.
 	 */
-	public function __construct( $name, $basename ) {
-		$this->plugin_name     = $name;
-		$this->plugin_basename = $basename;
+	public function __construct( $name, $plugin_path ) {
+		$this->plugin_name = $name;
+		$this->plugin_file = $plugin_path;
 	}
 
 	/**
@@ -85,17 +86,17 @@ class WP_Typography_Requirements {
 	public function check() {
 		$requirements_met = true;
 
-		if ( version_compare( PHP_VERSION, $this->install_requirements['PHP Version'], '<' ) ) {
+		if ( ! empty( $this->install_requirements['PHP'] ) && version_compare( PHP_VERSION, $this->install_requirements['PHP'], '<' ) ) {
 			if ( is_admin() ) {
 				add_action( 'admin_notices', array( $this, 'admin_notices_php_version_incompatible' ) );
 			}
 			$requirements_met = false;
-		} elseif ( $this->install_requirements['Multibyte'] && ! $this->check_multibyte_support() ) {
+		} elseif ( ! empty( $this->install_requirements['Multibyte'] ) && ! $this->check_multibyte_support() ) {
 			if ( is_admin() ) {
 				add_action( 'admin_notices', array( $this, 'admin_notices_mbstring_incompatible' ) );
 			}
 			$requirements_met = false;
-		} elseif ( $this->install_requirements['UTF-8'] && ! $this->check_utf8_support() ) {
+		} elseif ( ! empty( $this->install_requirements['UTF-8'] ) && ! $this->check_utf8_support() ) {
 			if ( is_admin() ) {
 				add_action( 'admin_notices', array( $this, 'admin_notices_charset_incompatible' ) );
 			}
@@ -104,7 +105,7 @@ class WP_Typography_Requirements {
 
 		if ( ! $requirements_met && is_admin() ) {
 			// Load text domain to ensure translated admin notices.
-			load_plugin_textdomain( 'wp-typography', false, dirname( $this->plugin_basename ) . '/translations/' );
+			load_plugin_textdomain( 'wp-typography', false, dirname( plugin_basename( $this->plugin_file ) ) . '/translations/' );
 
 			/*
 				Not sure if we should actually auto-deactivate the plugin.
@@ -119,7 +120,7 @@ class WP_Typography_Requirements {
 	 * Deactivates the plugin.
 	 */
 	public function deactivate_plugin() {
-		deactivate_plugins( plugin_basename( $this->plugin_basename ) );
+		deactivate_plugins( plugin_basename( $this->plugin_file ) );
 	}
 
 	/**
@@ -152,7 +153,7 @@ class WP_Typography_Requirements {
 			/* translators: 1: plugin name 2: target PHP version number 3: actual PHP version number */
 			__( 'The activated plugin %1$s requires PHP %2$s or later. Your server is running PHP %3$s. Please deactivate this plugin, or upgrade your server\'s installation of PHP.', 'wp-typography' ),
 			"<strong>{$this->plugin_name}</strong>",
-			$this->install_requirements['PHP Version'],
+			$this->install_requirements['PHP'],
 			phpversion()
 		);
 	}
@@ -197,6 +198,6 @@ class WP_Typography_Requirements {
 		$format  = array_shift( $args );
 		$message = vsprintf( $format, $args );
 
-		require dirname( dirname( __FILE__ ) ) . '/admin/partials/requirements-error-notice.php';
+		require dirname( $this->plugin_file ) . '/admin/partials/requirements-error-notice.php';
 	}
 }

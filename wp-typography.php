@@ -56,7 +56,7 @@ require_once dirname( __FILE__ ) . '/includes/class-wp-typography-requirements.p
  */
 function run_wp_typography() {
 
-	$requirements = new WP_Typography_Requirements( 'wp-Typography', plugin_basename( __FILE__ ) );
+	$requirements = new WP_Typography_Requirements( 'wp-Typography', __FILE__ );
 
 	if ( $requirements->check() ) {
 		// Autoload the rest of our classes.
