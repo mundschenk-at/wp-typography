@@ -249,43 +249,25 @@ class Admin_Interface implements Plugin_Component {
 	 *         @type Control $id A control object.
 	 * }
 	 */
-	private function initialize_controls() {
+	protected function initialize_controls() {
 
 		// Create controls from default configuration.
 		$controls = [];
+		$groups   = [];
 		foreach ( $this->defaults as $control_id => $control_info ) {
 			$controls[ $control_id ] = new $control_info['ui']( $this->options, self::OPTION_GROUP, $control_id, $control_info );
+
+			if ( ! empty( $control_info['grouped_with'] ) ) {
+				$groups[ $control_info['grouped_with'] ][] = $control_id;
+			}
 		}
 
 		// Group controls.
-		$controls[ Config::ENABLE_HYPHENATION ]->add_grouped_control( $controls[ Config::HYPHENATE_LANGUAGES ] );
-		$controls[ Config::HYPHENATE_HEADINGS ]->add_grouped_control( $controls[ Config::HYPHENATE_TITLE_CASE ] );
-		$controls[ Config::HYPHENATE_HEADINGS ]->add_grouped_control( $controls[ Config::HYPHENATE_COMPOUNDS ] );
-		$controls[ Config::HYPHENATE_HEADINGS ]->add_grouped_control( $controls[ Config::HYPHENATE_CAPS ] );
-
-		$controls[ Config::HYPHENATE_MIN_LENGTH ]->add_grouped_control( $controls[ Config::HYPHENATE_MIN_BEFORE ] );
-		$controls[ Config::HYPHENATE_MIN_LENGTH ]->add_grouped_control( $controls[ Config::HYPHENATE_MIN_AFTER ] );
-
-		$controls[ Config::HYPHENATE_CLEAN_CLIPBOARD ]->add_grouped_control( $controls[ Config::HYPHENATE_SAFARI_FONT_WORKAROUND ] );
-
-		$controls[ Config::SMART_QUOTES ]->add_grouped_control( $controls[ Config::SMART_QUOTES_PRIMARY ] );
-		$controls[ Config::SMART_QUOTES ]->add_grouped_control( $controls[ Config::SMART_QUOTES_SECONDARY ] );
-
-		$controls[ Config::SMART_DASHES ]->add_grouped_control( $controls[ Config::SMART_DASHES_STYLE ] );
-
-		$controls[ Config::SMART_DIACRITICS ]->add_grouped_control( $controls[ Config::DIACRITIC_LANGUAGES ] );
-		$controls[ Config::SMART_DIACRITICS ]->add_grouped_control( $controls[ Config::DIACRITIC_CUSTOM_REPLACEMENTS ] );
-
-		$controls[ Config::UNIT_SPACING ]->add_grouped_control( $controls[ Config::UNITS ] );
-
-		$controls[ Config::WRAP_URLS ]->add_grouped_control( $controls[ Config::WRAP_MIN_AFTER ] );
-
-		$controls[ Config::PREVENT_WIDOWS ]->add_grouped_control( $controls[ Config::WIDOW_MIN_LENGTH ] );
-		$controls[ Config::PREVENT_WIDOWS ]->add_grouped_control( $controls[ Config::WIDOW_MAX_PULL ] );
-
-		$controls[ Config::STYLE_INITIAL_QUOTES ]->add_grouped_control( $controls[ Config::INITIAL_QUOTE_TAGS ] );
-
-		$controls[ Config::STYLE_CSS_INCLUDE ]->add_grouped_control( $controls[ Config::STYLE_CSS ] );
+		foreach ( $groups as $group => $control_id ) {
+			foreach ( $control_id as $control_id ) {
+				$controls[ $group ]->add_grouped_control( $controls[ $control_id ] );
+			}
+		}
 
 		return $controls;
 	}
@@ -471,10 +453,13 @@ class Admin_Interface implements Plugin_Component {
 		$section_id = ! empty( $section['id'] ) ? $section['id'] : '';
 
 		if ( ! empty( $this->admin_form_tabs[ $section_id ]['description'] ) ) {
-			echo '<p>' . \esc_html( $this->admin_form_tabs[ $section_id ]['description'] ) . '</p>';
+			$description = $this->admin_form_tabs[ $section_id ]['description'];
 		} elseif ( ! empty( $this->admin_form_sections[ $section_id ]['description'] ) ) {
-			echo '<p>' . \esc_html( $this->admin_form_sections[ $section_id ]['description'] ) . '</p>';
+			$description = $this->admin_form_sections[ $section_id ]['description'];
 		}
+
+		// Load the settings page HTML.
+		require \dirname( $this->plugin_file ) . '/admin/partials/settings/section.php';
 	}
 
 	/**
@@ -508,6 +493,6 @@ class Admin_Interface implements Plugin_Component {
 		$this->admin_form_controls[ Config::DIACRITIC_LANGUAGES ]->set_option_values( $this->plugin->load_diacritic_languages() );
 
 		// Load the settings page HTML.
-		include_once \dirname( $this->plugin_file ) . '/admin/partials/settings.php';
+		require \dirname( $this->plugin_file ) . '/admin/partials/settings/settings-page.php';
 	}
 }
