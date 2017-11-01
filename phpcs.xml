@@ -9,6 +9,8 @@
 
 	<!-- Include the WordPress ruleset, with exclusions. -->
 	<rule ref="WordPress">
+		<config name="minimum_supported_wp_version" value="4.6"/>
+
 		<exclude name="WordPress.Arrays.CommaAfterArrayItem.SpaceAfterComma" />
 		<exclude name="Generic.WhiteSpace.ScopeIndent.IncorrectExact" />
 		<exclude name="Generic.WhiteSpace.ScopeIndent.Incorrect" />
