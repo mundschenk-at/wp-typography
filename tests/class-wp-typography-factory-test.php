@@ -30,6 +30,8 @@ use Brain\Monkey\Actions;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 
+use org\bovigo\vfs\vfsStream;
+
 use Mockery as m;
 
 /**
@@ -41,12 +43,36 @@ use Mockery as m;
 class WP_Typography_Factory_Test extends TestCase {
 
 	/**
+	 * Sets up the fixture, for example, opens a network connection.
+	 * This method is called before a test is executed.
+	 */
+	protected function setUp() { // @codingStandardsIgnoreLine
+		parent::setUp();
+
+		// Set up virtual filesystem.
+		vfsStream::setup( 'root', null, [
+			'wordpress' => [
+				'path' => [
+					'wp-admin' => [
+						'includes' => [
+							'plugin.php' => "<?php Brain\\Monkey\\Functions\\expect( 'get_plugin_data' )->once()->andReturn( [ 'Version' => '6.6.6' ] ); ?>",
+						],
+					],
+				],
+			],
+		] );
+		set_include_path( 'vfs://root/' ); // @codingStandardsIgnoreLine
+	}
+
+	/**
 	 * Test ::get.
 	 *
 	 * @covers ::get
 	 */
 	public function test_get() {
 		Functions\expect( 'plugin_basename' )->once()->andReturn( 'path' );
+
+		define( 'ABSPATH', 'wordpress/path/' );
 
 		$this->assertInstanceOf( Dice::class, \WP_Typography_Factory::get( '/dummy/path' ) );
 	}

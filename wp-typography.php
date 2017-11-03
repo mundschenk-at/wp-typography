@@ -62,15 +62,8 @@ function run_wp_typography() {
 		// Autoload the rest of our classes.
 		require_once __DIR__ . '/vendor/autoload.php';
 
-		// Load version from plugin data.
-		if ( ! function_exists( 'get_plugin_data' ) ) {
-			include_once ABSPATH . 'wp-admin/includes/plugin.php';
-		}
-		$plugin_data = get_plugin_data( __FILE__, false, false );
-		$version     = $plugin_data['Version'];
-
 		// Create the plugin.
-		$plugin = WP_Typography_Factory::get( __FILE__ )->create( 'WP_Typography', array( $version ) );
+		$plugin = WP_Typography_Factory::get( __FILE__ )->create( 'WP_Typography' );
 
 		// Start the plugin for real.
 		$plugin->run();
