@@ -43,7 +43,6 @@ class Select extends Control {
 	 * Create a new select control object.
 	 *
 	 * @param Options $options      Options API handler.
-	 * @param string  $option_group Application-specific prefix.
 	 * @param string  $id           Control ID (equivalent to option name). Required.
 	 * @param array   $args {
 	 *    Optional and required arguments.
@@ -61,10 +60,10 @@ class Select extends Control {
 	 *
 	 * @throws \InvalidArgumentException Missing argument.
 	 */
-	public function __construct( Options $options, $option_group, $id, array $args ) {
+	public function __construct( Options $options, $id, array $args ) {
 		$args = $this->prepare_args( $args, [ 'tab_id', 'default', 'option_values' ] );
 
-		parent::__construct( $options, $option_group, $id, $args['tab_id'], $args['section'], $args['default'], $args['short'], $args['label'], $args['help_text'], $args['inline_help'], $args['attributes'] );
+		parent::__construct( $options, $id, $args['tab_id'], $args['section'], $args['default'], $args['short'], $args['label'], $args['help_text'], $args['inline_help'], $args['attributes'] );
 
 		$this->option_values = $args['option_values'];
 	}
@@ -97,23 +96,20 @@ class Select extends Control {
 	}
 
 	/**
-	 * Render control-specific HTML.
+	 * Retrieves the control-specific HTML markup.
 	 *
-	 * @param string|null $label           Translated label (or null).
-	 * @param string|null $help_text       Translated help text (or null).
-	 * @param string      $html_attributes An HTML attribute string (may be empty).
+	 * @return string
 	 */
-	protected function internal_render( $label, $help_text, $html_attributes ) {
-		$control_markup = $this->control_markup( $label, $help_text );
-		$id             = \esc_attr( $this->get_id() );
-		$select_markup  = "<select id=\"{$id}\" name=\"{$id}\" {$html_attributes}>";
+	protected function get_element_markup() {
+		$select_markup = "<select {$this->get_id_and_class_markup()}>";
+		$value         = $this->get_value();
 
 		foreach ( $this->option_values as $option_value => $display ) {
 			$translated_display = \esc_html__( $display, 'wp-typography' ); // @codingStandardsIgnoreLine.
-			$select_markup .= '<option value="' . \esc_attr( $option_value ) . '" ' . \selected( $this->get_value(), $option_value, false ) . '>' . $translated_display . '</option>';
+			$select_markup .= '<option value="' . \esc_attr( $option_value ) . '" ' . \selected( $value, $option_value, false ) . '>' . $translated_display . '</option>';
 		}
 		$select_markup .= '</select>';
 
-		\printf( $control_markup, $select_markup ); // WPCS: XSS ok.
+		return $select_markup;
 	}
 }

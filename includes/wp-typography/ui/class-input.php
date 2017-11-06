@@ -45,7 +45,6 @@ abstract class Input extends Control {
 	 *
 	 * @param Options     $options      Options API handler.
 	 * @param string      $input_type   HTML input type ('checkbox' etc.). Required.
-	 * @param string      $option_group Application-specific prefix.
 	 * @param string      $id           Control ID (equivalent to option name). Required.
 	 * @param string      $tab_id       Tab ID. Required.
 	 * @param string      $section      Section ID. Required.
@@ -56,52 +55,29 @@ abstract class Input extends Control {
 	 * @param bool        $inline_help  Optional. Display help inline. Default false.
 	 * @param array       $attributes   Optional. Default [].
 	 */
-	protected function __construct( Options $options, $input_type, $option_group, $id, $tab_id, $section, $default, $short, $label = null, $help_text = null, $inline_help = false, $attributes = [] ) {
-		parent::__construct( $options, $option_group, $id, $tab_id, $section, $default, $short, $label, $help_text, $inline_help, $attributes );
+	protected function __construct( Options $options, $input_type, $id, $tab_id, $section, $default, $short, $label = null, $help_text = null, $inline_help = false, $attributes = [] ) {
+		parent::__construct( $options, $id, $tab_id, $section, $default, $short, $label, $help_text, $inline_help, $attributes );
 
 		$this->input_type = $input_type;
 	}
 
 	/**
-	 * Render the value markup for this input.
+	 * Retrieves the value markup for this input.
 	 *
 	 * @param mixed $value The input value.
 	 *
 	 * @return string
 	 */
-	protected function value_markup( $value ) {
+	protected function get_value_markup( $value ) {
 		return $value ? 'value="' . \esc_attr( $value ) . '" ' : '';
 	}
 
 	/**
-	 * Markup ID and class(es).
+	 * Retrieves the control-specific HTML markup.
 	 *
-	 * @return string
+	 * @var string
 	 */
-	protected function id_and_class_markup() {
-		$id = \esc_attr( $this->get_id() );
-
-		// Set default ID & name, no class (except for submit buttons).
-		return "id=\"{$id}\" name=\"{$id}\" ";
-	}
-
-	/**
-	 * Render control-specific HTML.
-	 *
-	 * @param string|null $label           Translated label (or null).
-	 * @param string|null $help_text       Translated help text (or null).
-	 * @param string      $html_attributes An HTML attribute string (may be empty).
-	 */
-	protected function internal_render( $label, $help_text, $html_attributes ) {
-		$value          = $this->value_markup( $this->get_value() );
-		$id_and_class   = $this->id_and_class_markup();
-		$control_markup = $this->control_markup( $label, $help_text );
-
-		// Add any additional attributes.
-		if ( ! empty( $html_attributes ) ) {
-			$id_and_class .= " $html_attributes";
-		}
-
-		printf( $control_markup, '<input type="' . \esc_attr( $this->input_type ) . '" ' . $id_and_class . ' ' . $value . '/>' ); // WPCS: XSS ok.
+	protected function get_element_markup() {
+		return '<input type="' . \esc_attr( $this->input_type ) . '" ' . "{$this->get_id_and_class_markup()} {$this->get_value_markup( $this->get_value() )}/>";
 	}
 }

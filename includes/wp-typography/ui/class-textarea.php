@@ -37,7 +37,6 @@ class Textarea extends Control {
 	 * Create a new textarea control object.
 	 *
 	 * @param Options $options      Options API handler.
-	 * @param string  $option_group Application-specific prefix.
 	 * @param string  $id           Control ID (equivalent to option name). Required.
 	 * @param array   $args {
 	 *    Optional and required arguments.
@@ -48,54 +47,25 @@ class Textarea extends Control {
 	 *    @type string      $short        Optional. Short label.
 	 *    @type string|null $label        Optional. Label content with the position of the control marked as %1$s. Default null.
 	 *    @type string|null $help_text    Optional. Help text. Default null.
-	 *    @type bool        $inline_help  Optional. Display help inline. Default false.
 	 *    @type array       $attributes   Optional. Default [],
 	 * }
 	 *
 	 * @throws \InvalidArgumentException Missing argument.
 	 */
-	public function __construct( Options $options, $option_group, $id, array $args ) {
+	public function __construct( Options $options, $id, array $args ) {
 		$args = $this->prepare_args( $args, [ 'tab_id', 'default' ] );
 
-		parent::__construct( $options, $option_group, $id, $args['tab_id'], $args['section'], $args['default'], $args['short'], null, $args['help_text'], false, $args['attributes'] );
+		parent::__construct( $options, $id, $args['tab_id'], $args['section'], $args['default'], $args['short'], $args['label'], $args['help_text'], false, $args['attributes'] );
 	}
 
 	/**
-	 * Render the value markup for this input.
+	 * Retrieves the control-specific HTML markup.
 	 *
-	 * @param  mixed $value The input value.
-	 * @return string
+	 * @var string
 	 */
-	protected function value_markup( $value ) {
-		return ! empty( $value ) ? \esc_textarea( $value ) : '';
-	}
+	protected function get_element_markup() {
+		$value = \esc_textarea( $this->get_value() );
 
-	/**
-	 * Render control-specific HTML.
-	 *
-	 * @param string|null $label           Translated label (or null).
-	 * @param string|null $help_text       Translated help text (or null).
-	 * @param string      $html_attributes An HTML attribute string (may be empty).
-	 */
-	protected function internal_render( $label, $help_text, $html_attributes ) {
-		$control_markup = '';
-		$id             = \esc_attr( $this->get_id() );
-		$help_text      = \wp_kses( $help_text, [
-			'code' => [],
-		] );
-
-		// Generate markup for label.
-		if ( ! empty( $label ) ) {
-			$control_markup = "<label for=\"{$id}\">" . \esc_html( $label ) . '</label>';
-		}
-
-		// Add the <textarea> itself.
-		$control_markup .= "<textarea class=\"large-text\" id=\"{$id}\" name=\"$id\" {$html_attributes}>{$this->value_markup( $this->get_value() )}</textarea>";
-
-		if ( ! empty( $help_text ) ) {
-			$control_markup .= '<p class="description">' . $help_text . '</p>';
-		}
-
-		echo $control_markup; // WPCS: XSS ok.
+		return "<textarea class=\"large-text\" {$this->get_id_and_class_markup()}>{$value}</textarea>";
 	}
 }

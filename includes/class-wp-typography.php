@@ -148,9 +148,7 @@ class WP_Typography {
 	/**
 	 * Sets up a new WP_Typography object.
 	 *
-	 * @since 5.1.0 Optional parameters $transients, $cache and $options added.
-	 *              The parameter $plugin_path has been changed to be the full path
-	 *              of the main plugin file.
+	 * @since 5.1.0 Optional parameters $transients, $cache, $options, $setup, $public_if added.
 	 *
 	 * @param string           $version     The full plugin version string (e.g. "3.0.0-beta.2").
 	 * @param Setup            $setup       Required.

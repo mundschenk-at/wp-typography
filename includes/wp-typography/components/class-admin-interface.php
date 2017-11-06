@@ -255,7 +255,7 @@ class Admin_Interface implements Plugin_Component {
 		$controls = [];
 		$groups   = [];
 		foreach ( $this->defaults as $control_id => $control_info ) {
-			$controls[ $control_id ] = new $control_info['ui']( $this->options, self::OPTION_GROUP, $control_id, $control_info );
+			$controls[ $control_id ] = new $control_info['ui']( $this->options, $control_id, $control_info );
 
 			if ( ! empty( $control_info['grouped_with'] ) ) {
 				$groups[ $control_info['grouped_with'] ][] = $control_id;
@@ -290,9 +290,9 @@ class Admin_Interface implements Plugin_Component {
 		// Prevent spurious saves.
 		\add_filter( 'pre_update_option_' . $configuration_name, [ $this, 'filter_update_option' ], 10, 2 );
 
-		// Register controls.
+		// Register control render callbacks.
 		foreach ( $this->admin_form_controls as $control ) {
-			$control->register();
+			$control->register( self::OPTION_GROUP );
 		}
 	}
 
