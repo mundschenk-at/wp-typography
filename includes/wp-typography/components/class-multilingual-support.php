@@ -37,13 +37,13 @@ use \PHP_Typography\Settings\Dash_Style;
 use \PHP_Typography\Settings\Quote_Style;
 
 /**
- * Multilingual support for wp-Typography.
+ * Multilingual_Support support for wp-Typography.
  *
  * @since 5.0.0
  *
  * @author Peter Putzer <github@mundschenk.at>
  */
-class Multilingual implements Plugin_Component {
+class Multilingual_Support implements Plugin_Component {
 
 	/**
 	 * An array of Locale_Settings.

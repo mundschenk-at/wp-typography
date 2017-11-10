@@ -30,7 +30,7 @@ use \WP_Typography\Data_Storage\Options;
 use \WP_Typography\Data_Storage\Transients;
 
 use \WP_Typography\Components\Admin_Interface;
-use \WP_Typography\Components\Multilingual;
+use \WP_Typography\Components\Multilingual_Support;
 use \WP_Typography\Components\Plugin_Component;
 use \WP_Typography\Components\Public_Interface;
 use \WP_Typography\Components\Setup;
@@ -127,7 +127,7 @@ class WP_Typography {
 	/**
 	 * The multlingual support object.
 	 *
-	 * @var Multilingual
+	 * @var Multilingual_Support
 	 */
 	private $multilingual;
 
@@ -150,16 +150,16 @@ class WP_Typography {
 	 *
 	 * @since 5.1.0 Optional parameters $transients, $cache, $options, $setup, $public_if added.
 	 *
-	 * @param string           $version     The full plugin version string (e.g. "3.0.0-beta.2").
-	 * @param Setup            $setup       Required.
-	 * @param Admin_Interface  $admin       Required.
-	 * @param Public_Interface $public_if   Required.
-	 * @param Multilingual     $multi       Required.
-	 * @param Transients       $transients  Required.
-	 * @param Cache            $cache       Required.
-	 * @param Options          $options     Required.
+	 * @param string               $version     The full plugin version string (e.g. "3.0.0-beta.2").
+	 * @param Setup                $setup       Required.
+	 * @param Admin_Interface      $admin       Required.
+	 * @param Public_Interface     $public_if   Required.
+	 * @param Multilingual_Support $multi       Required.
+	 * @param Transients           $transients  Required.
+	 * @param Cache                $cache       Required.
+	 * @param Options              $options     Required.
 	 */
-	public function __construct( $version, Setup $setup, Admin_Interface $admin, Public_Interface $public_if, Multilingual $multi, Transients $transients, Cache $cache, Options $options ) {
+	public function __construct( $version, Setup $setup, Admin_Interface $admin, Public_Interface $public_if, Multilingual_Support $multi, Transients $transients, Cache $cache, Options $options ) {
 		// Basic set-up.
 		$this->version = $version;
 
@@ -205,7 +205,7 @@ class WP_Typography {
 	 *
 	 * @since 5.0.0
 	 *
-	 * @param WP_Typography|null $instance Only used for plugin initialization. Don't ever pass a value in user code.
+	 * @param WP_Typography $instance Only used for plugin initialization. Don't ever pass a value in user code.
 	 *
 	 * @throws BadMethodCallException Thrown when WP_Typography::set_instance after plugin initialization.
 	 */

@@ -711,9 +711,9 @@ class Admin_Interface_Test extends TestCase {
 	public function test_initialize_controls() {
 
 		// Set up data.
-		$number_input  = m::mock( 'overload:' . \WP_Typography\UI\Number_Input::class );
-		$checkbox      = m::mock( 'overload:' . \WP_Typography\UI\Checkbox_Input::class );
-		$select        = m::mock( 'overload:' . \WP_Typography\UI\Select::class );
+		$number_input = m::mock( 'overload:' . \WP_Typography\UI\Number_Input::class );
+		$checkbox     = m::mock( 'overload:' . \WP_Typography\UI\Checkbox_Input::class );
+		$select       = m::mock( 'overload:' . \WP_Typography\UI\Select::class );
 
 		$defaults = [
 			'foo'    => [
