@@ -280,24 +280,8 @@ abstract class Plugin_Configuration {
 					'grouped_with'  => self::SMART_QUOTES,
 					/* translators: 1: style dropdown */
 					'label'         => \__( 'Primary quotation style: Convert <code>"foo"</code> to %1$s.', 'wp-typography' ),
-					'option_values' => [
-						Quote_Style::DOUBLE_CURLED              => '&ldquo;foo&rdquo;',
-						Quote_Style::DOUBLE_CURLED_REVERSED     => '&rdquo;foo&rdquo;',
-						Quote_Style::DOUBLE_LOW_9               => '&bdquo;foo&rdquo;',
-						Quote_Style::DOUBLE_LOW_9_REVERSED      => '&bdquo;foo&ldquo;',
-						Quote_Style::SINGLE_CURLED              => '&lsquo;foo&rsquo;',
-						Quote_Style::SINGLE_CURLED_REVERSED     => '&rsquo;foo&rsquo;',
-						Quote_Style::SINGLE_LOW_9               => '&sbquo;foo&rsquo;',
-						Quote_Style::SINGLE_LOW_9_REVERSED      => '&sbquo;foo&lsquo;',
-						Quote_Style::DOUBLE_GUILLEMETS_FRENCH   => '&laquo;&nbsp;foo&nbsp;&raquo;',
-						Quote_Style::DOUBLE_GUILLEMETS          => '&laquo;foo&raquo;',
-						Quote_Style::DOUBLE_GUILLEMETS_REVERSED => '&raquo;foo&laquo;',
-						Quote_Style::SINGLE_GUILLEMETS          => '&lsaquo;foo&rsaquo;',
-						Quote_Style::SINGLE_GUILLEMETS_REVERSED => '&rsaquo;foo&lsaquo;',
-						Quote_Style::CORNER_BRACKETS            => '&#x300c;foo&#x300d;',
-						Quote_Style::WHITE_CORNER_BRACKETS      => '&#x300e;foo&#x300f;',
-					],
-					'default'       => Quote_Style::DOUBLE_CURLED,
+					'option_values' => self::get_quote_style_option_values(),
+					'default'       => Quote_Style::DOUBLE_CURLED, // @codeCoverageIgnore
 				],
 				self::SMART_QUOTES_SECONDARY           => [
 					'ui'            => UI\Select::class,
@@ -305,24 +289,8 @@ abstract class Plugin_Configuration {
 					'grouped_with'  => self::SMART_QUOTES,
 					/* translators: 1: style dropdown */
 					'label'         => \__( "Secondary quotation style: Convert <code>'foo'</code> to %1\$s.", 'wp-typography' ),
-					'option_values' => [
-						Quote_Style::DOUBLE_CURLED              => '&ldquo;foo&rdquo;',
-						Quote_Style::DOUBLE_CURLED_REVERSED     => '&rdquo;foo&rdquo;',
-						Quote_Style::DOUBLE_LOW_9               => '&bdquo;foo&rdquo;',
-						Quote_Style::DOUBLE_LOW_9_REVERSED      => '&bdquo;foo&ldquo;',
-						Quote_Style::SINGLE_CURLED              => '&lsquo;foo&rsquo;',
-						Quote_Style::SINGLE_CURLED_REVERSED     => '&rsquo;foo&rsquo;',
-						Quote_Style::SINGLE_LOW_9               => '&sbquo;foo&rsquo;',
-						Quote_Style::SINGLE_LOW_9_REVERSED      => '&sbquo;foo&lsquo;',
-						Quote_Style::DOUBLE_GUILLEMETS_FRENCH   => '&laquo;&nbsp;foo&nbsp;&raquo;',
-						Quote_Style::DOUBLE_GUILLEMETS          => '&laquo;foo&raquo;',
-						Quote_Style::DOUBLE_GUILLEMETS_REVERSED => '&raquo;foo&laquo;',
-						Quote_Style::SINGLE_GUILLEMETS          => '&lsaquo;foo&rsaquo;',
-						Quote_Style::SINGLE_GUILLEMETS_REVERSED => '&rsaquo;foo&lsaquo;',
-						Quote_Style::CORNER_BRACKETS            => '&#x300c;foo&#x300d;',
-						Quote_Style::WHITE_CORNER_BRACKETS      => '&#x300e;foo&#x300f;',
-					],
-					'default'       => Quote_Style::SINGLE_CURLED,
+					'option_values' => self::get_quote_style_option_values(),
+					'default'       => Quote_Style::SINGLE_CURLED, // @codeCoverageIgnore
 				],
 				self::SMART_DASHES                     => [
 					'ui'            => UI\Checkbox_Input::class,
@@ -343,7 +311,7 @@ abstract class Plugin_Configuration {
 						Dash_Style::TRADITIONAL_US => \__( 'Traditional US', 'wp-typography' ),
 						Dash_Style::INTERNATIONAL  => \__( 'International', 'wp-typography' ),
 					],
-					'default'       => Dash_Style::TRADITIONAL_US,
+					'default'       => Dash_Style::TRADITIONAL_US, // @codeCoverageIgnore
 				],
 				self::SMART_DIACRITICS                 => [
 					'ui'            => UI\Checkbox_Input::class,
@@ -652,5 +620,30 @@ abstract class Plugin_Configuration {
 	 */
 	private static function get_numeric_option_values( array $values ) {
 		return \array_combine( $values, $values );
+	}
+
+	/**
+	 * Returns quote style constants in the form $value => $display.
+	 *
+	 * @return array
+	 */
+	private static function get_quote_style_option_values() {
+		return [
+			Quote_Style::DOUBLE_CURLED              => '&ldquo;foo&rdquo;',
+			Quote_Style::DOUBLE_CURLED_REVERSED     => '&rdquo;foo&rdquo;', // @codeCoverageIgnoreStart
+			Quote_Style::DOUBLE_LOW_9               => '&bdquo;foo&rdquo;',
+			Quote_Style::DOUBLE_LOW_9_REVERSED      => '&bdquo;foo&ldquo;',
+			Quote_Style::SINGLE_CURLED              => '&lsquo;foo&rsquo;',
+			Quote_Style::SINGLE_CURLED_REVERSED     => '&rsquo;foo&rsquo;',
+			Quote_Style::SINGLE_LOW_9               => '&sbquo;foo&rsquo;',
+			Quote_Style::SINGLE_LOW_9_REVERSED      => '&sbquo;foo&lsquo;',
+			Quote_Style::DOUBLE_GUILLEMETS_FRENCH   => '&laquo;&nbsp;foo&nbsp;&raquo;',
+			Quote_Style::DOUBLE_GUILLEMETS          => '&laquo;foo&raquo;',
+			Quote_Style::DOUBLE_GUILLEMETS_REVERSED => '&raquo;foo&laquo;',
+			Quote_Style::SINGLE_GUILLEMETS          => '&lsaquo;foo&rsaquo;',
+			Quote_Style::SINGLE_GUILLEMETS_REVERSED => '&rsaquo;foo&lsaquo;',
+			Quote_Style::CORNER_BRACKETS            => '&#x300c;foo&#x300d;',
+			Quote_Style::WHITE_CORNER_BRACKETS      => '&#x300e;foo&#x300f;', // @codeCoverageIgnoreEnd
+		];
 	}
 }
