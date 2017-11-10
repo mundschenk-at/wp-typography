@@ -26,11 +26,11 @@
 
 namespace WP_Typography\Settings;
 
-use \WP_Typography;
-use \WP_Typography\UI;
+use WP_Typography;
+use WP_Typography\UI;
 
-use \PHP_Typography\Settings\Dash_Style;
-use \PHP_Typography\Settings\Quote_Style;
+use PHP_Typography\Settings\Dash_Style;
+use PHP_Typography\Settings\Quote_Style;
 
 /**
  * Default configuration for wp-Typography.
@@ -612,7 +612,7 @@ abstract class Plugin_Configuration {
 	}
 
 	/**
-	 * Return numeric values as in associative form $value => $value.
+	 * Returns numeric values as in associative form $value => $value.
 	 *
 	 * @param array $values Option values.
 	 *
