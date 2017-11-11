@@ -193,7 +193,6 @@ class WP_Typography_Test extends TestCase {
 	 * @uses \WP_Typography\Data_Storage\Transients::__construct
 	 * @uses \WP_Typography\Data_Storage\Transients::invalidate
 	 * @uses \WP_Typography\Data_Storage\Transients::get_keys_from_database
-	 * @uses \WP_Typography\Components\Multilingual_Support::__construct
 	 */
 	public function test_constructor() {
 

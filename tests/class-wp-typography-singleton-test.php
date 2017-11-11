@@ -83,7 +83,6 @@ class WP_Typography_Singleton_Test extends TestCase {
 	 * @uses \WP_Typography\Data_Storage\Options::__construct
 	 * @uses \WP_Typography\Components\Setup::__construct
 	 * @uses \WP_Typography\Data_Storage\Transients::__construct
-	 * @uses \WP_Typography\Components\Multilingual_Support::__construct
 	 */
 	public function test_singleton() {
 
@@ -148,7 +147,6 @@ class WP_Typography_Singleton_Test extends TestCase {
 	 * @uses ::get_version_hash
 	 * @uses ::hash_version_string
 	 * @uses \WP_Typography\Components\Admin_Interface::__construct
-	 * @uses \WP_Typography\Components\Multilingual_Support::__construct
 	 * @uses \WP_Typography\Components\Multilingual_Support::initialize_locale_settings
 	 * @uses \WP_Typography\Components\Multilingual_Support::run
 	 *
