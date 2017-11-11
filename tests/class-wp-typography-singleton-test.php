@@ -83,11 +83,10 @@ class WP_Typography_Singleton_Test extends TestCase {
 	 * @uses \WP_Typography\Data_Storage\Options::__construct
 	 * @uses \WP_Typography\Components\Setup::__construct
 	 * @uses \WP_Typography\Data_Storage\Transients::__construct
-	 * @uses \WP_Typography\Components\Multilingual::__construct
 	 */
 	public function test_singleton() {
 
-		$multi = m::mock( \WP_Typography\Components\Multilingual::class );
+		$multi = m::mock( \WP_Typography\Components\Multilingual_Support::class );
 		$multi->shouldReceive( 'run' );
 
 		// Mock WP_Typography\Data_Storage\Options instance.
@@ -148,9 +147,8 @@ class WP_Typography_Singleton_Test extends TestCase {
 	 * @uses ::get_version_hash
 	 * @uses ::hash_version_string
 	 * @uses \WP_Typography\Components\Admin_Interface::__construct
-	 * @uses \WP_Typography\Components\Multilingual::__construct
-	 * @uses \WP_Typography\Components\Multilingual::initialize_locale_settings
-	 * @uses \WP_Typography\Components\Multilingual::run
+	 * @uses \WP_Typography\Components\Multilingual_Support::initialize_locale_settings
+	 * @uses \WP_Typography\Components\Multilingual_Support::run
 	 *
 	 * @expectedException \BadMethodCallException
 	 * @expectedExceptionMessage WP_Typography::get_instance called without prior plugin intialization.
@@ -186,7 +184,7 @@ class WP_Typography_Singleton_Test extends TestCase {
 		$public_if = m::mock( Public_Interface::class );
 		$public_if->shouldReceive( 'run' );
 
-		$multi = m::mock( \WP_Typography\Components\Multilingual::class );
+		$multi = m::mock( \WP_Typography\Components\Multilingual_Support::class );
 		$multi->shouldReceive( 'run' );
 
 		$transients = m::mock( \WP_Typography\Data_Storage\Transients::class );

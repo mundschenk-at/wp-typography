@@ -37,7 +37,6 @@ class Hidden_Input extends Input {
 	 * Create a new input control object.
 	 *
 	 * @param Options $options      Options API handler.
-	 * @param string  $option_group Application-specific prefix.
 	 * @param string  $id           Control ID (equivalent to option name). Required.
 	 * @param array   $args {
 	 *    Optional and required arguments.
@@ -54,21 +53,9 @@ class Hidden_Input extends Input {
 	 *
 	 * @throws \InvalidArgumentException Missing argument.
 	 */
-	public function __construct( Options $options, $option_group, $id, array $args ) {
+	public function __construct( Options $options, $id, array $args ) {
 		$args = $this->prepare_args( $args, [ 'tab_id', 'default' ] );
 
-		parent::__construct( $options, 'hidden', $option_group, $id, $args['tab_id'], $args['section'], $args['default'], $args['short'], $args['label'], $args['help_text'], $args['inline_help'], $args['attributes'] );
-	}
-
-	/**
-	 * Markup the control itself.
-	 *
-	 * @param string|null $label           Translated label (or null).
-	 * @param string|null $help_text       Translated help text (or null).
-
-	 * @return string
-	 */
-	protected function control_markup( $label, $help_text ) {
-		return '%1$s';
+		parent::__construct( $options, 'hidden', $id, $args['tab_id'], $args['section'], $args['default'], $args['short'], null, null, false, $args['attributes'] );
 	}
 }

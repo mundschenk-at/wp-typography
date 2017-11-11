@@ -37,7 +37,6 @@ class Checkbox_Input extends Input {
 	 * Create a new input control object.
 	 *
 	 * @param Options $options      Options API handler.
-	 * @param string  $option_group Application-specific prefix.
 	 * @param string  $id           Control ID (equivalent to option name). Required.
 	 * @param array   $args {
 	 *    Optional and required arguments.
@@ -54,20 +53,20 @@ class Checkbox_Input extends Input {
 	 *
 	 * @throws \InvalidArgumentException Missing argument.
 	 */
-	public function __construct( Options $options, $option_group, $id, array $args ) {
+	public function __construct( Options $options, $id, array $args ) {
 		$args = $this->prepare_args( $args, [ 'tab_id', 'default' ] );
 
-		parent::__construct( $options, 'checkbox', $option_group, $id, $args['tab_id'], $args['section'], $args['default'], $args['short'], $args['label'], $args['help_text'], $args['inline_help'], $args['attributes'] );
+		parent::__construct( $options, 'checkbox', $id, $args['tab_id'], $args['section'], $args['default'], $args['short'], $args['label'], $args['help_text'], $args['inline_help'], $args['attributes'] );
 	}
 
 	/**
-	 * Render the value markup for this input.
+	 * Retrieves the value markup for this input.
 	 *
 	 * @param mixed $value The input value.
 	 *
 	 * @return string
 	 */
-	protected function value_markup( $value ) {
-		return "value='1' " . \checked( $value, true, false );
+	protected function get_value_markup( $value ) {
+		return 'value="1" ' . \checked( $value, true, false );
 	}
 }

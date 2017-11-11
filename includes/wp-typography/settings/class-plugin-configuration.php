@@ -26,11 +26,11 @@
 
 namespace WP_Typography\Settings;
 
-use \WP_Typography;
-use \WP_Typography\UI;
+use WP_Typography;
+use WP_Typography\UI;
 
-use \PHP_Typography\Settings\Dash_Style;
-use \PHP_Typography\Settings\Quote_Style;
+use PHP_Typography\Settings\Dash_Style;
+use PHP_Typography\Settings\Quote_Style;
 
 /**
  * Default configuration for wp-Typography.
@@ -162,6 +162,7 @@ abstract class Plugin_Configuration {
 				self::HYPHENATE_LANGUAGES              => [
 					'ui'            => UI\Select::class,
 					'tab_id'        => UI\Tabs::HYPHENATION,
+					'grouped_with'  => self::ENABLE_HYPHENATION,
 					/* translators: 1: language dropdown */
 					'label'         => \__( 'Language for hyphenation rules: %1$s', 'wp-typography' ),
 					'option_values' => [], // Automatically detected and listed in __construct.
@@ -179,6 +180,7 @@ abstract class Plugin_Configuration {
 				self::HYPHENATE_TITLE_CASE             => [
 					'ui'            => UI\Checkbox_Input::class,
 					'tab_id'        => UI\Tabs::HYPHENATION,
+					'grouped_with'  => self::HYPHENATE_HEADINGS,
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Allow hyphenation of words that begin with a capital letter.', 'wp-typography' ),
 					'help_text'     => \__( 'Uncheck to avoid hyphenation of proper nouns.', 'wp-typography' ),
@@ -187,6 +189,7 @@ abstract class Plugin_Configuration {
 				self::HYPHENATE_COMPOUNDS              => [
 					'ui'            => UI\Checkbox_Input::class,
 					'tab_id'        => UI\Tabs::HYPHENATION,
+					'grouped_with'  => self::HYPHENATE_HEADINGS,
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Allow hyphenation of the components of hyphenated compound words.', 'wp-typography' ),
 					'help_text'     => \__( 'Uncheck to disallow the hyphenation of the words making up a hyphenated compound (e.g. <code>editor-in-chief</code>).', 'wp-typography' ),
@@ -195,6 +198,7 @@ abstract class Plugin_Configuration {
 				self::HYPHENATE_CAPS                   => [
 					'ui'            => UI\Checkbox_Input::class,
 					'tab_id'        => UI\Tabs::HYPHENATION,
+					'grouped_with'  => self::HYPHENATE_HEADINGS,
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Hyphenate words in ALL CAPS.', 'wp-typography' ),
 					'default'       => 0,
@@ -211,6 +215,7 @@ abstract class Plugin_Configuration {
 				self::HYPHENATE_MIN_BEFORE             => [
 					'ui'            => UI\Select::class,
 					'tab_id'        => UI\Tabs::HYPHENATION,
+					'grouped_with'  => self::HYPHENATE_MIN_LENGTH,
 					/* translators: 1: number dropdown */
 					'label'         => \__( 'Keep at least %1$s letters before hyphenation.', 'wp-typography' ),
 					'option_values' => self::get_numeric_option_values( [ 2, 3, 4, 5 ] ),
@@ -219,6 +224,7 @@ abstract class Plugin_Configuration {
 				self::HYPHENATE_MIN_AFTER              => [
 					'ui'            => UI\Select::class,
 					'tab_id'        => UI\Tabs::HYPHENATION,
+					'grouped_with'  => self::HYPHENATE_MIN_LENGTH,
 					/* translators: 1: number dropdown */
 					'label'         => \__( 'Keep at least %1$s letters after hyphenation.', 'wp-typography' ),
 					'option_values' => self::get_numeric_option_values( [ 2, 3, 4, 5 ] ),
@@ -246,6 +252,7 @@ abstract class Plugin_Configuration {
 				self::HYPHENATE_SAFARI_FONT_WORKAROUND => [
 					'ui'            => UI\Checkbox_Input::class,
 					'tab_id'        => UI\Tabs::HYPHENATION,
+					'grouped_with'  => self::HYPHENATE_CLEAN_CLIPBOARD,
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Add workaround for Safari hyphenation bug', 'wp-typography' ),
 					'help_text'     => \__( 'Safari displays weird ligature-like characters with some fonts (like Open Sans) when hyhpenation is enabled. Inserts <code>-webkit-font-feature-settings: "liga", "dlig";</code> as inline CSS workaround.', 'wp-typography' ),
@@ -270,50 +277,20 @@ abstract class Plugin_Configuration {
 				self::SMART_QUOTES_PRIMARY             => [
 					'ui'            => UI\Select::class,
 					'tab_id'        => UI\Tabs::CHARACTER_REPLACEMENT,
+					'grouped_with'  => self::SMART_QUOTES,
 					/* translators: 1: style dropdown */
 					'label'         => \__( 'Primary quotation style: Convert <code>"foo"</code> to %1$s.', 'wp-typography' ),
-					'option_values' => [
-						Quote_Style::DOUBLE_CURLED              => '&ldquo;foo&rdquo;',
-						Quote_Style::DOUBLE_CURLED_REVERSED     => '&rdquo;foo&rdquo;',
-						Quote_Style::DOUBLE_LOW_9               => '&bdquo;foo&rdquo;',
-						Quote_Style::DOUBLE_LOW_9_REVERSED      => '&bdquo;foo&ldquo;',
-						Quote_Style::SINGLE_CURLED              => '&lsquo;foo&rsquo;',
-						Quote_Style::SINGLE_CURLED_REVERSED     => '&rsquo;foo&rsquo;',
-						Quote_Style::SINGLE_LOW_9               => '&sbquo;foo&rsquo;',
-						Quote_Style::SINGLE_LOW_9_REVERSED      => '&sbquo;foo&lsquo;',
-						Quote_Style::DOUBLE_GUILLEMETS_FRENCH   => '&laquo;&nbsp;foo&nbsp;&raquo;',
-						Quote_Style::DOUBLE_GUILLEMETS          => '&laquo;foo&raquo;',
-						Quote_Style::DOUBLE_GUILLEMETS_REVERSED => '&raquo;foo&laquo;',
-						Quote_Style::SINGLE_GUILLEMETS          => '&lsaquo;foo&rsaquo;',
-						Quote_Style::SINGLE_GUILLEMETS_REVERSED => '&rsaquo;foo&lsaquo;',
-						Quote_Style::CORNER_BRACKETS            => '&#x300c;foo&#x300d;',
-						Quote_Style::WHITE_CORNER_BRACKETS      => '&#x300e;foo&#x300f;',
-					],
-					'default'       => Quote_Style::DOUBLE_CURLED,
+					'option_values' => self::get_quote_style_option_values(),
+					'default'       => Quote_Style::DOUBLE_CURLED, // @codeCoverageIgnore
 				],
 				self::SMART_QUOTES_SECONDARY           => [
 					'ui'            => UI\Select::class,
 					'tab_id'        => UI\Tabs::CHARACTER_REPLACEMENT,
+					'grouped_with'  => self::SMART_QUOTES,
 					/* translators: 1: style dropdown */
 					'label'         => \__( "Secondary quotation style: Convert <code>'foo'</code> to %1\$s.", 'wp-typography' ),
-					'option_values' => [
-						Quote_Style::DOUBLE_CURLED              => '&ldquo;foo&rdquo;',
-						Quote_Style::DOUBLE_CURLED_REVERSED     => '&rdquo;foo&rdquo;',
-						Quote_Style::DOUBLE_LOW_9               => '&bdquo;foo&rdquo;',
-						Quote_Style::DOUBLE_LOW_9_REVERSED      => '&bdquo;foo&ldquo;',
-						Quote_Style::SINGLE_CURLED              => '&lsquo;foo&rsquo;',
-						Quote_Style::SINGLE_CURLED_REVERSED     => '&rsquo;foo&rsquo;',
-						Quote_Style::SINGLE_LOW_9               => '&sbquo;foo&rsquo;',
-						Quote_Style::SINGLE_LOW_9_REVERSED      => '&sbquo;foo&lsquo;',
-						Quote_Style::DOUBLE_GUILLEMETS_FRENCH   => '&laquo;&nbsp;foo&nbsp;&raquo;',
-						Quote_Style::DOUBLE_GUILLEMETS          => '&laquo;foo&raquo;',
-						Quote_Style::DOUBLE_GUILLEMETS_REVERSED => '&raquo;foo&laquo;',
-						Quote_Style::SINGLE_GUILLEMETS          => '&lsaquo;foo&rsaquo;',
-						Quote_Style::SINGLE_GUILLEMETS_REVERSED => '&rsaquo;foo&lsaquo;',
-						Quote_Style::CORNER_BRACKETS            => '&#x300c;foo&#x300d;',
-						Quote_Style::WHITE_CORNER_BRACKETS      => '&#x300e;foo&#x300f;',
-					],
-					'default'       => Quote_Style::SINGLE_CURLED,
+					'option_values' => self::get_quote_style_option_values(),
+					'default'       => Quote_Style::SINGLE_CURLED, // @codeCoverageIgnore
 				],
 				self::SMART_DASHES                     => [
 					'ui'            => UI\Checkbox_Input::class,
@@ -326,6 +303,7 @@ abstract class Plugin_Configuration {
 				self::SMART_DASHES_STYLE               => [
 					'ui'            => UI\Select::class,
 					'tab_id'        => UI\Tabs::CHARACTER_REPLACEMENT,
+					'grouped_with'  => self::SMART_DASHES,
 					/* translators: 1: style dropdown */
 					'label'         => \__( 'Use the %1$s style for dashes.', 'wp-typography' ),
 					'help_text'     => \__( 'In the US, the em dash&#8202;&mdash;&#8202;with no or very little spacing&#8202;&mdash;&#8202;is used for parenthetical expressions, while internationally, the en dash &ndash; with spaces &ndash; is more prevalent.', 'wp-typography' ),
@@ -333,7 +311,7 @@ abstract class Plugin_Configuration {
 						Dash_Style::TRADITIONAL_US => \__( 'Traditional US', 'wp-typography' ),
 						Dash_Style::INTERNATIONAL  => \__( 'International', 'wp-typography' ),
 					],
-					'default'       => Dash_Style::TRADITIONAL_US,
+					'default'       => Dash_Style::TRADITIONAL_US, // @codeCoverageIgnore
 				],
 				self::SMART_DIACRITICS                 => [
 					'ui'            => UI\Checkbox_Input::class,
@@ -348,6 +326,7 @@ abstract class Plugin_Configuration {
 				self::DIACRITIC_LANGUAGES              => [
 					'ui'            => UI\Select::class,
 					'tab_id'        => UI\Tabs::CHARACTER_REPLACEMENT,
+					'grouped_with'  => self::SMART_DIACRITICS,
 					/* translators: 1: language dropdown */
 					'label'         => \__( 'Language for diacritic replacements: %1$s', 'wp-typography' ),
 					'help_text'     => \__( 'Language definitions will purposefully not process words that have alternate meaning without diacritics like <code>resume</code>/<code>résumé</code>, <code>divorce</code>/<code>divorcé</code>, and <code>expose</code>/<code>exposé</code>.', 'wp-typography' ),
@@ -357,6 +336,7 @@ abstract class Plugin_Configuration {
 				self::DIACRITIC_CUSTOM_REPLACEMENTS    => [
 					'ui'            => UI\Textarea::class,
 					'tab_id'        => UI\Tabs::CHARACTER_REPLACEMENT,
+					'grouped_with'  => self::SMART_DIACRITICS,
 					'label'         => \__( 'Custom diacritic word replacements:', 'wp-typography' ),
 					'help_text'     => \__( 'Must be formatted <code>"word to replace"=>"replacement word",</code>. The entries are case-sensitive.', 'wp-typography' ),
 					'attributes'    => [
@@ -476,6 +456,7 @@ abstract class Plugin_Configuration {
 				self::UNITS                            => [
 					'ui'            => UI\Textarea::class,
 					'tab_id'        => UI\Tabs::SPACE_CONTROL,
+					'grouped_with'  => self::UNIT_SPACING,
 					'label'         => \__( 'Additional unit names:', 'wp-typography' ),
 					'help_text'     => \__( 'Separate unit names with spaces. We already look for a large list; fill in any holes here.', 'wp-typography' ),
 					'default'       => 'hectare fortnight',
@@ -517,6 +498,7 @@ abstract class Plugin_Configuration {
 					'ui'            => UI\Select::class,
 					'tab_id'        => UI\Tabs::SPACE_CONTROL,
 					'section'       => UI\Sections::LINE_WRAPPING,
+					'grouped_with'  => self::WRAP_URLS,
 					/* translators: 1: number dropdown */
 					'label'         => \__( 'Keep at least the last %1$s characters of a URL together.', 'wp-typography' ),
 					'option_values' => self::get_numeric_option_values( [ 3, 4, 5, 6, 7, 8, 9, 10 ] ),
@@ -537,6 +519,7 @@ abstract class Plugin_Configuration {
 					'ui'            => UI\Select::class,
 					'tab_id'        => UI\Tabs::SPACE_CONTROL,
 					'section'       => UI\Sections::LINE_WRAPPING,
+					'grouped_with'  => self::PREVENT_WIDOWS,
 					/* translators: 1: number dropdown */
 					'label'         => \__( 'Only protect widows with %1$s or fewer letters.', 'wp-typography' ),
 					'option_values' => self::get_numeric_option_values( [ 4, 5, 6, 7, 8, 9, 10, 100 ] ),
@@ -546,6 +529,7 @@ abstract class Plugin_Configuration {
 					'ui'            => UI\Select::class,
 					'tab_id'        => UI\Tabs::SPACE_CONTROL,
 					'section'       => UI\Sections::LINE_WRAPPING,
+					'grouped_with'  => self::PREVENT_WIDOWS,
 					/* translators: 1: number dropdown */
 					'label'         => \__( 'Pull at most %1$s letters from the previous line to keep the widow company.', 'wp-typography' ),
 					'option_values' => self::get_numeric_option_values( [ 4, 5, 6, 7, 8, 9, 10, 100 ] ),
@@ -596,6 +580,7 @@ abstract class Plugin_Configuration {
 				self::INITIAL_QUOTE_TAGS               => [
 					'ui'            => UI\Textarea::class,
 					'tab_id'        => UI\Tabs::CSS_HOOKS,
+					'grouped_with'  => self::STYLE_INITIAL_QUOTES,
 					'label'         => \__( 'Limit styling of initial quotes to these <strong>HTML elements</strong>:', 'wp-typography' ),
 					'help_text'     => \__( 'Separate tag names with spaces; do not include the <code>&lt;</code> or <code>&gt;</code>.', 'wp-typography' ),
 					'default'       => 'p h1 h2 h3 h4 h5 h6 blockquote li dd dt',
@@ -612,6 +597,7 @@ abstract class Plugin_Configuration {
 				self::STYLE_CSS                        => [
 					'ui'            => UI\Textarea::class,
 					'tab_id'        => UI\Tabs::CSS_HOOKS,
+					'grouped_with'  => self::STYLE_CSS_INCLUDE,
 					'label'         => \__( 'Styling for CSS hooks:', 'wp-typography' ),
 					'help_text'     => \__( 'This will only be applied if explicitly selected with the preceding option.', 'wp-typography' ),
 					'attributes'    => [
@@ -626,7 +612,7 @@ abstract class Plugin_Configuration {
 	}
 
 	/**
-	 * Return numeric values as in associative form $value => $value.
+	 * Returns numeric values as in associative form $value => $value.
 	 *
 	 * @param array $values Option values.
 	 *
@@ -634,5 +620,30 @@ abstract class Plugin_Configuration {
 	 */
 	private static function get_numeric_option_values( array $values ) {
 		return \array_combine( $values, $values );
+	}
+
+	/**
+	 * Returns quote style constants in the form $value => $display.
+	 *
+	 * @return array
+	 */
+	private static function get_quote_style_option_values() {
+		return [
+			Quote_Style::DOUBLE_CURLED              => '&ldquo;foo&rdquo;',
+			Quote_Style::DOUBLE_CURLED_REVERSED     => '&rdquo;foo&rdquo;', // @codeCoverageIgnoreStart
+			Quote_Style::DOUBLE_LOW_9               => '&bdquo;foo&rdquo;',
+			Quote_Style::DOUBLE_LOW_9_REVERSED      => '&bdquo;foo&ldquo;',
+			Quote_Style::SINGLE_CURLED              => '&lsquo;foo&rsquo;',
+			Quote_Style::SINGLE_CURLED_REVERSED     => '&rsquo;foo&rsquo;',
+			Quote_Style::SINGLE_LOW_9               => '&sbquo;foo&rsquo;',
+			Quote_Style::SINGLE_LOW_9_REVERSED      => '&sbquo;foo&lsquo;',
+			Quote_Style::DOUBLE_GUILLEMETS_FRENCH   => '&laquo;&nbsp;foo&nbsp;&raquo;',
+			Quote_Style::DOUBLE_GUILLEMETS          => '&laquo;foo&raquo;',
+			Quote_Style::DOUBLE_GUILLEMETS_REVERSED => '&raquo;foo&laquo;',
+			Quote_Style::SINGLE_GUILLEMETS          => '&lsaquo;foo&rsaquo;',
+			Quote_Style::SINGLE_GUILLEMETS_REVERSED => '&rsaquo;foo&lsaquo;',
+			Quote_Style::CORNER_BRACKETS            => '&#x300c;foo&#x300d;',
+			Quote_Style::WHITE_CORNER_BRACKETS      => '&#x300e;foo&#x300f;', // @codeCoverageIgnoreEnd
+		];
 	}
 }

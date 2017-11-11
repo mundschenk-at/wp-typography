@@ -31,7 +31,7 @@ use \WP_Typography\Data_Storage\Options;
 use \WP_Typography\Data_Storage\Transients;
 
 use \WP_Typography\Components\Admin_Interface;
-use \WP_Typography\Components\Multilingual;
+use \WP_Typography\Components\Multilingual_Support;
 use \WP_Typography\Components\Public_Interface;
 use \WP_Typography\Components\Setup;
 
@@ -73,7 +73,15 @@ abstract class WP_Typography_Factory {
 				'shared' => true,
 			] );
 
-			// Additional parameters for compoennts.
+			// Load version from plugin data.
+			if ( ! function_exists( 'get_plugin_data' ) ) {
+				require_once ABSPATH . 'wp-admin/includes/plugin.php';
+			}
+			self::$factory->addRule( WP_Typography::class, [
+				'constructParams' => [ get_plugin_data( $full_plugin_path, false, false )['Version'] ],
+			] );
+
+			// Additional parameters for components.
 			$plugin_basename = \plugin_basename( $full_plugin_path );
 			self::$factory->addRule( Admin_Interface::class, [
 				'constructParams' => [ $plugin_basename, $full_plugin_path ],

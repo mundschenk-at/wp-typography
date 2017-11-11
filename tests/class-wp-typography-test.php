@@ -81,7 +81,7 @@ class WP_Typography_Test extends TestCase {
 	/**
 	 * Test fixture.
 	 *
-	 * @var \WP_Typography\Components\Multilingual
+	 * @var \WP_Typography\Components\Multilingual_Support
 	 */
 	protected $multi;
 
@@ -113,7 +113,7 @@ class WP_Typography_Test extends TestCase {
 	protected function setUp() { // @codingStandardsIgnoreLine
 
 		// Mock WP_Typography\Settings\Multlingual instance.
-		$this->multi = m::mock( \WP_Typography\Components\Multilingual::class )
+		$this->multi = m::mock( \WP_Typography\Components\Multilingual_Support::class )
 			->shouldReceive( 'run' )->byDefault()
 			->shouldReceive( 'filter_defaults' )->andReturnUsing( function( array $defaults ) {
 				return $defaults;
@@ -193,7 +193,6 @@ class WP_Typography_Test extends TestCase {
 	 * @uses \WP_Typography\Data_Storage\Transients::__construct
 	 * @uses \WP_Typography\Data_Storage\Transients::invalidate
 	 * @uses \WP_Typography\Data_Storage\Transients::get_keys_from_database
-	 * @uses \WP_Typography\Components\Multilingual::__construct
 	 */
 	public function test_constructor() {
 
@@ -202,7 +201,7 @@ class WP_Typography_Test extends TestCase {
 			m::mock( \WP_Typography\Components\Setup::class ),
 			m::mock( \WP_Typography\Components\Admin_Interface::class ),
 			m::mock( \WP_Typography\Components\Public_Interface::class ),
-			m::mock( \WP_Typography\Components\Multilingual::class ),
+			m::mock( \WP_Typography\Components\Multilingual_Support::class ),
 			m::mock( \WP_Typography\Data_Storage\Transients::class ),
 			m::mock( \WP_Typography\Data_Storage\Cache::class ),
 			m::mock( \WP_Typography\Data_Storage\Options::class )

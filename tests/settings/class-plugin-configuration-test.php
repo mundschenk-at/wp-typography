@@ -61,6 +61,7 @@ class Plugin_Configuration_Test extends \WP_Typography\Tests\TestCase {
 	 *
 	 * @covers ::get_defaults
 	 * @covers ::get_numeric_option_values
+	 * @covers ::get_quote_style_option_values
 	 */
 	public function test_get_defaults() {
 		Functions\expect( '__' )->atLeast()->once()->with( m::type( 'string' ), 'wp-typography' )->andReturn( 'dummy text' );
@@ -76,7 +77,6 @@ class Plugin_Configuration_Test extends \WP_Typography\Tests\TestCase {
 	 * Test get_defaults static method called twice.
 	 *
 	 * @covers ::get_defaults
-	 * @covers ::get_numeric_option_values
 	 */
 	public function test_get_defaults_again() {
 		Functions\expect( '__' )->never();

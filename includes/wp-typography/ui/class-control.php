@@ -34,13 +34,6 @@ use \WP_Typography\Data_Storage\Options;
 abstract class Control {
 
 	/**
-	 * Option group.
-	 *
-	 * @var string
-	 */
-	protected $option_group;
-
-	/**
 	 * Control ID (= option name).
 	 *
 	 * @var string
@@ -135,10 +128,36 @@ abstract class Control {
 	protected $options;
 
 	/**
+	 * The root path of the plugin.
+	 *
+	 * @since 5.1.0
+	 *
+	 * @var string
+	 */
+	protected $plugin_path;
+
+	const ALLOWED_INPUT_ATTRIBUTES = [
+		'id'      => [],
+		'name'    => [],
+		'value'   => [],
+		'checked' => [],
+		'type'    => [],
+	];
+
+	const ALLOWED_HTML = [
+		'span'   => [ 'class' => [] ],
+		'input'  => self::ALLOWED_INPUT_ATTRIBUTES,
+		'select' => self::ALLOWED_INPUT_ATTRIBUTES,
+		'option' => [ 'value' => [] ],
+		'code'   => [],
+		'strong' => [],
+		'em'     => [],
+	];
+
+	/**
 	 * Create a new UI control object.
 	 *
 	 * @param Options     $options      Options API handler.
-	 * @param string      $option_group Application-specific prefix.
 	 * @param string      $id           Control ID (equivalent to option name). Required.
 	 * @param string      $tab_id       Tab ID. Required.
 	 * @param string      $section      Section ID. Required.
@@ -149,18 +168,18 @@ abstract class Control {
 	 * @param bool        $inline_help  Optional. Display help inline. Default false.
 	 * @param array       $attributes   Optional. Default [].
 	 */
-	protected function __construct( Options $options, $option_group, $id, $tab_id, $section, $default, $short = null, $label = null, $help_text = null, $inline_help = false, $attributes = [] ) {
-		$this->options      = $options;
-		$this->option_group = $option_group;
-		$this->id           = $id;
-		$this->tab_id       = $tab_id;
-		$this->section      = $section;
-		$this->short        = $short;
-		$this->label        = $label;
-		$this->help_text    = $help_text;
-		$this->inline_help  = $inline_help;
-		$this->default      = $default;
-		$this->attributes   = $attributes;
+	protected function __construct( Options $options, $id, $tab_id, $section, $default, $short = null, $label = null, $help_text = null, $inline_help = false, $attributes = [] ) {
+		$this->options     = $options;
+		$this->id          = $id;
+		$this->tab_id      = $tab_id;
+		$this->section     = $section;
+		$this->short       = $short ?: '';
+		$this->label       = $label;
+		$this->help_text   = $help_text;
+		$this->inline_help = $inline_help;
+		$this->default     = $default;
+		$this->attributes  = $attributes;
+		$this->plugin_path = dirname( dirname( dirname( __DIR__ ) ) );
 	}
 
 	/**
@@ -210,48 +229,44 @@ abstract class Control {
 	}
 
 	/**
-	 * Render control-specific HTML.
+	 * Renders control-specific HTML.
 	 *
-	 * @param string|null $label           Translated label (or null).
-	 * @param string|null $help_text       Translated help text (or null).
-	 * @param string      $html_attributes An HTML attribute string (may be empty).
+	 * @since 5.1.0
 	 *
 	 * @return void
 	 */
-	abstract protected function internal_render( $label, $help_text, $html_attributes );
+	protected function render_element() {
+		echo $this->get_element_markup(); // WPCS: XSS ok.
+	}
+
+	/**
+	 * Retrieves the control-specific HTML markup.
+	 *
+	 * @return string
+	 */
+	abstract protected function get_element_markup();
 
 	/**
 	 * Render the HTML representation of the control.
 	 */
 	public function render() {
-		// Translate label & help_text.
-		$label     = isset( $this->label ) ? \__( $this->label, 'wp-typography' ) : null; // @codingStandardsIgnoreLine.
-		$help_text = isset( $this->help_text ) ? \__( $this->help_text, 'wp-typography' ) : null; // @codingStandardsIgnoreLine.
+		require $this->plugin_path . '/admin/partials/ui/control.php';
+	}
 
-		if ( ! empty( $this->grouped_controls ) ) {
-			echo '<fieldset><legend class="screen-reader-text">' . \esc_html( $this->short ) . '</legend>';
-		}
-
-		// Flatten attributes to string.
+	/**
+	 * Retrieves additional HTML attributes as a string ready for inclusion in markup.
+	 *
+	 * @return string
+	 */
+	protected function get_html_attributes() {
 		$html_attributes = '';
 		if ( ! empty( $this->attributes ) ) {
 			foreach ( $this->attributes as $attr => $val ) {
-				$html_attributes .= \esc_attr( $attr ) . '="' . \esc_attr( $val ) . '"';
+				$html_attributes .= \esc_attr( $attr ) . '="' . \esc_attr( $val ) . '" ';
 			}
 		}
 
-		// Render control-specific HTML code.
-		$this->internal_render( $label, $help_text, $html_attributes );
-
-		// Some additional controls to group with this one.
-		if ( ! empty( $this->grouped_controls ) ) {
-			foreach ( $this->grouped_controls as $control ) {
-				echo '<br />';
-				$control->render();
-			}
-
-			echo '</fieldset>';
-		}
+		return $html_attributes;
 	}
 
 	/**
@@ -272,52 +287,70 @@ abstract class Control {
 		return "{$this->options->get_name( Options::CONFIGURATION )}[{$this->id}]";
 	}
 
+
 	/**
-	 * Markup the control itself.
+	 * Retrieves the markup for ID, name and class(es).
+	 * Also adds additional attributes if they are set.
 	 *
-	 * @param string|null $label     Translated label (or null).
-	 * @param string|null $help_text Translated help text (or null).
+	 * @since 5.1.0
 	 *
 	 * @return string
 	 */
-	protected function control_markup( $label, $help_text ) {
-		$markup    = '%1$s';
-		$help_text = \wp_kses( $help_text, [
-			'code' => [],
-		] );
+	protected function get_id_and_class_markup() {
+		$id = \esc_attr( $this->get_id() );
 
-		if ( ( ! empty( $label ) || ! empty( $this->inline_help ) ) ) {
-			$markup = '<label for="' . \esc_attr( $this->id ) . '">';
+		// Set default ID & name, no class (except for submit buttons).
+		return "id=\"{$id}\" name=\"{$id}\" {$this->get_html_attributes()}";
+	}
 
-			if ( ! empty( $label ) ) {
-				$markup .= $label;
-			} else {
-				$markup .= '%1$s';
-			}
+	/**
+	 * Determines if the label contains a placeholder for the actual control element(s).
+	 *
+	 * @since 5.1.0
+	 *
+	 * @return bool
+	 */
+	protected function label_has_placeholder() {
+		return false !== strpos( $this->label, '%1$s' );
+	}
 
-			if ( ! empty( $this->inline_help ) && ! empty( $help_text ) ) {
-				$markup .= ' <span class="description">' . $help_text . '</span>';
-			}
+	/**
+	 * Determines if this control has an inline help text to display.
+	 *
+	 * @since 5.1.0
+	 *
+	 * @return bool
+	 */
+	protected function has_inline_help() {
+		return $this->inline_help && ! empty( $this->help_text );
+	}
 
-			$markup .= '</label>';
+	/**
+	 * Retrieves the label. If the label text contains a string placeholder, it
+	 * is replaced by the control element markup.
+	 *
+	 * @since 5.1.0
+	 *
+	 * @var string
+	 */
+	public function get_label() {
+		if ( $this->label_has_placeholder() ) {
+			return sprintf( $this->label, $this->get_element_markup() );
+		} else {
+			return $this->label;
 		}
-
-		if ( empty( $this->inline_help ) && ! empty( $help_text ) ) {
-			$markup .= '<p class="description">' . $help_text . '</p>';
-		}
-
-		return $markup;
 	}
 
 	/**
 	 * Register the control with the settings API.
+	 *
+	 * @param string $option_group Application-specific prefix.
 	 */
-	public function register() {
+	public function register( $option_group ) {
 
-		// Add settings fields.
+		// Register rendering callbacks only for non-grouped controls.
 		if ( empty( $this->grouped_with ) ) {
-			$short = isset( $this->short ) ? $this->short : '';
-			\add_settings_field( $this->get_id(), $short, [ $this, 'render' ], $this->option_group . $this->tab_id, $this->section );
+			\add_settings_field( $this->get_id(), $this->short, [ $this, 'render' ], $option_group . $this->tab_id, $this->section );
 		}
 	}
 
