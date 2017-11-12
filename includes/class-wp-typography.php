@@ -893,7 +893,7 @@ class WP_Typography {
 	/**
 	 * Retrieves the plugin version hash.
 	 *
-	 * @deprecated 5.2.0
+	 * @deprecated 5.1.0
 	 *
 	 * @return string
 	 */

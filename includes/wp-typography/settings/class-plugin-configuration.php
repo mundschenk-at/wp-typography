@@ -35,7 +35,7 @@ use PHP_Typography\Settings\Quote_Style;
 /**
  * Default configuration for wp-Typography.
  *
- * @since 5.2.0
+ * @since 5.1.0
  *
  * @author Peter Putzer <github@mundschenk.at>
  */
