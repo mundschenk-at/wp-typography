@@ -77,11 +77,12 @@ class WP_Typography_Singleton_Test extends TestCase {
 	 * @uses ::get_version_hash
 	 * @uses ::hash_version_string
 	 * @uses \WP_Typography\Components\Admin_Interface::__construct
+	 * @uses \WP_Typography\Components\Public_Interface::__construct
+	 * @uses \WP_Typography\Components\Setup::__construct
+	 * @uses \WP_Typography\Components\Common::__construct
 	 * @uses \WP_Typography\Data_Storage\Abstract_Cache::__construct
 	 * @uses \WP_Typography\Data_Storage\Cache::__construct
-	 * @uses \WP_Typography\Components\Public_Interface::__construct
 	 * @uses \WP_Typography\Data_Storage\Options::__construct
-	 * @uses \WP_Typography\Components\Setup::__construct
 	 * @uses \WP_Typography\Data_Storage\Transients::__construct
 	 */
 	public function test_singleton() {
@@ -97,6 +98,11 @@ class WP_Typography_Singleton_Test extends TestCase {
 
 		// Mock WP_Typography\Components\Setup instance.
 		$setup = m::mock( \WP_Typography\Components\Setup::class, [ '/some/path', $options ] )
+			->shouldReceive( 'run' )->byDefault()
+			->getMock();
+
+		// Mock WP_Typography\Components\Common instance.
+		$common = m::mock( \WP_Typography\Components\Common::class, [ $options ] )
 			->shouldReceive( 'run' )->byDefault()
 			->getMock();
 
@@ -123,7 +129,7 @@ class WP_Typography_Singleton_Test extends TestCase {
 		$public_if = m::mock( Public_Interface::class, [ 'plugin_basename' ] );
 		$public_if->shouldReceive( 'run' )->byDefault();
 
-		$typo = new \WP_Typography( '6.6.6', $setup, $admin, $public_if, $multi, $transients, $cache, $options );
+		$typo = new \WP_Typography( '6.6.6', $setup, $common, $admin, $public_if, $multi, $transients, $cache, $options );
 		$typo->run();
 
 		$typo2 = \WP_Typography::get_instance();
@@ -187,11 +193,16 @@ class WP_Typography_Singleton_Test extends TestCase {
 		$multi = m::mock( \WP_Typography\Components\Multilingual_Support::class );
 		$multi->shouldReceive( 'run' );
 
+		// Mock WP_Typography\Components\Common instance.
+		$common = m::mock( \WP_Typography\Components\Common::class )
+			->shouldReceive( 'run' )->byDefault()
+			->getMock();
+
 		$transients = m::mock( \WP_Typography\Data_Storage\Transients::class );
 		$cache      = m::mock( \WP_Typography\Data_Storage\Cache::class );
 		$options    = m::mock( \WP_Typography\Data_Storage\Options::class );
 
-		$typo = new \WP_Typography( '6.6.6', $setup, $admin, $public_if, $multi, $transients, $cache, $options );
+		$typo = new \WP_Typography( '6.6.6', $setup, $common, $admin, $public_if, $multi, $transients, $cache, $options );
 		$typo->run();
 		$typo->run();
 	}

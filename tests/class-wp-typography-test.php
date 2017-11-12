@@ -47,6 +47,7 @@ use Mockery as m;
  * @uses \WP_Typography\Components\Admin_Interface::__construct
  * @uses \WP_Typography\Components\Public_Interface::__construct
  * @uses \WP_Typography\Components\Setup::__construct
+ * @uses \WP_Typography\Components\Common::__construct
  */
 class WP_Typography_Test extends TestCase {
 
@@ -62,7 +63,7 @@ class WP_Typography_Test extends TestCase {
 	 *
 	 * @var \WP_Typography\Components\Admin_Interface
 	 */
-	protected $wp_typo_admin;
+	protected $admin_if;
 
 	/**
 	 * Test fixture.
@@ -84,6 +85,13 @@ class WP_Typography_Test extends TestCase {
 	 * @var \WP_Typography\Components\Multilingual_Support
 	 */
 	protected $multi;
+
+	/**
+	 * Test fixture.
+	 *
+	 * @var \WP_Typography\Components\Common
+	 */
+	protected $common;
 
 	/**
 	 * Test fixture.
@@ -131,6 +139,11 @@ class WP_Typography_Test extends TestCase {
 			->shouldReceive( 'run' )->byDefault()
 			->getMock();
 
+		// Mock WP_Typography\Components\Common instance.
+		$this->common = m::mock( \WP_Typography\Components\Common::class, [ $this->options ] )
+			->shouldReceive( 'run' )->byDefault()
+			->getMock();
+
 		// Mock WP_Typography\Data_Storage\Transients instance.
 		$this->transients = m::mock( \WP_Typography\Data_Storage\Transients::class )
 			->shouldReceive( 'get' )->byDefault()->andReturn( false )
@@ -147,7 +160,7 @@ class WP_Typography_Test extends TestCase {
 			->getMock();
 
 		// Mock WP_Typography\Components\Admin_Interface instance.
-		$this->wp_typo_admin = m::mock( \WP_Typography\Components\Admin_Interface::class, [ 'plugin_basename', '/plugin/path', $this->options ] )
+		$this->admin_if = m::mock( \WP_Typography\Components\Admin_Interface::class, [ 'plugin_basename', '/plugin/path', $this->options ] )
 			->shouldReceive( 'run' )->byDefault()
 			->shouldReceive( 'get_default_settings' )->andReturn( [ 'dummy_settings' => 'bar' ] )->byDefault()
 			->getMock();
@@ -158,7 +171,7 @@ class WP_Typography_Test extends TestCase {
 			->getMock();
 
 		// Create instance.
-		$this->wp_typo = m::mock( \WP_Typography::class, [ '7.7.7', $this->setup, $this->wp_typo_admin, $this->public_if, $this->multi, $this->transients, $this->cache, $this->options ] )
+		$this->wp_typo = m::mock( \WP_Typography::class, [ '7.7.7', $this->setup, $this->common, $this->admin_if, $this->public_if, $this->multi, $this->transients, $this->cache, $this->options ] )
 			->shouldAllowMockingProtectedMethods()
 			->makePartial();
 
@@ -184,12 +197,13 @@ class WP_Typography_Test extends TestCase {
 	 * @uses ::get_version
 	 * @uses ::get_version_hash
 	 * @uses \WP_Typography\Components\Admin_Interface::__construct
+	 * @uses \WP_Typography\Components\Public_Interface::__construct
+	 * @uses \WP_Typography\Components\Common::__construct
+	 * @uses \WP_Typography\Components\Setup::__construct
 	 * @uses \WP_Typography\Data_Storage\Abstract_Cache::__construct
 	 * @uses \WP_Typography\Data_Storage\Cache::__construct
 	 * @uses \WP_Typography\Data_Storage\Cache::invalidate
-	 * @uses \WP_Typography\Components\Public_Interface::__construct
 	 * @uses \WP_Typography\Data_Storage\Options::__construct
-	 * @uses \WP_Typography\Components\Setup::__construct
 	 * @uses \WP_Typography\Data_Storage\Transients::__construct
 	 * @uses \WP_Typography\Data_Storage\Transients::invalidate
 	 * @uses \WP_Typography\Data_Storage\Transients::get_keys_from_database
@@ -199,6 +213,7 @@ class WP_Typography_Test extends TestCase {
 		$typo = new \WP_Typography(
 			'6.6.6',
 			m::mock( \WP_Typography\Components\Setup::class ),
+			m::mock( \WP_Typography\Components\Common::class ),
 			m::mock( \WP_Typography\Components\Admin_Interface::class ),
 			m::mock( \WP_Typography\Components\Public_Interface::class ),
 			m::mock( \WP_Typography\Components\Multilingual_Support::class ),
@@ -226,9 +241,11 @@ class WP_Typography_Test extends TestCase {
 	 * @uses \WP_Typography\Components\Setup::__construct
 	 */
 	public function test_run() {
-		$this->wp_typo->run();
+		foreach ( [ $this->setup, $this->common, $this->admin_if, $this->public_if, $this->multi ] as $component ) {
+			$component->shouldReceive( 'run' )->once()->with( $this->wp_typo );
+		}
 
-		$this->assertTrue( has_action( 'init', get_class( $this->wp_typo ) . '->init()', 10 ) );
+		$this->assertNull( $this->wp_typo->run() );
 	}
 
 	/**
@@ -600,62 +617,6 @@ class WP_Typography_Test extends TestCase {
 		$this->setStaticValue( \WP_Typography::class, '_instance', $this->wp_typo );
 		$this->wp_typo->shouldReceive( 'process_feed' )->once()->with( 'foobar', true, null )->andReturn( 'barfoo' );
 		$this->assertSame( 'barfoo', \WP_Typography::filter_feed_title( 'foobar', null ) );
-	}
-
-	/**
-	 * Provide data for testing add_content_filters.
-	 *
-	 * @return array
-	 */
-	public function provide_init_data() {
-		return [
-			[ true, true, true, true ],
-			[ false, false, false, false ],
-			[ true, false, false, false ],
-			[ false, true, false, false ],
-			[ false, false, true, false ],
-			[ false, false, false, false ],
-			[ false, false, false, true ],
-		];
-	}
-
-	/**
-	 * Test init
-	 *
-	 * @covers ::init
-	 *
-	 * @uses ::run
-	 * @uses ::set_instance
-	 *
-	 * @dataProvider provide_init_data
-	 *
-	 * @param bool $restore_defaults The typo_restore_defaults value.
-	 * @param bool $clear_cache      The typo_clear_cache value.
-	 * @param bool $smart_characters The typo_smart_characters value.
-	 * @param bool $multilingual     The typo_enable_multilingual_support value.
-	 */
-	public function test_init( $restore_defaults, $clear_cache, $smart_characters, $multilingual ) {
-		$this->wp_typo->run();
-
-		$this->options->shouldReceive( 'get' )->once()->with( Options::RESTORE_DEFAULTS )->andReturn( $restore_defaults );
-		$this->options->shouldReceive( 'get' )->once()->with( Options::CLEAR_CACHE )->andReturn( $clear_cache );
-
-		$this->wp_typo->shouldReceive( 'get_config' )->once()->andReturn( [
-			Config::SMART_CHARACTERS            => $smart_characters,
-			Config::ENABLE_MULTILINGUAL_SUPPORT => $multilingual,
-		] );
-
-		if ( $restore_defaults ) {
-			$this->wp_typo->shouldReceive( 'set_default_options' )->once()->with( true );
-		}
-
-		if ( $clear_cache ) {
-			$this->wp_typo->shouldReceive( 'clear_cache' )->once();
-		}
-
-		$this->wp_typo->init();
-
-		self::assertSame( $multilingual, has_filter( 'typo_settings', [ $this->multi, 'automatic_language_settings' ] ) );
 	}
 
 	/**
