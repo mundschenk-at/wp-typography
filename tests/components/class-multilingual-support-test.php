@@ -88,11 +88,11 @@ class Multilingual_Support_Test extends TestCase {
 		$this->multi = m::mock( Multilingual_Support::class )
 			->shouldAllowMockingProtectedMethods()->makePartial();
 
-		$this->plugin->shouldReceive( 'load_hyphenation_languages' )->once()->andReturn( [ 'de' => 'Deutsch' ] );
-		$this->plugin->shouldReceive( 'load_diacritic_languages' )->once()->andReturn( [ 'en' => 'English' ] );
 		$this->multi->shouldReceive( 'initialize_locale_settings' )->once()->andReturn( [ $this->locale ] );
 
 		$this->multi->run( $this->plugin );
+		$this->setValue( $this->multi, 'hyphenation_languages', [ 'de' => 'Deutsch' ] );
+		$this->setValue( $this->multi, 'diacritic_languages',   [ 'en' => 'English' ] );
 	}
 
 	/**
@@ -122,14 +122,44 @@ class Multilingual_Support_Test extends TestCase {
 	 * @covers ::run
 	 */
 	public function test_run() {
-		$this->plugin->shouldReceive( 'load_hyphenation_languages' )->once()->andReturn( [ 'de' => 'Deutsch' ] );
-		$this->plugin->shouldReceive( 'load_diacritic_languages' )->once()->andReturn( [ 'en' => 'English' ] );
 		$this->multi->shouldReceive( 'initialize_locale_settings' )->once()->andReturn( [
 			m::mock( Basic_Locale_Settings::class ),
 		] );
 
+		Actions\expectAdded( 'plugins_loaded' )->once()->with( [ $this->multi, 'add_plugin_defaults_filter' ] );
+		Actions\expectAdded( 'init' )->once()->with( [ $this->multi, 'enable_automatic_language_settings' ] );
+
 		$this->assertNull( $this->multi->run( $this->plugin ) );
 	}
+
+	/**
+	 * Test add_plugin_defaults_filter.
+	 *
+	 * @covers ::add_plugin_defaults_filter
+	 */
+	public function test_add_plugin_defaults_filter() {
+
+		$this->plugin->shouldReceive( 'load_hyphenation_languages' )->once()->andReturn( [ 'de' => 'Deutsch' ] );
+		$this->plugin->shouldReceive( 'load_diacritic_languages' )->once()->andReturn( [ 'en' => 'English' ] );
+
+		Filters\expectAdded( 'typo_plugin_defaults' )->once()->with( [ $this->multi, 'filter_defaults' ] );
+
+		$this->assertNull( $this->multi->add_plugin_defaults_filter() );
+	}
+
+	/**
+	 * Test enable_automatic_language_settings.
+	 *
+	 * @covers ::enable_automatic_language_settings
+	 */
+	public function test_enable_automatic_language_settings() {
+		$this->plugin->shouldReceive( 'get_config' )->once()->andReturn( [ Config::ENABLE_MULTILINGUAL_SUPPORT => true ] );
+
+		Filters\expectAdded( 'typo_settings' )->once()->with( [ $this->multi, 'automatic_language_settings' ] );
+
+		$this->assertNull( $this->multi->enable_automatic_language_settings() );
+	}
+
 
 	/**
 	 * Provide data for testing automatic_language_settings.

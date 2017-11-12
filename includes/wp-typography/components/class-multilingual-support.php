@@ -70,17 +70,48 @@ class Multilingual_Support implements Plugin_Component {
 	protected $diacritic_languages;
 
 	/**
+	 * The plugin instance used for setting transients.
+	 *
+	 * @var \WP_Typography
+	 */
+	protected $plugin;
+
+	/**
 	 * Set up the various hooks for multilingual support.
 	 *
 	 * @param WP_Typography $plugin The main plugin instance.
 	 */
 	public function run( WP_Typography $plugin ) {
-		// Translation of language names is irrelevant here.
-		$this->hyphenation_languages = $plugin->load_hyphenation_languages();
-		$this->diacritic_languages   = $plugin->load_diacritic_languages();
+		// Store plugin reference.
+		$this->plugin = $plugin;
 
 		// Initialize locales.
 		$this->locales = $this->initialize_locale_settings();
+
+		// Enable multilingual support.
+		\add_action( 'plugins_loaded', [ $this, 'add_plugin_defaults_filter' ] );
+		\add_action( 'init',           [ $this, 'enable_automatic_language_settings' ] );
+	}
+
+	/**
+	 * Adds a filter for the plugin defaults.
+	 */
+	public function add_plugin_defaults_filter() {
+		// Translation of language names is irrelevant here.
+		$this->hyphenation_languages = $this->plugin->load_hyphenation_languages();
+		$this->diacritic_languages   = $this->plugin->load_diacritic_languages();
+
+		// Filter the defaults.
+		\add_filter( 'typo_plugin_defaults', [ $this, 'filter_defaults' ] );
+	}
+
+	/**
+	 * Enable multilingual settings.
+	 */
+	public function enable_automatic_language_settings() {
+		if ( $this->plugin->get_config()[ Config::ENABLE_MULTILINGUAL_SUPPORT ] ) {
+			add_filter( 'typo_settings', [ $this, 'automatic_language_settings' ] );
+		}
 	}
 
 	/**
