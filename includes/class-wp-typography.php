@@ -30,6 +30,7 @@ use \WP_Typography\Data_Storage\Options;
 use \WP_Typography\Data_Storage\Transients;
 
 use \WP_Typography\Components\Admin_Interface;
+use \WP_Typography\Components\Common;
 use \WP_Typography\Components\Multilingual_Support;
 use \WP_Typography\Components\Plugin_Component;
 use \WP_Typography\Components\Public_Interface;
@@ -145,6 +146,7 @@ class WP_Typography {
 	 *
 	 * @param string               $version     The full plugin version string (e.g. "3.0.0-beta.2").
 	 * @param Setup                $setup       Required.
+	 * @param Common               $common      Required.
 	 * @param Admin_Interface      $admin       Required.
 	 * @param Public_Interface     $public_if   Required.
 	 * @param Multilingual_Support $multi       Required.
@@ -152,7 +154,7 @@ class WP_Typography {
 	 * @param Cache                $cache       Required.
 	 * @param Options              $options     Required.
 	 */
-	public function __construct( $version, Setup $setup, Admin_Interface $admin, Public_Interface $public_if, Multilingual_Support $multi, Transients $transients, Cache $cache, Options $options ) {
+	public function __construct( $version, Setup $setup, Common $common, Admin_Interface $admin, Public_Interface $public_if, Multilingual_Support $multi, Transients $transients, Cache $cache, Options $options ) {
 		// Basic set-up.
 		$this->version = $version;
 
@@ -165,6 +167,9 @@ class WP_Typography {
 
 		// Initialize activation/deactivation handler.
 		$this->plugin_components[] = $setup;
+
+		// Initialize common component.
+		$this->plugin_components[] = $common;
 
 		// Initialize multilingual support.
 		$this->plugin_components[] = $multi;
@@ -182,9 +187,6 @@ class WP_Typography {
 	public function run() {
 		// Set plugin singleton.
 		self::set_instance( $this );
-
-		// Load settings.
-		add_action( 'init', [ $this, 'init' ] );
 
 		// Run all the plugin components.
 		foreach ( $this->plugin_components as $component ) {
@@ -401,22 +403,6 @@ class WP_Typography {
 	 */
 	public static function filter_feed_title( $text, Settings $settings = null ) {
 		return self::get_instance()->process_feed( $text, true, $settings );
-	}
-
-	/**
-	 * Loads the settings from the option table.
-	 */
-	public function init() {
-
-		// Restore defaults if necessary.
-		if ( $this->options->get( Options::RESTORE_DEFAULTS ) ) {  // any truthy value will do.
-			$this->set_default_options( true );
-		}
-
-		// Clear cache if necessary.
-		if ( $this->options->get( Options::CLEAR_CACHE ) ) {  // any truthy value will do.
-			$this->clear_cache();
-		}
 	}
 
 	/**
@@ -834,7 +820,7 @@ class WP_Typography {
 			 *
 			 * @param array $defaults The default settings indexed by their configuration key.
 			 */
-			$this->default_settings = apply_filters( 'typo_plugin_defaults', wp_list_pluck( Config::get_defaults(), 'default' ) );
+			$this->default_settings = (array) apply_filters( 'typo_plugin_defaults', wp_list_pluck( Config::get_defaults(), 'default' ) );
 		}
 
 		return $this->default_settings;
