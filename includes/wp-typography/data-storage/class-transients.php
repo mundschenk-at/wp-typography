@@ -117,7 +117,7 @@ class Transients extends Abstract_Cache {
 			return false;
 		}
 
-		return \unserialize( $uncompressed ); // @codingStandardsIgnoreLine
+		return $this->maybe_fix_object( \unserialize( $uncompressed ) ); // @codingStandardsIgnoreLine
 	}
 
 	/**
@@ -162,5 +162,56 @@ class Transients extends Abstract_Cache {
 	 */
 	public function delete( $key ) {
 		return \delete_transient( $this->get_key( $key ) );
+	}
+
+
+	/**
+	 * Cache the given object under the transient name.
+	 *
+	 * @param  string $transient Required.
+	 * @param  mixed  $object    Required.
+	 * @param  string $handle    Optional. A name passed to the filters.
+	 */
+	public function cache_object( $transient, $object, $handle = '' ) {
+		/**
+		 * Filters whether the PHP_Typography engine state should be cached.
+		 *
+		 * @since 4.2.0
+		 * @since 5.1.0 $handle parameter added.
+		 *
+		 * @param bool   $enabled Defaults to true.
+		 * @param string $handle  Optional. A name passed to the filters.
+		 */
+		if ( apply_filters( 'typo_php_typography_caching_enabled', true, $handle ) ) {
+			/**
+			 * Filters the caching duration for the PHP_Typography engine state.
+			 *
+			 * @since 3.2.0
+			 * @since 5.1.0 $handle parameter added.
+			 *
+			 * @param int    $duration The duration in seconds. Defaults to 0 (no expiration).
+			 * @param string $handle   Optional. A name passed to the filters.
+			 */
+			$duration = apply_filters( 'typo_php_typography_caching_duration', 0, $handle );
+
+			$this->set_large_object( $transient, $object, $duration );
+		}
+	}
+
+	/**
+	 * Fix object cache implementations sumetimes returning __PHP_Incomplete_Class.
+	 *
+	 * Based on http://stackoverflow.com/a/1173769/6646342.
+	 *
+	 * @param  object $object An object that should have been unserialized, but may be of __PHP_Incomplete_Class.
+	 *
+	 * @return object         The object with its real class.
+	 */
+	protected function maybe_fix_object( $object ) {
+		if ( ! is_object( $object ) && 'object' === gettype( $object ) ) {
+			$object = unserialize( serialize( $object ) ); // @codingStandardsIgnoreLine
+		}
+
+		return $object;
 	}
 }

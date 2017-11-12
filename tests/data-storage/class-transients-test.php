@@ -213,6 +213,9 @@ class Transients_Test extends TestCase {
 		$raw_key = 'foo';
 
 		$this->transients->shouldReceive( 'get' )->once()->with( $raw_key )->andReturn( \base64_encode( \gzencode( \serialize( new \stdClass() ) ) ) ); // @codingStandardsIgnoreLine
+		$this->transients->shouldReceive( 'maybe_fix_object' )->once()->with( m::type( \stdClass::class ) )->andReturnUsing( function( $object ) {
+			return $object;
+		} );
 
 		$this->assertInstanceOf( \stdClass::class, $this->transients->get_large_object( $raw_key ) );
 	}
@@ -257,5 +260,45 @@ class Transients_Test extends TestCase {
 		Functions\expect( 'delete_transient' )->once()->with( $key )->andReturn( true );
 
 		$this->assertTrue( $this->transients->delete( $raw_key ) );
+	}
+
+	/**
+	 * Test cache_object.
+	 *
+	 * @covers ::cache_object
+	 */
+	public function test_cache_object() {
+		$key    = 'my_transient_key';
+		$object = new \stdClass();
+		$handle = 'my_handle';
+
+		$this->transients->shouldReceive( 'set_large_object' )->once()->with( $key, $object, m::type( 'int' ) );
+
+		Filters\expectApplied( 'typo_php_typography_caching_enabled' )
+			->once()
+			->with( true, $handle );
+		Filters\expectApplied( 'typo_php_typography_caching_duration' )
+			->once()
+			->with( 0, $handle );
+
+		$this->transients->cache_object( $key, $object, $handle );
+
+		$this->assertTrue( 1 === Filters\applied( 'typo_php_typography_caching_enabled' ) );
+		$this->assertTrue( 1 === Filters\applied( 'typo_php_typography_caching_duration' ) );
+	}
+
+	/**
+	 * Test maybe_fix_object.
+	 *
+	 * @covers ::maybe_fix_object
+	 */
+	public function test_maybe_fix_object() {
+		$fake_object_string = 'O:16:"SomeMissingClass":1:{s:1:"a";s:1:"b";}';
+		$fake_object        = unserialize( $fake_object_string ); // @codingStandardsIgnoreLine
+
+		// Unfortunately, serialize and  unserialize cannot be mocked.
+		$object = $this->invokeMethod( $this->transients, 'maybe_fix_object', [ $fake_object ] );
+
+		$this->assertTrue( $object !== $fake_object );
 	}
 }
