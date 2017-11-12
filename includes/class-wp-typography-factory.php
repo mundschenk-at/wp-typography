@@ -24,16 +24,16 @@
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-use \Dice\Dice;
+use Dice\Dice;
 
-use \WP_Typography\Data_Storage\Cache;
-use \WP_Typography\Data_Storage\Options;
-use \WP_Typography\Data_Storage\Transients;
+use WP_Typography\Data_Storage\Cache;
+use WP_Typography\Data_Storage\Options;
+use WP_Typography\Data_Storage\Transients;
 
-use \WP_Typography\Components\Admin_Interface;
-use \WP_Typography\Components\Multilingual_Support;
-use \WP_Typography\Components\Public_Interface;
-use \WP_Typography\Components\Setup;
+use WP_Typography\Components\Admin_Interface;
+use WP_Typography\Components\Multilingual_Support;
+use WP_Typography\Components\Public_Interface;
+use WP_Typography\Components\Setup;
 
 /**
  * A factory for creating WP_Typography instances via dependency injection.

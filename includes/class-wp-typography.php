@@ -25,22 +25,22 @@
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-use \WP_Typography\Data_Storage\Cache;
-use \WP_Typography\Data_Storage\Options;
-use \WP_Typography\Data_Storage\Transients;
+use WP_Typography\Data_Storage\Cache;
+use WP_Typography\Data_Storage\Options;
+use WP_Typography\Data_Storage\Transients;
 
-use \WP_Typography\Components\Admin_Interface;
-use \WP_Typography\Components\Common;
-use \WP_Typography\Components\Multilingual_Support;
-use \WP_Typography\Components\Plugin_Component;
-use \WP_Typography\Components\Public_Interface;
-use \WP_Typography\Components\Setup;
+use WP_Typography\Components\Admin_Interface;
+use WP_Typography\Components\Common;
+use WP_Typography\Components\Multilingual_Support;
+use WP_Typography\Components\Plugin_Component;
+use WP_Typography\Components\Public_Interface;
+use WP_Typography\Components\Setup;
 
-use \WP_Typography\Settings\Plugin_Configuration as Config;
+use WP_Typography\Settings\Plugin_Configuration as Config;
 
-use \PHP_Typography\PHP_Typography;
-use \PHP_Typography\Settings;
-use \PHP_Typography\Hyphenator\Cache as Hyphenator_Cache;
+use PHP_Typography\PHP_Typography;
+use PHP_Typography\Settings;
+use PHP_Typography\Hyphenator\Cache as Hyphenator_Cache;
 
 /**
  * Main wp-Typography plugin class. All WordPress specific code goes here.

@@ -26,15 +26,15 @@
 
 namespace WP_Typography\Components;
 
-use \WP_Typography;
+use WP_Typography;
 
-use \WP_Typography\Settings\Basic_Locale_Settings;
-use \WP_Typography\Settings\Locale_Settings;
-use \WP_Typography\Settings\Plugin_Configuration as Config;
+use WP_Typography\Settings\Basic_Locale_Settings;
+use WP_Typography\Settings\Locale_Settings;
+use WP_Typography\Settings\Plugin_Configuration as Config;
 
-use \PHP_Typography\Settings;
-use \PHP_Typography\Settings\Dash_Style;
-use \PHP_Typography\Settings\Quote_Style;
+use PHP_Typography\Settings;
+use PHP_Typography\Settings\Dash_Style;
+use PHP_Typography\Settings\Quote_Style;
 
 /**
  * Multilingual_Support support for wp-Typography.

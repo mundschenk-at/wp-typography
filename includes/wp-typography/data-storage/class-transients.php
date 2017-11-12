@@ -70,6 +70,11 @@ class Transients extends Abstract_Cache {
 	 * @return string[]
 	 */
 	public function get_keys_from_database() {
+		/**
+		 * WordPress database handler.
+		 *
+		 * @var \wpdb
+		 */
 		global $wpdb;
 
 		$results = $wpdb->get_results(
