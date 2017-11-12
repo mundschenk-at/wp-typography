@@ -148,7 +148,10 @@ abstract class Control {
 		'span'   => [ 'class' => [] ],
 		'input'  => self::ALLOWED_INPUT_ATTRIBUTES,
 		'select' => self::ALLOWED_INPUT_ATTRIBUTES,
-		'option' => [ 'value' => [] ],
+		'option' => [
+			'value'    => [],
+			'selected' => [],
+		],
 		'code'   => [],
 		'strong' => [],
 		'em'     => [],
