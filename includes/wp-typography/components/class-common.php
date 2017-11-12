@@ -26,8 +26,8 @@
 
 namespace WP_Typography\Components;
 
-use \WP_Typography\Data_Storage\Options;
-use \WP_Typography\Settings\Plugin_Configuration as Config;
+use WP_Typography\Data_Storage\Options;
+use WP_Typography\Settings\Plugin_Configuration as Config;
 
 /**
  * Common functionality necessary for both public and admin interfaces.

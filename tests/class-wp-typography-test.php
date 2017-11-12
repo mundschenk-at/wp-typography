@@ -274,8 +274,6 @@ class WP_Typography_Test extends TestCase {
 	 * Test get_typography_instance.
 	 *
 	 * @covers ::get_typography_instance
-	 *
-	 * @uses ::maybe_fix_object
 	 */
 	public function test_get_typography_instance() {
 		$this->wp_typo->shouldReceive( 'get_config' )->once()->andReturn( [
@@ -284,7 +282,7 @@ class WP_Typography_Test extends TestCase {
 
 		Functions\expect( 'wp_json_encode' )->once()->andReturn( '{ json: "value" }' );
 
-		$this->wp_typo->shouldReceive( 'cache_object' )->twice();
+		$this->transients->shouldReceive( 'cache_object' )->twice();
 
 		$this->assertInstanceOf( \PHP_Typography\PHP_Typography::class, $this->invokeMethod( $this->wp_typo, 'get_typography_instance' ) );
 	}
@@ -321,9 +319,7 @@ class WP_Typography_Test extends TestCase {
 	 * @covers ::get_settings
 	 * @covers ::init_settings_from_options
 	 *
-	 * @uses ::cache_object
 	 * @uses ::init_settings_from_options
-	 * @uses ::maybe_fix_object
 	 */
 	public function test_get_settings() {
 
@@ -380,6 +376,7 @@ class WP_Typography_Test extends TestCase {
 			Config::IGNORE_PARSER_ERRORS           => false,
 			Config::ENABLE_MULTILINGUAL_SUPPORT    => false,
 		] );
+		$this->transients->shouldReceive( 'cache_object' )->once();
 
 		Functions\expect( 'wp_json_encode' )->once()->andReturn( '{ json: "value" }' );
 		Filters\expectApplied( 'typo_narrow_no_break_space' )->with( false )->once();
@@ -396,9 +393,7 @@ class WP_Typography_Test extends TestCase {
 	 * @covers ::get_settings
 	 * @covers ::init_settings_from_options
 	 *
-	 * @uses ::cache_object
 	 * @uses ::init_settings_from_options
-	 * @uses ::maybe_fix_object
 	 */
 	public function test_get_settings_hyphenation_off() {
 
@@ -454,6 +449,7 @@ class WP_Typography_Test extends TestCase {
 			Config::HYPHENATE_EXCEPTIONS           => [],
 			Config::IGNORE_PARSER_ERRORS           => false,
 		] );
+		$this->transients->shouldReceive( 'cache_object' )->once();
 
 		Functions\expect( 'wp_json_encode' )->once()->andReturn( '{ json: "value" }' );
 		Filters\expectApplied( 'typo_narrow_no_break_space' )->with( false )->once();
@@ -780,31 +776,6 @@ class WP_Typography_Test extends TestCase {
 	}
 
 	/**
-	 * Test cache_object.
-	 *
-	 * @covers ::cache_object
-	 */
-	public function test_cache_object() {
-		$key    = 'my_transient_key';
-		$object = new \stdClass();
-		$handle = 'my_handle';
-
-		$this->transients->shouldReceive( 'set_large_object' )->once()->with( $key, $object, m::type( 'int' ) );
-
-		Filters\expectApplied( 'typo_php_typography_caching_enabled' )
-			->once()
-			->with( true, $handle );
-		Filters\expectApplied( 'typo_php_typography_caching_duration' )
-			->once()
-			->with( 0, $handle );
-
-		$this->invokeMethod( $this->wp_typo, 'cache_object', [ $key, $object, $handle ] );
-
-		$this->assertTrue( 1 === Filters\applied( 'typo_php_typography_caching_enabled' ) );
-		$this->assertTrue( 1 === Filters\applied( 'typo_php_typography_caching_duration' ) );
-	}
-
-	/**
 	 * Test set_default_options.
 	 *
 	 * @covers ::set_default_options
@@ -915,21 +886,6 @@ class WP_Typography_Test extends TestCase {
 	}
 
 	/**
-	 * Test maybe_fix_object.
-	 *
-	 * @covers ::maybe_fix_object
-	 */
-	public function test_maybe_fix_object() {
-		$fake_object_string = 'O:16:"SomeMissingClass":1:{s:1:"a";s:1:"b";}';
-		$fake_object        = unserialize( $fake_object_string ); // @codingStandardsIgnoreLine
-
-		// Unfortunately, serialize and  unserialize cannot be mocked.
-		$object = $this->invokeMethod( $this->wp_typo, 'maybe_fix_object', [ $fake_object ] );
-
-		$this->assertTrue( $object !== $fake_object );
-	}
-
-	/**
 	 * Provide data for testing save_hyphenator_cache_on_shutdown.
 	 *
 	 * @return array
@@ -963,9 +919,9 @@ class WP_Typography_Test extends TestCase {
 		$this->setValue( $this->wp_typo, 'hyphenator_cache', $hyphenator_cache );
 
 		if ( $expected ) {
-			$this->wp_typo->shouldReceive( 'cache_object' )->once();
+			$this->transients->shouldReceive( 'cache_object' )->once();
 		} else {
-			$this->wp_typo->shouldReceive( 'cache_object' )->never();
+			$this->transients->shouldReceive( 'cache_object' )->never();
 		}
 
 		$this->wp_typo->save_hyphenator_cache_on_shutdown();

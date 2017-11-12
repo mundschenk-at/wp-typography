@@ -27,14 +27,14 @@
 
 namespace WP_Typography\Components;
 
-use \WP_Typography\Data_Storage\Options;
-use \WP_Typography\UI;
-use \WP_Typography\Settings\Plugin_Configuration as Config;
+use WP_Typography\Data_Storage\Options;
+use WP_Typography\UI;
+use WP_Typography\Settings\Plugin_Configuration as Config;
 
-use \PHP_Typography\PHP_Typography;
-use \PHP_Typography\Settings\Dash_Style;
-use \PHP_Typography\Settings\Quote_Style;
-use \PHP_Typography\Arrays;
+use PHP_Typography\PHP_Typography;
+use PHP_Typography\Settings\Dash_Style;
+use PHP_Typography\Settings\Quote_Style;
+use PHP_Typography\Arrays;
 
 /**
  * The public (non-admin) functionality of the plugin.

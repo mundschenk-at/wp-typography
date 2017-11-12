@@ -24,7 +24,7 @@
 
 namespace WP_Typography\Tests;
 
-use \Brain\Monkey;
+use Brain\Monkey;
 
 /**
  * Abstract base class for \PHP_Typography\* unit tests.

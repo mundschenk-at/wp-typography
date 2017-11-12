@@ -29,7 +29,7 @@ namespace WP_Typography\UI;
 /**
  * Settings section for wp-Typography.
  *
- * @since 5.2.0
+ * @since 5.1.0
  *
  * @author Peter Putzer <github@mundschenk.at>
  */

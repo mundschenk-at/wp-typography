@@ -26,9 +26,9 @@
 
 namespace WP_Typography\Settings;
 
-use \WP_Typography\Settings\Plugin_Configuration as Config;
+use WP_Typography\Settings\Plugin_Configuration as Config;
 
-use \PHP_Typography\Settings;
+use PHP_Typography\Settings;
 
 /**
  * An abstract base class for localized settings.

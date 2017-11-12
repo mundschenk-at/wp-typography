@@ -25,22 +25,22 @@
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-use \WP_Typography\Data_Storage\Cache;
-use \WP_Typography\Data_Storage\Options;
-use \WP_Typography\Data_Storage\Transients;
+use WP_Typography\Data_Storage\Cache;
+use WP_Typography\Data_Storage\Options;
+use WP_Typography\Data_Storage\Transients;
 
-use \WP_Typography\Components\Admin_Interface;
-use \WP_Typography\Components\Common;
-use \WP_Typography\Components\Multilingual_Support;
-use \WP_Typography\Components\Plugin_Component;
-use \WP_Typography\Components\Public_Interface;
-use \WP_Typography\Components\Setup;
+use WP_Typography\Components\Admin_Interface;
+use WP_Typography\Components\Common;
+use WP_Typography\Components\Multilingual_Support;
+use WP_Typography\Components\Plugin_Component;
+use WP_Typography\Components\Public_Interface;
+use WP_Typography\Components\Setup;
 
-use \WP_Typography\Settings\Plugin_Configuration as Config;
+use WP_Typography\Settings\Plugin_Configuration as Config;
 
-use \PHP_Typography\PHP_Typography;
-use \PHP_Typography\Settings;
-use \PHP_Typography\Hyphenator\Cache as Hyphenator_Cache;
+use PHP_Typography\PHP_Typography;
+use PHP_Typography\Settings;
+use PHP_Typography\Hyphenator\Cache as Hyphenator_Cache;
 
 /**
  * Main wp-Typography plugin class. All WordPress specific code goes here.
@@ -436,20 +436,23 @@ class WP_Typography {
 
 		// Initialize Settings instance.
 		if ( empty( $this->typo_settings ) ) {
-			$config              = $this->get_config();
-			$transient           = 'php_settings_' . md5( wp_json_encode( $config ) );
-			$this->typo_settings = $this->maybe_fix_object( $this->transients->get_large_object( $transient ) );
+			$config    = $this->get_config();
+			$transient = 'php_settings_' . md5( wp_json_encode( $config ) );
+			$settings  = $this->transients->get_large_object( $transient );
 
-			if ( ! $this->typo_settings instanceof Settings ) {
+			if ( ! $settings instanceof Settings ) {
 				// OK, we have to initialize the PHP_Typography instance manually.
-				$this->typo_settings = new Settings( false );
+				$settings = new Settings( false );
 
 				// Load our options into the Settings instance.
-				$this->init_settings_from_options( $this->typo_settings, $config );
+				$this->init_settings_from_options( $settings, $config );
 
 				// Try again next time.
-				$this->cache_object( $transient, $this->typo_settings, 'settings' );
+				$this->transients->cache_object( $transient, $settings, 'settings' );
 			}
+
+			// Settings should be good now, so let's use them.
+			$this->typo_settings = $settings;
 
 			// Settings won't be touched again, so cache the hash.
 			$this->cached_settings_hash = $this->typo_settings->get_hash( 32, false );
@@ -578,41 +581,6 @@ class WP_Typography {
 	}
 
 	/**
-	 * Cache the given object under the transient name.
-	 *
-	 * @since 5.1.0 $handle parameter added.
-	 *
-	 * @param  string $transient Required.
-	 * @param  mixed  $object    Required.
-	 * @param  string $handle    Optional. A name passed to the filters.
-	 */
-	protected function cache_object( $transient, $object, $handle = '' ) {
-		/**
-		 * Filters whether the PHP_Typography engine state should be cached.
-		 *
-		 * @since 4.2.0
-		 * @since 5.1.0 $handle parameter added.
-		 *
-		 * @param bool   $enabled Defaults to true.
-		 * @param string $handle  Optional. A name passed to the filters.
-		 */
-		if ( apply_filters( 'typo_php_typography_caching_enabled', true, $handle ) ) {
-			/**
-			 * Filters the caching duration for the PHP_Typography engine state.
-			 *
-			 * @since 3.2.0
-			 * @since 5.1.0 $handle parameter added.
-			 *
-			 * @param int    $duration The duration in seconds. Defaults to 0 (no expiration).
-			 * @param string $handle   Optional. A name passed to the filters.
-			 */
-			$duration = apply_filters( 'typo_php_typography_caching_duration', 0, $handle );
-
-			$this->transients->set_large_object( $transient, $object, $duration );
-		}
-	}
-
-	/**
 	 * Retrieves the PHP_Typography instance and ensure just-in-time initialization.
 	 */
 	protected function get_typography_instance() {
@@ -622,31 +590,34 @@ class WP_Typography {
 
 		// Initialize PHP_Typography instance.
 		if ( empty( $this->typo ) ) {
-			$transient  = 'php_' . md5( wp_json_encode( $config ) );
-			$this->typo = $this->maybe_fix_object( $this->transients->get_large_object( $transient ) );
+			$transient = 'php_' . md5( wp_json_encode( $config ) );
+			$typo      = $this->transients->get_large_object( $transient );
 
-			if ( ! $this->typo instanceof PHP_Typography ) {
+			if ( ! $typo instanceof PHP_Typography ) {
 				// OK, we have to initialize the PHP_Typography instance manually.
-				$this->typo = new PHP_Typography( PHP_Typography::INIT_NOW );
+				$typo = new PHP_Typography( PHP_Typography::INIT_NOW );
 
 				// Try again next time.
-				$this->cache_object( $transient, $this->typo, 'typography' );
+				$this->transients->cache_object( $transient, $typo, 'typography' );
 			}
+
+			$this->typo = $typo;
 		}
 
 		// Also cache hyphenators (the pattern tries are expensive to build).
 		if ( $config[ Config::ENABLE_HYPHENATION ] && empty( $this->hyphenator_cache ) ) {
-			$transient              = 'php_hyphenator_cache';
-			$this->hyphenator_cache = $this->maybe_fix_object( $this->transients->get_large_object( $transient ) );
+			$transient        = 'php_hyphenator_cache';
+			$hyphenator_cache = $this->transients->get_large_object( $transient );
 
-			if ( ! $this->hyphenator_cache instanceof Hyphenator_Cache ) {
-				$this->hyphenator_cache = $this->typo->get_hyphenator_cache();
+			if ( ! $hyphenator_cache instanceof Hyphenator_Cache ) {
+				$hyphenator_cache = $this->typo->get_hyphenator_cache();
 
 				// Try again next time.
-				$this->cache_object( $transient, $this->hyphenator_cache, 'hyphenator_cache' );
+				$this->transients->cache_object( $transient, $hyphenator_cache, 'hyphenator_cache' );
 			}
 
 			// Let's use it!
+			$this->hyphenator_cache = $hyphenator_cache;
 			$this->typo->set_hyphenator_cache( $this->hyphenator_cache );
 		}
 
@@ -658,7 +629,7 @@ class WP_Typography {
 	 */
 	public function save_hyphenator_cache_on_shutdown() {
 		if ( ! empty( $this->hyphenator_cache ) && $this->hyphenator_cache->has_changed() ) {
-			$this->cache_object( 'php_hyphenator_cache', $this->hyphenator_cache, 'hyphenator_cache' );
+			$this->transients->cache_object( 'php_hyphenator_cache', $this->hyphenator_cache, 'hyphenator_cache' );
 		}
 	}
 
@@ -893,28 +864,11 @@ class WP_Typography {
 	/**
 	 * Retrieves the plugin version hash.
 	 *
-	 * @deprecated 5.2.0
+	 * @deprecated 5.1.0
 	 *
 	 * @return string
 	 */
 	public function get_version_hash() {
 		return $this->hash_version_string( $this->version );
-	}
-
-	/**
-	 * Fix object cache implementations sumetimes returning __PHP_Incomplete_Class.
-	 *
-	 * Based on http://stackoverflow.com/a/1173769/6646342.
-	 *
-	 * @param  object $object An object that should have been unserialized, but may be of __PHP_Incomplete_Class.
-	 *
-	 * @return object         The object with its real class.
-	 */
-	protected function maybe_fix_object( $object ) {
-		if ( ! is_object( $object ) && 'object' === gettype( $object ) ) {
-			$object = unserialize( serialize( $object ) ); // @codingStandardsIgnoreLine
-		}
-
-		return $object;
 	}
 }
