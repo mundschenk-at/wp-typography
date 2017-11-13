@@ -77,6 +77,10 @@ Please install the [wp-Typography Disable ACF Integration plugin](https://wordpr
 
 == Upgrade Notice ==
 
+= 5.1.0 =
+The plugin now requires at least PHP 5.6. If you are still running an earlier version,
+please upgrade PHP or continue to use version 4.2.2.
+
 = 5.0.4 =
 The plugin now requires at least PHP 5.6. If you are still running an earlier version,
 please upgrade PHP or continue to use version 4.2.2.
@@ -98,6 +102,17 @@ The plugin now requires at least PHP 5.6. If you are still running an earlier ve
 please upgrade PHP or continue to use version 4.2.2.
 
 == Changelog ==
+
+= 5.1.0 - unreleased =
+* _Feature_: HTML5 parser performance improved by 20 percent.
+* _Feature_: New hyphenation language "Swiss-German (Traditional)" added.
+* _Feature_: New filter hook `typo_narrow_no_break_space` to enable the NARROW NO-BREAK SPACE.
+* _Change_: Refactored plugin internals. This means that
+  - caching should be more friendly to shared hosting environments,
+  - options are stored as a single array now (i.e. fewer rows in the `options` table), and
+  - filters and actions are only added when actually needed.
+* _Change_: Updated to use version 5.2.1 of the composer package `mundschenk-at/php-typography`.
+* _Bugfix_: Narrow spaces are honored during de-widowing.
 
 = 5.0.4 - September 09, 2017 =
 * _Bugfix_: Ensure proper typing for cached language plugin lists.
