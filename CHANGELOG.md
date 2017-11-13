@@ -1,5 +1,16 @@
 # Changes
 
+## 5.1.0 - unreleased
+*   _Feature_: HTML5 parser performance improved by 20 percent.
+*   _Feature_: New hyphenation language "Swiss-German (Traditional)" added.
+*   _Feature_: New filter hook `typo_narrow_no_break_space` to enable the NARROW NO-BREAK SPACE.
+*   _Change_: Refactored plugin internals. This means that
+    -   caching should be more friendly to shared hosting environments,
+    -   options are stored as a single array now (i.e. fewer rows in the `options` table), and
+    -   filters and actions are only added when actually needed.
+*   _Change_: Updated to use version 5.2.1 of the composer package `mundschenk-at/php-typography`.
+*   _Bugfix_: Narrow spaces are honored during de-widowing.
+
 ## 5.0.4 - September 09, 2017
 *   _Bugfix_: Ensure proper typing for cached language plugin lists.
 
@@ -22,7 +33,7 @@
 *   _Feature_: [Several new hooks](https://code.mundschenk.at/wp-typography/api/) added (including `typo_settings` to directly filter the settings).
 *   _Change_: Updated to use version 5.0.1 of the new standalone composer package `mundschenk-at/php-typography`.
 *   _Change_: Minimum PHP version increased to 5.6.0
-*   _Change:_ Updated list of valid top-level domains.
+*   _Change_: Updated list of valid top-level domains.
 *   _Bugfix_: French punctuation spacing after links (and other inline tags) fixed.
 *   _Bugfix_: Lone ampersands are treated as single-character words.
 *   _Bugfix_: Hyphenated words are properly de-widowed.
@@ -39,7 +50,7 @@
     -   German (Traditional)
     -   Latin
     -   Latin (Liturgical)
-*   _Change:_ Updated list of valid top-level domains.
+*   _Change_: Updated list of valid top-level domains.
 
 ## 4.1.2 - May 26, 2017
 *   _Bugfix_: Hyphenation patterns at the end of word were accidentally ignored.
@@ -57,21 +68,21 @@
 *   _Bugfix_: `WP_Typography::get_user_settings` and `WP_Typography::process_title` now work correctly (props @roopemerikukka).
 
 ## 4.0.2 - February 17, 2017
-*   _Bugfix:_ Workaround for plugins that call `wptexturize` too early (wasn't actually working before).
+*   _Bugfix_: Workaround for plugins that call `wptexturize` too early (wasn't actually working before).
 
 ## 4.0.1 - January 7, 2017
-*   _Bugfix:_ Workaround for PHP 5.3 issue in `dewidow` callback.
+*   _Bugfix_: Workaround for PHP 5.3 issue in `dewidow` callback.
 
 ## 4.0.0 - January 6, 2017
-*   _Feature:_ API improvements for developers
+*   _Feature_: API improvements for developers
     -   New Settings API added.
     -   Easier access via new static methods `WP_Typography::filter*`.
     -   Updated [API documentation](https://code.mundschenk.at/wp-typography/api/).
-*   _Feature:_ Re-vamped settings page
+*   _Feature_: Re-vamped settings page
     -   Uses tabs for easier navigation.
     -   Follows WordPress styleguide more closely.
     -   Includes online help.
-*   _Feature:_ New hyphenation languages
+*   _Feature_: New hyphenation languages
     -   Hindi,
     -   Marathi,
     -   Occitan,
@@ -79,35 +90,35 @@
     -   Panjabi,
     -   Tamil,
     -   Telugu.
-*   _Change:_ Uses minified JavaScript.
-*   _Change:_ Updated list of valid top-level domains.
-*   _Change:_ "Ignore errors in parsed HTML" is the default again (as it was pre 3.5.2) and can be switched on and off via the settings page. Parsing errors can be filtered via the new hook `typo_handle_parser_errors` (`typo_ignore_parser_errors` still works as well, of course).
+*   _Change_: Uses minified JavaScript.
+*   _Change_: Updated list of valid top-level domains.
+*   _Change_: "Ignore errors in parsed HTML" is the default again (as it was pre 3.5.2) and can be switched on and off via the settings page. Parsing errors can be filtered via the new hook `typo_handle_parser_errors` (`typo_ignore_parser_errors` still works as well, of course).
 
 ## 3.6.0 - December 26, 2016
-*   _Feature:_ Added hook `typo_ignore_parser_errors` to re-enable "parser guessing" as it was before version 3.5.2.
-*   _Feature:_ Added new hook `typo_disable_filtering` to selectively disable filter groups.
+*   _Feature_: Added hook `typo_ignore_parser_errors` to re-enable "parser guessing" as it was before version 3.5.2.
+*   _Feature_: Added new hook `typo_disable_filtering` to selectively disable filter groups.
 
 ## 3.5.3 - December 17, 2016
-*   _Bugfix:_ Remove ambiguous entries from German diacritics replacement file.
+*   _Bugfix_: Remove ambiguous entries from German diacritics replacement file.
 
 ## 3.5.2 - December 14, 2016
-*   _Change:_ Return unmodified HTML if a processed text fragment is not well-formed. This improves compatibility with page builder plugins (and themes) that do weird things with the `the_content` filter.
+*   _Change_: Return unmodified HTML if a processed text fragment is not well-formed. This improves compatibility with page builder plugins (and themes) that do weird things with the `the_content` filter.
 
 ## 3.5.1 - November 05, 2016
-*   _Bugfix:_ Quotes ending in numbers were sometimes interpreted as primes.
+*   _Bugfix_: Quotes ending in numbers were sometimes interpreted as primes.
 
 ## 3.5.0 - October 21, 2016
-*   _Feature:_ Added "Latin (Liturgical)" as a new hyphenation language.
-*   _Feature:_ Limited support for ACF Pro.
-*   _Change:_ Better compatibility with improperly written plugins (ensuring that `wptexturize` is always off).
-*   _Change:_ Only use the WP Object Cache for caching, not transients, to reduce database usage and prevent clogging in some configurations.
-*   _Change:_ Updated list of valid top-level domains.
-*   _Change:_ Updated HTML5 parser (html5-php) to 2.2.2.
-*   _Bugfix:_ Custom hyphenations with more than one hyphenation point were not working properly.
-*   _Bugfix:_ The `min_after` hyphenation setting was off by one.
-*   _Bugfix:_ An IE11 bug on Windows 7 was previously triggered when the Safari workaround is enabled.
-*   _Bugfix:_ Language names were not translated in the settings screen.
-*   _Bugfix:_ Fractions did not play nice with prime symbols.
+*   _Feature_: Added "Latin (Liturgical)" as a new hyphenation language.
+*   _Feature_: Limited support for ACF Pro.
+*   _Change_: Better compatibility with improperly written plugins (ensuring that `wptexturize` is always off).
+*   _Change_: Only use the WP Object Cache for caching, not transients, to reduce database usage and prevent clogging in some configurations.
+*   _Change_: Updated list of valid top-level domains.
+*   _Change_: Updated HTML5 parser (html5-php) to 2.2.2.
+*   _Bugfix_: Custom hyphenations with more than one hyphenation point were not working properly.
+*   _Bugfix_: The `min_after` hyphenation setting was off by one.
+*   _Bugfix_: An IE11 bug on Windows 7 was previously triggered when the Safari workaround is enabled.
+*   _Bugfix_: Language names were not translated in the settings screen.
+*   _Bugfix_: Fractions did not play nice with prime symbols.
 
 ## 3.4.0 - July 10, 2016
 *   Store hyphenation patterns as JSON files instead of PHP to work around a GlotPress bug that prevents timely language pack updates.

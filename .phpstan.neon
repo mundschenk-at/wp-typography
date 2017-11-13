@@ -12,11 +12,11 @@ parameters:
 		- '#Function (__|_x|esc_attr|esc_attr__|esc_html|esc_html__|esc_textarea|esc_url|sanitize_key|wp_kses) not found#'
 		- '#Function (add_filter|apply_filters|add_action|_doing_it_wrong|get_option|set_option|update_option|delete_option|selected|checked|wp_.*|get_transient|set_transient|delete_transient) not found#'
 		- '#Function (register_setting|add_settings_field|add_settings_error|add_options_page|add_settings_section) not found#'
-		- '#Function (get_current_screen|trailingslashit|load_plugin_textdomain|get_bloginfo) not found#'
+		- '#Function (get_current_screen|trailingslashit|load_plugin_textdomain|get_bloginfo|get_plugin_data|get_locale) not found#'
 		- '#Function (plugin_basename|plugin_dir_path|plugin_dir_url|plugins_url|admin_url|is_feed|is_admin|wptexturize) not found#'
 		- '#Function (register_activation_hook|register_deactivation_hook|register_uninstall_hook|deactivate_plugins) not found#'
-		- '#Undefined variable: \$wp_version#'
-		- '#Constant (DAY_IN_SECONDS|WEEK_IN_SECONDS|SCRIPT_DEBUG) not found#'
+		- '#Undefined variable: \$(wp_version|wpdb)#'
+		- '#Constant (DAY_IN_SECONDS|WEEK_IN_SECONDS|SCRIPT_DEBUG|ARRAY_A|ABSPATH) not found#'
 		- '#Function (acf_get_setting) not found#'
 
 	universalObjectCratesClasses:
