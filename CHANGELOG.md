@@ -1,6 +1,6 @@
 # Changes
 
-## 5.1.0 - unreleased
+## 5.1.0 - November 14, 2017
 *   _Feature_: HTML5 parser performance improved by 20 percent.
 *   _Feature_: New hyphenation language "Swiss-German (Traditional)" added.
 *   _Feature_: New filter hook `typo_narrow_no_break_space` to enable the NARROW NO-BREAK SPACE.
