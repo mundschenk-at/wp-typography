@@ -4,7 +4,7 @@ Tags: typography, hyphenation, smart quotes, quote marks, formatting, typogrify,
 Requires at least: 4.6
 Requires PHP: 5.6
 Tested up to: 4.9
-Stable tag: 5.0.4
+Stable tag: 5.1.0
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
@@ -103,7 +103,7 @@ please upgrade PHP or continue to use version 4.2.2.
 
 == Changelog ==
 
-= 5.1.0 - unreleased =
+= 5.1.0 - November 14, 2017 =
 * _Feature_: HTML5 parser performance improved by 20 percent.
 * _Feature_: New hyphenation language "Swiss-German (Traditional)" added.
 * _Feature_: New filter hook `typo_narrow_no_break_space` to enable the NARROW NO-BREAK SPACE.
@@ -136,7 +136,7 @@ please upgrade PHP or continue to use version 4.2.2.
 * _Feature_: [Several new hooks](https://code.mundschenk.at/wp-typography/api/) added (including `typo_settings` to directly filter the settings).
 * _Change_: Updated to use version 5.0.1 of the new standalone composer package `mundschenk-at/php-typography`.
 * _Change_: Minimum PHP version increased to 5.6.0
-* _Change:_ Updated list of valid top-level domains.
+* _Change_: Updated list of valid top-level domains.
 * _Bugfix_: French punctuation spacing after links (and other inline tags) fixed.
 * _Bugfix_: Lone ampersands are treated as single-character words.
 * _Bugfix_: Hyphenated words are properly de-widowed.
@@ -157,4 +157,4 @@ please upgrade PHP or continue to use version 4.2.2.
   - German (Traditional)
   - Latin
   - Latin (Liturgical)
-* _Change:_ Updated list of valid top-level domains.
+* _Change_: Updated list of valid top-level domains.
