@@ -159,6 +159,13 @@ class Admin_Interface implements Plugin_Component {
 	private $defaults;
 
 	/**
+	 * An array to keep track of triggered admin notices.
+	 *
+	 * @var bool[]
+	 */
+	private $triggered_notice = [];
+
+	/**
 	 * Create a new instace of admin backend.
 	 *
 	 * @param string  $basename    The result of plugin_basename() for the main plugin file.
@@ -288,7 +295,7 @@ class Admin_Interface implements Plugin_Component {
 		}
 
 		// Prevent spurious saves.
-		\add_filter( 'pre_update_option_' . $configuration_name, [ $this, 'filter_update_option' ], 10, 2 );
+		\add_filter( "pre_update_option_{$configuration_name}", [ $this, 'filter_update_option' ], 10, 2 );
 
 		// Register control render callbacks.
 		foreach ( $this->admin_form_controls as $control ) {
@@ -342,7 +349,7 @@ class Admin_Interface implements Plugin_Component {
 	 *
 	 * @param mixed $input Ignored.
 	 *
-	 * @return mixed
+	 * @return bool
 	 */
 	public function sanitize_restore_defaults( $input ) {
 		return $this->trigger_admin_notice( Options::RESTORE_DEFAULTS, 'defaults-restored', \__( 'Settings reset to default values.', 'wp-typography' ), 'updated', $input );
@@ -353,7 +360,7 @@ class Admin_Interface implements Plugin_Component {
 	 *
 	 * @param mixed $input Ignored.
 	 *
-	 * @return mixed
+	 * @return bool
 	 */
 	public function sanitize_clear_cache( $input ) {
 		return $this->trigger_admin_notice( Options::CLEAR_CACHE, 'cache-cleared', \__( 'Cached post content cleared.', 'wp-typography' ), 'notice-info', $input );
@@ -387,14 +394,20 @@ class Admin_Interface implements Plugin_Component {
 	 * @param  string $notice_level 'updated', 'notice-info', etc.
 	 * @param  mixed  $input        Passed back.
 	 *
-	 * @return mixed The $input parameter.
+	 * @return bool The $input parameter cast to a boolean value.
 	 */
 	protected function trigger_admin_notice( $setting_name, $notice_id, $message, $notice_level, $input ) {
-		if ( ! empty( $_POST[ $this->options->get_name( $setting_name ) ] ) ) { // WPCS: CSRF ok. Input var okay.
+		if (
+			! empty( $_POST[ $this->options->get_name( $setting_name ) ] ) && // WPCS: CSRF ok. Input var okay.
+			empty( $this->triggered_notice[ $setting_name  ] )
+		) {
 			\add_settings_error( self::OPTION_GROUP . $this->get_active_settings_tab(), $notice_id, $message, $notice_level );
+
+			// Workaround for https://core.trac.wordpress.org/ticket/21989.
+			$this->triggered_notice[ $setting_name ] = true;
 		}
 
-		return $input;
+		return (bool) $input;
 	}
 
 	/**

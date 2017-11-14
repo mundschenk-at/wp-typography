@@ -772,8 +772,8 @@ class WP_Typography {
 
 		if ( $force_defaults ) {
 			// Push the reset switch.
-			$this->options->set( Options::RESTORE_DEFAULTS, false );
-			$this->options->set( Options::CLEAR_CACHE, false );
+			$this->options->delete( Options::RESTORE_DEFAULTS );
+			$this->options->delete( Options::CLEAR_CACHE );
 		}
 	}
 
@@ -804,7 +804,7 @@ class WP_Typography {
 		$this->transients->invalidate();
 		$this->cache->invalidate();
 
-		$this->options->set( Options::CLEAR_CACHE, false );
+		$this->options->delete( Options::CLEAR_CACHE );
 	}
 
 	/**
