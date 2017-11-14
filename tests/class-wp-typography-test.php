@@ -811,8 +811,8 @@ class WP_Typography_Test extends TestCase {
 
 		$this->options->shouldNotReceive( 'get' )->with( Options::RESTORE_DEFAULTS );
 		$this->options->shouldReceive( 'set' )->once()->with( Options::CONFIGURATION, m::type( 'array' ) );
-		$this->options->shouldReceive( 'set' )->once()->with( Options::RESTORE_DEFAULTS, false )->andReturn( true );
-		$this->options->shouldReceive( 'set' )->once()->with( Options::CLEAR_CACHE, false )->andReturn( true );
+		$this->options->shouldReceive( 'delete' )->once()->with( Options::RESTORE_DEFAULTS )->andReturn( true );
+		$this->options->shouldReceive( 'delete' )->once()->with( Options::CLEAR_CACHE )->andReturn( true );
 
 		$this->wp_typo->set_default_options( true );
 		$this->assertTrue( true );
@@ -849,7 +849,7 @@ class WP_Typography_Test extends TestCase {
 		$this->transients->shouldReceive( 'invalidate' );
 		$this->cache->shouldReceive( 'invalidate' );
 
-		$this->options->shouldReceive( 'set' )->once()->with( 'clear_cache', false )->andReturn( true );
+		$this->options->shouldReceive( 'delete' )->once()->with( 'clear_cache' )->andReturn( true );
 
 		$this->wp_typo->clear_cache();
 		$this->assertTrue( true );

@@ -404,7 +404,7 @@ class Admin_Interface_Test extends TestCase {
 		Functions\expect( 'add_settings_error' )->once()->with( Admin_Interface::OPTION_GROUP . 'my-tab', 'some-id', 'An important message.', 'notice-info' );
 
 		// Do it.
-		$this->assertSame( $input, $this->admin->trigger_admin_notice( 'setting', 'some-id', 'An important message.', 'notice-info', $input ) );
+		$this->assertSame( (bool) $input, $this->admin->trigger_admin_notice( 'setting', 'some-id', 'An important message.', 'notice-info', $input ) );
 	}
 
 	/**
