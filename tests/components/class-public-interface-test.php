@@ -196,11 +196,11 @@ class Public_Interface_Test extends TestCase {
 	 */
 	public function provide_add_content_filters_data() {
 		return [
-			[ true, true, true, 0, false ],
-			[ false, false, false, 0, false ],
-			[ true, false, false, 5, false ],
-			[ true, false, false, 4, true ],
-			[ false, false, false, 4, false ],
+			[ true, true, true, 0, false, '4.8' ],
+			[ false, false, false, 0, false, '4.8.1' ],
+			[ true, false, false, 5, false, '4.6' ],
+			[ true, false, false, 4, true, '4.9.5' ],
+			[ false, false, false, 4, false, '4.9.5' ],
 		];
 	}
 
@@ -215,13 +215,14 @@ class Public_Interface_Test extends TestCase {
 	 *
 	 * @dataProvider provide_add_content_filters_data
 	 *
-	 * @param bool $content     Disable content filters if true.
-	 * @param bool $heading     Disable heading filters if true.
-	 * @param bool $title       Disable title filters if true.
-	 * @param int  $acf_version Simulated ACF version.
-	 * @param bool $acf         Disable ACF filters if true.
+	 * @param bool   $content     Disable content filters if true.
+	 * @param bool   $heading     Disable heading filters if true.
+	 * @param bool   $title       Disable title filters if true.
+	 * @param int    $acf_version Simulated ACF version.
+	 * @param bool   $acf         Disable ACF filters if true.
+	 * @param string $wp_version Simulated WordPress version.
 	 */
-	public function test_add_content_filters( $content, $heading, $title, $acf_version, $acf ) {
+	public function test_add_content_filters( $content, $heading, $title, $acf_version, $acf, $wp_version ) {
 
 		$content_hooks = [
 			'comment_author',
@@ -268,6 +269,10 @@ class Public_Interface_Test extends TestCase {
 		Filters\expectApplied( 'typo_disable_filtering' )->once()->with( false, 'heading' )->andReturn( $heading );
 		Filters\expectApplied( 'typo_disable_filtering' )->once()->with( false, 'title' )->andReturn( $title );
 
+		if ( ! $content ) {
+			Functions\expect( 'get_bloginfo' )->once()->with( 'version' )->andReturn( $wp_version );
+		}
+
 		if ( $acf_version > 0 ) {
 			m::mock( 'acf' );
 
@@ -280,26 +285,34 @@ class Public_Interface_Test extends TestCase {
 
 		$this->public_if->add_content_filters();
 
+		// Content hooks.
 		$expected     = ! $content;
 		$plugin_class = \get_class( $this->getValue( $this->public_if, 'plugin' ) );
 
 		foreach ( $content_hooks as $hook ) {
+			if ( 'widget_text' === $hook && \version_compare( $wp_version, '4.8', '>=' ) ) {
+				$hook .= '_content';
+			}
+
 			$found = has_filter( $hook, "{$plugin_class}->process()" );
 			$this->assertEquals( $expected, $found, "Hook $hook" . ( $expected ? '' : ' not' ) . ' expected, but' . ( $found ? '' : ' not' ) . ' found.' );
 		}
 
+		// Heading hooks.
 		$expected = ! $heading;
 		foreach ( $heading_hooks as $hook ) {
 			$found = has_filter( $hook, "{$plugin_class}->process_title()" );
 			$this->assertEquals( $expected, $found, "Hook $hook" . ( $expected ? '' : ' not' ) . ' expected, but' . ( $found ? '' : ' not' ) . ' found.' );
 		}
 
+		// Title hooks.
 		$expected = ! $title;
 		foreach ( $title_hooks as $hook => $method ) {
 			$found = has_filter( $hook, "{$plugin_class}->{$method}()" );
 			$this->assertEquals( $expected, $found, "Hook $hook" . ( $expected ? '' : ' not' ) . ' expected, but' . ( $found ? '' : ' not' ) . ' found.' );
 		}
 
+		// ACF hooks.
 		foreach ( array_keys( $acf_hooks ) as $version ) {
 			$expected = $acf_version === $version && ! $acf;
 			foreach ( $acf_hooks[ $version ] as $hook => $method ) {

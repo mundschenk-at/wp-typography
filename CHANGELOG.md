@@ -1,5 +1,8 @@
 # Changes
 
+## 5.1.1 - November 16, 2017
+*   _Bugfix_: Shortcodes in the new WordPress 4.8 text widget work again.
+
 ## 5.1.0 - November 14, 2017
 *   _Feature_: HTML5 parser performance improved by 20 percent.
 *   _Feature_: New hyphenation language "Swiss-German (Traditional)" added.

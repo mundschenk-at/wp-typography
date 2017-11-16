@@ -4,7 +4,7 @@ Tags: typography, hyphenation, smart quotes, quote marks, formatting, typogrify,
 Requires at least: 4.6
 Requires PHP: 5.6
 Tested up to: 4.9
-Stable tag: 5.1.0
+Stable tag: 5.1.1
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
@@ -102,6 +102,9 @@ The plugin now requires at least PHP 5.6. If you are still running an earlier ve
 please upgrade PHP or continue to use version 4.2.2.
 
 == Changelog ==
+
+= 5.1.1 - November 16, 2017 =
+* _Bugfix_: Shortcodes in the new WordPress 4.8 text widget work again.
 
 = 5.1.0 - November 14, 2017 =
 * _Feature_: HTML5 parser performance improved by 20 percent.
