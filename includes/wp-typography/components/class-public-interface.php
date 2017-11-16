@@ -190,7 +190,13 @@ class Public_Interface implements Plugin_Component {
 		\add_filter( 'link_name',         [ $this->plugin, 'process' ], $priority );
 		\add_filter( 'the_excerpt',       [ $this->plugin, 'process' ], $priority );
 		\add_filter( 'the_excerpt_embed', [ $this->plugin, 'process' ], $priority );
-		\add_filter( 'widget_text',       [ $this->plugin, 'process' ], $priority );
+
+		// Preserve shortcode handling on WordPress 4.8+.
+		if ( \version_compare( \get_bloginfo( 'version' ), '4.8', '>=' ) ) {
+			\add_filter( 'widget_text_content', [ $this->plugin, 'process' ], $priority );
+		} else {
+			\add_filter( 'widget_text', [ $this->plugin, 'process' ], $priority );
+		}
 	}
 
 	/**
