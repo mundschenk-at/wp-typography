@@ -56,6 +56,7 @@ module.exports = function(grunt) {
                         '!**/scss/**',
                         'composer.*',
                         'vendor/composer/**',
+                        'vendor/dangoodman/composer-for-wordpress/**',
                         'vendor/level-2/dice/Dice.php',
                         'vendor/masterminds/html5/src/**/*.php',
                         'vendor/mundschenk-at/php-typography/src/**',
@@ -83,7 +84,27 @@ module.exports = function(grunt) {
 
         clean: {
             build: ["build/*"],
-            autoloader: [ "build/composer.*", "build/vendor/composer/*.json" ]
+            autoloader: [ "build/composer.*", "build/vendor/composer/*.json", "build/vendor/dangoodman/**" ]
+        },
+
+        "string-replace": {
+            autoloader: {
+                files: {
+                    "build/": "build/vendor/composer/autoload_{classmap,psr4,static}.php",
+                },
+                options: {
+                    replacements: [{
+                        pattern: /\s+'Dangoodman\\\\ComposerForWordpress\\\\' =>\s+array\s*\([^,]+,\s*\),/g,
+                        replacement: ''
+                    }, {
+                        pattern: /\s+'Dangoodman\\\\ComposerForWordpress\\\\.*,(?=\n)/g,
+                        replacement: ''
+                    }, {
+                        pattern: 'Dangoodman',
+                        replacement: 'FOOBAR'
+                    }]
+                }
+            }
         },
 
         wp_deploy: {
@@ -290,6 +311,7 @@ module.exports = function(grunt) {
         'copy:meta',
         'composer:build:dump-autoload',
         'clean:autoloader',
+        'string-replace:autoloader',
         'newer:delegate:sass:dist',
         'newer:postcss:dist',
         'newer:minify'
