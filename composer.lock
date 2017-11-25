@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "7fb0eef5812fbb477f3b64adac02ac2d",
+    "content-hash": "55e8c1d0f2c200abec9b0d937c0ba5dd",
     "packages": [
         {
             "name": "level-2/dice",
@@ -116,16 +116,16 @@
         },
         {
             "name": "mundschenk-at/php-typography",
-            "version": "v5.2.1",
+            "version": "v5.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mundschenk-at/php-typography.git",
-                "reference": "68568a7c570ce902b65d40a0509295a13b54885f"
+                "reference": "bb812cfb524807aa8ae4fc5a38a51268048518ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mundschenk-at/php-typography/zipball/68568a7c570ce902b65d40a0509295a13b54885f",
-                "reference": "68568a7c570ce902b65d40a0509295a13b54885f",
+                "url": "https://api.github.com/repos/mundschenk-at/php-typography/zipball/bb812cfb524807aa8ae4fc5a38a51268048518ae",
+                "reference": "bb812cfb524807aa8ae4fc5a38a51268048518ae",
                 "shasum": ""
             },
             "require": {
@@ -173,7 +173,7 @@
                 }
             ],
             "description": "A PHP library for improving your web typography",
-            "time": "2017-10-27T18:33:56+00:00"
+            "time": "2017-11-25T20:06:52+00:00"
         }
     ],
     "packages-dev": [
@@ -1671,16 +1671,16 @@
         },
         {
             "name": "phpunit/php-file-iterator",
-            "version": "1.4.2",
+            "version": "1.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-file-iterator.git",
-                "reference": "3cc8f69b3028d0f96a9078e6295d86e9bf019be5"
+                "reference": "8ebba84e5bd74fc5fdeb916b38749016c7232f93"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/3cc8f69b3028d0f96a9078e6295d86e9bf019be5",
-                "reference": "3cc8f69b3028d0f96a9078e6295d86e9bf019be5",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/8ebba84e5bd74fc5fdeb916b38749016c7232f93",
+                "reference": "8ebba84e5bd74fc5fdeb916b38749016c7232f93",
                 "shasum": ""
             },
             "require": {
@@ -1714,7 +1714,7 @@
                 "filesystem",
                 "iterator"
             ],
-            "time": "2016-10-03T07:40:28+00:00"
+            "time": "2017-11-24T15:00:59+00:00"
         },
         {
             "name": "phpunit/php-text-template",
