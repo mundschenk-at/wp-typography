@@ -4,7 +4,7 @@ Tags: typography, hyphenation, smart quotes, quote marks, formatting, typogrify,
 Requires at least: 4.6
 Requires PHP: 5.6
 Tested up to: 4.9
-Stable tag: 5.1.1
+Stable tag: 5.1.2
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
@@ -77,6 +77,10 @@ Please install the [wp-Typography Disable ACF Integration plugin](https://wordpr
 
 == Upgrade Notice ==
 
+= 5.1.2 =
+The plugin now requires at least PHP 5.6. If you are still running an earlier version,
+please upgrade PHP or continue to use version 4.2.2.
+
 = 5.1.0 =
 The plugin now requires at least PHP 5.6. If you are still running an earlier version,
 please upgrade PHP or continue to use version 4.2.2.
@@ -102,6 +106,11 @@ The plugin now requires at least PHP 5.6. If you are still running an earlier ve
 please upgrade PHP or continue to use version 4.2.2.
 
 == Changelog ==
+
+= 5.1.2 - November 25, 2017 =
+* _Change_: Updated to use version 5.2.2 of the composer package `mundschenk-at/php-typography`.
+* _Bugfix_: Removed some ambiguous diacritics replacements from the German language file.
+* _Bugfix_: Prevent of accidental loading of obsolete composer `ClassLoader` implementations from other plugins.
 
 = 5.1.1 - November 16, 2017 =
 * _Bugfix_: Shortcodes in the new WordPress 4.8 text widget work again.

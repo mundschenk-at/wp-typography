@@ -1,5 +1,10 @@
 # Changes
 
+## 5.1.2 - November 25, 2017
+*   _Change_: Updated to use version 5.2.2 of the composer package `mundschenk-at/php-typography`.
+*   _Bugfix_: Removed some ambiguous diacritics replacements from the German language file.
+*   _Bugfix_: Prevent of accidental loading of obsolete composer `ClassLoader` implementations from other plugins.
+
 ## 5.1.1 - November 16, 2017
 *   _Bugfix_: Shortcodes in the new WordPress 4.8 text widget work again.
 
