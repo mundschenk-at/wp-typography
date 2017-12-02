@@ -77,6 +77,10 @@ Please install the [wp-Typography Disable ACF Integration plugin](https://wordpr
 
 == Upgrade Notice ==
 
+= 5.1.3 =
+The plugin now requires at least PHP 5.6. If you are still running an earlier version,
+please upgrade PHP or continue to use version 4.2.2.
+
 = 5.1.2 =
 The plugin now requires at least PHP 5.6. If you are still running an earlier version,
 please upgrade PHP or continue to use version 4.2.2.
@@ -106,6 +110,10 @@ The plugin now requires at least PHP 5.6. If you are still running an earlier ve
 please upgrade PHP or continue to use version 4.2.2.
 
 == Changelog ==
+
+= 5.1.3 - December XX, 2017 =
+* _Change_: Updated to use version 5.2.3 of the composer package `mundschenk-at/php-typography`.
+* _Bugfix_: Sometimes, the French double quotes style generated spurious ».
 
 = 5.1.2 - November 25, 2017 =
 * _Change_: Updated to use version 5.2.2 of the composer package `mundschenk-at/php-typography`.

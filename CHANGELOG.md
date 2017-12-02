@@ -1,5 +1,9 @@
 # Changes
 
+## 5.1.3 - December XX, 2017
+*   _Change_: Updated to use version 5.2.3 of the composer package `mundschenk-at/php-typography`.
+*   _Bugfix_: Sometimes, the French double quotes style generated spurious ».
+
 ## 5.1.2 - November 25, 2017
 *   _Change_: Updated to use version 5.2.2 of the composer package `mundschenk-at/php-typography`.
 *   _Bugfix_: Removed some ambiguous diacritics replacements from the German language file.
