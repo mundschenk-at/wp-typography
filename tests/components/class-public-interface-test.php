@@ -199,6 +199,7 @@ class Public_Interface_Test extends TestCase {
 			[ true, true, true, 0, false, '4.8' ],
 			[ false, false, false, 0, false, '4.8.1' ],
 			[ true, false, false, 5, false, '4.6' ],
+			[ false, false, false, 5, false, '4.6' ],
 			[ true, false, false, 4, true, '4.9.5' ],
 			[ false, false, false, 4, false, '4.9.5' ],
 		];

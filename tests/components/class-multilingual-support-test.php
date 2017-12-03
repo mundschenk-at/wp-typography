@@ -203,7 +203,7 @@ class Multilingual_Support_Test extends TestCase {
 			$s->shouldReceive( 'set_hyphenation' )->once()->with( $hyphenation_result );
 		}
 		$this->multi->shouldReceive( 'match_language' )->once()
-			->with( m::type( 'array' ), $locale, 'de', Multilingual_Support::MATCH_TYPE_HYPHENATION )
+			->with( m::type( 'array' ), 'de-DE', 'de', Multilingual_Support::MATCH_TYPE_HYPHENATION )
 			->andReturn( $hyphenation_result );
 
 		// Smart diacritics.
@@ -215,7 +215,7 @@ class Multilingual_Support_Test extends TestCase {
 			$s->shouldReceive( 'set_smart_diacritics' )->once()->with( $diacritics_result );
 		}
 		$this->multi->shouldReceive( 'match_language' )->once()
-			->with( m::type( 'array' ), $locale, 'de', Multilingual_Support::MATCH_TYPE_DIACRITIC )
+			->with( m::type( 'array' ), 'de-DE', 'de', Multilingual_Support::MATCH_TYPE_DIACRITIC )
 			->andReturn( $diacritics_result );
 
 		// Other adjustments.
@@ -421,13 +421,14 @@ class Multilingual_Support_Test extends TestCase {
 	 * @covers ::get_current_locale
 	 */
 	public function test_get_current_locale() {
-		$language = 'de';
-		$country  = 'DE';
-		$modifier = 'foo';
-		$locale   = "{$language}_{$country}_{$modifier}";
+		$language    = 'de';
+		$country     = 'DE';
+		$modifier    = 'foo';
+		$locale      = "{$language}-{$country}-{$modifier}";
+		$locale_orig = "{$language}_{$country}_{$modifier}";
 
 		Filters\expectApplied( 'typo_current_locale' )->once()->with( '' )->andReturnFirstArg();
-		Functions\expect( 'get_locale' )->once()->andReturn( $locale );
+		Functions\expect( 'get_locale' )->once()->andReturn( $locale_orig );
 
 		$this->assertSame( [ $locale, $language, $country, $modifier ], $this->invokeMethod( $this->multi, 'get_current_locale' ) );
 	}
@@ -438,12 +439,13 @@ class Multilingual_Support_Test extends TestCase {
 	 * @covers ::get_current_locale
 	 */
 	public function test_get_current_locale_filtered() {
-		$language = 'de';
-		$country  = 'DE';
-		$modifier = 'bar';
-		$locale   = "{$language}_{$country}_{$modifier}";
+		$language    = 'de';
+		$country     = 'DE';
+		$modifier    = 'bar';
+		$locale      = "{$language}-{$country}-{$modifier}";
+		$locale_orig = "{$language}_{$country}_{$modifier}";
 
-		Filters\expectApplied( 'typo_current_locale' )->once()->with( '' )->andReturn( $locale );
+		Filters\expectApplied( 'typo_current_locale' )->once()->with( '' )->andReturn( $locale_orig );
 		Functions\expect( 'get_locale' )->never();
 
 		$this->assertSame( [ $locale, $language, $country, $modifier ], $this->invokeMethod( $this->multi, 'get_current_locale' ) );
