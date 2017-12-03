@@ -4,7 +4,7 @@ Tags: typography, hyphenation, smart quotes, quote marks, formatting, typogrify,
 Requires at least: 4.6
 Requires PHP: 5.6
 Tested up to: 4.9
-Stable tag: 5.1.2
+Stable tag: 5.1.3
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
@@ -111,7 +111,7 @@ please upgrade PHP or continue to use version 4.2.2.
 
 == Changelog ==
 
-= 5.1.3 - December XX, 2017 =
+= 5.1.3 - December 03, 2017 =
 * _Change_: Updated to use version 5.2.3 of the composer package `mundschenk-at/php-typography`.
 * _Bugfix_: Sometimes, the French double quotes style generated spurious ».
 * _Bugfix_: Locale-based language files where not properly matched (primarily affecting `en-US` and `en-GB`, props @strasis).
