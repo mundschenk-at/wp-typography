@@ -129,11 +129,10 @@ class WP_Typography_Requirements {
 	 * @return bool
 	 */
 	protected function check_multibyte_support() {
-		return
-			function_exists( 'mb_strlen' ) &&
-			function_exists( 'mb_strtolower' ) &&
-			function_exists( 'mb_substr' ) &&
-			function_exists( 'mb_detect_encoding' );
+		return function_exists( 'mb_strlen' )
+			&& function_exists( 'mb_strtolower' )
+			&& function_exists( 'mb_substr' )
+			&& function_exists( 'mb_detect_encoding' );
 	}
 
 	/**
