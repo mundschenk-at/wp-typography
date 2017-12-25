@@ -199,17 +199,18 @@ class Transients extends Abstract_Cache {
 	}
 
 	/**
-	 * Fix object cache implementations sumetimes returning __PHP_Incomplete_Class.
+	 * Tries to fix object cache implementations sometimes returning __PHP_Incomplete_Class.
 	 *
-	 * Based on http://stackoverflow.com/a/1173769/6646342.
+	 * Originally based on http://stackoverflow.com/a/1173769/6646342 and refactored
+	 * for PHP 7.2 compatibility.
 	 *
 	 * @param  object $object An object that should have been unserialized, but may be of __PHP_Incomplete_Class.
 	 *
 	 * @return object         The object with its real class.
 	 */
 	protected function maybe_fix_object( $object ) {
-		if ( ! is_object( $object ) && 'object' === gettype( $object ) ) {
-			$object = unserialize( serialize( $object ) ); // @codingStandardsIgnoreLine
+		if ( '__PHP_Incomplete_Class' === \get_class( $object ) ) {
+			$object = \unserialize( \serialize( $object ) ); // phpcs:disable WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize,WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
 		}
 
 		return $object;
