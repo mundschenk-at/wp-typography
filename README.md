@@ -1,5 +1,11 @@
 # wp-Typography #
 
+[![Build Status](https://scrutinizer-ci.com/g/mundschenk-at/wp-typography/badges/build.png?b=master)](https://scrutinizer-ci.com/g/mundschenk-at/wp-typography/build-status/master)
+[![Latest Stable Version](https://poser.pugx.org/mundschenk-at/wp-typography/v/stable)](https://packagist.org/packages/mundschenk-at/wp-typography)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mundschenk-at/wp-typography/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mundschenk-at/wp-typography/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/mundschenk-at/wp-typography/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/mundschenk-at/wp-typography/?branch=master)
+[![License](https://poser.pugx.org/mundschenk-at/wp-typography/license)](https://packagist.org/packages/mundschenk-at/wp-typography)
+
 Improve your web typography with:
 
 *   Hyphenation &mdash; [over 50 languages supported](https://code.mundschenk.at/wp-typography/frequently-asked-questions/#what-hyphenation-language-patterns-are-included)
@@ -33,8 +39,6 @@ wp‐Typography has the following requirements:
 wp-Typography can easily be ported to any other PHP-based content management system. The Composer package [`mundschenk-at/php-typography`](https://github.com/mundschenk-at/php-typography) assembles all typographic functionality (without any WordPress-specific code) in an object oriented format that is ready use.
 
 View the [wp-Typography homepage](https://code.mundschenk.at/wp-typography/ "wp-Typography Homepage") for more information.
-
-[![Build Status](https://travis-ci.org/mundschenk-at/wp-typography.svg?branch=master)](https://travis-ci.org/mundschenk-at/wp-typography)
 
 ## Frequently Asked Questions ##
 
