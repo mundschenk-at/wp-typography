@@ -80,7 +80,6 @@ class Control_Test extends \WP_Typography\Tests\TestCase {
 		] );
 		set_include_path( 'vfs://root/' ); // @codingStandardsIgnoreLine
 
-
 		// Mock WP_Typography\Data_Storage\Options instance.
 		$this->options = m::mock( Options::class )
 			->shouldReceive( 'get' )->andReturn( false )->byDefault()

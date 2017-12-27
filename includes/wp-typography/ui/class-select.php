@@ -106,7 +106,7 @@ class Select extends Control {
 
 		foreach ( $this->option_values as $option_value => $display ) {
 			$translated_display = \esc_html__( $display, 'wp-typography' ); // @codingStandardsIgnoreLine.
-			$select_markup .= '<option value="' . \esc_attr( $option_value ) . '" ' . \selected( $value, $option_value, false ) . '>' . $translated_display . '</option>';
+			$select_markup     .= '<option value="' . \esc_attr( $option_value ) . '" ' . \selected( $value, $option_value, false ) . '>' . $translated_display . '</option>';
 		}
 		$select_markup .= '</select>';
 

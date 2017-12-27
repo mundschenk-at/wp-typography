@@ -96,9 +96,8 @@ class Basic_Locale_Settings extends Abstract_Locale_Settings {
 	 * @return bool             True if the default is applicable to this locale, false otherwise.
 	 */
 	public function match( $language, $country, $modifier = '' ) {
-		return
-			( empty( $this->valid_languages ) || isset( $this->valid_languages[ $language ] ) ) &&
-			( empty( $this->valid_countries ) || isset( $this->valid_countries[ $country ] ) ) &&
-			( empty( $modifier ) || empty( $this->valid_modifiers ) || isset( $this->valid_modifiers[ $modifier ] ) );
+		return ( empty( $this->valid_languages ) || isset( $this->valid_languages[ $language ] ) )
+			&& ( empty( $this->valid_countries ) || isset( $this->valid_countries[ $country ] ) )
+			&& ( empty( $modifier ) || empty( $this->valid_modifiers ) || isset( $this->valid_modifiers[ $modifier ] ) );
 	}
 }
