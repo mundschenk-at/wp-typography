@@ -56,15 +56,6 @@ More likely than not, your WordPress theme is using an improper function to set 
 
 If you are uncomfortable editing your theme's code, you may alternatively go to the wp-Typography settings page in your admin panel and add `h1` and `h2` to the "Do not process the content of these HTML elements:" field.  This will disable typographic processing within improperly designed page title links <em>and</em> page titles.
 
-## Screenshots ##
-
-### wp-Typography Administrative Settings ###
-![wp-Typography "General" settings page](wp-assets/screenshot-1.png)
-![wp-Typography "Hyphenation" settings page](wp-assets/screenshot-2.png)
-![wp-Typography "Intelligent Character Replacement" settings page](wp-assets/screenshot-3.png)
-![wp-Typography "Space Control" settings page](wp-assets/screenshot-4.png)
-![wp-Typography "Add CSS Hooks" settings page](wp-assets/screenshot-5.png)
-
 ## Changelog ##
 
 A detailed release changelog can be found on the [wp-Typography website](https://code.mundschenk.at/wp-typography/changes/).
