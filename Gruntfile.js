@@ -30,7 +30,7 @@ module.exports = function(grunt) {
         composer : {
             build : {
                 options : {
-                    flags: ['quiet', 'no-dev', 'classmap-authoritative'],
+                    flags: ['quiet'],
                     cwd: 'build',
                 },
             },
@@ -56,9 +56,9 @@ module.exports = function(grunt) {
                         '!**/scss/**',
                         'composer.*',
                         'vendor/composer/**',
-                        'vendor/dangoodman/composer-for-wordpress/**',
                         'vendor/level-2/dice/Dice.php',
                         'vendor/masterminds/html5/src/**/*.php',
+                        //'vendor/mundschenk-at/composer-for-wordpress/**',
                         'vendor/mundschenk-at/php-typography/src/**',
                         '!vendor/mundschenk-at/php-typography/src/bin/**',
                         'js/**',
@@ -84,7 +84,7 @@ module.exports = function(grunt) {
 
         clean: {
             build: ["build/*"],
-            autoloader: [ "build/composer.*", "build/vendor/composer/*.json", "build/vendor/dangoodman/**" ]
+            autoloader: [ "build/tests", "build/composer.*", "build/vendor/composer/*.json", "build/vendor/mundschenk-at/composer-for-wordpress/**" ]
         },
 
         "string-replace": {
@@ -246,6 +246,15 @@ module.exports = function(grunt) {
             },
         },
 
+        // Create dummy tests directory during build process.
+        mkdir: {
+            build_tests: {
+                options: {
+                    create: [ 'build/tests' ],
+                }
+            }
+        },
+
         regex_extract: {
             options: {
 
@@ -305,11 +314,15 @@ module.exports = function(grunt) {
     ]);
 
     grunt.registerTask('build', [
+        //'composer:dev:build-wordpress',
         'clean:build',
         'regex_extract:language_names',
         'copy:main',
         'copy:meta',
+        'mkdir:build_tests',
+        'composer:build:build-wordpress',
         'composer:build:dump-autoload',
+        //'composer:dev:clean-wordpress',
         'clean:autoloader',
         'string-replace:autoloader',
         'newer:delegate:sass:dist',

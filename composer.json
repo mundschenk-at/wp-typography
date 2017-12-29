@@ -39,8 +39,7 @@
         "dealerdirect/phpcodesniffer-composer-installer": "^0.4",
         "phpunit/phpunit": "5.*|6.*",
         "mikey179/vfsStream": "~1",
-        "brain/monkey": "^2.0@dev",
-        "mundschenk-at/composer-for-wordpress": "dev-master"
+        "brain/monkey": "^2.0@dev"
     },
 
     "minimum-stability": "dev",
@@ -76,6 +75,13 @@
       "phpstan": [
           "phpstan analyse --configuration=.phpstan.neon --level=7 --ansi includes/",
           "#phpstan analyse --configuration=.phpstan.neon --level=6 --ansi tests/"
+      ],
+      "build-wordpress": [
+          "@composer require mundschenk-at/composer-for-wordpress=dev-master --no-update",
+          "@composer install --no-dev"
+      ],
+      "clean-wordpress": [
+          "@composer remove mundschenk-at/composer-for-wordpress"
       ]
     }
 }
