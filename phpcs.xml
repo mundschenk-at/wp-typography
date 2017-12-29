@@ -50,6 +50,6 @@
 
 	<!-- Include sniffs for PHP cross-version compatibility. -->
 	<rule ref="PHPCompatibility">
-		<config name="testVersion" value="5.6-7.1"/>
+		<config name="testVersion" value="5.6-7.2"/>
 	</rule>
 </ruleset>
