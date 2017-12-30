@@ -27,9 +27,9 @@ build:
             version: 7.1
     tests:
         override:
-            - phpcs-run -p wp-typography.php includes/ admin/ --extensions=php
-
+            - phpcs-run -p wp-typography.php includes/ admin/ --ignore=tests/coverage --extensions=php
 
 tools:
     php_code_sniffer: false
     php_cs_fixer: false
+    external_code_coverage: true
