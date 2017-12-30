@@ -595,7 +595,7 @@ class WP_Typography {
 
 			if ( ! $typo instanceof PHP_Typography ) {
 				// OK, we have to initialize the PHP_Typography instance manually.
-				$typo = new PHP_Typography( PHP_Typography::INIT_NOW );
+				$typo = new PHP_Typography();
 
 				// Try again next time.
 				$this->transients->cache_object( $transient, $typo, 'typography' );
@@ -640,15 +640,18 @@ class WP_Typography {
 	 * @param array    $config The array of configuration entries.
 	 */
 	protected function init_settings_from_options( Settings $s, array $config ) {
+		// Necessary for full Settings initialization.
+		$s->set_smart_dashes_style( $config[ Config::SMART_DASHES_STYLE ] );
+		$s->set_smart_quotes_primary( $config[ Config::SMART_QUOTES_PRIMARY ] );
+		$s->set_smart_quotes_secondary( $config[ Config::SMART_QUOTES_SECONDARY ] );
 
-		// Load configuration variables into our PHP_Typography class.
+		// Load the rest of the configuration variables into our Settings class.
 		$s->set_tags_to_ignore( $config[ Config::IGNORE_TAGS ] );
 		$s->set_classes_to_ignore( $config[ Config::IGNORE_CLASSES ] );
 		$s->set_ids_to_ignore( $config[ Config::IGNORE_IDS ] );
 
 		if ( $config[ Config::SMART_CHARACTERS ] ) {
 			$s->set_smart_dashes( $config[ Config::SMART_DASHES ] );
-			$s->set_smart_dashes_style( $config[ Config::SMART_DASHES_STYLE ] );
 			$s->set_smart_ellipses( $config[ Config::SMART_ELLIPSES ] );
 			$s->set_smart_math( $config[ Config::SMART_MATH ] );
 
@@ -663,9 +666,6 @@ class WP_Typography {
 			$s->set_smart_diacritics( $config[ Config::SMART_DIACRITICS ] );
 			$s->set_diacritic_language( $config[ Config::DIACRITIC_LANGUAGES ] );
 			$s->set_diacritic_custom_replacements( $config[ Config::DIACRITIC_CUSTOM_REPLACEMENTS ] );
-
-			$s->set_smart_quotes_primary( $config[ Config::SMART_QUOTES_PRIMARY ] );
-			$s->set_smart_quotes_secondary( $config[ Config::SMART_QUOTES_SECONDARY ] );
 		} else {
 			$s->set_smart_dashes( false );
 			$s->set_smart_ellipses( false );
