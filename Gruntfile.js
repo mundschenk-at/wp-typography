@@ -58,7 +58,6 @@ module.exports = function(grunt) {
                         'vendor/composer/**',
                         'vendor/level-2/dice/Dice.php',
                         'vendor/masterminds/html5/src/**/*.php',
-                        //'vendor/mundschenk-at/composer-for-wordpress/**',
                         'vendor/mundschenk-at/php-typography/src/**',
                         '!vendor/mundschenk-at/php-typography/src/bin/**',
                         'js/**',
@@ -255,6 +254,13 @@ module.exports = function(grunt) {
             }
         },
 
+        // Run update scripts on build.
+        exec: {
+            update_iana: {
+                command: "vendor/bin/update-iana.php",
+            },
+        },
+
         regex_extract: {
             options: {
 
@@ -314,15 +320,14 @@ module.exports = function(grunt) {
     ]);
 
     grunt.registerTask('build', [
-        //'composer:dev:build-wordpress',
         'clean:build',
         'regex_extract:language_names',
+        'exec:update_iana',
         'copy:main',
         'copy:meta',
         'mkdir:build_tests',
         'composer:build:build-wordpress',
         'composer:build:dump-autoload',
-        //'composer:dev:clean-wordpress',
         'clean:autoloader',
         'string-replace:autoloader',
         'newer:delegate:sass:dist',
