@@ -161,21 +161,3 @@ please upgrade PHP or continue to use version 4.2.2.
 * _Bugfix_: French punctuation spacing after links (and other inline tags) fixed.
 * _Bugfix_: Lone ampersands are treated as single-character words.
 * _Bugfix_: Hyphenated words are properly de-widowed.
-
-= 4.2.2 - June 18, 2017 =
-* _Bugfix_: Properly clear cache on upgrade.
-* _Change_: Various internal performance improvements.
-
-= 4.2.1 - June 9, 2017 =
-* _Bugfix_: Prevent crash on PHP 5.x when building the hyphenation trie.
-
-= 4.2.0 - June 8, 2017 =
-* _Feature_: Prevent line-breaks in numbered abbreviations (e.g. `ISO 9001`).
-* _Feature_: Added new hook `typo_php_typography_caching_enabled` to disable object caching for very resource-starved environments.
-* _Change_: Core API refactored and minimum PHP version increased to 5.4.0.
-* _Change_: Updated hyphenation patterns:
-  - German
-  - German (Traditional)
-  - Latin
-  - Latin (Liturgical)
-* _Change_: Updated list of valid top-level domains.
