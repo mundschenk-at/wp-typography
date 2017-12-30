@@ -29,7 +29,6 @@ build:
         override:
             - phpcs-run -p wp-typography.php includes/ admin/ --extensions=php
 
-
 tools:
     php_code_sniffer: false
     php_cs_fixer: false

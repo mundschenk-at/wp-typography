@@ -18,11 +18,6 @@ cache:
     directories:
         - $HOME/.composer/cache
 
-# Some global variables.
-env:
-    global:
-        - COMPOSER_PACKAGES_TO_REMOVE="phpstan/phpstan"
-
 # Declare versions of PHP to use. Use one decimal max.
 # @link http://docs.travis-ci.com/user/build-configuration/
 matrix:
@@ -53,8 +48,7 @@ matrix:
 # Failures in this section will result in build status 'errored'.
 before_install:
     - if [[ "$SCOPE" == "tests" || "$SCOPE" == "coverage" ]]; then
-            composer remove $COMPOSER_PACKAGES_TO_REMOVE --dev;
-            composer install --no-interaction;
+            composer install --no-interaction --dev;
             phpenv rehash;
       fi
     - if [[ "$SCOPE" == "coverage" ]]; then composer require php-coveralls/php-coveralls --dev; fi
