@@ -79,7 +79,7 @@
       ],
       "build-wordpress": [
           "@composer require mundschenk-at/composer-for-wordpress=dev-master --no-update",
-          "@composer install --no-dev"
+          "@composer update --no-dev"
       ],
       "clean-wordpress": [
           "@composer remove mundschenk-at/composer-for-wordpress"

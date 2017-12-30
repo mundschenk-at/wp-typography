@@ -327,7 +327,7 @@ module.exports = function(grunt) {
         'copy:meta',
         'mkdir:build_tests',
         'composer:build:build-wordpress',
-        'composer:build:dump-autoload',
+        'composer:build:dump-autoload:classmap-authoritative:no-dev',
         'clean:autoloader',
         'string-replace:autoloader',
         'newer:delegate:sass:dist',
