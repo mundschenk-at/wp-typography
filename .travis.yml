@@ -38,7 +38,6 @@ matrix:
         # aliased to a recent 7.1 version
         - php: '7.1'
           env:  SCOPE=tests
-                PHPCS=1
         # aliased to a recent 7.2 version
         - php:  '7.2'
           env:  SCOPE=coverage
