@@ -119,6 +119,13 @@ class WP_Typography {
 	private $cached_settings_hash;
 
 	/**
+	 * The body classes for the current request.
+	 *
+	 * @var string[]
+	 */
+	private $body_classes;
+
+	/**
 	 * An array of settings with their default value.
 	 *
 	 * @var array
@@ -556,12 +563,13 @@ class WP_Typography {
 		$processed_text = $this->cache->get( $key, $found );
 
 		if ( empty( $found ) ) {
-			$typo = $this->get_typography_instance();
+			$typo         = $this->get_typography_instance();
+			$body_classes = isset( $this->body_classes ) ? $this->body_classes : $this->body_classes = \get_body_class();
 
 			if ( $feed ) { // Feed readers are strange sometimes.
-				$processed_text = $typo->process_feed( $text, $settings, $is_title );
+				$processed_text = $typo->process_feed( $text, $settings, $is_title, $body_classes );
 			} else {
-				$processed_text = $typo->process( $text, $settings, $is_title );
+				$processed_text = $typo->process( $text, $settings, $is_title, $body_classes );
 			}
 
 			/**
