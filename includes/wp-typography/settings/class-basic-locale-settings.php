@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017 Peter Putzer.
+ *  Copyright 2017-2018 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -93,6 +93,7 @@ class Basic_Locale_Settings extends Abstract_Locale_Settings {
 	 * @param  string $language A two- or three-letter language code (e.g. 'de').
 	 * @param  string $country  A two-letter upper-case country code (e.g. 'DE').
 	 * @param  string $modifier Optional. An modifier for the locale (e.g. 'formal'). Default ''.
+	 *
 	 * @return bool             True if the default is applicable to this locale, false otherwise.
 	 */
 	public function match( $language, $country, $modifier = '' ) {
