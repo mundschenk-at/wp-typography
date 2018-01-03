@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017 Peter Putzer.
+ *  Copyright 2017-2018 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -196,12 +196,12 @@ class Public_Interface_Test extends TestCase {
 	 */
 	public function provide_add_content_filters_data() {
 		return [
-			[ true, true, true, 0, false, '4.8' ],
-			[ false, false, false, 0, false, '4.8.1' ],
-			[ true, false, false, 5, false, '4.6' ],
-			[ false, false, false, 5, false, '4.6' ],
-			[ true, false, false, 4, true, '4.9.5' ],
-			[ false, false, false, 4, false, '4.9.5' ],
+			[ true,  true,  true,  0, false, 0, false, '4.8' ],
+			[ false, false, false, 0, false, 0, false, '4.8.1' ],
+			[ true,  false, false, 5, false, 0, false, '4.6' ],
+			[ false, false, false, 5, false, 0, false, '4.6' ],
+			[ true,  false, false, 4, true,  3, false, '4.9.5' ],
+			[ false, false, false, 4, false, 3, true,  '4.9.5' ],
 		];
 	}
 
@@ -213,6 +213,7 @@ class Public_Interface_Test extends TestCase {
 	 * @covers ::enable_heading_filters
 	 * @covers ::enable_title_filters
 	 * @covers ::enable_acf_filters
+	 * @covers ::enable_woocommerce_filters
 	 *
 	 * @dataProvider provide_add_content_filters_data
 	 *
@@ -221,9 +222,11 @@ class Public_Interface_Test extends TestCase {
 	 * @param bool   $title       Disable title filters if true.
 	 * @param int    $acf_version Simulated ACF version.
 	 * @param bool   $acf         Disable ACF filters if true.
+	 * @param int    $woo_version Simulated WooCommerce version.
+	 * @param bool   $woo         Disable WooCommerce filters if true.
 	 * @param string $wp_version Simulated WordPress version.
 	 */
-	public function test_add_content_filters( $content, $heading, $title, $acf_version, $acf, $wp_version ) {
+	public function test_add_content_filters( $content, $heading, $title, $acf_version, $acf, $woo_version, $woo, $wp_version ) {
 
 		$content_hooks = [
 			'comment_author',
@@ -264,6 +267,9 @@ class Public_Interface_Test extends TestCase {
 				'acf/format_value/type=text'     => 'process_title',
 			],
 		];
+		$woo_hooks     = [
+			'woocommerce_format_content'  => 'process',
+		];
 
 		Filters\expectApplied( 'typo_filter_priority' )->once();
 		Filters\expectApplied( 'typo_disable_filtering' )->once()->with( false, 'content' )->andReturn( $content );
@@ -282,6 +288,12 @@ class Public_Interface_Test extends TestCase {
 			if ( ! $acf ) {
 				Functions\expect( 'acf_get_setting' )->once()->with( 'version' )->andReturn( $acf_version );
 			}
+		}
+
+		if ( $woo_version > 0 ) {
+			m::mock( 'WooCommerce' );
+
+			Filters\expectApplied( 'typo_disable_filtering' )->once()->with( false, 'woocommerce' )->andReturn( $woo );
 		}
 
 		$this->public_if->add_content_filters();
@@ -320,6 +332,13 @@ class Public_Interface_Test extends TestCase {
 				$found = has_filter( $hook, "{$plugin_class}->{$method}()" );
 				$this->assertEquals( $expected, $found, "Hook $hook" . ( $expected ? '' : ' not' ) . ' expected, but' . ( $found ? '' : ' not' ) . ' found.' );
 			}
+		}
+
+		// WooCommerce hooks.
+		$expected = $woo_version > 0 && ! $woo;
+		foreach ( $woo_hooks as $hook => $method ) {
+			$found = has_filter( $hook, "{$plugin_class}->{$method}()" );
+			$this->assertEquals( $expected, $found, "Hook $hook" . ( $expected ? '' : ' not' ) . ' expected, but' . ( $found ? '' : ' not' ) . ' found.' );
 		}
 	}
 
