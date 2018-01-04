@@ -48,6 +48,17 @@ class Multilingual_Support implements Plugin_Component {
 	const MATCH_TYPE_HYPHENATION = 'hyphenation';
 	const MATCH_TYPE_DIACRITIC   = 'diacritic';
 
+	const LANGUAGE_ALIASES = [
+		'bal' => 'ca',
+		'oci' => 'oc',
+		'ory' => 'or',
+		'tuk' => 'tk',
+	];
+	const LOCALE_ALIASES   = [
+		'el'    => 'el-Mono',
+		'el-po' => 'el-Poly',
+	];
+
 	/**
 	 * An array of Locale_Settings.
 	 *
@@ -406,6 +417,10 @@ class Multilingual_Support implements Plugin_Component {
 		if ( '' !== $result ) {
 			return $result;
 		}
+
+		// Normalize language & locale.
+		$language = isset( self::LANGUAGE_ALIASES[ $language ] ) ? self::LANGUAGE_ALIASES[ $language ] : $language;
+		$locale   = isset( self::LOCALE_ALIASES[ $locale ] ) ? self::LOCALE_ALIASES[ $locale ] : $locale;
 
 		// Short-circuit if there are direct matches.
 		if ( isset( $languages[ $locale ] ) ) {
