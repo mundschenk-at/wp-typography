@@ -455,6 +455,8 @@ class Multilingual_Support_Test extends TestCase {
 	 * Test match_language.
 	 *
 	 * @covers ::match_language
+	 *
+	 * @uses ::normalize
 	 */
 	public function test_match_language() {
 		$type     = 'foobar';
@@ -477,6 +479,8 @@ class Multilingual_Support_Test extends TestCase {
 	 * Test match_language.
 	 *
 	 * @covers ::match_language
+	 *
+	 * @uses ::normalize
 	 */
 	public function test_match_language_shortcut_locale() {
 		$type     = 'foobar';
@@ -499,6 +503,8 @@ class Multilingual_Support_Test extends TestCase {
 	 * Test match_language.
 	 *
 	 * @covers ::match_language
+	 *
+	 * @uses ::normalize
 	 */
 	public function test_match_language_shortcut_language() {
 		$type     = 'foobar';
@@ -521,6 +527,8 @@ class Multilingual_Support_Test extends TestCase {
 	 * Test match_language.
 	 *
 	 * @covers ::match_language
+	 *
+	 * @uses ::normalize
 	 */
 	public function test_match_language_multiple_hits() {
 		$type     = 'foobar';
@@ -543,6 +551,8 @@ class Multilingual_Support_Test extends TestCase {
 	 * Test match_language.
 	 *
 	 * @covers ::match_language
+	 *
+	 * @uses ::normalize
 	 */
 	public function test_match_language_shortcut_filter() {
 		$type     = 'foobar';
@@ -587,8 +597,9 @@ class Multilingual_Support_Test extends TestCase {
 	/**
 	 * Tests the match_language function with the real language list.
 	 *
-	 * @coversNothing
+	 * @covers ::normalize
 	 *
+	 * @uses ::match_language
 	 * @uses PHP_Typography\PHP_Typography::get_hyphenation_languages
 	 *
 	 * @dataProvider provide_match_language_data

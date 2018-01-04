@@ -419,8 +419,8 @@ class Multilingual_Support implements Plugin_Component {
 		}
 
 		// Normalize language & locale.
-		$language = isset( self::LANGUAGE_ALIASES[ $language ] ) ? self::LANGUAGE_ALIASES[ $language ] : $language;
-		$locale   = isset( self::LOCALE_ALIASES[ $locale ] ) ? self::LOCALE_ALIASES[ $locale ] : $locale;
+		$language = self::normalize( $language, self::LANGUAGE_ALIASES );
+		$locale   = self::normalize( $locale, self::LOCALE_ALIASES );
 
 		// Short-circuit if there are direct matches.
 		if ( isset( $languages[ $locale ] ) ) {
@@ -446,5 +446,17 @@ class Multilingual_Support implements Plugin_Component {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Normalizes the a language or locale given an alias array.
+	 *
+	 * @param  string   $key     Either a language or a locale.
+	 * @param  string[] $aliases A mapping array.
+	 *
+	 * @return string
+	 */
+	protected static function normalize( $key, array $aliases ) {
+		return isset( $aliases[ $key ] ) ? $aliases[ $key ] : $key;
 	}
 }
