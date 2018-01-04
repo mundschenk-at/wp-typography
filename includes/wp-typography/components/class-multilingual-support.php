@@ -48,6 +48,17 @@ class Multilingual_Support implements Plugin_Component {
 	const MATCH_TYPE_HYPHENATION = 'hyphenation';
 	const MATCH_TYPE_DIACRITIC   = 'diacritic';
 
+	const LANGUAGE_ALIASES = [
+		'bal' => 'ca',
+		'oci' => 'oc',
+		'ory' => 'or',
+		'tuk' => 'tk',
+	];
+	const LOCALE_ALIASES   = [
+		'el'    => 'el-Mono',
+		'el-po' => 'el-Poly',
+	];
+
 	/**
 	 * An array of Locale_Settings.
 	 *
@@ -407,6 +418,10 @@ class Multilingual_Support implements Plugin_Component {
 			return $result;
 		}
 
+		// Normalize language & locale.
+		$language = self::normalize( $language, self::LANGUAGE_ALIASES );
+		$locale   = self::normalize( $locale, self::LOCALE_ALIASES );
+
 		// Short-circuit if there are direct matches.
 		if ( isset( $languages[ $locale ] ) ) {
 			return $locale;
@@ -431,5 +446,17 @@ class Multilingual_Support implements Plugin_Component {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Normalizes the a language or locale given an alias array.
+	 *
+	 * @param  string   $key     Either a language or a locale.
+	 * @param  string[] $aliases A mapping array.
+	 *
+	 * @return string
+	 */
+	protected static function normalize( $key, array $aliases ) {
+		return isset( $aliases[ $key ] ) ? $aliases[ $key ] : $key;
 	}
 }

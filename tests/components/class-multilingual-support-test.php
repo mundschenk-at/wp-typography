@@ -455,6 +455,8 @@ class Multilingual_Support_Test extends TestCase {
 	 * Test match_language.
 	 *
 	 * @covers ::match_language
+	 *
+	 * @uses ::normalize
 	 */
 	public function test_match_language() {
 		$type     = 'foobar';
@@ -477,6 +479,8 @@ class Multilingual_Support_Test extends TestCase {
 	 * Test match_language.
 	 *
 	 * @covers ::match_language
+	 *
+	 * @uses ::normalize
 	 */
 	public function test_match_language_shortcut_locale() {
 		$type     = 'foobar';
@@ -499,6 +503,8 @@ class Multilingual_Support_Test extends TestCase {
 	 * Test match_language.
 	 *
 	 * @covers ::match_language
+	 *
+	 * @uses ::normalize
 	 */
 	public function test_match_language_shortcut_language() {
 		$type     = 'foobar';
@@ -521,6 +527,8 @@ class Multilingual_Support_Test extends TestCase {
 	 * Test match_language.
 	 *
 	 * @covers ::match_language
+	 *
+	 * @uses ::normalize
 	 */
 	public function test_match_language_multiple_hits() {
 		$type     = 'foobar';
@@ -543,6 +551,8 @@ class Multilingual_Support_Test extends TestCase {
 	 * Test match_language.
 	 *
 	 * @covers ::match_language
+	 *
+	 * @uses ::normalize
 	 */
 	public function test_match_language_shortcut_filter() {
 		$type     = 'foobar';
@@ -559,5 +569,53 @@ class Multilingual_Support_Test extends TestCase {
 		Filters\expectApplied( "typo_match_{$type}_language" )->once()->with( '', $languages, $locale, $language )->andReturn( 'something' );
 
 		$this->assertSame( 'something', $this->invokeMethod( $this->multi, 'match_language', [ $languages, $locale, $language, $type ] ) );
+	}
+
+	/**
+	 * Provide data for testing match_language.
+	 *
+	 * @return array
+	 */
+	public function provide_match_language_data() {
+		return [
+			[ 'en-US',   'en',    'US' ],
+			[ 'en-GB',   'en',    'GB' ],
+			[ 'de',      'de',    'CH' ],
+			[ 'el-Poly', 'el-po', null ],
+			[ 'el-Mono', 'el',    null ],
+			[ 'sr-Cyrl', 'sr',    'RS' ],
+			[ 'oc',      'oci',   null ],
+			[ 'or',      'ory',   null ],
+			[ 'ca',      'bal',   null ],
+			[ 'mn-Cyrl', 'mn',    null ],
+			[ 'mr',      'mr',    null ],
+			[ 'nl',      'nl',    'BE' ],
+			[ 'tk',      'tuk',   null ],
+		];
+	}
+
+	/**
+	 * Tests the match_language function with the real language list.
+	 *
+	 * @covers ::normalize
+	 *
+	 * @uses ::match_language
+	 * @uses PHP_Typography\PHP_Typography::get_hyphenation_languages
+	 *
+	 * @dataProvider provide_match_language_data
+	 *
+	 * @param  string      $result   Expected result.
+	 * @param  string      $language Required.
+	 * @param  string      $country  Required.
+	 * @param  string|null $modifier Optional.
+	 */
+	public function test_match_language_real_language_list( $result, $language, $country = null, $modifier = null ) {
+		$type      = 'hyphenation';
+		$locale    = \join( '-', \array_merge( (array) $language, (array) $country, (array) $modifier ) );
+		$languages = \PHP_Typography\PHP_Typography::get_hyphenation_languages();
+
+		Filters\expectApplied( "typo_match_{$type}_language" )->once()->with( '', $languages, $locale, $language )->andReturn( '' );
+
+		$this->assertSame( $result, $this->invokeMethod( $this->multi, 'match_language', [ $languages, $locale, $language, $type ] ) );
 	}
 }
