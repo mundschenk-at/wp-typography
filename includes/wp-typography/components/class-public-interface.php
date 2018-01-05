@@ -263,7 +263,16 @@ class Public_Interface implements Plugin_Component {
 	 * @param int $priority Filter priority.
 	 */
 	private function enable_woocommerce_filters( $priority ) {
+		// Page descriptions.
 		\add_filter( 'woocommerce_format_content', [ $this->plugin, 'process' ], $priority );
+
+		// Shop notices.
+		\add_filter( 'woocommerce_add_error',      [ $this->plugin, 'process' ], $priority );
+		\add_filter( 'woocommerce_add_success',    [ $this->plugin, 'process' ], $priority );
+		\add_filter( 'woocommerce_add_notice',     [ $this->plugin, 'process' ], $priority );
+
+		// Demo store banner.
+		\add_filter( 'woocommerce_demo_store',     [ $this->plugin, 'process' ], $priority );
 	}
 
 	/**
