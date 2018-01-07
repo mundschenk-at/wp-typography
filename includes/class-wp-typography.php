@@ -458,6 +458,9 @@ class WP_Typography {
 				$this->transients->cache_object( $transient, $settings, 'settings' );
 			}
 
+			// Make parser errors filterable on an individual level.
+			$settings->set_parser_errors_handler( [ $this, 'parser_errors_handler' ] );
+
 			// Settings should be good now, so let's use them.
 			$this->typo_settings = $settings;
 
@@ -751,9 +754,6 @@ class WP_Typography {
 		 * @param bool $ignore Default false.
 		 */
 		$s->set_ignore_parser_errors( $config[ Config::IGNORE_PARSER_ERRORS ] || apply_filters( 'typo_ignore_parser_errors', false ) );
-
-		// Make parser errors filterable on an individual level.
-		$s->set_parser_errors_handler( [ $this, 'parser_errors_handler' ] );
 	}
 
 	/**
