@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017 Peter Putzer.
+ *  Copyright 2017-2018 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -700,10 +700,11 @@ class WP_Typography_Test extends TestCase {
 			$this->wp_typo->shouldReceive( 'get_settings' )->once()->andReturn( $settings_mock );
 		}
 
+		// Fake filter_body_classes.
+		$this->setValue( $this->wp_typo, 'body_classes', [ 'foo', 'bar' ], \WP_Typography::class );
+
 		Filters\expectApplied( 'typo_settings' )->once()->with( m::type( \PHP_Typography\Settings::class ) )->andReturnFirstArg();
 		Filters\expectApplied( 'typo_processed_text_caching_duration' )->once()->with( m::type( 'int' ) )->andReturn( 5 );
-
-		Functions\expect( 'get_body_class' )->once()->with()->andReturn( [ 'foo', 'bar' ] );
 
 		$typo_mock = m::mock( \PHP_Typography\PHP_Typography::class );
 		$this->wp_typo->shouldReceive( 'get_typography_instance' )->once()->andReturn( $typo_mock );
@@ -717,56 +718,6 @@ class WP_Typography_Test extends TestCase {
 			->shouldReceive( 'get' )->once()->andReturn( false )
 			->shouldReceive( 'set' )->once();
 
-		$this->assertSame( 'processed text', $this->wp_typo->process( 'text', $is_title, $force_feed, $settings ) );
-	}
-
-	/**
-	 * Test process called twice (without caching).
-	 *
-	 * @covers ::process
-	 *
-	 * @uses ::run
-	 * @uses ::set_instance
-	 *
-	 * @dataProvider provide_process_data
-	 *
-	 * @param  bool     $is_title   Fragment is a title.
-	 * @param  bool     $force_feed Enforce feed processing.
-	 * @param  bool     $is_feed    Value for is_feed().
-	 * @param  Settings $settings   May be null.
-	 */
-	public function test_process_twice( $is_title, $force_feed, $is_feed, $settings = null ) {
-		if ( ! defined( 'DAY_IN_SECONDS' ) ) {
-			define( 'DAY_IN_SECONDS', 999 );
-		}
-
-		Functions\expect( 'is_feed' )->andReturn( $is_feed );
-
-		if ( null === $settings ) {
-			$settings_mock = m::mock( \PHP_Typography\Settings::class )->shouldReceive( 'get_hash' )->andReturn( 'another_fake_hash' )->getMock();
-
-			$this->wp_typo->shouldReceive( 'get_settings' )->twice()->andReturn( $settings_mock );
-		}
-
-		Filters\expectApplied( 'typo_settings' )->twice()->with( m::type( \PHP_Typography\Settings::class ) )->andReturnFirstArg();
-		Filters\expectApplied( 'typo_processed_text_caching_duration' )->twice()->with( m::type( 'int' ) )->andReturn( 5 );
-
-		// Should really be only called once.
-		Functions\expect( 'get_body_class' )->once()->with()->andReturn( [ 'foo', 'bar' ] );
-
-		$typo_mock = m::mock( \PHP_Typography\PHP_Typography::class );
-		$this->wp_typo->shouldReceive( 'get_typography_instance' )->twice()->andReturn( $typo_mock );
-		if ( $is_feed || $force_feed ) {
-			$typo_mock->shouldReceive( 'process_feed' )->twice()->with( 'text', m::type( \PHP_Typography\Settings::class ), $is_title, [ 'foo', 'bar' ] )->andReturn( 'processed text' );
-		} else {
-			$typo_mock->shouldReceive( 'process' )->twice()->with( 'text', m::type( \PHP_Typography\Settings::class ), $is_title, [ 'foo', 'bar' ] )->andReturn( 'processed text' );
-		}
-
-		$this->cache
-			->shouldReceive( 'get' )->twice()->andReturn( false )
-			->shouldReceive( 'set' )->twice();
-
-		$this->assertSame( 'processed text', $this->wp_typo->process( 'text', $is_title, $force_feed, $settings ) );
 		$this->assertSame( 'processed text', $this->wp_typo->process( 'text', $is_title, $force_feed, $settings ) );
 	}
 

@@ -123,7 +123,7 @@ class WP_Typography {
 	 *
 	 * @var string[]
 	 */
-	private $body_classes;
+	private $body_classes = [];
 
 	/**
 	 * An array of settings with their default value.
@@ -566,13 +566,12 @@ class WP_Typography {
 		$processed_text = $this->cache->get( $key, $found );
 
 		if ( empty( $found ) ) {
-			$typo         = $this->get_typography_instance();
-			$body_classes = isset( $this->body_classes ) ? $this->body_classes : $this->body_classes = \get_body_class();
+			$typo = $this->get_typography_instance();
 
 			if ( $feed ) { // Feed readers are strange sometimes.
-				$processed_text = $typo->process_feed( $text, $settings, $is_title, $body_classes );
+				$processed_text = $typo->process_feed( $text, $settings, $is_title, $this->body_classes );
 			} else {
-				$processed_text = $typo->process( $text, $settings, $is_title, $body_classes );
+				$processed_text = $typo->process( $text, $settings, $is_title, $this->body_classes );
 			}
 
 			/**
@@ -589,6 +588,19 @@ class WP_Typography {
 		}
 
 		return $processed_text;
+	}
+
+	/**
+	 * Grabs the body classes from the filter hook.
+	 *
+	 * @param  string[] $classes An array of CSS classes.
+	 *
+	 * @return string[]
+	 */
+	public function filter_body_class( array $classes ) {
+		$this->body_classes = $classes;
+
+		return $classes;
 	}
 
 	/**

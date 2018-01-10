@@ -118,6 +118,9 @@ class Public_Interface implements Plugin_Component {
 		// Apply our filters.
 		$this->add_content_filters();
 
+		// Grab body classes via hook.
+		\add_filter( 'body_class', [ $this->plugin, 'filter_body_class' ], $this->filter_priority );
+
 		// Add CSS Hook styling.
 		\add_action( 'wp_head', [ $this, 'add_wp_head' ] );
 
