@@ -339,6 +339,9 @@ class WP_Typography {
 			$lang = _x( $lang, 'language name', 'wp-typography' );  // @codingStandardsIgnoreLine.
 		} );
 
+		// Re-sort after translation.
+		asort( $languages );
+
 		return $languages;
 	}
 
