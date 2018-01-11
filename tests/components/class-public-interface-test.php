@@ -180,6 +180,8 @@ class Public_Interface_Test extends TestCase {
 
 		$this->public_if->init();
 
+		self::assertTrue( has_filter( 'body_class', [ $plugin, 'filter_body_class' ] ) );
+
 		self::assertTrue( has_action( 'wp_head', [ $this->public_if, 'add_wp_head' ] ) );
 		self::assertTrue( has_action( 'wp_enqueue_scripts', [ $this->public_if, 'enqueue_scripts' ] ) );
 		self::assertTrue( has_action( 'shutdown', [ $plugin, 'save_hyphenator_cache_on_shutdown' ] ) );

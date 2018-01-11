@@ -123,7 +123,7 @@ class WP_Typography {
 	 *
 	 * @var string[]
 	 */
-	private $body_classes;
+	private $body_classes = [];
 
 	/**
 	 * An array of settings with their default value.
@@ -339,6 +339,9 @@ class WP_Typography {
 			$lang = _x( $lang, 'language name', 'wp-typography' );  // @codingStandardsIgnoreLine.
 		} );
 
+		// Re-sort after translation.
+		asort( $languages );
+
 		return $languages;
 	}
 
@@ -458,6 +461,9 @@ class WP_Typography {
 				$this->transients->cache_object( $transient, $settings, 'settings' );
 			}
 
+			// Make parser errors filterable on an individual level.
+			$settings->set_parser_errors_handler( [ $this, 'parser_errors_handler' ] );
+
 			// Settings should be good now, so let's use them.
 			$this->typo_settings = $settings;
 
@@ -563,13 +569,12 @@ class WP_Typography {
 		$processed_text = $this->cache->get( $key, $found );
 
 		if ( empty( $found ) ) {
-			$typo         = $this->get_typography_instance();
-			$body_classes = isset( $this->body_classes ) ? $this->body_classes : $this->body_classes = \get_body_class();
+			$typo = $this->get_typography_instance();
 
 			if ( $feed ) { // Feed readers are strange sometimes.
-				$processed_text = $typo->process_feed( $text, $settings, $is_title, $body_classes );
+				$processed_text = $typo->process_feed( $text, $settings, $is_title, $this->body_classes );
 			} else {
-				$processed_text = $typo->process( $text, $settings, $is_title, $body_classes );
+				$processed_text = $typo->process( $text, $settings, $is_title, $this->body_classes );
 			}
 
 			/**
@@ -589,6 +594,19 @@ class WP_Typography {
 	}
 
 	/**
+	 * Grabs the body classes from the filter hook.
+	 *
+	 * @param  string[] $classes An array of CSS classes.
+	 *
+	 * @return string[]
+	 */
+	public function filter_body_class( array $classes ) {
+		$this->body_classes = $classes;
+
+		return $classes;
+	}
+
+	/**
 	 * Retrieves the PHP_Typography instance and ensure just-in-time initialization.
 	 */
 	protected function get_typography_instance() {
@@ -604,6 +622,9 @@ class WP_Typography {
 			if ( ! $typo instanceof PHP_Typography ) {
 				// OK, we have to initialize the PHP_Typography instance manually.
 				$typo = new PHP_Typography();
+
+				// Ensure that all fixes are pre-initialized.
+				$typo->get_registry();
 
 				// Try again next time.
 				$this->transients->cache_object( $transient, $typo, 'typography' );
@@ -751,9 +772,6 @@ class WP_Typography {
 		 * @param bool $ignore Default false.
 		 */
 		$s->set_ignore_parser_errors( $config[ Config::IGNORE_PARSER_ERRORS ] || apply_filters( 'typo_ignore_parser_errors', false ) );
-
-		// Make parser errors filterable on an individual level.
-		$s->set_parser_errors_handler( [ $this, 'parser_errors_handler' ] );
 	}
 
 	/**
