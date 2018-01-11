@@ -1,6 +1,6 @@
 === wp-Typography ===
 Contributors: pputzer
-Tags: typography, hyphenation, smart quotes, quote marks, formatting, typogrify, quotes, prettify, widows, orphans, small caps, diacritics
+Tags: typography, hyphenation, smart quotes, formatting, widows, orphans, typogrify, quotes, prettify, small caps, diacritics
 Requires at least: 4.6
 Requires PHP: 5.6
 Tested up to: 4.9
