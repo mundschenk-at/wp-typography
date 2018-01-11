@@ -111,6 +111,11 @@ please upgrade PHP or continue to use version 4.2.2.
 
 == Changelog ==
 
+= 5.2.1 - January 11, 2018 =
+* _Bugfix_: Languages were not sorted correctly in the settings page.
+* _Bugfix_: Circular references in caches objects have been fixed.
+* _Bugfix_: Workaround for Divi theme crash, avoiding `get_body_class()`.
+
 = 5.2.0 - January 05, 2018 =
 * _Feature_: WordPress body classes (i.e. the result of `get_body_class()`) are now
   passed to the text processing methods. This means that you can exclude entire pages
