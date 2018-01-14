@@ -29,7 +29,7 @@
  *  Description: Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
  *  Author: Peter Putzer
  *  Author URI: https://code.mundschenk.at
- *  Version: 5.2.1
+ *  Version: 5.2.2-alpha.1
  *  License: GNU General Public License v2 or later
  *  License URI: https://www.gnu.org/licenses/gpl-2.0.html
  *  Text Domain: wp-typography
@@ -47,7 +47,7 @@
 /**
  * Load requirements class in a PHP 5.2 compatible manner.
  */
-require_once dirname( __FILE__ ) . '/includes/class-wp-typography-requirements.php';
+require_once dirname( __FILE__ ) . '/vendor/mundschenk-at/check-wp-requirements/src/class-mundschenk-wp-requirements.php';
 
 /**
  * Load the plugin after checking for the necessary PHP version.
@@ -56,7 +56,11 @@ require_once dirname( __FILE__ ) . '/includes/class-wp-typography-requirements.p
  */
 function run_wp_typography() {
 
-	$requirements = new WP_Typography_Requirements( 'wp-Typography', __FILE__ );
+	$requirements = new Mundschenk_WP_Requirements( 'wp-Typography', __FILE__, 'wp-typography', array(
+		'php'       => '5.6.0',
+		'multibyte' => true,
+		'utf-8'     => true,
+	) );
 
 	if ( $requirements->check() ) {
 		// Autoload the rest of our classes.
