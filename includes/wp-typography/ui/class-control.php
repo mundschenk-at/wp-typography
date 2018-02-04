@@ -155,6 +155,8 @@ abstract class Control {
 		'code'   => [],
 		'strong' => [],
 		'em'     => [],
+		'sub'    => [],
+		'sup'    => [],
 	];
 
 	/**
