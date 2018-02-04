@@ -115,7 +115,8 @@ class Setup implements Plugin_Component {
 	 */
 	public function activate() {
 		// Load default values for any new options and clear the cache.
-		$this->plugin->set_default_options();
+		$this->plugin->get_config();
+		$this->plugin->set_default_options(); // After get_config, otherwhise previous options are overwritten.
 		$this->plugin->clear_cache();
 	}
 

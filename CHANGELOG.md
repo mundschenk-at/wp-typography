@@ -1,5 +1,12 @@
 # Changes
 
+# 5.2.2 - February 04, 2018
+
+*   _Bugfix_: Superscripts were not displayed correctly in the settings page.
+*   _Bugfix_: Standalone `<` and `>` characters (i.e. not part of an HTML tag) could
+    vanish in some circumstances.
+*   _Bugfix_: Re-activating the plugin no longer overwrites the settings with their defaults.
+
 ## 5.2.1 - January 11, 2018
 *   _Bugfix_: Languages were not sorted correctly in the settings page.
 *   _Bugfix_: Circular references in caches objects have been fixed.

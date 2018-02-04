@@ -138,6 +138,7 @@ class Setup_Test extends TestCase {
 	 * @covers ::activate
 	 */
 	public function test_activate() {
+		$this->plugin->shouldReceive( 'get_config' )->once();
 		$this->plugin->shouldReceive( 'set_default_options' )->once();
 		$this->plugin->shouldReceive( 'clear_cache' )->once();
 
