@@ -2,7 +2,7 @@
     "name": "mundschenk-at/wp-typography",
     "description": "A WordPress plugin for improving your web typography",
     "type": "wordpress-plugin",
-    "license": "GPL 2.0+",
+    "license": "GPL-2.0-or-later",
     "authors": [
         {
             "name": "Peter Putzer",
