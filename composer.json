@@ -55,7 +55,8 @@
     "config": {
         "classmap-authoritative": false,
         "classloader-suffix": "WPTypography",
-        "autoloader-suffix": "WPTypography"
+        "autoloader-suffix": "WPTypography",
+        "process-timout": 0
     },
 
     "scripts": {
