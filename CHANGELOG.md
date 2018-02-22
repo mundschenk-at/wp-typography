@@ -1,7 +1,9 @@
 # Changes
 
-# 5.2.2 - February 04, 2018
+# 5.2.3 - February 22, 2018
+*   _Bugfix_: A partial was missing from the compatibility checking code for older PHP versions.
 
+# 5.2.2 - February 04, 2018
 *   _Bugfix_: Superscripts were not displayed correctly in the settings page.
 *   _Bugfix_: Standalone `<` and `>` characters (i.e. not part of an HTML tag) could
     vanish in some circumstances.

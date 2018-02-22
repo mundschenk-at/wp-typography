@@ -4,7 +4,8 @@ filter:
         - 'admin/*'
         - 'js/*'
         - 'wp-typography.php'
-
+    dependency_paths:
+        - wordpress/
     excluded_paths:
         - 'js/*.min.js'
 
@@ -24,10 +25,18 @@ build:
         memcached: false
         neo4j: false
         php:
-            version: 7.1
-    tests:
-        override:
-            - phpcs-run -p wp-typography.php includes/ admin/ --ignore=tests/coverage --extensions=php
+            version: 7.2
+    nodes:
+        analysis:
+            project_setup:
+                override: true
+            dependencies:
+                before:
+                    - composer require --dev johnpbloch/wordpress
+            tests:
+                override:
+                    - php-scrutinizer-run
+                    - phpcs-run -p wp-typography.php includes/ admin/ --extensions=php
 
 tools:
     php_code_sniffer: false
