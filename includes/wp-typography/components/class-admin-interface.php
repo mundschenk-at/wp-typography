@@ -269,8 +269,8 @@ class Admin_Interface implements Plugin_Component {
 		}
 
 		// Group controls.
-		foreach ( $groups as $group => $control_id ) {
-			foreach ( $control_id as $control_id ) {
+		foreach ( $groups as $group => $control_ids ) {
+			foreach ( $control_ids as $control_id ) {
 				$controls[ $group ]->add_grouped_control( $controls[ $control_id ] );
 			}
 		}
