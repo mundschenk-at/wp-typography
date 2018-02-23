@@ -335,7 +335,7 @@ class Multilingual_Support implements Plugin_Component {
 	 * @param  string $language A two- or three-letter language code (e.g. 'de').
 	 * @param  string $country  A two-letter upper-case country code (e.g. 'DE').
 	 * @param  string $modifier Optional. An modifier for the locale (e.g. 'formal'). Default ''.
-
+	 *
 	 * @return Locale_Settings|null
 	 */
 	protected function match_locale( $language, $country, $modifier = '' ) {

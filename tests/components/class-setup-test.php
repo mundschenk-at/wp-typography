@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017 Peter Putzer.
+ *  Copyright 2017-2018 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -229,7 +229,7 @@ class Setup_Test extends TestCase {
 	 */
 	public function test_plugin_update_check() {
 
-		$this->options->shouldReceive( 'get' )->with( Options::INSTALLED_VERSION )->once()->andReturn( '7.7.7' );
+		$this->options->shouldReceive( 'get' )->with( Options::INSTALLED_VERSION, '' )->once()->andReturn( '7.7.7' );
 		$this->plugin->shouldReceive( 'get_version' )->once()->andReturn( '6.6.6' );
 		$this->setup->shouldReceive( 'plugin_updated' )->with( '7.7.7' )->once();
 
