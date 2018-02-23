@@ -241,7 +241,7 @@ class Public_Interface implements Plugin_Component {
 	 * @param int $priority Filter priority.
 	 */
 	private function enable_acf_filters( $priority ) {
-		$acf_version = \intval( acf_get_setting( 'version' ) );
+		$acf_version = \intval( /* @scrutinizer ignore-call */ acf_get_setting( 'version' ) );
 
 		if ( 5 === $acf_version ) {
 			// Advanced Custom Fields Pro (version 5).
