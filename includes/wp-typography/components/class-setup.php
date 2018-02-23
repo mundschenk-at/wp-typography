@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2014-2017 Peter Putzer.
+ *  Copyright 2014-2018 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -126,7 +126,8 @@ class Setup implements Plugin_Component {
 	 * @since 5.1.0
 	 */
 	public function plugin_update_check() {
-		$installed_version = $this->options->get( Options::INSTALLED_VERSION );
+		// We can ignore errors here, just carry on as if for a new installation.
+		$installed_version = (string) $this->options->get( Options::INSTALLED_VERSION, '' );
 
 		if ( $this->plugin->get_version() !== $installed_version ) {
 			$this->plugin_updated( $installed_version );
