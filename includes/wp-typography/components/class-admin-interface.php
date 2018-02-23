@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2014-2017 Peter Putzer.
+ *  Copyright 2014-2018 Peter Putzer.
  *  Copyright 2012-2013 Marie Hogebrandt.
  *  Copyright 2009-2011 KINGdesk, LLC.
  *
@@ -35,7 +35,6 @@ use WP_Typography\Settings\Plugin_Configuration as Config;
 use PHP_Typography\PHP_Typography;
 use PHP_Typography\Settings\Dash_Style;
 use PHP_Typography\Settings\Quote_Style;
-use PHP_Typography\Arrays;
 
 /**
  * The admin-specific functionality of the plugin.
