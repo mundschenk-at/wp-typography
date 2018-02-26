@@ -59,9 +59,11 @@ module.exports = function(grunt) {
                         'vendor/level-2/dice/Dice.php',
                         'vendor/masterminds/html5/src/**/*.php',
                         'vendor/mundschenk-at/check-wp-requirements/*.php',
+                        'vendor/mundschenk-at/check-wp-requirements/partials/*.php',
                         'vendor/mundschenk-at/php-typography/src/**',
                         '!vendor/mundschenk-at/php-typography/src/bin/**',
                         'js/**',
+                        '!vendor/**/tests/**'
                     ],
                     dest: 'build/'
                 }],
