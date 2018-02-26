@@ -1,5 +1,9 @@
 # Changes
 
+# 5.2.4 - February 26, 2018
+*   _Bugfix_: The partial was still packaged in the wrong place, causing backend whitescreens
+    in some cases.
+
 # 5.2.3 - February 22, 2018
 *   _Bugfix_: A partial was missing from the compatibility checking code for older PHP versions.
 
