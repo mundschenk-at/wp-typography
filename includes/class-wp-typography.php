@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2014-2017 Peter Putzer.
+ *  Copyright 2014-2018 Peter Putzer.
  *  Copyright 2009-2011 KINGdesk, LLC.
  *
  *  This program is free software; you can redistribute it and/or
@@ -28,13 +28,6 @@
 use WP_Typography\Data_Storage\Cache;
 use WP_Typography\Data_Storage\Options;
 use WP_Typography\Data_Storage\Transients;
-
-use WP_Typography\Components\Admin_Interface;
-use WP_Typography\Components\Common;
-use WP_Typography\Components\Multilingual_Support;
-use WP_Typography\Components\Plugin_Component;
-use WP_Typography\Components\Public_Interface;
-use WP_Typography\Components\Setup;
 
 use WP_Typography\Settings\Plugin_Configuration as Config;
 
@@ -133,13 +126,6 @@ class WP_Typography {
 	private $default_settings;
 
 	/**
-	 * The plugin components in order of execution.
-	 *
-	 * @var Plugin_Component[]
-	 */
-	private $plugin_components = [];
-
-	/**
 	 * The singleton instance.
 	 *
 	 * @var WP_Typography
@@ -151,17 +137,12 @@ class WP_Typography {
 	 *
 	 * @since 5.1.0 Optional parameters $transients, $cache, $options, $setup, $public_if added.
 	 *
-	 * @param string               $version     The full plugin version string (e.g. "3.0.0-beta.2").
-	 * @param Setup                $setup       Required.
-	 * @param Common               $common      Required.
-	 * @param Admin_Interface      $admin       Required.
-	 * @param Public_Interface     $public_if   Required.
-	 * @param Multilingual_Support $multi       Required.
-	 * @param Transients           $transients  Required.
-	 * @param Cache                $cache       Required.
-	 * @param Options              $options     Required.
+	 * @param string     $version     The full plugin version string (e.g. "3.0.0-beta.2").
+	 * @param Transients $transients  Required.
+	 * @param Cache      $cache       Required.
+	 * @param Options    $options     Required.
 	 */
-	public function __construct( $version, Setup $setup, Common $common, Admin_Interface $admin, Public_Interface $public_if, Multilingual_Support $multi, Transients $transients, Cache $cache, Options $options ) {
+	public function __construct( $version, Transients $transients, Cache $cache, Options $options ) {
 		// Basic set-up.
 		$this->version = $version;
 
@@ -171,38 +152,12 @@ class WP_Typography {
 
 		// Initialize Options API handler.
 		$this->options = $options;
-
-		// Initialize activation/deactivation handler.
-		$this->plugin_components[] = $setup;
-
-		// Initialize common component.
-		$this->plugin_components[] = $common;
-
-		// Initialize multilingual support.
-		$this->plugin_components[] = $multi;
-
-		// Initialize public interface handler.
-		$this->plugin_components[] = $public_if;
-
-		// Initialize admin interface handler.
-		$this->plugin_components[] = $admin;
-	}
-
-	/**
-	 * Starts the plugin for real.
-	 */
-	public function run() {
-		// Set plugin singleton.
-		self::set_instance( $this );
-
-		// Run all the plugin components.
-		foreach ( $this->plugin_components as $component ) {
-			$component->run( $this );
-		}
 	}
 
 	/**
 	 * Retrieves (and if necessary creates) the WP_Typography instance. Should not be called outside of plugin set-up.
+	 *
+	 * @internal
 	 *
 	 * @since 5.0.0
 	 *
@@ -210,7 +165,7 @@ class WP_Typography {
 	 *
 	 * @throws BadMethodCallException Thrown when WP_Typography::set_instance after plugin initialization.
 	 */
-	private static function set_instance( WP_Typography $instance ) {
+	public static function set_instance( WP_Typography $instance ) {
 		if ( null === self::$_instance ) {
 			self::$_instance = $instance;
 		} else {

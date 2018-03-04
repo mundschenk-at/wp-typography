@@ -25,7 +25,6 @@
 namespace WP_Typography\Tests;
 
 use WP_Typography\Data_Storage\Options;
-use WP_Typography\Components\Admin_Interface;
 use WP_Typography\Settings\Plugin_Configuration as Config;
 
 use PHP_Typography\Hyphenator_Cache;
@@ -61,41 +60,6 @@ class WP_Typography_Test extends TestCase {
 	/**
 	 * Test fixture.
 	 *
-	 * @var \WP_Typography\Components\Admin_Interface
-	 */
-	protected $admin_if;
-
-	/**
-	 * Test fixture.
-	 *
-	 * @var \WP_Typography\Components\Public_Interface
-	 */
-	protected $public_if;
-
-	/**
-	 * Test fixture.
-	 *
-	 * @var \WP_Typography\Components\Setup
-	 */
-	protected $setup;
-
-	/**
-	 * Test fixture.
-	 *
-	 * @var \WP_Typography\Components\Multilingual_Support
-	 */
-	protected $multi;
-
-	/**
-	 * Test fixture.
-	 *
-	 * @var \WP_Typography\Components\Common
-	 */
-	protected $common;
-
-	/**
-	 * Test fixture.
-	 *
 	 * @var \WP_Typography\Data_Storage\Transients
 	 */
 	protected $transients;
@@ -120,28 +84,10 @@ class WP_Typography_Test extends TestCase {
 	 */
 	protected function setUp() { // @codingStandardsIgnoreLine
 
-		// Mock WP_Typography\Settings\Multlingual instance.
-		$this->multi = m::mock( \WP_Typography\Components\Multilingual_Support::class )
-			->shouldReceive( 'run' )->byDefault()
-			->shouldReceive( 'filter_defaults' )->andReturnUsing( function( array $defaults ) {
-				return $defaults;
-			} )->byDefault()
-			->getMock();
-
 		// Mock WP_Typography\Data_Storage\Options instance.
 		$this->options = m::mock( \WP_Typography\Data_Storage\Options::class )
 			->shouldReceive( 'get' )->andReturn( false )->byDefault()
 			->shouldReceive( 'set' )->andReturn( false )->byDefault()
-			->getMock();
-
-		// Mock WP_Typography\Components\Setup instance.
-		$this->setup = m::mock( \WP_Typography\Components\Setup::class, [ '/some/path', $this->options ] )
-			->shouldReceive( 'run' )->byDefault()
-			->getMock();
-
-		// Mock WP_Typography\Components\Common instance.
-		$this->common = m::mock( \WP_Typography\Components\Common::class, [ $this->options ] )
-			->shouldReceive( 'run' )->byDefault()
 			->getMock();
 
 		// Mock WP_Typography\Data_Storage\Transients instance.
@@ -159,19 +105,8 @@ class WP_Typography_Test extends TestCase {
 			->shouldReceive( 'invalidate' )->byDefault()
 			->getMock();
 
-		// Mock WP_Typography\Components\Admin_Interface instance.
-		$this->admin_if = m::mock( \WP_Typography\Components\Admin_Interface::class, [ 'plugin_basename', '/plugin/path', $this->options ] )
-			->shouldReceive( 'run' )->byDefault()
-			->shouldReceive( 'get_default_settings' )->andReturn( [ 'dummy_settings' => 'bar' ] )->byDefault()
-			->getMock();
-
-		// Mock WP_Typography\Components\Public_Interface instance.
-		$this->public_if = m::mock( \WP_Typography\Components\Public_Interface::class, [ 'plugin_basename' ] )
-			->shouldReceive( 'run' )->byDefault()
-			->getMock();
-
 		// Create instance.
-		$this->wp_typo = m::mock( \WP_Typography::class, [ '7.7.7', $this->setup, $this->common, $this->admin_if, $this->public_if, $this->multi, $this->transients, $this->cache, $this->options ] )
+		$this->wp_typo = m::mock( \WP_Typography::class, [ '7.7.7', $this->transients, $this->cache, $this->options ] )
 			->shouldAllowMockingProtectedMethods()
 			->makePartial();
 
@@ -195,11 +130,6 @@ class WP_Typography_Test extends TestCase {
 	 * @covers ::__construct
 	 *
 	 * @uses ::get_version
-	 * @uses ::get_version_hash
-	 * @uses \WP_Typography\Components\Admin_Interface::__construct
-	 * @uses \WP_Typography\Components\Public_Interface::__construct
-	 * @uses \WP_Typography\Components\Common::__construct
-	 * @uses \WP_Typography\Components\Setup::__construct
 	 * @uses \WP_Typography\Data_Storage\Abstract_Cache::__construct
 	 * @uses \WP_Typography\Data_Storage\Cache::__construct
 	 * @uses \WP_Typography\Data_Storage\Cache::invalidate
@@ -212,11 +142,6 @@ class WP_Typography_Test extends TestCase {
 
 		$typo = new \WP_Typography(
 			'6.6.6',
-			m::mock( \WP_Typography\Components\Setup::class ),
-			m::mock( \WP_Typography\Components\Common::class ),
-			m::mock( \WP_Typography\Components\Admin_Interface::class ),
-			m::mock( \WP_Typography\Components\Public_Interface::class ),
-			m::mock( \WP_Typography\Components\Multilingual_Support::class ),
 			m::mock( \WP_Typography\Data_Storage\Transients::class ),
 			m::mock( \WP_Typography\Data_Storage\Cache::class ),
 			m::mock( \WP_Typography\Data_Storage\Options::class )
@@ -224,28 +149,6 @@ class WP_Typography_Test extends TestCase {
 
 		$this->assertInstanceOf( \WP_Typography::class, $typo );
 		$this->assertAttributeSame( '6.6.6', 'version', $typo );
-	}
-
-	/**
-	 * Tests constructor.
-	 *
-	 * @covers ::run
-	 *
-	 * @uses ::__construct
-	 * @uses ::set_instance
-	 * @uses ::get_version
-	 * @uses ::get_version_hash
-	 * @uses ::hash_version_string
-	 * @uses \WP_Typography\Components\Admin_Interface::__construct
-	 * @uses \WP_Typography\Components\Public_Interface::__construct
-	 * @uses \WP_Typography\Components\Setup::__construct
-	 */
-	public function test_run() {
-		foreach ( [ $this->setup, $this->common, $this->admin_if, $this->public_if, $this->multi ] as $component ) {
-			$component->shouldReceive( 'run' )->once()->with( $this->wp_typo );
-		}
-
-		$this->assertNull( $this->wp_typo->run() );
 	}
 
 	/**
@@ -677,7 +580,6 @@ class WP_Typography_Test extends TestCase {
 	 *
 	 * @covers ::process
 	 *
-	 * @uses ::run
 	 * @uses ::set_instance
 	 *
 	 * @dataProvider provide_process_data
@@ -782,13 +684,10 @@ class WP_Typography_Test extends TestCase {
 	 *
 	 * @covers ::set_default_options
 	 *
-	 * @uses ::run
 	 * @uses ::set_instance
 	 * @uses ::get_default_options
 	 */
 	public function test_set_default_options() {
-		$this->wp_typo->run();
-
 		$this->wp_typo->shouldReceive( 'get_default_options' )->once()->andReturn( [ 'foo' => 'bar' ] );
 
 		$this->options->shouldReceive( 'set' )->once()->with( Options::CONFIGURATION, m::type( 'array' ) );
@@ -802,13 +701,10 @@ class WP_Typography_Test extends TestCase {
 	 *
 	 * @covers ::set_default_options
 	 *
-	 * @uses ::run
 	 * @uses ::set_instance
 	 * @uses ::get_default_options
 	 */
 	public function test_set_default_options_force_defaults() {
-		$this->wp_typo->run();
-
 		$this->wp_typo->shouldReceive( 'get_default_options' )->once()->andReturn( [ 'foo' => 'bar' ] );
 
 		$this->options->shouldNotReceive( 'get' )->with( Options::RESTORE_DEFAULTS );
@@ -826,18 +722,13 @@ class WP_Typography_Test extends TestCase {
 	 *
 	 * @covers ::get_default_options
 	 *
-	 * @uses ::run
 	 * @uses ::set_instance
 	 *
 	 * @runInSeparateProcess
 	 */
 	public function test_get_default_options() {
-		$this->wp_typo->run();
-
 		Functions\expect( 'wp_list_pluck' )->once()->with( m::type( 'array' ), 'default' )->andReturn( [ 'bar' => 'foo' ] );
 		Functions\expect( '__' )->atLeast()->once()->andReturn( 'translated_string' );
-
-		$this->multi->shouldReceive( 'filter_defaults' )->with( m::type( 'array' ) )->andReturn( [ 'foo' => 'bar' ] );
 
 		$this->assertInternalType( 'array', $this->wp_typo->get_default_options() );
 	}
