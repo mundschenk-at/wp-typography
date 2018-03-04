@@ -109,8 +109,8 @@ class Multilingual_Support implements Plugin_Component {
 	 */
 	public function add_plugin_defaults_filter() {
 		// Translation of language names is irrelevant here.
-		$this->hyphenation_languages = $this->plugin->load_hyphenation_languages();
-		$this->diacritic_languages   = $this->plugin->load_diacritic_languages();
+		$this->hyphenation_languages = $this->plugin->get_hyphenation_languages();
+		$this->diacritic_languages   = $this->plugin->get_diacritic_languages();
 
 		// Filter the defaults.
 		\add_filter( 'typo_plugin_defaults', [ $this, 'filter_defaults' ] );

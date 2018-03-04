@@ -45,11 +45,11 @@ use WP_Typography\Data_Storage\Transients;
 class Plugin_Controller {
 
 	/**
-	 * The plugin API facade.
+	 * The plugin API implementation.
 	 *
-	 * @var \WP_Typography
+	 * @var \WP_Typography\Implementation
 	 */
-	private $facade;
+	private $api;
 
 	/**
 	 * The plugin components in order of execution.
@@ -61,26 +61,16 @@ class Plugin_Controller {
 	/**
 	 * Sets up a new plugin controller instance.
 	 *
-	 * @param \WP_Typography       $facade      Required.
+	 * @param Implementation       $api         Required.
 	 * @param Setup                $setup       Required.
 	 * @param Common               $common      Required.
 	 * @param Admin_Interface      $admin       Required.
 	 * @param Public_Interface     $public_if   Required.
 	 * @param Multilingual_Support $multi       Required.
-	 * @param Transients           $transients  Required.
-	 * @param Cache                $cache       Required.
-	 * @param Options              $options     Required.
 	 */
-	public function __construct( \WP_Typography $facade, Setup $setup, Common $common, Admin_Interface $admin, Public_Interface $public_if, Multilingual_Support $multi, Transients $transients, Cache $cache, Options $options ) {
+	public function __construct( Implementation $api, Setup $setup, Common $common, Admin_Interface $admin, Public_Interface $public_if, Multilingual_Support $multi ) {
 		// Basic set-up.
-		$this->facade = $facade;
-
-		// Initialize cache handlers.
-		$this->transients = $transients;
-		$this->cache      = $cache;
-
-		// Initialize Options API handler.
-		$this->options = $options;
+		$this->api = $api;
 
 		// Initialize activation/deactivation handler.
 		$this->plugin_components[] = $setup;
@@ -103,11 +93,11 @@ class Plugin_Controller {
 	 */
 	public function run() {
 		// Set plugin singleton.
-		\WP_Typography::set_instance( $this->facade );
+		\WP_Typography::set_instance( $this->api );
 
 		// Run all the plugin components.
 		foreach ( $this->plugin_components as $component ) {
-			$component->run( $this->facade );
+			$component->run( $this->api );
 		}
 	}
 }

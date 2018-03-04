@@ -38,7 +38,6 @@ use Mockery as m;
  * @coversDefaultClass \WP_Typography
  * @usesDefaultClass \WP_Typography
  *
- * @uses ::__construct
  * @uses ::hash_version_string
  */
 class WP_Typography_Singleton_Test extends TestCase {
@@ -68,8 +67,6 @@ class WP_Typography_Singleton_Test extends TestCase {
 	 * @covers ::get_instance
 	 * @covers ::set_instance
 	 *
-	 * @uses ::__construct
-	 * @uses ::get_version
 	 * @uses \WP_Typography\Data_Storage\Abstract_Cache::__construct
 	 * @uses \WP_Typography\Data_Storage\Cache::__construct
 	 * @uses \WP_Typography\Data_Storage\Options::__construct
@@ -98,14 +95,11 @@ class WP_Typography_Singleton_Test extends TestCase {
 			->shouldReceive( 'invalidate' )->byDefault()
 			->getMock();
 
-		$typo = new \WP_Typography( '6.6.6', $transients, $cache, $options );
+		$typo = m::mock( \WP_Typography::class );
 		\WP_Typography::set_instance( $typo );
 
 		$typo2 = \WP_Typography::get_instance();
 		$this->assertSame( $typo, $typo2 );
-
-		$this->assertInstanceOf( \WP_Typography::class, $typo );
-		$this->assertAttributeSame( '6.6.6', 'version', $typo );
 
 		// Check ::get_instance (no underscore).
 		$typo3 = \WP_Typography::get_instance();
@@ -116,9 +110,6 @@ class WP_Typography_Singleton_Test extends TestCase {
 	 * Tests ::get_instance without a previous call to ::_get_instance (i.e. _doing_it_wrong).
 	 *
 	 * @covers ::get_instance
-	 *
-	 * @uses ::__construct
-	 * @uses ::get_version
 	 *
 	 * @expectedException \BadMethodCallException
 	 * @expectedExceptionMessage WP_Typography::get_instance called without prior plugin intialization.
@@ -133,9 +124,6 @@ class WP_Typography_Singleton_Test extends TestCase {
 	 *
 	 * @covers ::set_instance
 	 *
-	 * @uses ::__construct
-	 * @uses ::get_version
-	 *
 	 * @expectedException \BadMethodCallException
 	 * @expectedExceptionMessage WP_Typography::set_instance called more than once.
 	 */
@@ -144,7 +132,7 @@ class WP_Typography_Singleton_Test extends TestCase {
 		$cache      = m::mock( \WP_Typography\Data_Storage\Cache::class );
 		$options    = m::mock( \WP_Typography\Data_Storage\Options::class );
 
-		$typo = new \WP_Typography( '6.6.6', $transients, $cache, $options );
+		$typo = m::mock( \WP_Typography::class );
 		\WP_Typography::set_instance( $typo );
 		\WP_Typography::set_instance( $typo );
 	}

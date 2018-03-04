@@ -112,7 +112,7 @@ class Plugin_Controller_Test extends TestCase {
 			->shouldReceive( 'run' )->byDefault()
 			->getMock();
 
-		$typo = m::mock( \WP_Typography::class );
+		$typo = m::mock( \WP_Typography\Implementation::class );
 
 		$controller = new \WP_Typography\Plugin_Controller( $typo, $setup, $common, $admin, $public_if, $multi, $transients, $cache, $options );
 
