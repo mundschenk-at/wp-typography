@@ -26,8 +26,6 @@
 
 namespace WP_Typography\Components;
 
-use WP_Typography;
-
 use WP_Typography\Settings\Basic_Locale_Settings;
 use WP_Typography\Settings\Locale_Settings;
 use WP_Typography\Settings\Plugin_Configuration as Config;
@@ -90,9 +88,9 @@ class Multilingual_Support implements Plugin_Component {
 	/**
 	 * Set up the various hooks for multilingual support.
 	 *
-	 * @param WP_Typography $plugin The main plugin instance.
+	 * @param \WP_Typography $plugin The main plugin instance.
 	 */
-	public function run( WP_Typography $plugin ) {
+	public function run( \WP_Typography $plugin ) {
 		// Store plugin reference.
 		$this->plugin = $plugin;
 

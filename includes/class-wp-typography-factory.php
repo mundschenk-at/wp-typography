@@ -31,7 +31,6 @@ use WP_Typography\Data_Storage\Options;
 use WP_Typography\Data_Storage\Transients;
 
 use WP_Typography\Components\Admin_Interface;
-use WP_Typography\Components\Multilingual_Support;
 use WP_Typography\Components\Public_Interface;
 use WP_Typography\Components\Setup;
 
