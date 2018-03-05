@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017 Peter Putzer.
+ *  Copyright 2017-2018 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -117,7 +117,7 @@ class Admin_Interface_Test extends TestCase {
 		$this->admin = m::mock( Admin_Interface::class, [ 'plugin/basename', 'plugin/plugin.php', $this->options ] )
 			->shouldAllowMockingProtectedMethods()->makePartial();
 
-		$this->plugin = m::mock( \WP_Typography::class )->shouldReceive( 'get_version' )->andReturn( '6.6.6' )->byDefault()->getMock();
+		$this->plugin = m::mock( \WP_Typography\Implementation::class )->shouldReceive( 'get_version' )->andReturn( '6.6.6' )->byDefault()->getMock();
 
 		$this->admin_form_controls = [
 			Config::HYPHENATE_LANGUAGES => m::mock( UI\Select::class ),
@@ -187,8 +187,8 @@ class Admin_Interface_Test extends TestCase {
 		$this->admin_form_controls[ Config::HYPHENATE_LANGUAGES ]->shouldReceive( 'set_option_values' )->once()->with( m::type( 'array' ) );
 		$this->admin_form_controls[ Config::DIACRITIC_LANGUAGES ]->shouldReceive( 'set_option_values' )->once()->with( m::type( 'array' ) );
 
-		$this->plugin->shouldReceive( 'load_hyphenation_languages' )->andReturn( [ 'CODE' => 'Language' ] );
-		$this->plugin->shouldReceive( 'load_diacritic_languages' )->andReturn( [ 'CODE' => 'Language' ] );
+		$this->plugin->shouldReceive( 'get_hyphenation_languages' )->andReturn( [ 'CODE' => 'Language' ] );
+		$this->plugin->shouldReceive( 'get_diacritic_languages' )->andReturn( [ 'CODE' => 'Language' ] );
 
 		$this->expectOutputString( 'SETTINGS_PHP' );
 

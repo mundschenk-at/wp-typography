@@ -25,7 +25,6 @@
 namespace WP_Typography\Tests;
 
 use WP_Typography\Data_Storage\Options;
-use WP_Typography\Components\Admin_Interface;
 use WP_Typography\Settings\Plugin_Configuration as Config;
 
 use PHP_Typography\Hyphenator_Cache;
@@ -42,8 +41,6 @@ use Mockery as m;
  * @coversDefaultClass \WP_Typography
  * @usesDefaultClass \WP_Typography
  *
- * @uses ::__construct
- * @uses ::hash_version_string
  * @uses \WP_Typography\Components\Admin_Interface::__construct
  * @uses \WP_Typography\Components\Public_Interface::__construct
  * @uses \WP_Typography\Components\Setup::__construct
@@ -57,41 +54,6 @@ class WP_Typography_Test extends TestCase {
 	 * @var \WP_Typography
 	 */
 	protected $wp_typo;
-
-	/**
-	 * Test fixture.
-	 *
-	 * @var \WP_Typography\Components\Admin_Interface
-	 */
-	protected $admin_if;
-
-	/**
-	 * Test fixture.
-	 *
-	 * @var \WP_Typography\Components\Public_Interface
-	 */
-	protected $public_if;
-
-	/**
-	 * Test fixture.
-	 *
-	 * @var \WP_Typography\Components\Setup
-	 */
-	protected $setup;
-
-	/**
-	 * Test fixture.
-	 *
-	 * @var \WP_Typography\Components\Multilingual_Support
-	 */
-	protected $multi;
-
-	/**
-	 * Test fixture.
-	 *
-	 * @var \WP_Typography\Components\Common
-	 */
-	protected $common;
 
 	/**
 	 * Test fixture.
@@ -120,28 +82,10 @@ class WP_Typography_Test extends TestCase {
 	 */
 	protected function setUp() { // @codingStandardsIgnoreLine
 
-		// Mock WP_Typography\Settings\Multlingual instance.
-		$this->multi = m::mock( \WP_Typography\Components\Multilingual_Support::class )
-			->shouldReceive( 'run' )->byDefault()
-			->shouldReceive( 'filter_defaults' )->andReturnUsing( function( array $defaults ) {
-				return $defaults;
-			} )->byDefault()
-			->getMock();
-
 		// Mock WP_Typography\Data_Storage\Options instance.
 		$this->options = m::mock( \WP_Typography\Data_Storage\Options::class )
 			->shouldReceive( 'get' )->andReturn( false )->byDefault()
 			->shouldReceive( 'set' )->andReturn( false )->byDefault()
-			->getMock();
-
-		// Mock WP_Typography\Components\Setup instance.
-		$this->setup = m::mock( \WP_Typography\Components\Setup::class, [ '/some/path', $this->options ] )
-			->shouldReceive( 'run' )->byDefault()
-			->getMock();
-
-		// Mock WP_Typography\Components\Common instance.
-		$this->common = m::mock( \WP_Typography\Components\Common::class, [ $this->options ] )
-			->shouldReceive( 'run' )->byDefault()
 			->getMock();
 
 		// Mock WP_Typography\Data_Storage\Transients instance.
@@ -159,19 +103,8 @@ class WP_Typography_Test extends TestCase {
 			->shouldReceive( 'invalidate' )->byDefault()
 			->getMock();
 
-		// Mock WP_Typography\Components\Admin_Interface instance.
-		$this->admin_if = m::mock( \WP_Typography\Components\Admin_Interface::class, [ 'plugin_basename', '/plugin/path', $this->options ] )
-			->shouldReceive( 'run' )->byDefault()
-			->shouldReceive( 'get_default_settings' )->andReturn( [ 'dummy_settings' => 'bar' ] )->byDefault()
-			->getMock();
-
-		// Mock WP_Typography\Components\Public_Interface instance.
-		$this->public_if = m::mock( \WP_Typography\Components\Public_Interface::class, [ 'plugin_basename' ] )
-			->shouldReceive( 'run' )->byDefault()
-			->getMock();
-
 		// Create instance.
-		$this->wp_typo = m::mock( \WP_Typography::class, [ '7.7.7', $this->setup, $this->common, $this->admin_if, $this->public_if, $this->multi, $this->transients, $this->cache, $this->options ] )
+		$this->wp_typo = m::mock( \WP_Typography\Implementation::class )
 			->shouldAllowMockingProtectedMethods()
 			->makePartial();
 
@@ -187,65 +120,6 @@ class WP_Typography_Test extends TestCase {
 		$this->setStaticValue( \WP_Typography::class, '_instance', null );
 
 		parent::tearDown();
-	}
-
-	/**
-	 * Tests constructor.
-	 *
-	 * @covers ::__construct
-	 *
-	 * @uses ::get_version
-	 * @uses ::get_version_hash
-	 * @uses \WP_Typography\Components\Admin_Interface::__construct
-	 * @uses \WP_Typography\Components\Public_Interface::__construct
-	 * @uses \WP_Typography\Components\Common::__construct
-	 * @uses \WP_Typography\Components\Setup::__construct
-	 * @uses \WP_Typography\Data_Storage\Abstract_Cache::__construct
-	 * @uses \WP_Typography\Data_Storage\Cache::__construct
-	 * @uses \WP_Typography\Data_Storage\Cache::invalidate
-	 * @uses \WP_Typography\Data_Storage\Options::__construct
-	 * @uses \WP_Typography\Data_Storage\Transients::__construct
-	 * @uses \WP_Typography\Data_Storage\Transients::invalidate
-	 * @uses \WP_Typography\Data_Storage\Transients::get_keys_from_database
-	 */
-	public function test_constructor() {
-
-		$typo = new \WP_Typography(
-			'6.6.6',
-			m::mock( \WP_Typography\Components\Setup::class ),
-			m::mock( \WP_Typography\Components\Common::class ),
-			m::mock( \WP_Typography\Components\Admin_Interface::class ),
-			m::mock( \WP_Typography\Components\Public_Interface::class ),
-			m::mock( \WP_Typography\Components\Multilingual_Support::class ),
-			m::mock( \WP_Typography\Data_Storage\Transients::class ),
-			m::mock( \WP_Typography\Data_Storage\Cache::class ),
-			m::mock( \WP_Typography\Data_Storage\Options::class )
-		);
-
-		$this->assertInstanceOf( \WP_Typography::class, $typo );
-		$this->assertAttributeSame( '6.6.6', 'version', $typo );
-	}
-
-	/**
-	 * Tests constructor.
-	 *
-	 * @covers ::run
-	 *
-	 * @uses ::__construct
-	 * @uses ::set_instance
-	 * @uses ::get_version
-	 * @uses ::get_version_hash
-	 * @uses ::hash_version_string
-	 * @uses \WP_Typography\Components\Admin_Interface::__construct
-	 * @uses \WP_Typography\Components\Public_Interface::__construct
-	 * @uses \WP_Typography\Components\Setup::__construct
-	 */
-	public function test_run() {
-		foreach ( [ $this->setup, $this->common, $this->admin_if, $this->public_if, $this->multi ] as $component ) {
-			$component->shouldReceive( 'run' )->once()->with( $this->wp_typo );
-		}
-
-		$this->assertNull( $this->wp_typo->run() );
 	}
 
 	/**
@@ -271,207 +145,17 @@ class WP_Typography_Test extends TestCase {
 	}
 
 	/**
-	 * Test get_typography_instance.
+	 * Test a static call to get_hyphenation_languages
 	 *
-	 * @covers ::get_typography_instance
-	 */
-	public function test_get_typography_instance() {
-		$this->wp_typo->shouldReceive( 'get_config' )->once()->andReturn( [
-			Config::ENABLE_HYPHENATION => true,
-		] );
-
-		Functions\expect( 'wp_json_encode' )->once()->andReturn( '{ json: "value" }' );
-
-		$this->transients->shouldReceive( 'cache_object' )->twice();
-
-		$this->assertInstanceOf( \PHP_Typography\PHP_Typography::class, $this->invokeMethod( $this->wp_typo, 'get_typography_instance' ) );
-	}
-
-	/**
-	 * Test get_config.
-	 *
-	 * @covers ::get_config
-	 */
-	public function test_get_config() {
-
-		$this->options->shouldReceive( 'get' )->once()->with( Options::CONFIGURATION )->andReturn( [ 'foo' => 'bar' ] );
-
-		$this->assertInternalType( 'array', $this->wp_typo->get_config() );
-	}
-
-	/**
-	 * Test get_config with corrupted option.
-	 *
-	 * @covers ::get_config
-	 */
-	public function test_get_config_corrupted() {
-
-		$this->options->shouldReceive( 'get' )->once()->with( Options::CONFIGURATION )->andReturn( 'wrong' );
-		$this->wp_typo->shouldReceive( 'set_default_options' )->once()->with( true );
-
-		// IRL set_default_options would fix the config object.
-		$this->assertSame( null, $this->wp_typo->get_config() );
-	}
-
-	/**
-	 * Test get_user_settings.
-	 *
-	 * @covers ::get_settings
-	 * @covers ::init_settings_from_options
-	 *
-	 * @uses ::init_settings_from_options
-	 */
-	public function test_get_settings() {
-
-		$this->wp_typo->shouldReceive( 'get_config' )->once()->andReturn( [
-			Config::IGNORE_TAGS                    => [ 'script' ],
-			Config::IGNORE_CLASSES                 => [ 'noTypo' ],
-			Config::IGNORE_IDS                     => [],
-			Config::SMART_CHARACTERS               => true,
-			Config::SMART_DASHES                   => false,
-			Config::SMART_DASHES_STYLE             => 'international',
-			Config::SMART_ELLIPSES                 => false,
-			Config::SMART_MATH                     => false,
-			Config::SMART_FRACTIONS                => false,
-			Config::SMART_ORDINALS                 => false,
-			Config::SMART_MARKS                    => false,
-			Config::SMART_QUOTES                   => false,
-			Config::SMART_DIACRITICS               => false,
-			Config::DIACRITIC_LANGUAGES            => 'en-US',
-			Config::DIACRITIC_CUSTOM_REPLACEMENTS  => [],
-			Config::SMART_QUOTES_PRIMARY           => 'doubleCurled',
-			Config::SMART_QUOTES_SECONDARY         => 'singleCurled',
-			Config::SINGLE_CHARACTER_WORD_SPACING  => false,
-			Config::DASH_SPACING                   => false,
-			Config::FRACTION_SPACING               => false,
-			Config::UNIT_SPACING                   => false,
-			Config::NUMBERED_ABBREVIATIONS_SPACING => false,
-			Config::FRENCH_PUNCTUATION_SPACING     => false,
-			Config::UNITS                          => [],
-			Config::SPACE_COLLAPSE                 => false,
-			Config::PREVENT_WIDOWS                 => false,
-			Config::WIDOW_MIN_LENGTH               => 2,
-			Config::WIDOW_MAX_PULL                 => 2,
-			Config::WRAP_HYPHENS                   => false,
-			Config::WRAP_EMAILS                    => false,
-			Config::WRAP_URLS                      => false,
-			Config::WRAP_MIN_AFTER                 => 2,
-			Config::STYLE_AMPS                     => false,
-			Config::STYLE_CAPS                     => false,
-			Config::STYLE_NUMBERS                  => false,
-			Config::WRAP_URLS                      => false,
-			Config::STYLE_HANGING_PUNCTUATION      => false,
-			Config::STYLE_INITIAL_QUOTES           => false,
-			Config::INITIAL_QUOTE_TAGS             => [],
-			Config::ENABLE_HYPHENATION             => true,
-			Config::HYPHENATE_HEADINGS             => false,
-			Config::HYPHENATE_CAPS                 => false,
-			Config::HYPHENATE_TITLE_CASE           => false,
-			Config::HYPHENATE_COMPOUNDS            => false,
-			Config::HYPHENATE_LANGUAGES            => 'en-US',
-			Config::HYPHENATE_MIN_LENGTH           => 2,
-			Config::HYPHENATE_MIN_BEFORE           => 2,
-			Config::HYPHENATE_MIN_AFTER            => 2,
-			Config::HYPHENATE_EXCEPTIONS           => [],
-			Config::IGNORE_PARSER_ERRORS           => false,
-			Config::ENABLE_MULTILINGUAL_SUPPORT    => false,
-		] );
-		$this->transients->shouldReceive( 'cache_object' )->once();
-
-		Functions\expect( 'wp_json_encode' )->once()->andReturn( '{ json: "value" }' );
-		Filters\expectApplied( 'typo_narrow_no_break_space' )->with( false )->once();
-		Filters\expectApplied( 'typo_ignore_parser_errors' )->with( false )->once();
-
-		$s = $this->wp_typo->get_settings();
-
-		$this->assertInstanceOf( \PHP_Typography\Settings::class, $s );
-	}
-
-	/**
-	 * Test get_user_settings.
-	 *
-	 * @covers ::get_settings
-	 * @covers ::init_settings_from_options
-	 *
-	 * @uses ::init_settings_from_options
-	 */
-	public function test_get_settings_hyphenation_off() {
-
-		$this->wp_typo->shouldReceive( 'get_config' )->once()->andReturn( [
-			Config::IGNORE_TAGS                    => [ 'script' ],
-			Config::IGNORE_CLASSES                 => [ 'noTypo' ],
-			Config::IGNORE_IDS                     => [],
-			Config::SMART_CHARACTERS               => false,
-			Config::SMART_DASHES                   => false,
-			Config::SMART_DASHES_STYLE             => 'international',
-			Config::SMART_ELLIPSES                 => false,
-			Config::SMART_MATH                     => false,
-			Config::SMART_FRACTIONS                => false,
-			Config::SMART_ORDINALS                 => false,
-			Config::SMART_MARKS                    => false,
-			Config::SMART_QUOTES                   => false,
-			Config::SMART_DIACRITICS               => false,
-			Config::DIACRITIC_LANGUAGES            => 'en-US',
-			Config::DIACRITIC_CUSTOM_REPLACEMENTS  => [],
-			Config::SMART_QUOTES_PRIMARY           => 'doubleCurled',
-			Config::SMART_QUOTES_SECONDARY         => 'singleCurled',
-			Config::SINGLE_CHARACTER_WORD_SPACING  => false,
-			Config::DASH_SPACING                   => false,
-			Config::FRACTION_SPACING               => false,
-			Config::UNIT_SPACING                   => false,
-			Config::NUMBERED_ABBREVIATIONS_SPACING => false,
-			Config::FRENCH_PUNCTUATION_SPACING     => false,
-			Config::UNITS                          => [],
-			Config::SPACE_COLLAPSE                 => false,
-			Config::PREVENT_WIDOWS                 => false,
-			Config::WIDOW_MIN_LENGTH               => 2,
-			Config::WIDOW_MAX_PULL                 => 2,
-			Config::WRAP_HYPHENS                   => false,
-			Config::WRAP_EMAILS                    => false,
-			Config::WRAP_URLS                      => false,
-			Config::WRAP_MIN_AFTER                 => 2,
-			Config::STYLE_AMPS                     => false,
-			Config::STYLE_CAPS                     => false,
-			Config::STYLE_NUMBERS                  => false,
-			Config::WRAP_URLS                      => false,
-			Config::STYLE_HANGING_PUNCTUATION      => false,
-			Config::STYLE_INITIAL_QUOTES           => false,
-			Config::INITIAL_QUOTE_TAGS             => [],
-			Config::ENABLE_HYPHENATION             => false,
-			Config::HYPHENATE_HEADINGS             => false,
-			Config::HYPHENATE_CAPS                 => false,
-			Config::HYPHENATE_TITLE_CASE           => false,
-			Config::HYPHENATE_COMPOUNDS            => false,
-			Config::HYPHENATE_LANGUAGES            => 'en-US',
-			Config::HYPHENATE_MIN_LENGTH           => 2,
-			Config::HYPHENATE_MIN_BEFORE           => 2,
-			Config::HYPHENATE_MIN_AFTER            => 2,
-			Config::HYPHENATE_EXCEPTIONS           => [],
-			Config::IGNORE_PARSER_ERRORS           => false,
-		] );
-		$this->transients->shouldReceive( 'cache_object' )->once();
-
-		Functions\expect( 'wp_json_encode' )->once()->andReturn( '{ json: "value" }' );
-		Filters\expectApplied( 'typo_narrow_no_break_space' )->with( false )->once();
-		Filters\expectApplied( 'typo_ignore_parser_errors' )->with( false )->once();
-
-		$s = $this->wp_typo->get_settings();
-
-		$this->assertInstanceOf( \PHP_Typography\Settings::class, $s );
-	}
-
-	/**
-	 * Test get_hyphenation_languages
-	 *
-	 * @covers ::get_hyphenation_languages
+	 * @covers ::__callStatic
 	 *
 	 * @uses ::get_instance
 	 */
-	public function test_get_hyphenation_languages() {
+	public function test_call_static_get_hyphenation_languages() {
 		// Set up singleton.
 		$this->setStaticValue( \WP_Typography::class, '_instance', $this->wp_typo );
 
-		$this->wp_typo->shouldReceive( 'load_hyphenation_languages' )->once()->andReturn( [ 'de' => 'German' ] );
+		$this->wp_typo->shouldReceive( 'get_hyphenation_languages' )->once()->andReturn( [ 'de' => 'German' ] );
 
 		$langs = \WP_Typography::get_hyphenation_languages();
 
@@ -480,74 +164,22 @@ class WP_Typography_Test extends TestCase {
 	}
 
 	/**
-	 * Test get_diacritic_languages
+	 * Test a static call to foobar(), failing.
 	 *
-	 * @covers ::get_diacritic_languages
+	 * @covers ::__callStatic
 	 *
 	 * @uses ::get_instance
+	 *
+	 * @expectedException \BadMethodCallException
+	 * @expectedExceptionMessage Static method WP_Typography::foobar does not exist.
 	 */
-	public function test_get_diacritic_languages() {
+	public function test_call_static_foobar() {
 		// Set up singleton.
 		$this->setStaticValue( \WP_Typography::class, '_instance', $this->wp_typo );
 
-		$this->wp_typo->shouldReceive( 'load_diacritic_languages' )->once()->andReturn( [ 'de' => 'German' ] );
+		$this->wp_typo->shouldNotReceive( 'foobar' );
 
-		$langs = \WP_Typography::get_diacritic_languages();
-
-		$this->assertContainsOnly( 'string', $langs, 'The languages array should only contain strings.' );
-		$this->assertContainsOnly( 'string', array_keys( $langs ), 'The languages array should be indexed by language codes.' );
-	}
-
-	/**
-	 * Test get_hyphenation_languages
-	 *
-	 * @covers ::load_hyphenation_languages
-	 * @covers ::load_languages
-	 * @covers ::translate_languages
-	 *
-	 * @uses \PHP_Typography\PHP_Typography::get_hyphenation_languages
-	 */
-	public function test_load_hyphenation_languages() {
-		Functions\when( '_x' )->returnArg();
-		if ( ! defined( 'WEEK_IN_SECONDS' ) ) {
-			define( 'WEEK_IN_SECONDS', 999 );
-		}
-
-		$this->cache->shouldReceive( 'get' )->once()->andReturnUsing( function( $key, &$found ) {
-			$found = false;
-			return [];
-		} )->shouldReceive( 'set' )->once();
-
-		$langs = $this->wp_typo->load_hyphenation_languages();
-
-		$this->assertContainsOnly( 'string', $langs, 'The languages array should only contain strings.' );
-		$this->assertContainsOnly( 'string', array_keys( $langs ), 'The languages array should be indexed by language codes.' );
-	}
-
-	/**
-	 * Test get_hyphenation_languages
-	 *
-	 * @covers ::load_diacritic_languages
-	 * @covers ::load_languages
-	 * @covers ::translate_languages
-	 *
-	 * @uses \PHP_Typography\PHP_Typography::get_hyphenation_languages
-	 */
-	public function test_load_diacritic_languages() {
-		Functions\when( '_x' )->returnArg();
-		if ( ! defined( 'WEEK_IN_SECONDS' ) ) {
-			define( 'WEEK_IN_SECONDS', 999 );
-		}
-
-		$this->cache->shouldReceive( 'get' )->once()->andReturnUsing( function( $key, &$found ) {
-			$found = false;
-			return [];
-		} )->shouldReceive( 'set' )->once();
-
-		$langs = $this->wp_typo->load_diacritic_languages();
-
-		$this->assertContainsOnly( 'string', $langs, 'The languages array should only contain strings.' );
-		$this->assertContainsOnly( 'string', array_keys( $langs ), 'The languages array should be indexed by language codes.' );
+		$this->assertNull( \WP_Typography::foobar() );
 	}
 
 	/**
@@ -611,270 +243,8 @@ class WP_Typography_Test extends TestCase {
 	 */
 	public function test_filter_feed_title() {
 		$this->setStaticValue( \WP_Typography::class, '_instance', $this->wp_typo );
-		$this->wp_typo->shouldReceive( 'process_feed' )->once()->with( 'foobar', true, null )->andReturn( 'barfoo' );
+		$this->wp_typo->shouldReceive( 'process_feed_title' )->once()->with( 'foobar', null )->andReturn( 'barfoo' );
 		$this->assertSame( 'barfoo', \WP_Typography::filter_feed_title( 'foobar', null ) );
-	}
-
-	/**
-	 * Test process_title.
-	 *
-	 * @covers ::process_title
-	 */
-	public function test_process_title() {
-		$this->wp_typo->shouldReceive( 'process' )->once()->with( 'foobar', true, false, null )->andReturn( 'barfoo' );
-
-		$this->assertSame( 'barfoo', $this->wp_typo->process_title( 'foobar', null ) );
-	}
-
-	/**
-	 * Test process_feed.
-	 *
-	 * @covers ::process_feed
-	 */
-	public function test_process_feed() {
-		$this->wp_typo->shouldReceive( 'process' )->once()->with( 'foobar', true, true, null )->andReturn( 'barfoo' );
-
-		$this->assertSame( 'barfoo', $this->wp_typo->process_feed( 'foobar', true, null ) );
-	}
-
-	/**
-	 * Test process_title_parts.
-	 *
-	 * @covers ::process_title_parts
-	 */
-	public function test_process_title_parts() {
-		$title_parts = [
-			'fo' . \PHP_Typography\U::SOFT_HYPHEN . 'o',
-			'bar',
-			'baz',
-		];
-
-		foreach ( $title_parts as $part ) {
-			$this->wp_typo->shouldReceive( 'process' )->once()->with( $part, true, true, null )->andReturn( $part . $part );
-		}
-
-		$this->assertSame( [ 'foofoo', 'barbar', 'bazbaz' ], $this->wp_typo->process_title_parts( $title_parts, null ) );
-	}
-
-	/**
-	 * Provide data for testing process.
-	 *
-	 * @return array
-	 */
-	public function provide_process_data() {
-		return [
-			[ true, true, true, null ],
-			[ false, false, false, null ],
-			[ false, true, false, null ],
-			[ false, false, true, null ],
-			[ true, false, true, null ],
-			[ false, false, false, m::mock( \PHP_Typography\Settings::class )->shouldReceive( 'get_hash' )->andReturn( 'another_fake_hash' )->getMock() ],
-		];
-	}
-
-	/**
-	 * Test process
-	 *
-	 * @covers ::process
-	 *
-	 * @uses ::run
-	 * @uses ::set_instance
-	 *
-	 * @dataProvider provide_process_data
-	 *
-	 * @param  bool     $is_title   Fragment is a title.
-	 * @param  bool     $force_feed Enforce feed processing.
-	 * @param  bool     $is_feed    Value for is_feed().
-	 * @param  Settings $settings   May be null.
-	 */
-	public function test_process( $is_title, $force_feed, $is_feed, $settings = null ) {
-		if ( ! defined( 'DAY_IN_SECONDS' ) ) {
-			define( 'DAY_IN_SECONDS', 999 );
-		}
-
-		Functions\expect( 'is_feed' )->andReturn( $is_feed );
-
-		if ( null === $settings ) {
-			$settings_mock = m::mock( \PHP_Typography\Settings::class )->shouldReceive( 'get_hash' )->andReturn( 'another_fake_hash' )->getMock();
-
-			$this->wp_typo->shouldReceive( 'get_settings' )->once()->andReturn( $settings_mock );
-		}
-
-		// Fake filter_body_classes.
-		$this->setValue( $this->wp_typo, 'body_classes', [ 'foo', 'bar' ], \WP_Typography::class );
-
-		Filters\expectApplied( 'typo_settings' )->once()->with( m::type( \PHP_Typography\Settings::class ) )->andReturnFirstArg();
-		Filters\expectApplied( 'typo_processed_text_caching_duration' )->once()->with( m::type( 'int' ) )->andReturn( 5 );
-
-		$typo_mock = m::mock( \PHP_Typography\PHP_Typography::class );
-		$this->wp_typo->shouldReceive( 'get_typography_instance' )->once()->andReturn( $typo_mock );
-		if ( $is_feed || $force_feed ) {
-			$typo_mock->shouldReceive( 'process_feed' )->once()->with( 'text', m::type( \PHP_Typography\Settings::class ), $is_title, [ 'foo', 'bar' ] )->andReturn( 'processed text' );
-		} else {
-			$typo_mock->shouldReceive( 'process' )->once()->with( 'text', m::type( \PHP_Typography\Settings::class ), $is_title, [ 'foo', 'bar' ] )->andReturn( 'processed text' );
-		}
-
-		$this->cache
-			->shouldReceive( 'get' )->once()->andReturn( false )
-			->shouldReceive( 'set' )->once();
-
-		$this->assertSame( 'processed text', $this->wp_typo->process( 'text', $is_title, $force_feed, $settings ) );
-	}
-
-	/**
-	 * Test set_transient.
-	 *
-	 * @covers ::set_transient
-	 */
-	public function foo_test_set_transient() {
-		Functions\expect( 'set_transient' )->once()->with( 'my_transient', 'my_value', 666 )->andReturn( true );
-		Functions\expect( 'update_option' )->once()->with( 'typo_transient_keys', [
-			'my_transient' => true,
-		] )->andReturn( true );
-		$this->assertTrue( $this->wp_typo->set_transient( 'my_transient', 'my_value', 666 ) );
-
-		Functions\expect( 'set_transient' )->once()->with( 'my_other_transient', 'my_value', 666 )->andReturn( true );
-		Functions\expect( 'update_option' )->once()->with( 'typo_transient_keys', [
-			'my_transient'       => true,
-			'my_other_transient' => true,
-		] )->andReturn( true );
-		$this->assertTrue( $this->wp_typo->set_transient( 'my_other_transient', 'my_value', 666 ) );
-
-		Functions\expect( 'set_transient' )->once()->with( 'my_third_transient', 'my_value', 666 )->andReturn( false );
-		$this->assertFalse( $this->wp_typo->set_transient( 'my_third_transient', 'my_value', 666 ) );
-	}
-
-	/**
-	 * Test set_cache.
-	 *
-	 * @covers ::set_cache
-	 */
-	public function foo_test_set_cache() {
-		Functions\expect( 'wp_cache_set' )->once()->with( 'my_cache_key', 'my_value', 'wp-typography', 666 )->andReturn( true );
-		Functions\expect( 'update_option' )->once()->with( 'typo_cache_keys', [
-			'my_cache_key' => true,
-		] )->andReturn( true );
-		$this->assertTrue( $this->wp_typo->set_cache( 'my_cache_key', 'my_value', 666 ) );
-
-		Functions\expect( 'wp_cache_set' )->once()->with( 'my_other_cache_key', 'my_value', 'wp-typography', 666 )->andReturn( true );
-		Functions\expect( 'update_option' )->once()->with( 'typo_cache_keys', [
-			'my_cache_key'       => true,
-			'my_other_cache_key' => true,
-		] )->andReturn( true );
-		$this->assertTrue( $this->wp_typo->set_cache( 'my_other_cache_key', 'my_value', 666 ) );
-
-		Functions\expect( 'wp_cache_set' )->once()->with( 'my_third_cache_key', 'my_value', 'wp-typography', 666 )->andReturn( false );
-		$this->assertFalse( $this->wp_typo->set_cache( 'my_third_cache_key', 'my_value', 666 ) );
-	}
-
-	/**
-	 * Test get_cache.
-	 *
-	 * @covers ::get_cache
-	 */
-	public function foo_test_get_cache() {
-		Functions\expect( 'wp_cache_get' )->once()->with( 'my_cache_key', 'wp-typography', false, false )->andReturn( 'foo' );
-		$this->assertSame( 'foo', $this->wp_typo->get_cache( 'my_cache_key', $found ) );
-	}
-
-	/**
-	 * Test set_default_options.
-	 *
-	 * @covers ::set_default_options
-	 *
-	 * @uses ::run
-	 * @uses ::set_instance
-	 * @uses ::get_default_options
-	 */
-	public function test_set_default_options() {
-		$this->wp_typo->run();
-
-		$this->wp_typo->shouldReceive( 'get_default_options' )->once()->andReturn( [ 'foo' => 'bar' ] );
-
-		$this->options->shouldReceive( 'set' )->once()->with( Options::CONFIGURATION, m::type( 'array' ) );
-
-		$this->wp_typo->set_default_options();
-		$this->assertTrue( true );
-	}
-
-	/**
-	 * Test set_default_options.
-	 *
-	 * @covers ::set_default_options
-	 *
-	 * @uses ::run
-	 * @uses ::set_instance
-	 * @uses ::get_default_options
-	 */
-	public function test_set_default_options_force_defaults() {
-		$this->wp_typo->run();
-
-		$this->wp_typo->shouldReceive( 'get_default_options' )->once()->andReturn( [ 'foo' => 'bar' ] );
-
-		$this->options->shouldNotReceive( 'get' )->with( Options::RESTORE_DEFAULTS );
-		$this->options->shouldReceive( 'set' )->once()->with( Options::CONFIGURATION, m::type( 'array' ) );
-		$this->options->shouldReceive( 'delete' )->once()->with( Options::RESTORE_DEFAULTS )->andReturn( true );
-		$this->options->shouldReceive( 'delete' )->once()->with( Options::CLEAR_CACHE )->andReturn( true );
-
-		$this->wp_typo->set_default_options( true );
-		$this->assertTrue( true );
-	}
-
-
-	/**
-	 * Test get_default_options.
-	 *
-	 * @covers ::get_default_options
-	 *
-	 * @uses ::run
-	 * @uses ::set_instance
-	 *
-	 * @runInSeparateProcess
-	 */
-	public function test_get_default_options() {
-		$this->wp_typo->run();
-
-		Functions\expect( 'wp_list_pluck' )->once()->with( m::type( 'array' ), 'default' )->andReturn( [ 'bar' => 'foo' ] );
-		Functions\expect( '__' )->atLeast()->once()->andReturn( 'translated_string' );
-
-		$this->multi->shouldReceive( 'filter_defaults' )->with( m::type( 'array' ) )->andReturn( [ 'foo' => 'bar' ] );
-
-		$this->assertInternalType( 'array', $this->wp_typo->get_default_options() );
-	}
-
-	/**
-	 * Test clear_cache.
-	 *
-	 * @covers ::clear_cache
-	 */
-	public function test_clear_cache() {
-		$this->transients->shouldReceive( 'invalidate' );
-		$this->cache->shouldReceive( 'invalidate' );
-
-		$this->options->shouldReceive( 'delete' )->once()->with( 'clear_cache' )->andReturn( true );
-
-		$this->wp_typo->clear_cache();
-		$this->assertTrue( true );
-	}
-
-
-	/**
-	 * Test parser_errors_handler.
-	 *
-	 * @covers ::parser_errors_handler
-	 */
-	public function test_parser_errors_handler() {
-		$this->wp_typo->parser_errors_handler( [] );
-		$this->assertTrue( 1 === Filters\applied( 'typo_handle_parser_errors' ) );
-	}
-
-	/**
-	 * Test get_version.
-	 *
-	 * @covers ::get_version
-	 */
-	public function test_get_version() {
-		$this->assertInternalType( 'string', $this->wp_typo->get_version() );
 	}
 
 	/**
@@ -882,52 +252,14 @@ class WP_Typography_Test extends TestCase {
 	 *
 	 * @covers ::get_version_hash
 	 * @covers ::hash_version_string
+	 *
+	 * @uses ::__callStatic
 	 */
 	public function test_get_version_hash() {
-		$this->assertInternalType( 'string', $this->wp_typo->get_version_hash() );
+		$this->setStaticValue( \WP_Typography::class, '_instance', $this->wp_typo );
+		$this->wp_typo->shouldReceive( 'get_version' )->once()->andReturn( '7.6.6' );
+
+		$this->assertSame( 'GFF', $this->wp_typo->get_version_hash() );
 	}
 
-	/**
-	 * Provide data for testing save_hyphenator_cache_on_shutdown.
-	 *
-	 * @return array
-	 */
-	public function provide_save_hyphenator_cache_on_shutdown_data() {
-		return [
-			[ true,  m::mock( Hyphenator_Cache::class ), true ],
-			[ false, m::mock( Hyphenator_Cache::class ), false ],
-			[ true,  null,                               false ],
-			[ false, null,                               false ],
-		];
-	}
-
-	/**
-	 * Test save_hyphenator_cache_on_shutdown.
-	 *
-	 * @covers ::save_hyphenator_cache_on_shutdown
-	 *
-	 * @dataProvider provide_save_hyphenator_cache_on_shutdown_data
-	 *
-	 * @param bool                  $enable_hyphenation The typo_enable_hyphenation value.
-	 * @param Hyphenator_Cache|null $hyphenator_cache   The hyphenator cache instance.
-	 * @param bool                  $expected           If the hyphenator cache should be saved.
-	 */
-	public function test_save_hyphenator_cache_on_shutdown( $enable_hyphenation, $hyphenator_cache, $expected ) {
-
-		if ( null !== $hyphenator_cache ) {
-			$hyphenator_cache->shouldReceive( 'has_changed' )->andReturn( $expected );
-		}
-
-		$this->setValue( $this->wp_typo, 'hyphenator_cache', $hyphenator_cache );
-
-		if ( $expected ) {
-			$this->transients->shouldReceive( 'cache_object' )->once();
-		} else {
-			$this->transients->shouldReceive( 'cache_object' )->never();
-		}
-
-		$this->wp_typo->save_hyphenator_cache_on_shutdown();
-
-		$this->assertTrue( true );
-	}
 }

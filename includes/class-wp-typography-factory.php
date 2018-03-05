@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017 Peter Putzer.
+ *  Copyright 2017-2018 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -31,7 +31,6 @@ use WP_Typography\Data_Storage\Options;
 use WP_Typography\Data_Storage\Transients;
 
 use WP_Typography\Components\Admin_Interface;
-use WP_Typography\Components\Multilingual_Support;
 use WP_Typography\Components\Public_Interface;
 use WP_Typography\Components\Setup;
 
@@ -71,6 +70,13 @@ abstract class WP_Typography_Factory {
 			] );
 			self::$factory->addRule( Options::class, [
 				'shared' => true,
+			] );
+
+			// API implementation.
+			self::$factory->addRule( 'substitutions', [
+				\WP_Typography::class => [
+					'instance' => \WP_Typography\Implementation::class,
+				],
 			] );
 
 			// Load version from plugin data.

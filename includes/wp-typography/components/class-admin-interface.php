@@ -501,8 +501,8 @@ class Admin_Interface implements Plugin_Component {
 	 * Display the plugin options page.
 	 */
 	public function get_admin_page_content() {
-		$this->admin_form_controls[ Config::HYPHENATE_LANGUAGES ]->set_option_values( $this->plugin->load_hyphenation_languages() );
-		$this->admin_form_controls[ Config::DIACRITIC_LANGUAGES ]->set_option_values( $this->plugin->load_diacritic_languages() );
+		$this->admin_form_controls[ Config::HYPHENATE_LANGUAGES ]->set_option_values( $this->plugin->get_hyphenation_languages() );
+		$this->admin_form_controls[ Config::DIACRITIC_LANGUAGES ]->set_option_values( $this->plugin->get_diacritic_languages() );
 
 		// Load the settings page HTML.
 		require \dirname( $this->plugin_file ) . '/admin/partials/settings/settings-page.php';

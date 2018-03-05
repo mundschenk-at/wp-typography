@@ -26,8 +26,6 @@
 
 namespace WP_Typography\Components;
 
-use WP_Typography;
-
 use WP_Typography\Settings\Basic_Locale_Settings;
 use WP_Typography\Settings\Locale_Settings;
 use WP_Typography\Settings\Plugin_Configuration as Config;
@@ -90,9 +88,9 @@ class Multilingual_Support implements Plugin_Component {
 	/**
 	 * Set up the various hooks for multilingual support.
 	 *
-	 * @param WP_Typography $plugin The main plugin instance.
+	 * @param \WP_Typography $plugin The main plugin instance.
 	 */
-	public function run( WP_Typography $plugin ) {
+	public function run( \WP_Typography $plugin ) {
 		// Store plugin reference.
 		$this->plugin = $plugin;
 
@@ -109,8 +107,8 @@ class Multilingual_Support implements Plugin_Component {
 	 */
 	public function add_plugin_defaults_filter() {
 		// Translation of language names is irrelevant here.
-		$this->hyphenation_languages = $this->plugin->load_hyphenation_languages();
-		$this->diacritic_languages   = $this->plugin->load_diacritic_languages();
+		$this->hyphenation_languages = $this->plugin->get_hyphenation_languages();
+		$this->diacritic_languages   = $this->plugin->get_diacritic_languages();
 
 		// Filter the defaults.
 		\add_filter( 'typo_plugin_defaults', [ $this, 'filter_defaults' ] );

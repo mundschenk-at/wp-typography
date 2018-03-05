@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2018 Peter Putzer.
+ *  Copyright 2018 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -24,7 +24,9 @@
 
 namespace WP_Typography\Tests;
 
-use PHP_Typography\Hyphenator_Cache;
+use WP_Typography\Plugin_Controller;
+use WP_Typography\Components\Admin_Interface;
+use WP_Typography\Components\Public_Interface;
 
 use Brain\Monkey\Actions;
 use Brain\Monkey\Filters;
@@ -33,14 +35,12 @@ use Brain\Monkey\Functions;
 use Mockery as m;
 
 /**
- * WP_Typography unit test for the singleton methods.
+ * Unit tests for plugin controller.
  *
- * @coversDefaultClass \WP_Typography
- * @usesDefaultClass \WP_Typography
- *
- * @uses ::hash_version_string
+ * @coversDefaultClass \WP_Typography\Plugin_Controller
+ * @usesDefaultClass \WP_Typography\Plugin_Controller
  */
-class WP_Typography_Singleton_Test extends TestCase {
+class Plugin_Controller_Test extends TestCase {
 
 	/**
 	 * Sets up the fixture, for example, opens a network connection.
@@ -54,7 +54,6 @@ class WP_Typography_Singleton_Test extends TestCase {
 	 * Necesssary clean-up work.
 	 */
 	protected function tearDown() { // @codingStandardsIgnoreLine
-
 		// Reset singleton.
 		$this->setStaticValue( \WP_Typography::class, '_instance', null );
 
@@ -64,20 +63,28 @@ class WP_Typography_Singleton_Test extends TestCase {
 	/**
 	 * Tests singleton methods.
 	 *
-	 * @covers ::get_instance
-	 * @covers ::set_instance
-	 *
-	 * @uses \WP_Typography\Data_Storage\Abstract_Cache::__construct
-	 * @uses \WP_Typography\Data_Storage\Cache::__construct
-	 * @uses \WP_Typography\Data_Storage\Options::__construct
-	 * @uses \WP_Typography\Data_Storage\Transients::__construct
+	 * @covers ::__construct
 	 */
-	public function test_singleton() {
+	public function test_constructor() {
+
+		$multi = m::mock( \WP_Typography\Components\Multilingual_Support::class )
+			->shouldReceive( 'run' )->byDefault()
+			->getMock();
 
 		// Mock WP_Typography\Data_Storage\Options instance.
 		$options = m::mock( \WP_Typography\Data_Storage\Options::class )
 			->shouldReceive( 'get' )->andReturn( false )->byDefault()
 			->shouldReceive( 'set' )->andReturn( false )->byDefault()
+			->getMock();
+
+		// Mock WP_Typography\Components\Setup instance.
+		$setup = m::mock( \WP_Typography\Components\Setup::class )
+			->shouldReceive( 'run' )->byDefault()
+			->getMock();
+
+		// Mock WP_Typography\Components\Common instance.
+		$common = m::mock( \WP_Typography\Components\Common::class )
+			->shouldReceive( 'run' )->byDefault()
 			->getMock();
 
 		// Mock WP_Typography\Data_Storage\Transients instance.
@@ -95,45 +102,41 @@ class WP_Typography_Singleton_Test extends TestCase {
 			->shouldReceive( 'invalidate' )->byDefault()
 			->getMock();
 
-		$typo = m::mock( \WP_Typography::class );
-		\WP_Typography::set_instance( $typo );
+		// Mock WP_Typography\Components\Admin_Interface instance.
+		$admin = m::mock( Admin_Interface::class )
+			->shouldReceive( 'run' )->shouldReceive( 'get_default_settings' )->andReturn( [] )->byDefault()
+			->getMock();
 
-		$typo2 = \WP_Typography::get_instance();
-		$this->assertSame( $typo, $typo2 );
+		// Mock Public_Interface instance.
+		$public_if = m::mock( Public_Interface::class )
+			->shouldReceive( 'run' )->byDefault()
+			->getMock();
 
-		// Check ::get_instance (no underscore).
-		$typo3 = \WP_Typography::get_instance();
-		$this->assertSame( $typo, $typo3 );
+		$typo = m::mock( \WP_Typography\Implementation::class );
+
+		$controller = new \WP_Typography\Plugin_Controller( $typo, $setup, $common, $admin, $public_if, $multi, $transients, $cache, $options );
+
+		$this->assertInstanceOf( \WP_Typography\Plugin_Controller::class, $controller );
+
+		return $controller;
 	}
 
 	/**
-	 * Tests ::get_instance without a previous call to ::_get_instance (i.e. _doing_it_wrong).
+	 * Tests constructor.
 	 *
-	 * @covers ::get_instance
+	 * @depends test_constructor
 	 *
-	 * @expectedException \BadMethodCallException
-	 * @expectedExceptionMessage WP_Typography::get_instance called without prior plugin intialization.
+	 * @covers ::run
+	 *
+	 * @uses \WP_Typography::set_instance
+	 *
+	 * @param Plugin_Controller $controller Required.
 	 */
-	public function test_get_instance_failing() {
-		$typo = \WP_Typography::get_instance();
-		$this->assertInstanceOf( \WP_Typography::class, $typo );
-	}
+	public function test_run( $controller ) {
+		foreach ( $this->getValue( $controller, 'plugin_components', Plugin_Controller::class ) as $component ) {
+			$component->shouldReceive( 'run' )->once()->with( m::type( \WP_Typography::class ) );
+		}
 
-	/**
-	 * Tests ::get_instance without a previous call to ::_get_instance (i.e. _doing_it_wrong).
-	 *
-	 * @covers ::set_instance
-	 *
-	 * @expectedException \BadMethodCallException
-	 * @expectedExceptionMessage WP_Typography::set_instance called more than once.
-	 */
-	public function test_set_instance_failing() {
-		$transients = m::mock( \WP_Typography\Data_Storage\Transients::class );
-		$cache      = m::mock( \WP_Typography\Data_Storage\Cache::class );
-		$options    = m::mock( \WP_Typography\Data_Storage\Options::class );
-
-		$typo = m::mock( \WP_Typography::class );
-		\WP_Typography::set_instance( $typo );
-		\WP_Typography::set_instance( $typo );
+		$this->assertNull( $controller->run() );
 	}
 }

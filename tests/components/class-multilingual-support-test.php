@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017 Peter Putzer.
+ *  Copyright 2017-2018 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -78,7 +78,7 @@ class Multilingual_Support_Test extends TestCase {
 	protected function setUp() { // @codingStandardsIgnoreLine
 		parent::setUp();
 
-		$this->plugin = m::mock( \WP_Typography::class )
+		$this->plugin = m::mock( \WP_Typography\Implementation::class )
 			->shouldReceive( 'get_version' )->andReturn( '6.6.6' )->byDefault()
 			->getMock()->makePartial();
 
@@ -139,8 +139,8 @@ class Multilingual_Support_Test extends TestCase {
 	 */
 	public function test_add_plugin_defaults_filter() {
 
-		$this->plugin->shouldReceive( 'load_hyphenation_languages' )->once()->andReturn( [ 'de' => 'Deutsch' ] );
-		$this->plugin->shouldReceive( 'load_diacritic_languages' )->once()->andReturn( [ 'en' => 'English' ] );
+		$this->plugin->shouldReceive( 'get_hyphenation_languages' )->once()->andReturn( [ 'de' => 'Deutsch' ] );
+		$this->plugin->shouldReceive( 'get_diacritic_languages' )->once()->andReturn( [ 'en' => 'English' ] );
 
 		Filters\expectAdded( 'typo_plugin_defaults' )->once()->with( [ $this->multi, 'filter_defaults' ] );
 
