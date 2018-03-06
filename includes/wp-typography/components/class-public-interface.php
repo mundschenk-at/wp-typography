@@ -167,7 +167,7 @@ class Public_Interface implements Plugin_Component {
 			'acf'         => [
 				'enable'  => 'enable_acf_filters',
 				'check'   => function() {
-					return \class_exists( 'acf' ) && \function_exists( 'acf_get_setting' );
+					return \class_exists( 'acf' );
 				},
 			],
 			'woocommerce' => [
@@ -253,12 +253,19 @@ class Public_Interface implements Plugin_Component {
 	 * @param int $priority Filter priority.
 	 */
 	private function enable_acf_filters( $priority ) {
-		$acf_version = \intval( /* @scrutinizer ignore-call */ \acf_get_setting( 'version' ) );
+		// We assume version 4 by default.
+		$acf_version = 4;
 
+		// Check for newer versions.
+		if ( \function_exists( 'acf_get_setting' ) ) {
+			$acf_version = \intval( \acf_get_setting( 'version' ) );
+		}
+
+		// Adjust hook prefix.
 		if ( 5 === $acf_version ) {
 			// Advanced Custom Fields Pro (version 5).
 			$acf_prefix = 'acf/format_value';
-		} elseif ( 4 === $acf_version ) {
+		} else {
 			// Advanced Custom Fields (version 4).
 			$acf_prefix = 'acf/format_value_for_api';
 		}
