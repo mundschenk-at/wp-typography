@@ -58,6 +58,8 @@ class Public_Interface_Test extends TestCase {
 	 * This method is called before a test is executed.
 	 */
 	protected function setUp() { // @codingStandardsIgnoreLine
+		parent::setUp();
+
 		// Mock WP_Typography\Components\Public_Interface instance.
 		$this->public_if = m::mock( Public_Interface::class, [ 'plugin_basename' ] )
 			->shouldAllowMockingProtectedMethods()->makePartial();
@@ -67,8 +69,6 @@ class Public_Interface_Test extends TestCase {
 		$this->public_if->run(
 			m::mock( \WP_Typography::class )->shouldReceive( 'get_version' )->andReturn( '6.6.6' )->byDefault()->getMock()
 		);
-
-		parent::setUp();
 	}
 
 	/**
