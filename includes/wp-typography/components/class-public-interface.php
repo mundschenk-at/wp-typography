@@ -272,9 +272,59 @@ class Public_Interface implements Plugin_Component {
 
 		// Other ACF versions (i.e. < 4) are not supported.
 		if ( ! empty( $acf_prefix ) ) {
-			\add_filter( "{$acf_prefix}/type=wysiwyg",  [ $this->plugin, 'process' ],       $priority );
-			\add_filter( "{$acf_prefix}/type=textarea", [ $this->plugin, 'process' ],       $priority );
-			\add_filter( "{$acf_prefix}/type=text",     [ $this->plugin, 'process_title' ], $priority );
+			\add_filter( "{$acf_prefix}/type=wysiwyg",  [ $this, 'acf_process' ],       $priority, 3 );
+			\add_filter( "{$acf_prefix}/type=textarea", [ $this, 'acf_process' ],       $priority, 3 );
+			\add_filter( "{$acf_prefix}/type=text",     [ $this, 'acf_process_title' ], $priority, 3 );
+		}
+	}
+
+	/**
+	 * Custom filter for ACF to allow fine-grained control over individual fields.
+	 *
+	 * @param  string $content The field content.
+	 * @param  int    $post_id The post ID.
+	 * @param  array  $field   An array containing all the field settings for the field.
+	 *
+	 * @return string
+	 */
+	public function acf_process( $content, $post_id, $field ) {
+		return $this->filter_acf_field( $content, ! empty( $field['name'] ) ? $field['name'] : '', 'process' );
+	}
+
+	/**
+	 * Custom filter for ACF to allow fine-grained control over individual fields.
+	 *
+	 * @param  string $content The field content.
+	 * @param  int    $post_id The post ID.
+	 * @param  array  $field   An array containing all the field settings for the field.
+	 *
+	 * @return string
+	 */
+	public function acf_process_title( $content, $post_id, $field ) {
+		return $this->filter_acf_field( $content, ! empty( $field['name'] ) ? $field['name'] : '', 'process_title' );
+	}
+
+	/**
+	 * Custom filter implementation for ACF fields.
+	 *
+	 * @param  string $content         The field content.
+	 * @param  string $field_name      The field slug.
+	 * @param  string $filter_function The name of the filter method.
+	 *
+	 * @return string
+	 */
+	private function filter_acf_field( $content, $field_name, $filter_function ) {
+		/**
+		 * Allows automatic filtering for the ACF field {$field_name}.
+		 *
+		 * @since 5.3.0
+		 *
+		 * @param bool $allow Whether to enable or disable filters for the field. Default true.
+		 */
+		if ( \apply_filters( "typo_filter_acf_field_{$field_name}", true ) ) {
+			return $this->plugin->$filter_function( $content );
+		} else {
+			return $content;
 		}
 	}
 

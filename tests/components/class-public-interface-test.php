@@ -218,6 +218,7 @@ class Public_Interface_Test extends TestCase {
 	 * @covers ::enable_woocommerce_filters
 	 *
 	 * @dataProvider provide_add_content_filters_data
+	 * @runInSeparateProcess
 	 *
 	 * @param bool   $content     Disable content filters if true.
 	 * @param bool   $heading     Disable heading filters if true.
@@ -259,14 +260,14 @@ class Public_Interface_Test extends TestCase {
 		];
 		$acf_hooks     = [
 			4 => [
-				'acf/format_value_for_api/type=wysiwyg'  => 'process',
-				'acf/format_value_for_api/type=textarea' => 'process',
-				'acf/format_value_for_api/type=text'     => 'process_title',
+				'acf/format_value_for_api/type=wysiwyg'  => 'acf_process',
+				'acf/format_value_for_api/type=textarea' => 'acf_process',
+				'acf/format_value_for_api/type=text'     => 'acf_process_title',
 			],
 			5 => [
-				'acf/format_value/type=wysiwyg'  => 'process',
-				'acf/format_value/type=textarea' => 'process',
-				'acf/format_value/type=text'     => 'process_title',
+				'acf/format_value/type=wysiwyg'  => 'acf_process',
+				'acf/format_value/type=textarea' => 'acf_process',
+				'acf/format_value/type=text'     => 'acf_process_title',
 			],
 		];
 		$woo_hooks     = [
@@ -288,7 +289,9 @@ class Public_Interface_Test extends TestCase {
 			Filters\expectApplied( 'typo_disable_filtering' )->once()->with( false, 'acf' )->andReturn( $acf );
 
 			if ( ! $acf ) {
-				Functions\expect( 'acf_get_setting' )->once()->with( 'version' )->andReturn( $acf_version );
+				if ( 5 === $acf_version ) {
+					Functions\expect( 'acf_get_setting' )->once()->with( 'version' )->andReturn( $acf_version );
+				}
 			}
 		}
 
@@ -331,7 +334,7 @@ class Public_Interface_Test extends TestCase {
 		foreach ( array_keys( $acf_hooks ) as $version ) {
 			$expected = $acf_version === $version && ! $acf;
 			foreach ( $acf_hooks[ $version ] as $hook => $method ) {
-				$found = has_filter( $hook, "{$plugin_class}->{$method}()" );
+				$found = has_filter( $hook, [ $this->public_if, $method ] );
 				$this->assertEquals( $expected, $found, "Hook $hook" . ( $expected ? '' : ' not' ) . ' expected, but' . ( $found ? '' : ' not' ) . ' found.' );
 			}
 		}
