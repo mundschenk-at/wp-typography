@@ -34,6 +34,10 @@ use WP_Typography\Components\Admin_Interface;
 use WP_Typography\Components\Public_Interface;
 use WP_Typography\Components\Setup;
 
+use WP_Typography\Integration\Container as Integrations;
+use WP_Typography\Integration\ACF_Integration;
+use WP_Typography\Integration\WooCommerce_Integration;
+
 /**
  * A factory for creating WP_Typography instances via dependency injection.
  *
@@ -70,6 +74,17 @@ abstract class WP_Typography_Factory {
 			] );
 			self::$factory->addRule( Options::class, [
 				'shared' => true,
+			] );
+
+			// Plugin integrations are also shared.
+			self::$factory->addRule( Integrations::class, [
+				'shared'          => true,
+				'constructParams' => [
+					[
+						new ACF_Integration(),
+						new WooCommerce_Integration(),
+					],
+				],
 			] );
 
 			// API implementation.
