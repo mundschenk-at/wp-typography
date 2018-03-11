@@ -69,17 +69,60 @@ class ACF_Integration_Test extends TestCase {
 		parent::tearDown();
 	}
 
+	/**
+	 * Provides data for testing run.
+	 *
+	 * @return array
+	 */
+	public function provide_run_data() {
+		return [
+			[ 4 ],
+			[ 5 ],
+		];
+	}
 
 	/**
 	 * Test run.
 	 *
 	 * @covers ::run
+	 *
+	 * @dataProvider provide_run_data
+	 *
+	 * @param int $api_version Required.
 	 */
-	public function test_run() {
+	public function test_run( $api_version ) {
+		$this->acf_i->shouldReceive( 'get_acf_version' )->once()->andReturn( $api_version );
+
+		Functions\expect( 'is_admin' )->once()->andReturn( false );
+		Actions\expectAdded( 'acf/render_field_settings' )->never();
+
 		$this->acf_i->run( m::mock( \WP_Typography::class ) );
 
 		$this->assertAttributeInstanceOf( \WP_Typography::class, 'plugin', $this->acf_i );
 	}
+
+	/**
+	 * Test run.
+	 *
+	 * @covers ::run
+	 *
+	 * @dataProvider provide_run_data
+	 *
+	 * @param int $api_version Required.
+	 */
+	public function test_run_admin( $api_version ) {
+		$this->acf_i->shouldReceive( 'get_acf_version' )->once()->andReturn( $api_version );
+
+		Functions\expect( 'is_admin' )->once()->andReturn( true );
+		if ( 5 === $api_version ) {
+			Actions\expectAdded( 'acf/render_field_settings' )->once();
+		}
+
+		$this->acf_i->run( m::mock( \WP_Typography::class ) );
+
+		$this->assertAttributeInstanceOf( \WP_Typography::class, 'plugin', $this->acf_i );
+	}
+
 
 	/**
 	 * Test check.
@@ -120,15 +163,19 @@ class ACF_Integration_Test extends TestCase {
 	 * @covers ::get_acf_version
 	 */
 	public function test_enable_content_filters_acf4() {
+		$plugin = m::mock( \WP_Typography::class );
+		$this->setValue( $this->acf_i, 'plugin', $plugin, ACF_Integration::class );
+		$this->setValue( $this->acf_i, 'api_version', 4, ACF_Integration::class );
+
 		Filters\expectAdded( 'acf/format_value_for_api/type=wysiwyg' )->once();
 		Filters\expectAdded( 'acf/format_value_for_api/type=textarea' )->once();
 		Filters\expectAdded( 'acf/format_value_for_api/type=text' )->once();
 
 		$this->acf_i->enable_content_filters( 666 );
 
-		$this->assertTrue( \has_filter( 'acf/format_value_for_api/type=wysiwyg', [ $this->acf_i, 'acf_process' ] ) );
-		$this->assertTrue( \has_filter( 'acf/format_value_for_api/type=textarea', [ $this->acf_i, 'acf_process' ] ) );
-		$this->assertTrue( \has_filter( 'acf/format_value_for_api/type=text', [ $this->acf_i, 'acf_process_title' ] ) );
+		$this->assertTrue( \has_filter( 'acf/format_value_for_api/type=wysiwyg', [ $plugin, 'process' ] ) );
+		$this->assertTrue( \has_filter( 'acf/format_value_for_api/type=textarea', [ $plugin, 'process' ] ) );
+		$this->assertTrue( \has_filter( 'acf/format_value_for_api/type=text', [ $plugin, 'process_title' ] ) );
 	}
 
 	/**
@@ -138,54 +185,118 @@ class ACF_Integration_Test extends TestCase {
 	 * @covers ::get_acf_version
 	 */
 	public function test_enable_content_filters_acf5() {
-		Filters\expectAdded( 'acf/format_value/type=wysiwyg' )->once();
-		Filters\expectAdded( 'acf/format_value/type=textarea' )->once();
-		Filters\expectAdded( 'acf/format_value/type=text' )->once();
+		$this->setValue( $this->acf_i, 'api_version', 5, ACF_Integration::class );
 
-		Functions\expect( 'acf_get_setting' )->once()->with( 'version' )->andReturn( '5.5' );
+		Filters\expectAdded( 'acf/format_value' )->once();
 
 		$this->acf_i->enable_content_filters( 666 );
 
-		$this->assertTrue( \has_filter( 'acf/format_value/type=wysiwyg', [ $this->acf_i, 'acf_process' ] ) );
-		$this->assertTrue( \has_filter( 'acf/format_value/type=textarea', [ $this->acf_i, 'acf_process' ] ) );
-		$this->assertTrue( \has_filter( 'acf/format_value/type=text', [ $this->acf_i, 'acf_process_title' ] ) );
+		$this->assertTrue( \has_filter( 'acf/format_value', [ $this->acf_i, 'process_acf5' ] ) );
 	}
 
 	/**
-	 * Test acf_process.
+	 * Provide data for testing process_acf5.
 	 *
-	 * @covers ::acf_process
-	 * @covers ::filter_acf_field
+	 * @return array
 	 */
-	public function test_acf_process() {
-		$plugin = m::mock( \WP_Typography::class );
-		$this->setValue( $this->acf_i, 'plugin', $plugin, ACF_Integration::class );
-
-		Filters\expectApplied( 'typo_filter_acf_field_bar' )->once()->with( true )->andReturn( true );
-		$plugin->shouldReceive( 'process' )->once()->with( 'bla' )->andReturn( 'blabla' );
-		$this->assertSame( 'blabla', $this->acf_i->acf_process( 'bla', 77, [ 'name' => 'bar' ] ) );
-
-		Filters\expectApplied( 'typo_filter_acf_field_foo' )->once()->with( true )->andReturn( false );
-		$plugin->shouldNotReceive( 'process' );
-		$this->assertSame( 'bla', $this->acf_i->acf_process( 'bla', 77, [ 'name' => 'foo' ] ) );
+	public function provide_process_acf5_data() {
+		return [
+			[ ACF_Integration::CONTENT_FILTER, 'process' ],
+			[ ACF_Integration::TITLE_FILTER, 'process_title' ],
+			[ ACF_Integration::FEED_CONTENT_FILTER, 'process_feed' ],
+			[ ACF_Integration::FEED_TITLE_FILTER, 'process_feed_title' ],
+			[ ACF_Integration::DO_NOT_FILTER, null ],
+			[ '', null ],
+			[ 'foo', null ],
+		];
 	}
 
 	/**
-	 * Test acf_process_title.
+	 * Test process_acf5.
 	 *
-	 * @covers ::acf_process_title
-	 * @covers ::filter_acf_field
+	 * @covers ::process_acf5
+	 *
+	 * @dataProvider provide_process_acf5_data
+	 *
+	 * @param string      $filter_setting The field setting.
+	 * @param string|null $expected       The expected method name or null.
 	 */
-	public function test_acf_process_title() {
+	public function test_process_acf5( $filter_setting, $expected ) {
 		$plugin = m::mock( \WP_Typography::class );
 		$this->setValue( $this->acf_i, 'plugin', $plugin, ACF_Integration::class );
 
-		Filters\expectApplied( 'typo_filter_acf_field_bar' )->once()->with( true )->andReturn( true );
-		$plugin->shouldReceive( 'process_title' )->once()->with( 'bla' )->andReturn( 'blabla' );
-		$this->assertSame( 'blabla', $this->acf_i->acf_process_title( 'bla', 77, [ 'name' => 'bar' ] ) );
+		if ( ! empty( $expected ) ) {
+			$plugin->shouldReceive( $expected )->once()->with( 'bla' )->andReturn( 'blabla' );
+			$this->assertSame( 'blabla', $this->acf_i->process_acf5( 'bla', 77, [ 'wp-typography' => $filter_setting ] ) );
+		} else {
+			$this->assertSame( 'bla', $this->acf_i->process_acf5( 'bla', 77, [ 'wp-typography' => $filter_setting ] ) );
+		}
+	}
 
-		Filters\expectApplied( 'typo_filter_acf_field_foo' )->once()->with( true )->andReturn( false );
-		$plugin->shouldNotReceive( 'process_title' );
-		$this->assertSame( 'bla', $this->acf_i->acf_process_title( 'bla', 77, [ 'name' => 'foo' ] ) );
+	/**
+	 * Test process_acf5 without a set filter.
+	 *
+	 * @covers ::process_acf5
+	 */
+	public function test_process_acf5_unset() {
+		$plugin = m::mock( \WP_Typography::class );
+		$this->setValue( $this->acf_i, 'plugin', $plugin, ACF_Integration::class );
+
+		$this->assertSame( 'bla', $this->acf_i->process_acf5( 'bla', 77, [] ) );
+	}
+
+	/**
+	 * Test get_acf_version.
+	 *
+	 * @covers ::get_acf_version
+	 */
+	public function test_get_acf_version_default() {
+		$this->assertSame( 4, $this->acf_i->get_acf_version() );
+	}
+
+	/**
+	 * Test get_acf_version.
+	 *
+	 * @covers ::get_acf_version
+	 */
+	public function test_get_acf_version_acf5() {
+		Functions\expect( 'acf_get_setting' )->once()->with( 'version' )->andReturn( '5.5' );
+
+		$this->assertSame( 5, $this->acf_i->get_acf_version() );
+	}
+
+	/**
+	 * Provide data for testing add_field_setting.
+	 *
+	 * @return array
+	 */
+	public function provide_add_field_setting_data() {
+		return [
+			[ 'wysiwyg', ACF_Integration::CONTENT_FILTER ],
+			[ 'textarea', ACF_Integration::CONTENT_FILTER ],
+			[ 'text', ACF_Integration::TITLE_FILTER ],
+			[ 'foobar', ACF_Integration::DO_NOT_FILTER ],
+		];
+	}
+
+	/**
+	 * Test add_field_setting.
+	 *
+	 * @covers ::add_field_setting
+	 *
+	 * @dataProvider provide_add_field_setting_data
+	 *
+	 * @param string $type    The field type.
+	 * @param string $default The default filter setting.
+	 */
+	public function test_add_field_setting( $type, $default ) {
+		$field = [
+			'type' => $type,
+		];
+
+		Functions\when( '__' )->returnArg();
+		Functions\expect( 'acf_render_field_setting' )->once()->with( $field, m::subset( [ 'default' => $default ] ), true );
+
+		$this->assertNull( $this->acf_i->add_field_setting( $field ) );
 	}
 }

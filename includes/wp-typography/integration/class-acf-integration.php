@@ -34,12 +34,27 @@ namespace WP_Typography\Integration;
  */
 class ACF_Integration implements Plugin_Integration {
 
+	const DO_NOT_FILTER       = 'none';
+	const CONTENT_FILTER      = 'content';
+	const TITLE_FILTER        = 'title';
+	const FEED_CONTENT_FILTER = 'feed_content';
+	const FEED_TITLE_FILTER   = 'feed_title';
+
+	const FILTER_SETTING = 'wp-typography';
+
 	/**
 	 * The plugin API instance.
 	 *
 	 * @var \WP_Typography
 	 */
 	private $plugin;
+
+	/**
+	 * The ACF API version.
+	 *
+	 * @var int
+	 */
+	private $api_version;
 
 	/**
 	 * Check if the ACF integration should be activated.
@@ -56,7 +71,12 @@ class ACF_Integration implements Plugin_Integration {
 	 * @param \WP_Typography $plugin The plugin object.
 	 */
 	public function run( \WP_Typography $plugin ) {
-		$this->plugin = $plugin;
+		$this->plugin      = $plugin;
+		$this->api_version = $this->get_acf_version();
+
+		if ( \is_admin() && 5 === $this->api_version ) {
+			\add_action( 'acf/render_field_settings', [ $this, 'add_field_setting' ] );
+		}
 	}
 
 	/**
@@ -74,21 +94,57 @@ class ACF_Integration implements Plugin_Integration {
 	 * @param int $priority The filter priority.
 	 */
 	public function enable_content_filters( $priority ) {
-		// Adjust hook prefix.
-		if ( 5 === $this->get_acf_version() ) {
+		if ( 5 === $this->api_version ) {
 			// Advanced Custom Fields Pro (version 5).
-			$acf_prefix = 'acf/format_value';
+			\add_filter( 'acf/format_value', [ $this, 'process_acf5' ], $priority, 3 );
 		} else {
 			// Advanced Custom Fields (version 4).
-			$acf_prefix = 'acf/format_value_for_api';
+			\add_filter( 'acf/format_value_for_api/type=wysiwyg',  [ $this->plugin, 'process' ],       $priority );
+			\add_filter( 'acf/format_value_for_api/type=textarea', [ $this->plugin, 'process' ],       $priority );
+			\add_filter( 'acf/format_value_for_api/type=text',     [ $this->plugin, 'process_title' ], $priority );
+		}
+	}
+
+	/**
+	 * Adds a custom setting for the wp-Typography filters to the ACF field settings.
+	 *
+	 * @param array $field The field settings.
+	 */
+	public function add_field_setting( array $field ) {
+		$default = self::DO_NOT_FILTER;
+
+		// Enable filters by default for some field types.
+		switch ( isset( $field['type'] ) ? $field['type'] : '' ) {
+			case 'wysiwyg':
+			case 'textarea':
+				$default = self::CONTENT_FILTER;
+				break;
+
+			case 'text':
+				$default = self::TITLE_FILTER;
+				break;
 		}
 
-		// Other ACF versions (i.e. < 4) are not supported.
-		if ( ! empty( $acf_prefix ) ) {
-			\add_filter( "{$acf_prefix}/type=wysiwyg",  [ $this, 'acf_process' ],       $priority, 3 );
-			\add_filter( "{$acf_prefix}/type=textarea", [ $this, 'acf_process' ],       $priority, 3 );
-			\add_filter( "{$acf_prefix}/type=text",     [ $this, 'acf_process_title' ], $priority, 3 );
-		}
+		// Render the new field setting.
+		/* @scrutinizer: ignore-call */
+		acf_render_field_setting( $field, [
+			'label'        => __( 'Typography', 'wp-typography' ),
+			'instructions' => __( 'Select the wp-Typography filter to apply', 'wp-typography' ),
+			'name'         => self::FILTER_SETTING,
+			'type'         => 'select',
+			'choices'      => [
+				self::DO_NOT_FILTER                     => __( 'Do not filter', 'wp-typography' ),
+				__( 'Standard Posts', 'wp-typography' ) => [
+					self::CONTENT_FILTER => __( 'Treat as body text', 'wp-typography' ),
+					self::TITLE_FILTER   => __( 'Treat as title', 'wp-typography' ),
+				],
+				__( 'RSS Feeds', 'wp-Typography' )      => [
+					self::FEED_CONTENT_FILTER => __( 'Treat as feed body text', 'wp-typography' ),
+					self::FEED_TITLE_FILTER   => __( 'Treat as feed title', 'wp-typography' ),
+				],
+			],
+			'default'      => $default,
+		], true );
 	}
 
 	/**
@@ -96,7 +152,7 @@ class ACF_Integration implements Plugin_Integration {
 	 *
 	 * @return int
 	 */
-	private function get_acf_version() {
+	protected function get_acf_version() {
 		// We assume version 4 by default.
 		$acf_version = 4;
 
@@ -117,44 +173,22 @@ class ACF_Integration implements Plugin_Integration {
 	 *
 	 * @return string
 	 */
-	public function acf_process( $content, $post_id, $field ) {
-		return $this->filter_acf_field( $content, ! empty( $field['name'] ) ? $field['name'] : '', 'process' );
-	}
-
-	/**
-	 * Custom filter for ACF to allow fine-grained control over individual fields.
-	 *
-	 * @param  string $content The field content.
-	 * @param  int    $post_id The post ID.
-	 * @param  array  $field   An array containing all the field settings for the field.
-	 *
-	 * @return string
-	 */
-	public function acf_process_title( $content, $post_id, $field ) {
-		return $this->filter_acf_field( $content, ! empty( $field['name'] ) ? $field['name'] : '', 'process_title' );
-	}
-
-	/**
-	 * Custom filter implementation for ACF fields.
-	 *
-	 * @param  string $content         The field content.
-	 * @param  string $field_name      The field slug.
-	 * @param  string $filter_function The name of the filter method.
-	 *
-	 * @return string
-	 */
-	private function filter_acf_field( $content, $field_name, $filter_function ) {
-		/**
-		 * Allows automatic filtering for the ACF field {$field_name}.
-		 *
-		 * @since 5.3.0
-		 *
-		 * @param bool $allow Whether to enable or disable filters for the field. Default true.
-		 */
-		if ( \apply_filters( "typo_filter_acf_field_{$field_name}", true ) ) {
-			return $this->plugin->$filter_function( $content );
-		} else {
-			return $content;
+	public function process_acf5( $content, $post_id, $field ) {
+		switch ( isset( $field[ self::FILTER_SETTING ] ) ? $field[ self::FILTER_SETTING ] : '' ) {
+			case self::CONTENT_FILTER:
+				$content = $this->plugin->process( $content );
+				break;
+			case self::TITLE_FILTER:
+				$content = $this->plugin->process_title( $content );
+				break;
+			case self::FEED_CONTENT_FILTER:
+				$content = $this->plugin->process_feed( $content );
+				break;
+			case self::FEED_TITLE_FILTER:
+				$content = $this->plugin->process_feed_title( $content );
+				break;
 		}
+
+		return $content;
 	}
 }
