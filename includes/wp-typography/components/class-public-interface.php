@@ -134,6 +134,25 @@ class Public_Interface implements Plugin_Component {
 	 * Adds content filter handlers.
 	 */
 	public function add_content_filters() {
+
+		/**
+		 * Filters the content filter enabling functions.
+		 *
+		 * @internal
+		 *
+		 * @param callable[string] $filters An array of enabling functions taking
+		 *                                  the priority as an argument, indexed by
+		 *                                  filter group.
+		 */
+		$filters = \apply_filters( 'typo_content_filters', [
+			// Add filters for "full" content.
+			'content' => [ $this, 'enable_content_filters' ],
+			// Add filters for headings.
+			'heading' => [ $this, 'enable_heading_filters' ],
+			// Extra care needs to be taken with the <title> tag.
+			'title'   => [ $this, 'enable_title_filters' ],
+		] );
+
 		/**
 		 * Filters the priority used for wp-Typography's text processing filters.
 		 *
@@ -145,40 +164,7 @@ class Public_Interface implements Plugin_Component {
 		 */
 		$priority = \apply_filters( 'typo_filter_priority', $this->filter_priority );
 
-		/**
-		 * The available filters.
-		 *
-		 * @var array
-		 */
-		$filters = [
-			// Add filters for "full" content.
-			'content'     => [
-				'enable'  => 'enable_content_filters',
-			],
-			// Add filters for headings.
-			'heading'     => [
-				'enable'  => 'enable_heading_filters',
-			],
-			// Extra care needs to be taken with the <title> tag.
-			'title'       => [
-				'enable'  => 'enable_title_filters',
-			],
-			// Add filters for third-party plugins.
-			'acf'         => [
-				'enable'  => 'enable_acf_filters',
-				'check'   => function() {
-					return \class_exists( 'acf' ) && \function_exists( 'acf_get_setting' );
-				},
-			],
-			'woocommerce' => [
-				'enable'  => 'enable_woocommerce_filters',
-				'check'   => function() {
-					return \class_exists( 'WooCommerce' );
-				},
-			],
-		];
-
-		foreach ( $filters as $tag => $filter ) {
+		foreach ( $filters as $tag => $enable ) {
 			/**
 			 * Disables automatic filtering by wp-Typography.
 			 *
@@ -188,8 +174,8 @@ class Public_Interface implements Plugin_Component {
 			 * @param bool   $disable      Whether to disable automatic filtering. Default false.
 			 * @param string $filter_group Which filters to disable. Possible values 'content', 'heading', 'title', 'acf', 'woocommerce'.
 			 */
-			if ( ( ! isset( $filter['check'] ) || $filter['check']() ) && ! \apply_filters( 'typo_disable_filtering', false, $tag ) ) {
-				$this->{$filter['enable']}( $priority );
+			if ( ! \apply_filters( 'typo_disable_filtering', false, $tag ) ) {
+				$enable( $priority );
 			}
 		}
 	}
@@ -245,48 +231,6 @@ class Public_Interface implements Plugin_Component {
 		\add_filter( 'wp_title',             [ $this->plugin, 'process_feed' ],        $priority ); // WP < 4.4.
 		\add_filter( 'document_title_parts', [ $this->plugin, 'process_title_parts' ], $priority );
 		\add_filter( 'wp_title_parts',       [ $this->plugin, 'process_title_parts' ], $priority ); // WP < 4.4.
-	}
-
-	/**
-	 * Enable the Advanced Custom Fields (https://www.advancedcustomfields.com) filters.
-	 *
-	 * @param int $priority Filter priority.
-	 */
-	private function enable_acf_filters( $priority ) {
-		$acf_version = \intval( /* @scrutinizer ignore-call */ \acf_get_setting( 'version' ) );
-
-		if ( 5 === $acf_version ) {
-			// Advanced Custom Fields Pro (version 5).
-			$acf_prefix = 'acf/format_value';
-		} elseif ( 4 === $acf_version ) {
-			// Advanced Custom Fields (version 4).
-			$acf_prefix = 'acf/format_value_for_api';
-		}
-
-		// Other ACF versions (i.e. < 4) are not supported.
-		if ( ! empty( $acf_prefix ) ) {
-			\add_filter( "{$acf_prefix}/type=wysiwyg",  [ $this->plugin, 'process' ],       $priority );
-			\add_filter( "{$acf_prefix}/type=textarea", [ $this->plugin, 'process' ],       $priority );
-			\add_filter( "{$acf_prefix}/type=text",     [ $this->plugin, 'process_title' ], $priority );
-		}
-	}
-
-	/**
-	 * Enable the WooCommerce (https://github.com/woocommerce/woocommerce) filters.
-	 *
-	 * @param int $priority Filter priority.
-	 */
-	private function enable_woocommerce_filters( $priority ) {
-		// Page descriptions.
-		\add_filter( 'woocommerce_format_content', [ $this->plugin, 'process' ], $priority );
-
-		// Shop notices.
-		\add_filter( 'woocommerce_add_error',      [ $this->plugin, 'process' ], $priority );
-		\add_filter( 'woocommerce_add_success',    [ $this->plugin, 'process' ], $priority );
-		\add_filter( 'woocommerce_add_notice',     [ $this->plugin, 'process' ], $priority );
-
-		// Demo store banner.
-		\add_filter( 'woocommerce_demo_store',     [ $this->plugin, 'process' ], $priority );
 	}
 
 	/**

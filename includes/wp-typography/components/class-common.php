@@ -27,6 +27,7 @@
 namespace WP_Typography\Components;
 
 use WP_Typography\Data_Storage\Options;
+use WP_Typography\Integration\Container as Integrations;
 use WP_Typography\Settings\Plugin_Configuration as Config;
 
 /**
@@ -53,12 +54,21 @@ class Common implements Plugin_Component {
 	private $options;
 
 	/**
+	 * The plugin integrations.
+
+	 * @var Integrations
+	 */
+	private $integrations;
+
+	/**
 	 * Create a new instace of WP_Typography\Setup.
 	 *
-	 * @param Options $options     The Options API handler.
+	 * @param Options      $options      The Options API handler.
+	 * @param Integrations $integrations Available plugin integrations.
 	 */
-	public function __construct( Options $options ) {
-		$this->options = $options;
+	public function __construct( Options $options, Integrations $integrations ) {
+		$this->options      = $options;
+		$this->integrations = $integrations;
 	}
 
 	/**
@@ -71,6 +81,9 @@ class Common implements Plugin_Component {
 
 		// Load settings.
 		add_action( 'init', [ $this, 'init' ] );
+
+		// Initialize plugin integrations.
+		$this->integrations->run( $plugin );
 	}
 
 

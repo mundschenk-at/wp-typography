@@ -26,6 +26,7 @@ namespace WP_Typography\Tests\Components;
 
 use WP_Typography\Components\Common;
 use WP_Typography\Data_Storage\Options;
+use WP_Typography\Integration\Container as Integrations;
 use WP_Typography\Settings\Plugin_Configuration as Config;
 
 use WP_Typography\Tests\TestCase;
@@ -69,6 +70,13 @@ class Common_Test extends TestCase {
 	protected $plugin;
 
 	/**
+	 * Test fixture.
+	 *
+	 * @var \WP_Typography\Integration\Container
+	 */
+	protected $integrations;
+
+	/**
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
@@ -81,11 +89,18 @@ class Common_Test extends TestCase {
 			->shouldReceive( 'set' )->andReturn( false )->byDefault()
 			->getMock();
 
+		// Mock plugin integrations.
+		$this->integrations = m::mock( Integrations::class );
+
 		// Mock WP_Typography\Components\Common instance.
-		$this->common = m::mock( Common::class, [ $this->options ] )
+		$this->common = m::mock( Common::class, [ $this->options, $this->integrations ] )
 			->shouldAllowMockingProtectedMethods()->makePartial();
 
+		// Mock plugin API.
 		$this->plugin = m::mock( \WP_Typography::class )->shouldReceive( 'get_version' )->andReturn( '6.6.6' )->byDefault()->getMock();
+
+		// Great Expectations.
+		$this->integrations->shouldReceive( 'run' )->once()->with( $this->plugin );
 
 		// Finish setup.
 		$this->common->run( $this->plugin );
@@ -104,7 +119,7 @@ class Common_Test extends TestCase {
 	 * @covers ::__construct
 	 */
 	public function test_constructor() {
-		$common = m::mock( Common::class, [ $this->options ] );
+		$common = m::mock( Common::class, [ $this->options, $this->integrations ] );
 
 		$this->assertAttributeSame( $this->options, 'options', $common );
 	}
@@ -117,6 +132,7 @@ class Common_Test extends TestCase {
 	 */
 	public function test_run() {
 		Actions\expectAdded( 'init' )->with( [ $this->common, 'init' ] )->once();
+		$this->integrations->shouldReceive( 'run' )->once()->with( $this->plugin );
 
 		$this->common->run( $this->plugin );
 
