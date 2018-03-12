@@ -1,11 +1,9 @@
 /**
- *  Clean up clipboard content on cut & copy. Removes &shy; and zero-width space.
- *
  *  This file is part of wp-Typography.
  *
- *	Copyright 2016 Peter Putzer.
+ *  Copyright 2016, 2018 Peter Putzer.
  *
- *	This program is free software; you can redistribute it and/or
+ *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  as published by the Free Software Foundation; either version 2
  *  of the License, or (at your option) any later version.
@@ -21,49 +19,55 @@
  *
  *  ***
  *
- *  @package wpTypography
- *  @author Peter Putzer <github@mundschenk.at>
+ *  @package mundschenk-at/wp-typography
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
-jQuery( document ).ready( function( $ ) {
 
-	function cleanUpSelection()	{
+/**
+ * Clean up clipboard content on cut & copy. Removes &shy; and zero-width space.
+ *
+ * @author Peter Putzer <github@mundschenk.at>
+ */
+jQuery( function( $ ) {
+	'use strict';
 
-		// Store selection and ranges
-		var sel = window.getSelection();
-		var ranges = [];
-		var origRangeCount = sel.rangeCount;
-		var i;
-		var div;
+	if ( window.getSelection ) {
 
-		for ( i = 0; i < origRangeCount; i++ ) {
-			 ranges[i] = sel.getRangeAt( i );
-		}
+		document.addEventListener( 'copy', function() {
+			var
+				sel        = window.getSelection(),
+				ranges     = [],
+				rangeCount = sel.rangeCount,
+				i, shadow;
 
-		// Create new div containing cleaned HTML content
-		div = $( '<div>', { style: { position: 'absolute', left: '-99999px' },
-							    html:  $.selection( 'html' ).replace( /\u00AD/gi, '' ).replace( /\u200B/gi, '' ) } );
-
-		// Append to DOM
-		$( 'body' ).append( div );
-
-		// Select the children of our "clean" div
-		sel.selectAllChildren( div[0] );
-
-		// Clean up after copy
-		window.setTimeout( function() {
-			var i;
-
-			// Remove div
-			div.remove();
-
-			// Restore selection
-			sel.removeAllRanges();
-			for ( i = 0; i < origRangeCount; i++ ) {
-				 sel.addRange( ranges[i] );
+			for ( i = 0; i < rangeCount; i++ ) {
+				 ranges[i] = sel.getRangeAt( i );
 			}
-		}, 1 );
-	}
 
-	document.oncopy = cleanUpSelection;
+			// Create new div containing cleaned HTML content
+			shadow = $( '<div>', {
+				style: { position: 'absolute', left: '-99999px' },
+				html: $( '<div></div>' ).append( sel.getRangeAt( 0 ).cloneContents() ).html().replace( /\u00AD/gi, '' ).replace( /\u200B/gi, '' )
+			} );
+
+			// Append to DOM
+			$( 'body' ).append( shadow );
+
+			// Select the children of our "clean" div
+			sel.selectAllChildren( shadow[0] );
+
+			// Clean up after copy
+			window.setTimeout( function() {
+
+				// Remove div
+				shadow.remove();
+
+				// Restore selection
+				sel.removeAllRanges();
+				for ( i = 0; i < rangeCount; i++ ) {
+					 sel.addRange( ranges[i] );
+				}
+			}, 0 );
+		} );
+	}
 } );

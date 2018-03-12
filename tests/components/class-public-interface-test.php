@@ -340,8 +340,6 @@ class Public_Interface_Test extends TestCase {
 		Functions\expect( 'plugin_dir_url' )->andReturn( 'dummy/path' );
 		Functions\expect( 'wp_enqueue_script' )
 			->once()
-			->with( 'jquery-selection', m::type( 'string' ), m::type( 'array' ), m::type( 'string' ), true )
-			->andAlsoExpectIt()->once()
 			->with( 'wp-typography-cleanup-clipboard', m::type( 'string' ), m::type( 'array' ), m::type( 'string' ), true );
 		$this->public_if->enqueue_scripts();
 

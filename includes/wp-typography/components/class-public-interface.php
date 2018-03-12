@@ -259,8 +259,7 @@ class Public_Interface implements Plugin_Component {
 			$version    = $this->plugin->get_version();
 			$plugin_dir = \plugin_dir_url( $this->plugin_basename );
 
-			\wp_enqueue_script( 'jquery-selection',                "{$plugin_dir}js/jquery.selection$suffix.js", [ 'jquery' ],                     $version, true );
-			\wp_enqueue_script( 'wp-typography-cleanup-clipboard', "{$plugin_dir}js/clean_clipboard$suffix.js",  [ 'jquery', 'jquery-selection' ], $version, true );
+			\wp_enqueue_script( 'wp-typography-cleanup-clipboard', "{$plugin_dir}js/clean_clipboard$suffix.js", [ 'jquery' ], $version, true );
 		}
 	}
 }
