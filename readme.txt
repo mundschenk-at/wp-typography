@@ -4,7 +4,7 @@ Tags: typography, hyphenation, smart quotes, formatting, widows, orphans, typogr
 Requires at least: 4.6
 Requires PHP: 5.6
 Tested up to: 4.9
-Stable tag: 5.2.4
+Stable tag: 5.3.0
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
@@ -111,6 +111,14 @@ please upgrade PHP or continue to use version 4.2.2.
 
 == Changelog ==
 
+= 5.3.0 - March 13, 2018 =
+* _Feature_: True integration with Advanced Custom Fields 5, making the filters adjustable for each field via the settings UI.
+* _Feature_: The script to remove soft hyphens from clipboard selections has been refactored to reduce the number of loaded resources.
+* _Change_: Some API methods have been deprecated and will be removed in 6.0.0:
+  - The static methods `WP_Typography::filter*` should be replaced by static calls to the existing `process*` method family.
+  - In general, all instance methods of the new class `WP_Typography\Implementation` can now be called statically on the singleton via the `WP_Typography` superclass.
+* _Bugfix_: In rare cases, UTF-8 characters like `Å` caused all content within the same tag to disappear.
+
 = 5.2.4 - February 26, 2018 =
 * _Bugfix_: The partial was still packaged in the wrong place, causing backend whitescreens in some cases.
 
@@ -149,54 +157,3 @@ please upgrade PHP or continue to use version 4.2.2.
 * _Change_: Updated to use version 6.1.0 of the composer package `mundschenk-at/php-typography`.
 * _Bugfix_: Numbers are treated like characters for the purpose of wrapping emails.
 * _Bugfix_: Better matching between hyphenation languages and WordPress locales.
-
-= 5.1.3 - December 03, 2017 =
-* _Change_: Updated to use version 5.2.3 of the composer package `mundschenk-at/php-typography`.
-* _Bugfix_: Sometimes, the French double quotes style generated spurious ».
-* _Bugfix_: Locale-based language files where not properly matched (primarily affecting `en-US` and `en-GB`, props @strasis).
-
-= 5.1.2 - November 25, 2017 =
-* _Change_: Updated to use version 5.2.2 of the composer package `mundschenk-at/php-typography`.
-* _Bugfix_: Removed some ambiguous diacritics replacements from the German language file.
-* _Bugfix_: Prevent of accidental loading of obsolete composer `ClassLoader` implementations from other plugins.
-
-= 5.1.1 - November 16, 2017 =
-* _Bugfix_: Shortcodes in the new WordPress 4.8 text widget work again.
-
-= 5.1.0 - November 14, 2017 =
-* _Feature_: HTML5 parser performance improved by 20 percent.
-* _Feature_: New hyphenation language "Swiss-German (Traditional)" added.
-* _Feature_: New filter hook `typo_narrow_no_break_space` to enable the NARROW NO-BREAK SPACE.
-* _Change_: Refactored plugin internals. This means that
-  - caching should be more friendly to shared hosting environments,
-  - options are stored as a single array now (i.e. fewer rows in the `options` table), and
-  - filters and actions are only added when actually needed.
-* _Change_: Updated to use version 5.2.1 of the composer package `mundschenk-at/php-typography`.
-* _Bugfix_: Narrow spaces are honored during de-widowing.
-
-= 5.0.4 - September 09, 2017 =
-* _Bugfix_: Ensure proper typing for cached language plugin lists.
-
-= 5.0.3 - September 03, 2017 =
-* _Bugfix_: Lower database write load by reducing option updates (props @jerzyk).
-
-= 5.0.2 - September 02, 2017 =
-* _Bugfix_: "Clear Cache" and "Restore Defaults" admin notices are now shown again.
-* _Bugfix_: Object caching errors don't crash the site anymore.
-
-= 5.0.1 - August 28, 2017 =
-* _Bugfix_: Fatal error on PHP 5.6.x (caused by using `__METHOD__` as a variable function) fixed (`mundschenk-at/php-typography` 5.0.2).
-
-= 5.0.0 - August 27, 2017 =
-* _Feature_: Proper multilingual support (automatic language switching). Tested with
-  - [Polylang](https://wordpress.org/plugins/polylang/),
-  - [MultilingualPress](https://wordpress.org/plugins/multilingual-press/), and
-  - [WPML](https://wpml.org).
-* _Feature_: Language-specific default settings.
-* _Feature_: [Several new hooks](https://code.mundschenk.at/wp-typography/api/) added (including `typo_settings` to directly filter the settings).
-* _Change_: Updated to use version 5.0.1 of the new standalone composer package `mundschenk-at/php-typography`.
-* _Change_: Minimum PHP version increased to 5.6.0
-* _Change_: Updated list of valid top-level domains.
-* _Bugfix_: French punctuation spacing after links (and other inline tags) fixed.
-* _Bugfix_: Lone ampersands are treated as single-character words.
-* _Bugfix_: Hyphenated words are properly de-widowed.
