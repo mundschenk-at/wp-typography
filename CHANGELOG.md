@@ -1,5 +1,18 @@
 # Changes
 
+# 5.3.0 - March 13, 2018
+*   _Feature_: True integration with Advanced Custom Fields 5, making the filters
+    adjustable for each field via the settings UI.
+*   _Feature_: The script to remove soft hyphens from clipboard selections has
+    been refactored to reduce the number of loaded resources.
+*   _Change_: Some API methods have been deprecated and will be removed in 6.0.0:
+    -   The static methods `WP_Typography::filter*` should be replaced by static
+        calls to the existing `process*` method family.
+    -   In general, all instance methods of the new class `WP_Typography\Implementation`
+        can now be called statically on the singleton via the `WP_Typography` superclass.
+*   _Bugfix_: In rare cases, UTF-8 characters like `Å` caused all content within
+    the same tag to disappear.
+
 # 5.2.4 - February 26, 2018
 *   _Bugfix_: The partial was still packaged in the wrong place, causing backend whitescreens
     in some cases.
