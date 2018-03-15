@@ -1,5 +1,9 @@
 # Changes
 
+# 5.3.1 - March 15, 2018
+*   _Bugfix_: Always clear the cache after updates to prevent frontend whitescreens
+    under certain circumstances.
+
 # 5.3.0 - March 13, 2018
 *   _Feature_: True integration with Advanced Custom Fields 5, making the filters
     adjustable for each field via the settings UI.
