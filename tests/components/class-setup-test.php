@@ -140,7 +140,6 @@ class Setup_Test extends TestCase {
 	public function test_activate() {
 		$this->plugin->shouldReceive( 'get_config' )->once();
 		$this->plugin->shouldReceive( 'set_default_options' )->once();
-		$this->plugin->shouldReceive( 'clear_cache' )->once();
 
 		$this->assertNull( $this->setup->activate() );
 	}
@@ -272,6 +271,7 @@ class Setup_Test extends TestCase {
 		}
 
 		$this->setup->shouldReceive( 'set_installed_version' )->once();
+		$this->plugin->shouldReceive( 'clear_cache' )->once();
 
 		$this->assertNull( $this->invokeMethod( $this->setup, 'plugin_updated', [ $installed_version ] ) );
 	}

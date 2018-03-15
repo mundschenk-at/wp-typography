@@ -4,7 +4,7 @@ Tags: typography, hyphenation, smart quotes, formatting, widows, orphans, typogr
 Requires at least: 4.6
 Requires PHP: 5.6
 Tested up to: 4.9
-Stable tag: 5.3.0
+Stable tag: 5.3.1
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
@@ -110,6 +110,9 @@ The plugin now requires at least PHP 5.6. If you are still running an earlier ve
 please upgrade PHP or continue to use version 4.2.2.
 
 == Changelog ==
+
+= 5.3.1 - March 15, 2018 =
+* _Bugfix_: Always clear the cache after updates to prevent frontend whitescreens under certain circumstances.
 
 = 5.3.0 - March 13, 2018 =
 * _Feature_: True integration with Advanced Custom Fields 5, making the filters adjustable for each field via the settings UI.
