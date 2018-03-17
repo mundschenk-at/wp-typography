@@ -415,6 +415,11 @@ class Admin_Interface implements Plugin_Component {
 	public function add_options_page() {
 		$page = \add_options_page( $this->plugin_name, $this->plugin_name, 'manage_options', \strtolower( $this->plugin_name ), [ $this, 'get_admin_page_content' ] );
 
+		if ( ! $page ) {
+			// User has insufficient capabilities.
+			return;
+		}
+
 		// General sections for each tab.
 		foreach ( $this->admin_form_tabs as $tab_id => $tab ) {
 			\add_settings_section( $tab_id, '', [ $this, 'print_settings_section' ], self::OPTION_GROUP . $tab_id );
