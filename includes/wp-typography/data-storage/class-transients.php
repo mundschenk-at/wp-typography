@@ -33,137 +33,16 @@ namespace WP_Typography\Data_Storage;
  *
  * @author Peter Putzer <github@mundschenk.at>
  */
-class Transients extends Abstract_Cache {
+class Transients extends \Mundschenk\Data_Storage\Transients {
 
-	const INCREMENTOR_KEY      = self::PREFIX . 'transients_incrementor';
-	const TRANSIENT_SQL_PREFIX = '_transient_';
+	const PREFIX = 'typo_';
 
 	/**
 	 * Create new cache instance.
 	 */
 	public function __construct() {
-		$this->incrementor = \get_transient( self::INCREMENTOR_KEY );
-
-		parent::__construct();
+		parent::__construct( self::PREFIX );
 	}
-
-	/**
-	 * Invalidate all cached elements by reseting the incrementor.
-	 */
-	public function invalidate() {
-
-		if ( ! \wp_using_ext_object_cache() ) {
-			// Clean up old transients.
-			foreach ( $this->get_keys_from_database() as $old_transient ) {
-				\delete_transient( $old_transient );
-			}
-		}
-
-		// Update incrementor.
-		$this->incrementor = time();
-		\set_transient( self::INCREMENTOR_KEY, $this->incrementor );
-	}
-
-	/**
-	 * Retrieves a list of transients set by the plugin from the options table.
-	 *
-	 * @return string[]
-	 */
-	public function get_keys_from_database() {
-		/**
-		 * WordPress database handler.
-		 *
-		 * @var \wpdb
-		 */
-		global $wpdb;
-
-		$results = $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT option_name FROM {$wpdb->options} WHERE option_name like %s",
-				self::TRANSIENT_SQL_PREFIX . self::PREFIX . '%'
-			),
-			ARRAY_A
-		); // WPCS: db call ok, cache ok.
-
-		return \str_replace( self::TRANSIENT_SQL_PREFIX, '', \wp_list_pluck( $results, 'option_name' ) );
-	}
-
-	/**
-	 * Retrieves a cached value.
-	 *
-	 * @param string $key The cache key.
-	 *
-	 * @return mixed
-	 */
-	public function get( $key ) {
-		return \get_transient( $this->get_key( $key ) );
-	}
-
-	/**
-	 * Retrieves a cached large object.
-	 *
-	 * @param string $key The cache key.
-	 *
-	 * @return mixed
-	 */
-	public function get_large_object( $key ) {
-		$encoded = $this->get( $key );
-		if ( false === $encoded ) {
-			return false;
-		}
-
-		$uncompressed = @\gzdecode( \base64_decode( $encoded ) ); // @codingStandardsIgnoreLine
-		if ( false === $uncompressed ) {
-			return false;
-		}
-
-		return $this->maybe_fix_object( \unserialize( $uncompressed ) ); // @codingStandardsIgnoreLine
-	}
-
-	/**
-	 * Sets an entry in the cache and stores the key.
-	 *
-	 * @param string $key       The cache key.
-	 * @param mixed  $value     The value to store.
-	 * @param int    $duration  Optional. The duration in seconds. Default 0 (no expiration).
-	 *
-	 * @return bool True if the cache could be set successfully.
-	 */
-	public function set( $key, $value, $duration = 0 ) {
-		return \set_transient( $this->get_key( $key ), $value, $duration );
-	}
-
-	/**
-	 * Sets a transient for a large PHP object. The object will be stored in
-	 * serialized and gzip encoded form using Base64 encoding to ensure binary safety.
-	 *
-	 * @param string $key       The cache key.
-	 * @param mixed  $value     The value to store.
-	 * @param int    $duration  Optional. The duration in seconds. Default 0 (no expiration).
-	 *
-	 * @return bool True if the cache could be set successfully.
-	 */
-	public function set_large_object( $key, $value, $duration = 0 ) {
-		$compressed = \gzencode( \serialize( $value ) ); // @codingStandardsIgnoreLine
-
-		if ( false === $compressed ) {
-			return false; // @codeCoverageIgnore
-		}
-
-		return $this->set( $key, \base64_encode( $compressed ), $duration );
-	}
-
-	/**
-	 * Deletes an entry from the cache.
-	 *
-	 * @param string $key The cache key root.
-	 *
-	 * @return bool True on successful removal, false on failure.
-	 */
-	public function delete( $key ) {
-		return \delete_transient( $this->get_key( $key ) );
-	}
-
 
 	/**
 	 * Cache the given object under the transient name.
@@ -196,23 +75,5 @@ class Transients extends Abstract_Cache {
 
 			$this->set_large_object( $transient, $object, $duration );
 		}
-	}
-
-	/**
-	 * Tries to fix object cache implementations sometimes returning __PHP_Incomplete_Class.
-	 *
-	 * Originally based on http://stackoverflow.com/a/1173769/6646342 and refactored
-	 * for PHP 7.2 compatibility.
-	 *
-	 * @param  object $object An object that should have been unserialized, but may be of __PHP_Incomplete_Class.
-	 *
-	 * @return object         The object with its real class.
-	 */
-	protected function maybe_fix_object( $object ) {
-		if ( '__PHP_Incomplete_Class' === \get_class( $object ) ) {
-			$object = \unserialize( \serialize( $object ) ); // phpcs:disable WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize,WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
-		}
-
-		return $object;
 	}
 }

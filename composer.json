@@ -30,7 +30,8 @@
         "php": ">=5.6.0",
         "mundschenk-at/php-typography": "^6.1.0",
         "level-2/dice": "^2.0.3",
-        "mundschenk-at/check-wp-requirements": "^0.4"
+        "mundschenk-at/check-wp-requirements": "^0.4",
+        "mundschenk-at/wp-data-storage": "dev-master"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "3.2.2",
