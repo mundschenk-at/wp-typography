@@ -67,7 +67,6 @@ class WP_Typography_Singleton_Test extends TestCase {
 	 * @covers ::get_instance
 	 * @covers ::set_instance
 	 *
-	 * @uses \WP_Typography\Data_Storage\Abstract_Cache::__construct
 	 * @uses \WP_Typography\Data_Storage\Cache::__construct
 	 * @uses \WP_Typography\Data_Storage\Options::__construct
 	 * @uses \WP_Typography\Data_Storage\Transients::__construct

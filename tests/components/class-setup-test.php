@@ -159,7 +159,6 @@ class Setup_Test extends TestCase {
 	 *
 	 * @covers ::uninstall
 	 *
-	 * @uses WP_Typography\Data_Storage\Abstract_Cache::__construct
 	 * @uses WP_Typography\Data_Storage\Transients::__construct
 	 * @uses WP_Typography\Data_Storage\Transients::invalidate
 	 */

@@ -126,7 +126,6 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 * @covers ::__construct
 	 *
 	 * @uses ::get_version
-	 * @uses \WP_Typography\Data_Storage\Abstract_Cache::__construct
 	 * @uses \WP_Typography\Data_Storage\Cache::__construct
 	 * @uses \WP_Typography\Data_Storage\Cache::invalidate
 	 * @uses \WP_Typography\Data_Storage\Options::__construct

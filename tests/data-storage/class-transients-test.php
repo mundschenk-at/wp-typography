@@ -41,7 +41,6 @@ use Mockery as m;
  * @usesDefaultClass \WP_Typography\Data_Storage\Transients
  *
  * @uses ::__construct
- * @uses \WP_Typography\Data_Storage\Abstract_Cache::__construct
  */
 class Transients_Test extends TestCase {
 
@@ -57,7 +56,7 @@ class Transients_Test extends TestCase {
 	 * This method is called before a test is executed.
 	 */
 	protected function setUp() { // @codingStandardsIgnoreLine
-		Functions\expect( 'get_transient' )->once()->with( Transients::INCREMENTOR_KEY )->andReturn( 999 );
+		Functions\expect( 'get_transient' )->once()->with( m::pattern( '/incrementor/' ) )->andReturn( 999 );
 
 		$this->transients = m::mock( Transients::class, [] )->shouldAllowMockingProtectedMethods()->makePartial();
 
@@ -75,11 +74,9 @@ class Transients_Test extends TestCase {
 	 * Tests constructor.
 	 *
 	 * @covers ::__construct
-	 *
-	 * @uses \WP_Typography\Data_Storage\Abstract_Cache::__construct
 	 */
 	public function test___construct() {
-		Functions\expect( 'get_transient' )->once()->with( Transients::INCREMENTOR_KEY )->andReturn( 0 );
+		Functions\expect( 'get_transient' )->once()->with( m::pattern( '/incrementor/' ) )->andReturn( 0 );
 
 		$transients = m::mock( Transients::class )->shouldAllowMockingProtectedMethods()->makePartial()
 			->shouldReceive( 'invalidate' )->once()
@@ -123,7 +120,7 @@ class Transients_Test extends TestCase {
 			}
 		}
 
-		Functions\expect( 'set_transient' )->once()->with( Transients::INCREMENTOR_KEY, m::type( 'int' ) );
+		Functions\expect( 'set_transient' )->once()->with( m::pattern( '/incrementor/' ), m::type( 'int' ) );
 		Functions\expect( 'wp_using_ext_object_cache' )->once()->andReturn( $object_cache_enabled );
 
 		$this->transients->invalidate();

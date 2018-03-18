@@ -41,7 +41,6 @@ use Mockery as m;
  * @usesDefaultClass \WP_Typography\Data_Storage\Options
  *
  * @uses ::__construct
- * @uses \WP_Typography\Data_Storage\Abstract_Cache::__construct
  */
 class Options_Test extends TestCase {
 
@@ -57,9 +56,9 @@ class Options_Test extends TestCase {
 	 * This method is called before a test is executed.
 	 */
 	protected function setUp() { // @codingStandardsIgnoreLine
-		$this->options = m::mock( Options::class )->makePartial();
-
 		parent::setUp();
+
+		$this->options = m::mock( Options::class, [ Options::PREFIX ] )->makePartial();
 	}
 
 	/**
@@ -73,11 +72,9 @@ class Options_Test extends TestCase {
 	 * Tests constructor.
 	 *
 	 * @covers ::__construct
-	 *
-	 * @uses \WP_Typography\Data_Storage\Abstract_Cache::__construct
 	 */
 	public function test___construct() {
-		$cache = m::mock( Options::class, [] )->makePartial();
+		$cache = m::mock( Options::class, [ Options::PREFIX ] )->makePartial();
 
 		$this->assertInstanceOf( Options::class, $cache );
 	}
@@ -201,6 +198,6 @@ class Options_Test extends TestCase {
 	public function test_get_name() {
 		$raw_key = 'foo';
 
-		$this->assertSame( Options::PREFIX . "_{$raw_key}", $this->options->get_name( $raw_key ) );
+		$this->assertSame( Options::PREFIX . $raw_key, $this->options->get_name( $raw_key ) );
 	}
 }
