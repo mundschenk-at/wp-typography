@@ -40,7 +40,6 @@ use PHP_Typography\Hyphenator\Cache as Hyphenator_Cache;
  *
  * @api
  *
- * @method static string get_version() Retrieves the plugin version.
  * @method string get_version() Retrieves the plugin version.
  *
  * @method Settings get_settings() Retrieves the internal Settings object for the preferences set via the plugin options screen.
@@ -251,6 +250,6 @@ abstract class WP_Typography {
 	 * @return string
 	 */
 	public function get_version_hash() {
-		return self::hash_version_string( self::get_version() );
+		return self::hash_version_string( self::get_instance()->get_version() );
 	}
 }

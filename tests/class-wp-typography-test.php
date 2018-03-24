@@ -253,7 +253,7 @@ class WP_Typography_Test extends TestCase {
 	 * @covers ::get_version_hash
 	 * @covers ::hash_version_string
 	 *
-	 * @uses ::__callStatic
+	 * @uses ::get_instance
 	 */
 	public function test_get_version_hash() {
 		$this->setStaticValue( \WP_Typography::class, '_instance', $this->wp_typo );
