@@ -34,7 +34,7 @@
         "mundschenk-at/wp-data-storage": "dev-master"
     },
     "require-dev": {
-        "squizlabs/php_codesniffer": "3.2.2",
+        "squizlabs/php_codesniffer": "dev-master",
         "wp-coding-standards/wpcs": "^0.14.0",
         "wimg/php-compatibility": "^8.0",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.4",
