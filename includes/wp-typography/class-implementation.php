@@ -259,7 +259,7 @@ class Implementation extends \WP_Typography {
 		// Initialize Settings instance.
 		if ( empty( $this->typo_settings ) ) {
 			$config    = $this->get_config();
-			$transient = 'php_settings_' . md5( wp_json_encode( $config ) );
+			$transient = 'php_settings_' . md5( (string) wp_json_encode( $config ) );
 			$settings  = $this->transients->get_large_object( $transient );
 
 			if ( ! $settings instanceof Settings ) {
@@ -445,7 +445,7 @@ class Implementation extends \WP_Typography {
 
 		// Initialize PHP_Typography instance.
 		if ( empty( $this->typo ) ) {
-			$transient = 'php_' . md5( wp_json_encode( $config ) );
+			$transient = 'php_' . md5( (string) wp_json_encode( $config ) );
 			$typo      = $this->transients->get_large_object( $transient );
 
 			if ( ! $typo instanceof PHP_Typography ) {
