@@ -32,7 +32,7 @@ build:
                 override: true
             dependencies:
                 before:
-                    - composer require --dev johnpbloch/wordpress
+                    - composer require --dev johnpbloch/wordpress-core
             tests:
                 override:
                     - php-scrutinizer-run
