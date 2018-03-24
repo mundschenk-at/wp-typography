@@ -33,61 +33,15 @@ namespace WP_Typography\Data_Storage;
  *
  * @author Peter Putzer <github@mundschenk.at>
  */
-class Cache extends Abstract_Cache {
+class Cache extends \Mundschenk\Data_Storage\Cache {
 
-	const GROUP           = 'wp-typography';
-	const INCREMENTOR_KEY = self::PREFIX . 'cache_incrementor';
+	const GROUP  = 'wp-typography';
+	const PREFIX = 'typo_';
 
 	/**
 	 * Create new cache instance.
 	 */
 	public function __construct() {
-		$this->incrementor = \wp_cache_get( self::INCREMENTOR_KEY, self::GROUP );
-
-		parent::__construct();
-	}
-
-	/**
-	 * Invalidate all cached elements by reseting the incrementor.
-	 */
-	public function invalidate() {
-		$this->incrementor = time();
-		\wp_cache_set( self::INCREMENTOR_KEY, $this->incrementor, self::GROUP, 0 );
-	}
-
-	/**
-	 * Retrieves a cached value.
-	 *
-	 * @param string    $key   The cache key.
-	 * @param bool|null $found Optional. Whether the key was found in the cache. Disambiguates a return of false as a storable value. Passed by reference. Default null.
-	 *
-	 * @return mixed
-	 */
-	public function get( $key, &$found = null ) {
-		return \wp_cache_get( $this->get_key( $key ), self::GROUP, false, $found );
-	}
-
-	/**
-	 * Sets an entry in the cache and stores the key.
-	 *
-	 * @param string $key       The cache key.
-	 * @param mixed  $value     The value to store.
-	 * @param int    $duration  Optional. The duration in seconds. Default 0 (no expiration).
-	 *
-	 * @return bool True if the cache could be set successfully.
-	 */
-	public function set( $key, $value, $duration = 0 ) {
-		return \wp_cache_set( $this->get_key( $key ), $value, self::GROUP, $duration );
-	}
-
-	/**
-	 * Deletes an entry from the cache.
-	 *
-	 * @param string $key The cache key root.
-	 *
-	 * @return bool True on successful removal, false on failure.
-	 */
-	public function delete( $key ) {
-		return \wp_cache_delete( $this->get_key( $key ), self::GROUP );
+		parent::__construct( self::PREFIX, self::GROUP );
 	}
 }
