@@ -1,3 +1,7 @@
+checks:
+    php: true
+    javascript: true
+
 filter:
     paths:
         - 'includes/*'
@@ -37,6 +41,8 @@ build:
                 override:
                     - php-scrutinizer-run
                     - phpcs-run -p wp-typography.php includes/ admin/ --extensions=php
+                    - jshint-run
+
 
 tools:
     php_code_sniffer: false
