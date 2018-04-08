@@ -111,7 +111,7 @@ please upgrade PHP or continue to use version 4.2.2.
 
 == Changelog ==
 
-= 5.3.2 - April 08, 2018 =
+= 5.3.3 - April 08, 2018 =
 * _Bugfix_: Correctly match smart fractions even if the are followed by a comma (i.e. `1/4,`).
 
 = 5.3.2 - March 24, 2018 =
