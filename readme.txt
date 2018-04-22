@@ -4,7 +4,7 @@ Tags: typography, hyphenation, smart quotes, formatting, widows, orphans, typogr
 Requires at least: 4.6
 Requires PHP: 5.6
 Tested up to: 4.9
-Stable tag: 5.3.3
+Stable tag: 5.3.4
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
@@ -110,6 +110,9 @@ The plugin now requires at least PHP 5.6. If you are still running an earlier ve
 please upgrade PHP or continue to use version 4.2.2.
 
 == Changelog ==
+
+= 5.3.4 - April 22, 2018 =
+* _Bugfix_: Update used libraries to the latest versions.
 
 = 5.3.3 - April 08, 2018 =
 * _Bugfix_: Correctly match smart fractions even if the are followed by a comma (i.e. `1/4,`).

@@ -1,5 +1,8 @@
 # Changes
 
+# 5.3.4 - April 22, 2018
+*   _Bugfix_: Update used libraries to the latest versions.
+
 # 5.3.3 - April 08, 2018
 *   _Bugfix_: Correctly match smart fractions even if the are followed by a comma (i.e. `1/4,`).
 
