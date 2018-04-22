@@ -1,7 +1,7 @@
 {
   "name": "wp-Typography",
   "devDependencies": {
-    "autoprefixer": "^8.2.0",
+    "autoprefixer": "^8.3.0",
     "grunt": "^1.0.2",
     "grunt-cli": "^1.2",
     "grunt-composer": "^0.4",
