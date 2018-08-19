@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2014-2017 Peter Putzer.
+ *  Copyright 2014-2018 Peter Putzer.
  *  Copyright 2009-2011 KINGdesk, LLC.
  *
  *  This program is free software; you can redistribute it and/or
@@ -52,19 +52,19 @@ use WP_Typography\Data_Storage\Options;
 				\submit_button( \__( 'Save Changes', 'wp-typography' ), 'primary', 'save_changes', false, [
 					'tabindex' => 1,
 				] );
-			?>
+				?>
 			<span class="aux-buttons">
 				<?php
 					\submit_button( \__( 'Restore Defaults', 'wp-typography' ), 'delete', $this->options->get_name( Options::RESTORE_DEFAULTS ), false, [
 						'tabindex' => 2,
 					] );
-				?>
+					?>
 				<?php
 					// The whitespace is necessary.
 					\submit_button( \__( 'Clear Cache', 'wp-typography' ), 'secondary', $this->options->get_name( Options::CLEAR_CACHE ), false, [
 						'tabindex' => 3,
 					] );
-				?>
+					?>
 			</span>
 		</p><!-- .submit -->
 	</form>

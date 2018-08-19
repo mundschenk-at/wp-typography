@@ -434,6 +434,9 @@ class WP_Typography_Implementation_Test extends TestCase {
 			'baz',
 		];
 
+		Functions\expect( 'wp_strip_all_tags' )->times( \count( $title_parts ) )->andReturnUsing( function( $arg ) {
+			return \strip_tags( $arg ); // phpcs:ignore WordPress.WP.AlternativeFunctions.strip_tags_strip_tags
+		} );
 		foreach ( $title_parts as $part ) {
 			$this->wp_typo->shouldReceive( 'process' )->once()->with( $part, true, true, null )->andReturn( $part . $part );
 		}

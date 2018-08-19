@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017 Peter Putzer.
+ *  Copyright 2017-2018 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -31,13 +31,12 @@ if ( ! empty( $this->grouped_controls ) ) : ?>
 	<label for="<?php echo \esc_attr( $this->get_id() ); ?>"><?php echo \wp_kses( $this->get_label(), self::ALLOWED_HTML ); ?></label>
 <?php elseif ( $this->has_inline_help() ) : ?>
 	<label for="<?php echo \esc_attr( $this->get_id() ); ?>">
+<?php endif; ?>
 <?php
-	endif;
-
 	// Control-specific markup.
-	if ( ! $this->label_has_placeholder() ) :
-		$this->render_element();
-	endif;
+if ( ! $this->label_has_placeholder() ) :
+	$this->render_element();
+endif;
 ?>
 <?php if ( $this->has_inline_help() ) : ?>
 	<span class="description"><?php echo \wp_kses( $this->help_text, [ 'code' => [] ] ); ?></span></label>
@@ -53,5 +52,5 @@ if ( ! empty( $this->grouped_controls ) ) : ?>
 	<?php endforeach; ?>
 	</fieldset>
 
+<?php endif; // grouped_controls. ?>
 <?php
-endif; // grouped_controls.
