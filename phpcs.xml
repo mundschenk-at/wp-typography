@@ -12,27 +12,15 @@
 		<config name="minimum_supported_wp_version" value="4.6"/>
 
 		<exclude name="WordPress.Arrays.CommaAfterArrayItem.SpaceAfterComma" />
-		<exclude name="Generic.WhiteSpace.ScopeIndent.IncorrectExact" />
+		<exclude name="Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma" />
+		<!--<exclude name="Generic.WhiteSpace.ScopeIndent.IncorrectExact" />
 		<exclude name="Generic.WhiteSpace.ScopeIndent.Incorrect" />
 		<exclude name="PEAR.Functions.FunctionCallSignature.Indent" />
 		<exclude name="WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents" />
-		<exclude name="Generic.Functions.FunctionCallArgumentSpacing" />
+		<exclude name="Generic.Functions.FunctionCallArgumentSpacing" />-->
 	</rule>
 
-	<rule ref="WordPress.VIP.RestrictedFunctions">
-		<properties>
-			<property name="exclude" value="error_log" />
-			<property name="exclude" value="file_get_contents" />
-		</properties>
-	</rule>
-	<rule ref="WordPress.WP.AlternativeFunctions">
-		<properties>
-			<property name="exclude" value="file_get_contents" /><!-- Not working? -->
-			<property name="exclude" value="file_system_read" />
-		</properties>
-	</rule>
-	<rule ref="Squiz.Commenting.LongConditionClosingComment">
-		<exclude name="Squiz.Commenting.LongConditionClosingComment" />
+	<rule ref="WordPress-Extra">
 	</rule>
 
 	<rule ref="WordPress.NamingConventions.ValidVariableName">

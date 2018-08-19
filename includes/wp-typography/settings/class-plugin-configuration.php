@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017 Peter Putzer.
+ *  Copyright 2017-2018 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -603,7 +603,7 @@ abstract class Plugin_Configuration {
 					'attributes'    => [
 						'rows' => '10',
 					],
-					'default'       => file_get_contents( dirname( dirname( dirname( __DIR__ ) ) ) . '/admin/css/default-styles.css' ),
+					'default'       => file_get_contents( dirname( dirname( dirname( __DIR__ ) ) ) . '/admin/css/default-styles.css' ), // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 				],
 			];
 		}

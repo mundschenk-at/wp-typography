@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017 Peter Putzer.
+ *  Copyright 2017-2018 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -26,5 +26,5 @@
 
 if ( ! empty( $description ) ) : ?>
 	<p><?php echo \esc_html( $description ); ?></p>
+<?php endif; ?>
 <?php
-endif;
