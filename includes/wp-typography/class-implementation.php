@@ -397,7 +397,7 @@ class Implementation extends \WP_Typography {
 		$found          = false;
 		$processed_text = $this->cache->get( $key, $found );
 
-		if ( empty( $found ) ) {
+		if ( empty( $found ) || ! \is_string( $processed_text ) ) {
 			$typo = $this->get_typography_instance();
 
 			if ( $feed ) { // Feed readers are strange sometimes.
