@@ -589,6 +589,20 @@ class Admin_Interface_Test extends TestCase {
 	}
 
 	/**
+	 * Test add_options_page when the user doesn't have enough permissions to show the page.
+	 *
+	 * @covers ::add_options_page
+	 */
+	public function test_add_options_page_not_enough_permissions() {
+		// Set up expectations.
+		Functions\expect( 'add_options_page' )->once()->with( 'wp-Typography', 'wp-Typography', 'manage_options', 'wp-typography', m::type( 'callable' ) )->andReturn( false );
+
+		// Do it.
+		$this->assertNull( $this->admin->add_options_page() );
+	}
+
+
+	/**
 	 * Test add_context_help.
 	 *
 	 * @covers ::add_context_help
