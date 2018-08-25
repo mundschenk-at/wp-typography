@@ -60,6 +60,8 @@ module.exports = function(grunt) {
                         'vendor/masterminds/html5/src/**/*.php',
                         'vendor/mundschenk-at/check-wp-requirements/*.php',
                         'vendor/mundschenk-at/check-wp-requirements/partials/*.php',
+                        'vendor/mundschenk-at/wp-settings-ui/src/**/*.php',
+                        'vendor/mundschenk-at/wp-settings-ui/partials/**/*.php',
                         'vendor/mundschenk-at/wp-data-storage/src/**/*.php',
                         'vendor/mundschenk-at/php-typography/src/**',
                         '!vendor/mundschenk-at/php-typography/src/bin/**',

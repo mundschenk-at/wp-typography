@@ -28,6 +28,9 @@ use WP_Typography\Components\Admin_Interface;
 use WP_Typography\Data_Storage\Options;
 use WP_Typography\Settings\Plugin_Configuration as Config;
 
+use Mundschenk\UI\Control_Factory;
+use Mundschenk\UI\Controls;
+
 use WP_Typography\Tests\TestCase;
 
 use Brain\Monkey\Actions;
@@ -67,14 +70,14 @@ class Admin_Interface_Test extends TestCase {
 	/**
 	 * Test fixture.
 	 *
-	 * @var \WP_Typography\UI\Control[]
+	 * @var \Mundschenk\UI\Control[]
 	 */
 	protected $admin_form_controls;
 
 	/**
 	 * Test fixture.
 	 *
-	 * @var \WP_Typography\Data_Storage\Options
+	 * @var Options
 	 */
 	protected $options;
 
@@ -84,6 +87,13 @@ class Admin_Interface_Test extends TestCase {
 	 * @var WP_Typography
 	 */
 	protected $plugin;
+
+	/**
+	 * Test fixture.
+	 *
+	 * @var Control_Factory
+	 */
+	protected $control_factory;
 
 	/**
 	 * Sets up the fixture, for example, opens a network connection.
@@ -108,7 +118,7 @@ class Admin_Interface_Test extends TestCase {
 		set_include_path( 'vfs://root/' ); // @codingStandardsIgnoreLine
 
 		// Mock WP_Typography\Data_Storage\Options instance.
-		$this->options = m::mock( \WP_Typography\Data_Storage\Options::class )
+		$this->options = m::mock( Options::class )
 			->shouldReceive( 'get' )->andReturn( false )->byDefault()
 			->shouldReceive( 'set' )->andReturn( false )->byDefault()
 			->getMock();
@@ -120,16 +130,19 @@ class Admin_Interface_Test extends TestCase {
 		$this->plugin = m::mock( \WP_Typography\Implementation::class )->shouldReceive( 'get_version' )->andReturn( '6.6.6' )->byDefault()->getMock();
 
 		$this->admin_form_controls = [
-			Config::HYPHENATE_LANGUAGES => m::mock( UI\Select::class ),
-			Config::DIACRITIC_LANGUAGES => m::mock( UI\Select::class ),
+			Config::HYPHENATE_LANGUAGES => m::mock( Controls\Select::class ),
+			Config::DIACRITIC_LANGUAGES => m::mock( Controls\Select::class ),
 		];
+
+		$this->control_factory = m::mock( 'alias:' . Control_Factory::class )
+			->shouldReceive( 'initialize' )->with( m::type( 'array' ), m::type( Options::class ), m::type( 'string' ) )->andReturn( $this->admin_form_controls )->byDefault()
+			->getMock();
 
 		// Finish Admin_Interface.
 		Functions\expect( '__' )->atLeast()->once()->with( m::type( 'string' ), 'wp-typography' )->andReturnUsing( function( $string, $domain ) {
 			return $string;
 		} );
 		Functions\expect( 'is_admin' )->once()->andReturn( true );
-		$this->admin->shouldReceive( 'initialize_controls' )->andReturn( $this->admin_form_controls )->byDefault();
 		$this->admin->run( $this->plugin );
 	}
 
@@ -170,7 +183,7 @@ class Admin_Interface_Test extends TestCase {
 		Actions\expectAdded( 'admin_init' )->with( [ $this->admin, 'register_the_settings' ] )->once();
 		Filters\expectAdded( 'plugin_action_links_plugin/basename' )->with( [ $this->admin, 'plugin_action_links' ] )->once();
 
-		$this->admin->shouldReceive( 'initialize_controls' )->andReturn( [] );
+		$this->control_factory->shouldReceive( 'initialize' )->with( m::type( 'array' ), m::type( Options::class ), m::type( 'string' ) )->andReturn( [] );
 
 		$this->admin->run( $this->plugin );
 
@@ -460,15 +473,15 @@ class Admin_Interface_Test extends TestCase {
 		$defaults = [
 			'foo'    => [
 				'tab_id' => 'my-tab',
-				'ui'     => \WP_Typography\UI\Number_Input::class,
+				'ui'     => Controls\Number_Input::class,
 			],
 			'check1' => [
 				'tab_id' => 'my-tab',
-				'ui'     => \WP_Typography\UI\Checkbox_Input::class,
+				'ui'     => Controls\Checkbox_Input::class,
 			],
 			'check2' => [
 				'tab_id' => 'other-tab',
-				'ui'     => \WP_Typography\UI\Checkbox_Input::class,
+				'ui'     => Controls\Checkbox_Input::class,
 			],
 		];
 
@@ -574,6 +587,20 @@ class Admin_Interface_Test extends TestCase {
 		// Do it.
 		$this->assertNull( $this->admin->add_options_page() );
 	}
+
+	/**
+	 * Test add_options_page when the user doesn't have enough permissions to show the page.
+	 *
+	 * @covers ::add_options_page
+	 */
+	public function test_add_options_page_not_enough_permissions() {
+		// Set up expectations.
+		Functions\expect( 'add_options_page' )->once()->with( 'wp-Typography', 'wp-Typography', 'manage_options', 'wp-typography', m::type( 'callable' ) )->andReturn( false );
+
+		// Do it.
+		$this->assertNull( $this->admin->add_options_page() );
+	}
+
 
 	/**
 	 * Test add_context_help.
@@ -698,44 +725,5 @@ class Admin_Interface_Test extends TestCase {
 
 		// Do it.
 		$this->assertNull( $this->admin->print_settings_section( [ 'id' => '3rd_tab' ] ) );
-	}
-
-	/**
-	 * Test initialize_controls.
-	 *
-	 * @covers ::initialize_controls
-	 *
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 */
-	public function test_initialize_controls() {
-
-		// Set up data.
-		$number_input = m::mock( 'overload:' . \WP_Typography\UI\Number_Input::class );
-		$checkbox     = m::mock( 'overload:' . \WP_Typography\UI\Checkbox_Input::class );
-		$select       = m::mock( 'overload:' . \WP_Typography\UI\Select::class );
-
-		$defaults = [
-			'foo'    => [
-				'tab_id' => 'my-tab',
-				'ui'     => \WP_Typography\UI\Number_Input::class,
-			],
-			'check1' => [
-				'tab_id' => 'my-tab',
-				'ui'     => \WP_Typography\UI\Checkbox_Input::class,
-			],
-			'check2' => [
-				'tab_id'       => 'other-tab',
-				'grouped_with' => 'check1',
-				'ui'           => \WP_Typography\UI\Select::class,
-			],
-		];
-		$this->setValue( $this->admin, 'defaults', $defaults, Admin_Interface::class );
-
-		// Set up expectations.
-		$checkbox->shouldReceive( 'add_grouped_control' )->once()->with( m::type( \WP_Typography\UI\Select::class ) );
-
-		// Do it.
-		$this->assertInternalType( 'array', $this->invokeMethod( $this->admin, 'initialize_controls', [], Admin_Interface::class ) );
 	}
 }
