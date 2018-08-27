@@ -150,6 +150,10 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 * Test get_typography_instance.
 	 *
 	 * @covers ::get_typography_instance
+	 *
+	 * @uses \WP_Typography\Typography\Custom_Node_Fix::__construct
+	 * @uses \WP_Typography\Typography\Custom_Registry::__construct
+	 * @uses \WP_Typography\Typography\Custom_Token_Fix::__construct
 	 */
 	public function test_get_typography_instance() {
 		$this->wp_typo->shouldReceive( 'get_config' )->once()->andReturn( [

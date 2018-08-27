@@ -450,10 +450,7 @@ class Implementation extends \WP_Typography {
 
 			if ( ! $typo instanceof PHP_Typography ) {
 				// OK, we have to initialize the PHP_Typography instance manually.
-				$typo = new PHP_Typography();
-
-				// Ensure that all fixes are pre-initialized.
-				$typo->get_registry();
+				$typo = new PHP_Typography( new Typography\Custom_Registry() );
 
 				// Try again next time.
 				$this->transients->cache_object( $transient, $typo, 'typography' );
