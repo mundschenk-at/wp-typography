@@ -67,6 +67,11 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 
 Please install the [wp-Typography Disable ACF Integration plugin](https://wordpress.org/plugins/wp-typography-disable-acf-integration/) by @sarukku.
 
+= What are the privacy implications of using the plugin? =
+
+wp-Typography does not store, transmit or otherwise process personal data as such. It does cache the content of the site's posts. If necessary, you can clear this cache from the plugin's settings page.
+
+
 == Screenshots ==
 
 1. wp-Typography "General" settings page.
