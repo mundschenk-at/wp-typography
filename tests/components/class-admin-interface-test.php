@@ -181,6 +181,7 @@ class Admin_Interface_Test extends TestCase {
 		Functions\expect( 'is_admin' )->once()->andReturn( true );
 		Actions\expectAdded( 'admin_menu' )->with( [ $this->admin, 'add_options_page' ] )->once();
 		Actions\expectAdded( 'admin_init' )->with( [ $this->admin, 'register_the_settings' ] )->once();
+		Actions\expectAdded( 'admin_init' )->with( [ $this->admin, 'maybe_add_privacy_notice_content' ] )->once();
 		Filters\expectAdded( 'plugin_action_links_plugin/basename' )->with( [ $this->admin, 'plugin_action_links' ] )->once();
 
 		$this->control_factory->shouldReceive( 'initialize' )->with( m::type( 'array' ), m::type( Options::class ), m::type( 'string' ) )->andReturn( [] );
@@ -725,5 +726,26 @@ class Admin_Interface_Test extends TestCase {
 
 		// Do it.
 		$this->assertNull( $this->admin->print_settings_section( [ 'id' => '3rd_tab' ] ) );
+	}
+
+	/**
+	 * Test maybe_add_privacy_notice_content on old WordPress.
+	 *
+	 * @covers ::maybe_add_privacy_notice_content
+	 */
+	public function test_maybe_add_privacy_notice_content_old_wp() {
+		// Function wp_add_privacy_policy_content does not exist, so nothing should happen.
+		$this->assertNull( $this->admin->maybe_add_privacy_notice_content() );
+	}
+
+	/**
+	 * Test maybe_add_privacy_notice_content on newer WordPress versions.
+	 *
+	 * @covers ::maybe_add_privacy_notice_content
+	 */
+	public function test_maybe_add_privacy_notice_content_new_wp() {
+		Functions\expect( 'wp_add_privacy_policy_content' )->once();
+
+		$this->assertNull( $this->admin->maybe_add_privacy_notice_content() );
 	}
 }
