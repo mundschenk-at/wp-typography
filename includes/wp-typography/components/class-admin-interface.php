@@ -205,6 +205,7 @@ class Admin_Interface implements Plugin_Component {
 			// Add action hooks.
 			\add_action( 'admin_menu', [ $this, 'add_options_page' ] );
 			\add_action( 'admin_init', [ $this, 'register_the_settings' ] );
+			\add_action( 'admin_init', [ $this, 'maybe_add_privacy_notice_content' ] );
 
 			// Add filter hooks.
 			\add_filter( 'plugin_action_links_' . $this->plugin_basename, [ $this, 'plugin_action_links' ] );
@@ -484,5 +485,22 @@ class Admin_Interface implements Plugin_Component {
 
 		// Load the settings page HTML.
 		require \dirname( $this->plugin_file ) . '/admin/partials/settings/settings-page.php';
+	}
+
+
+	/**
+	 * Adds a privacy notice snippet if used with WordPress 4.9.6 or greater.
+	 *
+	 * @since 5.4.0
+	 */
+	public function maybe_add_privacy_notice_content() {
+		// Don't crash on older versions of WordPress.
+		if ( ! \function_exists( 'wp_add_privacy_policy_content' ) ) {
+			return;
+		}
+
+		$content = '<p class="privacy-policy-tutorial">' . \__( "wp-Typography does not store, transmit or otherwise process personal data as such. It does cache the content of the site's posts. If necessary, you can clear this cache from the plugin's settings page.", 'wp-typography' ) . '</p>';
+
+		\wp_add_privacy_policy_content( \__( 'wp-Typography', 'wp-typography' ), $content );
 	}
 }
