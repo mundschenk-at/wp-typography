@@ -1,5 +1,31 @@
 # Changes
 
+## 5.4.0 - September 9, 2018
+*   _Feature_: New hooks for implementing your own typography fixes:
+    -   `typo_custom_characters_node_fix`,
+    -   `typo_custom_spacing_pre_node_fix`,
+    -   `typo_custom_spacing_post_node_fix`,
+    -   `typo_custom_html_insertion_node_fix`,
+    -   `typo_custom_mixed_words_token_fix`,
+    -   `typo_custom_compound_words_token_fix`,
+    -   `typo_custom_words_token_fix`,
+    -   `typo_custom_other_token_fix`.
+*   _Feature_: A privacy statement has been added on WordPress 4.9.6+.
+*   _Feature_: A narrow no-break space is now inserted between adjacent primary and secondary quotes.
+*   _Change_: The Unicode hyphen character (`‐`) is now used instead of the hyphen-minus (`-`).
+*   _Change_: Significantly updated hyphenation patterns for:
+    -   Bulgarian,
+    -   German,
+    -   German (Traditional),
+    -   German (Swiss Traditional),
+    -   Latin (Liturgical), and
+    -   Thai.
+*   _Bugfix_: The comma is now recognized as a decimal separator (e.g. `1,5`, in addition to `1.5`).
+*   _Bugfix_: Smart maths properly handles 2-digit years in dates.
+*   _Bugfix_: Smart diacritics won't try to "correct" the spelling of `Uber` anymore.
+*   _Bugfix_: French punctuation is now correctly applied to quotes preceeded or followed by round and square brackets.
+*   _Bugfix_: Smart quotes replacement could result in invalid unicode sequences in rare cases.
+
 ## 5.3.5 - May 10, 2018
 *   _Bugfix_: 50/50 (and x/x except 1/1) are not treated as fractions anymore.
 *   _Bugfix_: The French spacing rules were not applied to closing guillemets followed by a comma.
