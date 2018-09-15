@@ -50,17 +50,21 @@ class WP_Typography_Factory_Test extends TestCase {
 		parent::setUp();
 
 		// Set up virtual filesystem.
-		vfsStream::setup( 'root', null, [
-			'wordpress' => [
-				'path' => [
-					'wp-admin' => [
-						'includes' => [
-							'plugin.php' => "<?php Brain\\Monkey\\Functions\\expect( 'get_plugin_data' )->once()->andReturn( [ 'Version' => '6.6.6' ] ); ?>",
+		vfsStream::setup(
+			'root',
+			null,
+			[
+				'wordpress' => [
+					'path' => [
+						'wp-admin' => [
+							'includes' => [
+								'plugin.php' => "<?php Brain\\Monkey\\Functions\\expect( 'get_plugin_data' )->once()->andReturn( [ 'Version' => '6.6.6' ] ); ?>",
+							],
 						],
 					],
 				],
-			],
-		] );
+			]
+		);
 		set_include_path( 'vfs://root/' ); // @codingStandardsIgnoreLine
 	}
 

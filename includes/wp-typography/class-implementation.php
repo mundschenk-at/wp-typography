@@ -217,12 +217,15 @@ class Implementation extends \WP_Typography {
 	 * @return string[] The same array with the language name translated.
 	 */
 	private static function translate_languages( array $languages ) {
-		array_walk( $languages, function( &$lang, $code ) {
-			$lang = _x( $lang, 'language name', 'wp-typography' );  // @codingStandardsIgnoreLine.
-		} );
+		\array_walk(
+			$languages,
+			function( &$lang, $code ) {
+				$lang = _x( $lang, 'language name', 'wp-typography' );  // @codingStandardsIgnoreLine.
+			}
+		);
 
 		// Re-sort after translation.
-		asort( $languages );
+		\asort( $languages );
 
 		return $languages;
 	}

@@ -125,9 +125,8 @@ class ACF_Integration implements Plugin_Integration {
 				break;
 		}
 
-		// Render the new field setting.
-		/* @scrutinizer: ignore-call */
-		acf_render_field_setting( $field, [
+		// Define field properties.
+		$props = [
 			'label'        => __( 'Typography', 'wp-typography' ),
 			'instructions' => __( 'Select the wp-Typography filter to apply', 'wp-typography' ),
 			'name'         => self::FILTER_SETTING,
@@ -144,7 +143,10 @@ class ACF_Integration implements Plugin_Integration {
 				],
 			],
 			'default'      => $default,
-		], true );
+		];
+
+		// Render the new field setting.
+		/* @scrutinizer ignore-call */ \acf_render_field_setting( $field, $props, true );
 	}
 
 	/**

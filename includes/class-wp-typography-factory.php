@@ -63,56 +63,61 @@ abstract class WP_Typography_Factory {
 	 */
 	public static function get( $full_plugin_path ) {
 		if ( ! isset( self::$factory ) ) {
-			self::$factory = new Dice();
-
-			// Shared helpers.
-			self::$factory->addRule( Cache::class, [
-				'shared' => true,
-			] );
-			self::$factory->addRule( Transients::class, [
-				'shared' => true,
-			] );
-			self::$factory->addRule( Options::class, [
-				'shared' => true,
-			] );
-
-			// Plugin integrations are also shared.
-			self::$factory->addRule( Integrations::class, [
-				'shared'          => true,
-				'constructParams' => [
-					[
-						new ACF_Integration(),
-						new WooCommerce_Integration(),
-					],
-				],
-			] );
-
-			// API implementation.
-			self::$factory->addRule( 'substitutions', [
-				\WP_Typography::class => [
-					'instance' => \WP_Typography\Implementation::class,
-				],
-			] );
-
 			// Load version from plugin data.
 			if ( ! function_exists( 'get_plugin_data' ) ) {
 				require_once ABSPATH . 'wp-admin/includes/plugin.php';
 			}
-			self::$factory->addRule( WP_Typography::class, [
-				'constructParams' => [ get_plugin_data( $full_plugin_path, false, false )['Version'] ],
-			] );
 
-			// Additional parameters for components.
+			// Common rules components.
+			$shared_rule     = [ 'shared' => true ];
 			$plugin_basename = \plugin_basename( $full_plugin_path );
-			self::$factory->addRule( Admin_Interface::class, [
-				'constructParams' => [ $plugin_basename, $full_plugin_path ],
-			] );
-			self::$factory->addRule( Public_Interface::class, [
-				'constructParams' => [ $plugin_basename ],
-			] );
-			self::$factory->addRule( Setup::class, [
-				'constructParams' => [ $full_plugin_path ],
-			] );
+
+			$rules = [
+				// Shared helpers.
+				Cache::class            => $shared_rule,
+				Transients::class       => $shared_rule,
+				Options::class          => $shared_rule,
+
+				// Plugin integrations are also shared.
+				Integrations::class     => [
+					'shared'          => true,
+					'constructParams' => [
+						[
+							new ACF_Integration(),
+							new WooCommerce_Integration(),
+						],
+					],
+				],
+
+				// API implementation.
+				'substitutions'         => [
+					\WP_Typography::class => [
+						'instance' => \WP_Typography\Implementation::class,
+					],
+				],
+				WP_Typography::class    => [
+					'constructParams' => [ get_plugin_data( $full_plugin_path, false, false )['Version'] ],
+				],
+
+				// Additional parameters for components.
+				Admin_Interface::class  => [
+					'constructParams' => [ $plugin_basename, $full_plugin_path ],
+				],
+				Public_Interface::class => [
+					'constructParams' => [ $plugin_basename ],
+				],
+				Setup::class            => [
+					'constructParams' => [ $full_plugin_path ],
+				],
+			];
+
+			// Create factory.
+			self::$factory = new Dice();
+
+			// Add rules.
+			foreach ( $rules as $key => $rule ) {
+				self::$factory->addRule( $key, $rule );
+			}
 		}
 
 		return self::$factory;

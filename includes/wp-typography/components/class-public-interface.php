@@ -135,6 +135,16 @@ class Public_Interface implements Plugin_Component {
 	 */
 	public function add_content_filters() {
 
+		// Define the default filters.
+		$filters = [
+			// Add filters for "full" content.
+			'content' => [ $this, 'enable_content_filters' ],
+			// Add filters for headings.
+			'heading' => [ $this, 'enable_heading_filters' ],
+			// Extra care needs to be taken with the <title> tag.
+			'title'   => [ $this, 'enable_title_filters' ],
+		];
+
 		/**
 		 * Filters the content filter enabling functions.
 		 *
@@ -144,14 +154,7 @@ class Public_Interface implements Plugin_Component {
 		 *                                  the priority as an argument, indexed by
 		 *                                  filter group.
 		 */
-		$filters = \apply_filters( 'typo_content_filters', [
-			// Add filters for "full" content.
-			'content' => [ $this, 'enable_content_filters' ],
-			// Add filters for headings.
-			'heading' => [ $this, 'enable_heading_filters' ],
-			// Extra care needs to be taken with the <title> tag.
-			'title'   => [ $this, 'enable_title_filters' ],
-		] );
+		$filters = \apply_filters( 'typo_content_filters', $filters );
 
 		/**
 		 * Filters the priority used for wp-Typography's text processing filters.

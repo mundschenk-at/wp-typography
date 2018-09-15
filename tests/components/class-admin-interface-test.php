@@ -103,18 +103,22 @@ class Admin_Interface_Test extends TestCase {
 		parent::setUp();
 
 		// Set up virtual filesystem.
-		vfsStream::setup( 'root', null, [
-			'plugin' => [
-				'admin' => [
-					'partials' => [
-						'settings' => [
-							'settings-page.php' => 'SETTINGS_PHP',
-							'section.php'       => 'SECTION',
+		vfsStream::setup(
+			'root',
+			null,
+			[
+				'plugin' => [
+					'admin' => [
+						'partials' => [
+							'settings' => [
+								'settings-page.php' => 'SETTINGS_PHP',
+								'section.php'       => 'SECTION',
+							],
 						],
 					],
 				],
-			],
-		] );
+			]
+		);
 		set_include_path( 'vfs://root/' ); // @codingStandardsIgnoreLine
 
 		// Mock WP_Typography\Data_Storage\Options instance.
@@ -139,9 +143,11 @@ class Admin_Interface_Test extends TestCase {
 			->getMock();
 
 		// Finish Admin_Interface.
-		Functions\expect( '__' )->atLeast()->once()->with( m::type( 'string' ), 'wp-typography' )->andReturnUsing( function( $string, $domain ) {
-			return $string;
-		} );
+		Functions\expect( '__' )->atLeast()->once()->with( m::type( 'string' ), 'wp-typography' )->andReturnUsing(
+			function( $string, $domain ) {
+				return $string;
+			}
+		);
 		Functions\expect( 'is_admin' )->once()->andReturn( true );
 		$this->admin->run( $this->plugin );
 	}
@@ -536,12 +542,14 @@ class Admin_Interface_Test extends TestCase {
 	 * @covers ::get_active_settings_tab
 	 */
 	public function test_get_active_settings_tab_default() {
-		// Set up data.
-		$this->setValue( $this->admin, 'admin_form_tabs', [
+		$tabs = [
 			'1st_tab' => [],
 			'2nd_tab' => [],
 			'3rd_tab' => [],
-		], Admin_Interface::class );
+		];
+
+		// Set up data.
+		$this->setValue( $this->admin, 'admin_form_tabs', $tabs, Admin_Interface::class );
 
 		unset( $_REQUEST['option_page'] ); // WPCS: input var okay.
 		unset( $_REQUEST['tab'] );         // WPCS: input var okay.

@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017 Peter Putzer.
+ *  Copyright 2017-2018 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -139,21 +139,34 @@ class Multilingual_Support implements Plugin_Component {
 			new Basic_Locale_Settings( [ 'ja', 'zh' ],       [],       [], Dash_Style::INTERNATIONAL,  Quote_Style::CORNER_BRACKETS,          Quote_Style::WHITE_CORNER_BRACKETS, false ),
 		];
 
-		usort( $locales, function( Locale_Settings $s1, Locale_Settings $s2 ) {
-			$prio1 = $s1->priority();
-			$prio2 = $s2->priority();
-
-			// Longer strings come first.
-			if ( $prio1 > $prio2 ) {
-				return -1;
-			} elseif ( $prio2 > $prio1 ) {
-				return 1;
-			} else {
-				return 0;
-			}
-		} );
+		// Sort the settings by priority.
+		usort( $locales, [ $this, 'locale_settings_sort' ] );
 
 		return $locales;
+	}
+
+	/**
+	 * Comüares to Locale_Settings by their priority. Basically, this is a replacement
+	 * for the PHP 7 spaceship operator `<=>`.
+	 *
+	 * @param  Locale_Settings $s1 First operand.
+	 * @param  Locale_Settings $s2 Second operand.
+	 *
+	 * @return int             Returns 0 if both operands are equal, -1 if the
+	 *                         first operand is greater, 1 if the second one is greater.
+	 */
+	protected function locale_settings_sort( Locale_Settings $s1, Locale_Settings $s2 ) {
+		$prio1 = $s1->priority();
+		$prio2 = $s2->priority();
+
+		// Longer strings come first.
+		if ( $prio1 > $prio2 ) {
+			return -1;
+		} elseif ( $prio2 > $prio1 ) {
+			return 1;
+		} else {
+			return 0;
+		}
 	}
 
 	/**

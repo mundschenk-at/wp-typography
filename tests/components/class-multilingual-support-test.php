@@ -122,9 +122,11 @@ class Multilingual_Support_Test extends TestCase {
 	 * @covers ::run
 	 */
 	public function test_run() {
-		$this->multi->shouldReceive( 'initialize_locale_settings' )->once()->andReturn( [
-			m::mock( Basic_Locale_Settings::class ),
-		] );
+		$this->multi->shouldReceive( 'initialize_locale_settings' )->once()->andReturn(
+			[
+				m::mock( Basic_Locale_Settings::class ),
+			]
+		);
 
 		Actions\expectAdded( 'plugins_loaded' )->once()->with( [ $this->multi, 'add_plugin_defaults_filter' ] );
 		Actions\expectAdded( 'init' )->once()->with( [ $this->multi, 'enable_automatic_language_settings' ] );
