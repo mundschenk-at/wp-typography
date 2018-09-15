@@ -418,11 +418,13 @@ class Admin_Interface implements Plugin_Component {
 		$screen = \get_current_screen();
 
 		foreach ( $this->admin_help_pages as $help_id => $help ) {
-			$screen->add_help_tab( [
+			$tab = [
 				'id'      => $help_id,
 				'title'   => $help['heading'],
 				'content' => $help['content'],
-			] );
+			];
+
+			$screen->add_help_tab( $tab );
 		}
 
 		// Create sidebar.

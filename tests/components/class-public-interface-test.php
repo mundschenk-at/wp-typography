@@ -162,9 +162,11 @@ class Public_Interface_Test extends TestCase {
 	 */
 	public function test_init( $restore_defaults, $clear_cache, $smart_characters, $nextgen ) {
 		$plugin   = $this->getValue( $this->public_if, 'plugin' );
-		$settings = $this->prepareOptions( [
-			Config::SMART_CHARACTERS => $smart_characters,
-		] );
+		$settings = $this->prepareOptions(
+			[
+				Config::SMART_CHARACTERS => $smart_characters,
+			]
+		);
 
 		$plugin->shouldReceive( 'get_config' )->once()->andReturn( $settings );
 		$this->public_if->shouldReceive( 'add_content_filters' )->once();
@@ -298,11 +300,13 @@ class Public_Interface_Test extends TestCase {
 	 * @covers ::add_wp_head
 	 */
 	public function test_add_wp_head_css() {
-		$this->prepareOptions( [
-			Config::STYLE_CSS_INCLUDE                => true,
-			Config::STYLE_CSS                        => 'my: css;',
-			Config::HYPHENATE_SAFARI_FONT_WORKAROUND => false,
-		] );
+		$this->prepareOptions(
+			[
+				Config::STYLE_CSS_INCLUDE                => true,
+				Config::STYLE_CSS                        => 'my: css;',
+				Config::HYPHENATE_SAFARI_FONT_WORKAROUND => false,
+			]
+		);
 
 		Functions\expect( 'esc_html' )->once()->with( 'my: css;' )->andReturn( 'my: escaped_css;' );
 		$this->expectOutputString( "<style type=\"text/css\">\r\nmy: escaped_css;\r\n</style>\r\n" );
@@ -316,10 +320,12 @@ class Public_Interface_Test extends TestCase {
 	 * @covers ::add_wp_head
 	 */
 	public function test_add_wp_head_safari_workaround() {
-		$this->prepareOptions( [
-			Config::STYLE_CSS_INCLUDE                => false,
-			Config::HYPHENATE_SAFARI_FONT_WORKAROUND => true,
-		] );
+		$this->prepareOptions(
+			[
+				Config::STYLE_CSS_INCLUDE                => false,
+				Config::HYPHENATE_SAFARI_FONT_WORKAROUND => true,
+			]
+		);
 		$this->expectOutputString( "<style type=\"text/css\">body {-webkit-font-feature-settings: \"liga\";font-feature-settings: \"liga\";-ms-font-feature-settings: normal;}</style>\r\n" );
 		$this->public_if->add_wp_head();
 
@@ -331,9 +337,11 @@ class Public_Interface_Test extends TestCase {
 	 * @covers ::enqueue_scripts
 	 */
 	public function test_enqueue_scripts() {
-		$this->prepareOptions( [
-			Config::HYPHENATE_CLEAN_CLIPBOARD => true,
-		] );
+		$this->prepareOptions(
+			[
+				Config::HYPHENATE_CLEAN_CLIPBOARD => true,
+			]
+		);
 
 		define( 'SCRIPT_DEBUG', false );
 

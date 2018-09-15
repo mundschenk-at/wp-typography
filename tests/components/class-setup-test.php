@@ -281,20 +281,20 @@ class Setup_Test extends TestCase {
 	 * @covers ::upgrade_options_3_1
 	 */
 	public function test_upgrade_options_3_1() {
-
-		$keys = [
+		$keys            = [
 			'1option' => 'one_option',
 			'2option' => 'another_option',
 			'3option' => 'a_third_option',
 			'4option' => 'a_fourth_option',
 		];
-
-		$this->plugin->shouldReceive( 'get_default_options' )->once()->andReturn( [
+		$default_options = [
 			$keys['1option'] => 'with a default',
 			$keys['2option'] => 5,
 			$keys['3option'] => [ 'with', 'an', 'array' ],
 			$keys['4option'] => 'will be unknown',
-		] );
+		];
+
+		$this->plugin->shouldReceive( 'get_default_options' )->once()->andReturn( $default_options );
 
 		foreach ( $keys as $old_option_name => $new_option_name ) {
 			$value = 'value_' . $old_option_name;
@@ -362,12 +362,14 @@ class Setup_Test extends TestCase {
 	 * @covers ::upgrade_options_to_array
 	 */
 	public function test_upgrade_options_to_array() {
-		$this->plugin->shouldReceive( 'get_default_options' )->once()->andReturn( [
+		$default_options = [
 			'one_option'      => 'with a default',
 			'another_option'  => 5,
 			'a_third_option'  => [ 'with', 'an', 'array' ],
 			'a_fourth_option' => 'will be unknown',
-		] );
+		];
+
+		$this->plugin->shouldReceive( 'get_default_options' )->once()->andReturn( $default_options );
 
 		$this->options->shouldReceive( 'get' )->with( 'one_option', Setup::UPGRADING )->once()->andReturn( 'foo1' );
 		$this->options->shouldReceive( 'get' )->with( 'another_option', Setup::UPGRADING )->once()->andReturn( 'foo2' );
@@ -379,12 +381,15 @@ class Setup_Test extends TestCase {
 		$this->options->shouldReceive( 'get' )->with( 'a_fourth_option', Setup::UPGRADING )->once()->andReturn( Setup::UPGRADING );
 		$this->options->shouldNotReceive( 'delete' )->with( 'a_fourth_option' );
 
-		$this->options->shouldReceive( 'set' )->with( Options::CONFIGURATION, [
-			'one_option'      => 'foo1',
-			'another_option'  => 'foo2',
-			'a_third_option'  => 'foo3',
-			'a_fourth_option' => 'will be unknown',
-		] )->once();
+		$this->options->shouldReceive( 'set' )->with(
+			Options::CONFIGURATION,
+			[
+				'one_option'      => 'foo1',
+				'another_option'  => 'foo2',
+				'a_third_option'  => 'foo3',
+				'a_fourth_option' => 'will be unknown',
+			]
+		)->once();
 
 		$this->assertNull( $this->invokeMethod( $this->setup, 'upgrade_options_to_array' ) );
 	}

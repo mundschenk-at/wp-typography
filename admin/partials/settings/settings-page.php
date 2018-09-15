@@ -34,12 +34,12 @@ use WP_Typography\Data_Storage\Options;
 		$active_tab = $this->get_active_settings_tab();
 	?>
 	<h2 class="nav-tab-wrapper">
-	<?php foreach ( $this->admin_form_tabs as $tab_id => $tab ) : ?>
+	<?php foreach ( $this->admin_form_tabs as $tab_id => $settings_tab ) : ?>
 		<?php
 			$query_string = '?page=' . \strtolower( $this->plugin_name ) . '&tab=' . $tab_id;
 			$classes      = 'nav-tab' . ( $tab_id === $active_tab ? ' nav-tab-active' : '' );
 		?>
-		<a href="<?php echo \esc_url( $query_string ); ?>" class="<?php echo \esc_attr( $classes ); ?>"><?php echo \esc_html( $tab['heading'] ); ?></a>
+		<a href="<?php echo \esc_url( $query_string ); ?>" class="<?php echo \esc_attr( $classes ); ?>"><?php echo \esc_html( $settings_tab['heading'] ); ?></a>
 	<?php endforeach; ?>
 	</h2>
 
@@ -48,23 +48,11 @@ use WP_Typography\Data_Storage\Options;
 		<?php \do_settings_sections( self::OPTION_GROUP . $active_tab ); ?>
 
 		<p class="submit">
-			<?php
-				\submit_button( \__( 'Save Changes', 'wp-typography' ), 'primary', 'save_changes', false, [
-					'tabindex' => 1,
-				] );
-				?>
+			<?php \submit_button( \__( 'Save Changes', 'wp-typography' ), 'primary', 'save_changes', false, [ 'tabindex' => 1 ] ); ?>
 			<span class="aux-buttons">
-				<?php
-					\submit_button( \__( 'Restore Defaults', 'wp-typography' ), 'delete', $this->options->get_name( Options::RESTORE_DEFAULTS ), false, [
-						'tabindex' => 2,
-					] );
-					?>
-				<?php
-					// The whitespace is necessary.
-					\submit_button( \__( 'Clear Cache', 'wp-typography' ), 'secondary', $this->options->get_name( Options::CLEAR_CACHE ), false, [
-						'tabindex' => 3,
-					] );
-					?>
+				<?php \submit_button( \__( 'Restore Defaults', 'wp-typography' ), 'delete', $this->options->get_name( Options::RESTORE_DEFAULTS ), false, [ 'tabindex' => 2 ] ); ?>
+				<?php // The whitespace is necessary. ?>
+				<?php \submit_button( \__( 'Clear Cache', 'wp-typography' ), 'secondary', $this->options->get_name( Options::CLEAR_CACHE ), false, [ 'tabindex' => 3 ] ); ?>
 			</span>
 		</p><!-- .submit -->
 	</form>

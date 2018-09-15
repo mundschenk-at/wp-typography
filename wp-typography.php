@@ -55,13 +55,15 @@ require_once dirname( __FILE__ ) . '/vendor/mundschenk-at/check-wp-requirements/
  * It's necessary to do this here because main class relies on namespaces.
  */
 function run_wp_typography() {
-
-	$requirements = new Mundschenk_WP_Requirements( 'wp-Typography', __FILE__, 'wp-typography', array(
+	// Define our requirements.
+	$reqs = array(
 		'php'       => '5.6.0',
 		'multibyte' => true,
 		'utf-8'     => true,
-	) );
+	);
 
+	// Validate the requirements.
+	$requirements = new Mundschenk_WP_Requirements( 'wp-Typography', __FILE__, 'wp-typography', $reqs );
 	if ( $requirements->check() ) {
 		// Autoload the rest of our classes.
 		require_once __DIR__ . '/vendor/autoload.php';

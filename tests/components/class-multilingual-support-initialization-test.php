@@ -115,6 +115,7 @@ class Multilingual_Support_Initialization_Test extends TestCase {
 	 * Test initialize_locale_settings.
 	 *
 	 * @covers ::initialize_locale_settings
+	 * @covers ::locale_settings_sort
 	 */
 	public function test_initialize_locale_settings() {
 		$this->locale->shouldReceive( 'priority' )->andReturn( 10, 5, 20, 15, 10, 25 );

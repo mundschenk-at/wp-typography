@@ -156,9 +156,11 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 * @uses \WP_Typography\Typography\Custom_Token_Fix::__construct
 	 */
 	public function test_get_typography_instance() {
-		$this->wp_typo->shouldReceive( 'get_config' )->once()->andReturn( [
-			Config::ENABLE_HYPHENATION => true,
-		] );
+		$this->wp_typo->shouldReceive( 'get_config' )->once()->andReturn(
+			[
+				Config::ENABLE_HYPHENATION => true,
+			]
+		);
 
 		Functions\expect( 'wp_json_encode' )->once()->andReturn( '{ json: "value" }' );
 
@@ -203,59 +205,61 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 */
 	public function test_get_settings() {
 
-		$this->wp_typo->shouldReceive( 'get_config' )->once()->andReturn( [
-			Config::IGNORE_TAGS                    => [ 'script' ],
-			Config::IGNORE_CLASSES                 => [ 'noTypo' ],
-			Config::IGNORE_IDS                     => [],
-			Config::SMART_CHARACTERS               => true,
-			Config::SMART_DASHES                   => false,
-			Config::SMART_DASHES_STYLE             => 'international',
-			Config::SMART_ELLIPSES                 => false,
-			Config::SMART_MATH                     => false,
-			Config::SMART_FRACTIONS                => false,
-			Config::SMART_ORDINALS                 => false,
-			Config::SMART_MARKS                    => false,
-			Config::SMART_QUOTES                   => false,
-			Config::SMART_DIACRITICS               => false,
-			Config::DIACRITIC_LANGUAGES            => 'en-US',
-			Config::DIACRITIC_CUSTOM_REPLACEMENTS  => [],
-			Config::SMART_QUOTES_PRIMARY           => 'doubleCurled',
-			Config::SMART_QUOTES_SECONDARY         => 'singleCurled',
-			Config::SINGLE_CHARACTER_WORD_SPACING  => false,
-			Config::DASH_SPACING                   => false,
-			Config::FRACTION_SPACING               => false,
-			Config::UNIT_SPACING                   => false,
-			Config::NUMBERED_ABBREVIATIONS_SPACING => false,
-			Config::FRENCH_PUNCTUATION_SPACING     => false,
-			Config::UNITS                          => [],
-			Config::SPACE_COLLAPSE                 => false,
-			Config::PREVENT_WIDOWS                 => false,
-			Config::WIDOW_MIN_LENGTH               => 2,
-			Config::WIDOW_MAX_PULL                 => 2,
-			Config::WRAP_HYPHENS                   => false,
-			Config::WRAP_EMAILS                    => false,
-			Config::WRAP_URLS                      => false,
-			Config::WRAP_MIN_AFTER                 => 2,
-			Config::STYLE_AMPS                     => false,
-			Config::STYLE_CAPS                     => false,
-			Config::STYLE_NUMBERS                  => false,
-			Config::WRAP_URLS                      => false,
-			Config::STYLE_HANGING_PUNCTUATION      => false,
-			Config::STYLE_INITIAL_QUOTES           => false,
-			Config::INITIAL_QUOTE_TAGS             => [],
-			Config::ENABLE_HYPHENATION             => true,
-			Config::HYPHENATE_HEADINGS             => false,
-			Config::HYPHENATE_CAPS                 => false,
-			Config::HYPHENATE_TITLE_CASE           => false,
-			Config::HYPHENATE_COMPOUNDS            => false,
-			Config::HYPHENATE_LANGUAGES            => 'en-US',
-			Config::HYPHENATE_MIN_LENGTH           => 2,
-			Config::HYPHENATE_MIN_BEFORE           => 2,
-			Config::HYPHENATE_MIN_AFTER            => 2,
-			Config::HYPHENATE_EXCEPTIONS           => [],
-			Config::IGNORE_PARSER_ERRORS           => false,
-			Config::ENABLE_MULTILINGUAL_SUPPORT    => false,
-		] );
+		$this->wp_typo->shouldReceive( 'get_config' )->once()->andReturn(
+			[
+				Config::IGNORE_TAGS                    => [ 'script' ],
+				Config::IGNORE_CLASSES                 => [ 'noTypo' ],
+				Config::IGNORE_IDS                     => [],
+				Config::SMART_CHARACTERS               => true,
+				Config::SMART_DASHES                   => false,
+				Config::SMART_DASHES_STYLE             => 'international',
+				Config::SMART_ELLIPSES                 => false,
+				Config::SMART_MATH                     => false,
+				Config::SMART_FRACTIONS                => false,
+				Config::SMART_ORDINALS                 => false,
+				Config::SMART_MARKS                    => false,
+				Config::SMART_QUOTES                   => false,
+				Config::SMART_DIACRITICS               => false,
+				Config::DIACRITIC_LANGUAGES            => 'en-US',
+				Config::DIACRITIC_CUSTOM_REPLACEMENTS  => [],
+				Config::SMART_QUOTES_PRIMARY           => 'doubleCurled',
+				Config::SMART_QUOTES_SECONDARY         => 'singleCurled',
+				Config::SINGLE_CHARACTER_WORD_SPACING  => false,
+				Config::DASH_SPACING                   => false,
+				Config::FRACTION_SPACING               => false,
+				Config::UNIT_SPACING                   => false,
+				Config::NUMBERED_ABBREVIATIONS_SPACING => false,
+				Config::FRENCH_PUNCTUATION_SPACING     => false,
+				Config::UNITS                          => [],
+				Config::SPACE_COLLAPSE                 => false,
+				Config::PREVENT_WIDOWS                 => false,
+				Config::WIDOW_MIN_LENGTH               => 2,
+				Config::WIDOW_MAX_PULL                 => 2,
+				Config::WRAP_HYPHENS                   => false,
+				Config::WRAP_EMAILS                    => false,
+				Config::WRAP_URLS                      => false,
+				Config::WRAP_MIN_AFTER                 => 2,
+				Config::STYLE_AMPS                     => false,
+				Config::STYLE_CAPS                     => false,
+				Config::STYLE_NUMBERS                  => false,
+				Config::WRAP_URLS                      => false,
+				Config::STYLE_HANGING_PUNCTUATION      => false,
+				Config::STYLE_INITIAL_QUOTES           => false,
+				Config::INITIAL_QUOTE_TAGS             => [],
+				Config::ENABLE_HYPHENATION             => true,
+				Config::HYPHENATE_HEADINGS             => false,
+				Config::HYPHENATE_CAPS                 => false,
+				Config::HYPHENATE_TITLE_CASE           => false,
+				Config::HYPHENATE_COMPOUNDS            => false,
+				Config::HYPHENATE_LANGUAGES            => 'en-US',
+				Config::HYPHENATE_MIN_LENGTH           => 2,
+				Config::HYPHENATE_MIN_BEFORE           => 2,
+				Config::HYPHENATE_MIN_AFTER            => 2,
+				Config::HYPHENATE_EXCEPTIONS           => [],
+				Config::IGNORE_PARSER_ERRORS           => false,
+				Config::ENABLE_MULTILINGUAL_SUPPORT    => false,
+			]
+		);
 		$this->transients->shouldReceive( 'cache_object' )->once();
 
 		Functions\expect( 'wp_json_encode' )->once()->andReturn( '{ json: "value" }' );
@@ -277,58 +281,60 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 */
 	public function test_get_settings_hyphenation_off() {
 
-		$this->wp_typo->shouldReceive( 'get_config' )->once()->andReturn( [
-			Config::IGNORE_TAGS                    => [ 'script' ],
-			Config::IGNORE_CLASSES                 => [ 'noTypo' ],
-			Config::IGNORE_IDS                     => [],
-			Config::SMART_CHARACTERS               => false,
-			Config::SMART_DASHES                   => false,
-			Config::SMART_DASHES_STYLE             => 'international',
-			Config::SMART_ELLIPSES                 => false,
-			Config::SMART_MATH                     => false,
-			Config::SMART_FRACTIONS                => false,
-			Config::SMART_ORDINALS                 => false,
-			Config::SMART_MARKS                    => false,
-			Config::SMART_QUOTES                   => false,
-			Config::SMART_DIACRITICS               => false,
-			Config::DIACRITIC_LANGUAGES            => 'en-US',
-			Config::DIACRITIC_CUSTOM_REPLACEMENTS  => [],
-			Config::SMART_QUOTES_PRIMARY           => 'doubleCurled',
-			Config::SMART_QUOTES_SECONDARY         => 'singleCurled',
-			Config::SINGLE_CHARACTER_WORD_SPACING  => false,
-			Config::DASH_SPACING                   => false,
-			Config::FRACTION_SPACING               => false,
-			Config::UNIT_SPACING                   => false,
-			Config::NUMBERED_ABBREVIATIONS_SPACING => false,
-			Config::FRENCH_PUNCTUATION_SPACING     => false,
-			Config::UNITS                          => [],
-			Config::SPACE_COLLAPSE                 => false,
-			Config::PREVENT_WIDOWS                 => false,
-			Config::WIDOW_MIN_LENGTH               => 2,
-			Config::WIDOW_MAX_PULL                 => 2,
-			Config::WRAP_HYPHENS                   => false,
-			Config::WRAP_EMAILS                    => false,
-			Config::WRAP_URLS                      => false,
-			Config::WRAP_MIN_AFTER                 => 2,
-			Config::STYLE_AMPS                     => false,
-			Config::STYLE_CAPS                     => false,
-			Config::STYLE_NUMBERS                  => false,
-			Config::WRAP_URLS                      => false,
-			Config::STYLE_HANGING_PUNCTUATION      => false,
-			Config::STYLE_INITIAL_QUOTES           => false,
-			Config::INITIAL_QUOTE_TAGS             => [],
-			Config::ENABLE_HYPHENATION             => false,
-			Config::HYPHENATE_HEADINGS             => false,
-			Config::HYPHENATE_CAPS                 => false,
-			Config::HYPHENATE_TITLE_CASE           => false,
-			Config::HYPHENATE_COMPOUNDS            => false,
-			Config::HYPHENATE_LANGUAGES            => 'en-US',
-			Config::HYPHENATE_MIN_LENGTH           => 2,
-			Config::HYPHENATE_MIN_BEFORE           => 2,
-			Config::HYPHENATE_MIN_AFTER            => 2,
-			Config::HYPHENATE_EXCEPTIONS           => [],
-			Config::IGNORE_PARSER_ERRORS           => false,
-		] );
+		$this->wp_typo->shouldReceive( 'get_config' )->once()->andReturn(
+			[
+				Config::IGNORE_TAGS                    => [ 'script' ],
+				Config::IGNORE_CLASSES                 => [ 'noTypo' ],
+				Config::IGNORE_IDS                     => [],
+				Config::SMART_CHARACTERS               => false,
+				Config::SMART_DASHES                   => false,
+				Config::SMART_DASHES_STYLE             => 'international',
+				Config::SMART_ELLIPSES                 => false,
+				Config::SMART_MATH                     => false,
+				Config::SMART_FRACTIONS                => false,
+				Config::SMART_ORDINALS                 => false,
+				Config::SMART_MARKS                    => false,
+				Config::SMART_QUOTES                   => false,
+				Config::SMART_DIACRITICS               => false,
+				Config::DIACRITIC_LANGUAGES            => 'en-US',
+				Config::DIACRITIC_CUSTOM_REPLACEMENTS  => [],
+				Config::SMART_QUOTES_PRIMARY           => 'doubleCurled',
+				Config::SMART_QUOTES_SECONDARY         => 'singleCurled',
+				Config::SINGLE_CHARACTER_WORD_SPACING  => false,
+				Config::DASH_SPACING                   => false,
+				Config::FRACTION_SPACING               => false,
+				Config::UNIT_SPACING                   => false,
+				Config::NUMBERED_ABBREVIATIONS_SPACING => false,
+				Config::FRENCH_PUNCTUATION_SPACING     => false,
+				Config::UNITS                          => [],
+				Config::SPACE_COLLAPSE                 => false,
+				Config::PREVENT_WIDOWS                 => false,
+				Config::WIDOW_MIN_LENGTH               => 2,
+				Config::WIDOW_MAX_PULL                 => 2,
+				Config::WRAP_HYPHENS                   => false,
+				Config::WRAP_EMAILS                    => false,
+				Config::WRAP_URLS                      => false,
+				Config::WRAP_MIN_AFTER                 => 2,
+				Config::STYLE_AMPS                     => false,
+				Config::STYLE_CAPS                     => false,
+				Config::STYLE_NUMBERS                  => false,
+				Config::WRAP_URLS                      => false,
+				Config::STYLE_HANGING_PUNCTUATION      => false,
+				Config::STYLE_INITIAL_QUOTES           => false,
+				Config::INITIAL_QUOTE_TAGS             => [],
+				Config::ENABLE_HYPHENATION             => false,
+				Config::HYPHENATE_HEADINGS             => false,
+				Config::HYPHENATE_CAPS                 => false,
+				Config::HYPHENATE_TITLE_CASE           => false,
+				Config::HYPHENATE_COMPOUNDS            => false,
+				Config::HYPHENATE_LANGUAGES            => 'en-US',
+				Config::HYPHENATE_MIN_LENGTH           => 2,
+				Config::HYPHENATE_MIN_BEFORE           => 2,
+				Config::HYPHENATE_MIN_AFTER            => 2,
+				Config::HYPHENATE_EXCEPTIONS           => [],
+				Config::IGNORE_PARSER_ERRORS           => false,
+			]
+		);
 		$this->transients->shouldReceive( 'cache_object' )->once();
 
 		Functions\expect( 'wp_json_encode' )->once()->andReturn( '{ json: "value" }' );
@@ -355,10 +361,12 @@ class WP_Typography_Implementation_Test extends TestCase {
 			define( 'WEEK_IN_SECONDS', 999 );
 		}
 
-		$this->cache->shouldReceive( 'get' )->once()->andReturnUsing( function( $key, &$found ) {
-			$found = false;
-			return [];
-		} )->shouldReceive( 'set' )->once();
+		$this->cache->shouldReceive( 'get' )->once()->andReturnUsing(
+			function( $key, &$found ) {
+				$found = false;
+				return [];
+			}
+		)->shouldReceive( 'set' )->once();
 
 		$langs = $this->wp_typo->get_hyphenation_languages();
 
@@ -381,10 +389,12 @@ class WP_Typography_Implementation_Test extends TestCase {
 			define( 'WEEK_IN_SECONDS', 999 );
 		}
 
-		$this->cache->shouldReceive( 'get' )->once()->andReturnUsing( function( $key, &$found ) {
-			$found = false;
-			return [];
-		} )->shouldReceive( 'set' )->once();
+		$this->cache->shouldReceive( 'get' )->once()->andReturnUsing(
+			function( $key, &$found ) {
+				$found = false;
+				return [];
+			}
+		)->shouldReceive( 'set' )->once();
 
 		$langs = $this->wp_typo->get_diacritic_languages();
 
@@ -438,9 +448,11 @@ class WP_Typography_Implementation_Test extends TestCase {
 			'baz',
 		];
 
-		Functions\expect( 'wp_strip_all_tags' )->times( \count( $title_parts ) )->andReturnUsing( function( $arg ) {
-			return \strip_tags( $arg ); // phpcs:ignore WordPress.WP.AlternativeFunctions.strip_tags_strip_tags
-		} );
+		Functions\expect( 'wp_strip_all_tags' )->times( \count( $title_parts ) )->andReturnUsing(
+			function( $arg ) {
+				return \strip_tags( $arg ); // phpcs:ignore WordPress.WP.AlternativeFunctions.strip_tags_strip_tags
+			}
+		);
 		foreach ( $title_parts as $part ) {
 			$this->wp_typo->shouldReceive( 'process' )->once()->with( $part, true, true, null )->andReturn( $part . $part );
 		}
