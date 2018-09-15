@@ -1,5 +1,9 @@
 # Changes
 
+## 5.4.1 - September 15, 2018
+*   _Bugfix_: Comply with new WordPress Coding Standards 1.1.
+*   _Bugfix_: Work around GlotPress issue preventing language pack generation.
+
 ## 5.4.0 - September 9, 2018
 *   _Feature_: New hooks for implementing your own typography fixes:
     -   `typo_custom_characters_node_fix`,
