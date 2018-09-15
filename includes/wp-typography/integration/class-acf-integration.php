@@ -146,7 +146,7 @@ class ACF_Integration implements Plugin_Integration {
 		];
 
 		// Render the new field setting.
-		\acf_render_field_setting( $field, $props, true );
+		/* @scrutinizer ignore-call */ \acf_render_field_setting( $field, $props, true );
 	}
 
 	/**
