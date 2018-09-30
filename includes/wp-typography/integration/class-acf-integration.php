@@ -75,7 +75,7 @@ class ACF_Integration implements Plugin_Integration {
 		$this->api_version = $this->get_acf_version();
 
 		if ( \is_admin() && 5 === $this->api_version ) {
-			\add_action( 'acf/render_field_settings', [ $this, 'add_field_setting' ] );
+			\add_action( 'acf/init', [ $this, 'initialize_field_settings' ] );
 		}
 	}
 
@@ -86,6 +86,17 @@ class ACF_Integration implements Plugin_Integration {
 	 */
 	public function get_filter_tag() {
 		return 'acf';
+	}
+
+	/**
+	 * Initializes the "Typography" field setting for all available field types.
+	 */
+	public function initialize_field_settings() {
+		$field_types = /* @scrutinizer ignore-call */ \acf_get_field_types();
+
+		foreach ( $field_types as $type => $settings ) {
+			\add_action( "acf/render_field_settings/type=$type", [ $this, 'add_field_setting' ], 1 );
+		}
 	}
 
 	/**
@@ -127,11 +138,11 @@ class ACF_Integration implements Plugin_Integration {
 
 		// Define field properties.
 		$props = [
-			'label'        => __( 'Typography', 'wp-typography' ),
-			'instructions' => __( 'Select the wp-Typography filter to apply', 'wp-typography' ),
-			'name'         => self::FILTER_SETTING,
-			'type'         => 'select',
-			'choices'      => [
+			'label'         => __( 'Typography', 'wp-typography' ),
+			'instructions'  => __( 'Select the wp-Typography filter to apply', 'wp-typography' ),
+			'name'          => self::FILTER_SETTING,
+			'type'          => 'select',
+			'choices'       => [
 				self::DO_NOT_FILTER                     => __( 'Do not filter', 'wp-typography' ),
 				__( 'Standard Posts', 'wp-typography' ) => [
 					self::CONTENT_FILTER => __( 'Treat as body text', 'wp-typography' ),
@@ -142,11 +153,11 @@ class ACF_Integration implements Plugin_Integration {
 					self::FEED_TITLE_FILTER   => __( 'Treat as feed title', 'wp-typography' ),
 				],
 			],
-			'default'      => $default,
+			'default_value' => $default,
 		];
 
 		// Render the new field setting.
-		/* @scrutinizer ignore-call */ \acf_render_field_setting( $field, $props, true );
+		/* @scrutinizer ignore-call */ \acf_render_field_setting( $field, $props );
 	}
 
 	/**

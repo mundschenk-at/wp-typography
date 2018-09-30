@@ -94,7 +94,7 @@ class ACF_Integration_Test extends TestCase {
 		$this->acf_i->shouldReceive( 'get_acf_version' )->once()->andReturn( $api_version );
 
 		Functions\expect( 'is_admin' )->once()->andReturn( false );
-		Actions\expectAdded( 'acf/render_field_settings' )->never();
+		Actions\expectAdded( 'acf/init' )->never();
 
 		$this->acf_i->run( m::mock( \WP_Typography::class ) );
 
@@ -115,7 +115,7 @@ class ACF_Integration_Test extends TestCase {
 
 		Functions\expect( 'is_admin' )->once()->andReturn( true );
 		if ( 5 === $api_version ) {
-			Actions\expectAdded( 'acf/render_field_settings' )->once();
+			Actions\expectAdded( 'acf/init' )->once();
 		}
 
 		$this->acf_i->run( m::mock( \WP_Typography::class ) );
@@ -295,8 +295,27 @@ class ACF_Integration_Test extends TestCase {
 		];
 
 		Functions\when( '__' )->returnArg();
-		Functions\expect( 'acf_render_field_setting' )->once()->with( $field, m::subset( [ 'default' => $default ] ), true );
+		Functions\expect( 'acf_render_field_setting' )->once()->with( $field, m::subset( [ 'default_value' => $default ] ) );
 
 		$this->assertNull( $this->acf_i->add_field_setting( $field ) );
+	}
+
+	/**
+	 * Test initialize_field_settings.
+	 *
+	 * @covers ::initialize_field_settings
+	 */
+	public function test_initialize_field_settings() {
+		Functions\expect( 'acf_get_field_types' )->once()->andReturn(
+			[
+				'foo' => [],
+				'bar' => [],
+			]
+		);
+
+		Actions\expectAdded( 'acf/render_field_settings/type=foo' )->once()->with( [ $this->acf_i, 'add_field_setting' ], 1 );
+		Actions\expectAdded( 'acf/render_field_settings/type=bar' )->once()->with( [ $this->acf_i, 'add_field_setting' ], 1 );
+
+		$this->assertNull( $this->acf_i->initialize_field_settings() );
 	}
 }
