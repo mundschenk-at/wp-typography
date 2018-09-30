@@ -1,5 +1,8 @@
 # Changes
 
+## 5.4.2 - September 30, 2018
+*   _Bugfix_: Advanced Custom Fields 5 now uses the correct default values for `text`, `textarea` and `wysiwyg` field types.
+
 ## 5.4.1 - September 15, 2018
 *   _Bugfix_: Comply with new WordPress Coding Standards 1.1.
 *   _Bugfix_: Work around GlotPress issue preventing language pack generation.
