@@ -9,19 +9,11 @@
 
 	<!-- Include the WordPress ruleset, with exclusions. -->
 	<rule ref="WordPress">
-		<config name="minimum_supported_wp_version" value="4.6"/>
-
 		<exclude name="WordPress.Arrays.CommaAfterArrayItem.SpaceAfterComma" />
 		<exclude name="Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma" />
-		<!--<exclude name="Generic.WhiteSpace.ScopeIndent.IncorrectExact" />
-		<exclude name="Generic.WhiteSpace.ScopeIndent.Incorrect" />
-		<exclude name="PEAR.Functions.FunctionCallSignature.Indent" />
-		<exclude name="WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents" />
-		<exclude name="Generic.Functions.FunctionCallArgumentSpacing" />-->
 	</rule>
-
-	<rule ref="WordPress-Extra">
-	</rule>
+	<rule ref="WordPress-Docs" />
+	<rule ref="WordPress-Extra" />
 
 	<rule ref="WordPress.NamingConventions.ValidVariableName">
 		<properties>
@@ -36,8 +28,34 @@
 		</properties>
 	</rule>
 
-	<!-- Include sniffs for PHP cross-version compatibility. -->
-	<rule ref="PHPCompatibility">
-		<config name="testVersion" value="5.6-7.2"/>
+	<!--
+	To get the optimal benefits of using WPCS, we should add a couple of
+	custom properties.
+	Adjust the values of these properties to fit our needs.
+	For information on additional custom properties available, check out
+	the wiki:
+	https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/wiki/Customizable-sniff-properties
+	-->
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="wp-typography"/>
+			</property>
+		</properties>
 	</rule>
+
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="WP_Typography"/>
+				<element value="typo_"/>
+			</property>
+		</properties>
+
+		<exclude-pattern>*/partials/*\.php</exclude-pattern>
+		<exclude-pattern>*/tests/*\.php</exclude-pattern>
+	</rule>
+
+	<!-- Include sniffs for PHP cross-version compatibility. -->
+	<rule ref="PHPCompatibility" />
 </ruleset>
