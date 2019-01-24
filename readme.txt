@@ -49,11 +49,11 @@ wp‐Typography has the following requirements:
 
 FAQs are maintained on the [wp-Typography website](https://code.mundschenk.at/wp-typography/frequently-asked-questions/).
 
-Two questions come up so frequently, we will republish their answers here:
+Three questions come up so frequently, we will republish their answers here:
 
 = Will this plu­gin slow my page load­ing times? =
 
-Yes. Use [WP Super Cache](http://wordpress.org/extend/plugins/wp-super-cache/).
+Maybe. For best performance, use a [persistent object cache](https://wptavern.com/persistent-object-caching) plugin like [WP Redis](https://wordpress.org/plugins/wp-redis/).
 
 = This plugin breaks post title links. What gives? =
 
@@ -61,16 +61,11 @@ More likely than not, your WordPress theme is using an improper function to set 
 
 If you are uncomfortable editing your theme's code, you may alternatively go to the wp-Typography settings page in your admin panel and add `h1` and `h2` to the "Do not process the content of these HTML elements:" field.  This will disable typographic processing within improperly designed page title links <em>and</em> page titles.
 
-Remember, many more FAQs are are addressed the [wp-Typography website](https://code.mundschenk.at/wp-typography/frequently-asked-questions/).
-
-= I'm using Advanced Custom Fields and don't want my custom fields to be hyphenated! How can I disable that behavior? =
-
-Please install the [wp-Typography Disable ACF Integration plugin](https://wordpress.org/plugins/wp-typography-disable-acf-integration/) by @sarukku.
-
 = What are the privacy implications of using the plugin? =
 
 wp-Typography does not store, transmit or otherwise process personal data as such. It does cache the content of the site's posts. If necessary, you can clear this cache from the plugin's settings page.
 
+Remember, many more FAQs are are addressed the [wp-Typography website](https://code.mundschenk.at/wp-typography/frequently-asked-questions/).
 
 == Screenshots ==
 
