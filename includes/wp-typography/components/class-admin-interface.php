@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2014-2018 Peter Putzer.
+ *  Copyright 2014-2019 Peter Putzer.
  *  Copyright 2012-2013 Marie Hogebrandt.
  *  Copyright 2009-2011 KINGdesk, LLC.
  *
@@ -290,7 +290,12 @@ class Admin_Interface implements Plugin_Component {
 		$value = \wp_parse_args( $value, $old_value );
 
 		// Check if one of the auxiliary buttons was clicked and ignore changes in that case.
-		if ( ! empty( $_POST[ $this->options->get_name( Options::RESTORE_DEFAULTS ) ] ) || ! empty( $_POST[ $this->options->get_name( Options::CLEAR_CACHE ) ] ) ) { // WPCS: CSRF ok. Input var okay.
+		if (
+			 // phpcs:disable WordPress.Security.NonceVerification.Missing -- we are only checking that the button was clicked.
+			! empty( $_POST[ $this->options->get_name( Options::RESTORE_DEFAULTS ) ] ) ||
+			! empty( $_POST[ $this->options->get_name( Options::CLEAR_CACHE ) ] )
+			// phpcs:enable WordPress.Security.NonceVerification.Missing
+		) {
 			return $old_value;
 		} else {
 			return $value;
@@ -305,10 +310,10 @@ class Admin_Interface implements Plugin_Component {
 	protected function get_active_settings_tab() {
 		if ( empty( $this->active_tab ) ) {
 			// Check active tab.
-			if ( ! empty( $_REQUEST['tab'] ) ) {
-				$this->active_tab = \sanitize_key( $_REQUEST['tab'] ); // WPCS: CSRF ok. Input var okay.
-			} elseif ( ! empty( $_REQUEST['option_page'] ) && 0 === \strpos( \sanitize_key( $_REQUEST['option_page'] ), self::OPTION_GROUP ) ) { // WPCS: CSRF ok. Input var okay.
-				$this->active_tab = \substr( \sanitize_key( $_REQUEST['option_page'] ), \strlen( self::OPTION_GROUP ) ); // WPCS: CSRF ok. Input var okay.
+			if ( ! empty( $_REQUEST['tab'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				$this->active_tab = \sanitize_key( $_REQUEST['tab'] );
+			} elseif ( ! empty( $_REQUEST['option_page'] ) && 0 === \strpos( \sanitize_key( $_REQUEST['option_page'] ), self::OPTION_GROUP ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				$this->active_tab = \substr( \sanitize_key( $_REQUEST['option_page'] ), \strlen( self::OPTION_GROUP ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			} else {
 				$this->active_tab = (string) \array_keys( $this->admin_form_tabs )[0];
 			}
@@ -371,7 +376,8 @@ class Admin_Interface implements Plugin_Component {
 	 */
 	protected function trigger_admin_notice( $setting_name, $notice_id, $message, $notice_level, $input ) {
 		if (
-			! empty( $_POST[ $this->options->get_name( $setting_name ) ] ) && // WPCS: CSRF ok. Input var okay.
+			 // phpcs:ignore WordPress.Security.NonceVerification.Missing -- we are only checking that the button was clicked.
+			! empty( $_POST[ $this->options->get_name( $setting_name ) ] ) &&
 			empty( $this->triggered_notice[ $setting_name  ] )
 		) {
 			\add_settings_error( self::OPTION_GROUP . $this->get_active_settings_tab(), $notice_id, $message, $notice_level );
