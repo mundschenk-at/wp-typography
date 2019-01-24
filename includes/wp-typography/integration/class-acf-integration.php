@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2018 Peter Putzer.
+ *  Copyright 2017-2019 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -148,7 +148,7 @@ class ACF_Integration implements Plugin_Integration {
 					self::CONTENT_FILTER => __( 'Treat as body text', 'wp-typography' ),
 					self::TITLE_FILTER   => __( 'Treat as title', 'wp-typography' ),
 				],
-				__( 'RSS Feeds', 'wp-Typography' )      => [
+				__( 'RSS Feeds', 'wp-typography' )      => [
 					self::FEED_CONTENT_FILTER => __( 'Treat as feed body text', 'wp-typography' ),
 					self::FEED_TITLE_FILTER   => __( 'Treat as feed title', 'wp-typography' ),
 				],
