@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017 Peter Putzer.
+ *  Copyright 2017-2019 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -80,7 +80,7 @@ class Common_Test extends TestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function setUp() { // @codingStandardsIgnoreLine
+	protected function setUp() {
 		parent::setUp();
 
 		// Mock WP_Typography\Data_Storage\Options instance.
@@ -104,13 +104,6 @@ class Common_Test extends TestCase {
 
 		// Finish setup.
 		$this->common->run( $this->plugin );
-	}
-
-	/**
-	 * Necesssary clean-up work.
-	 */
-	protected function tearDown() { // @codingStandardsIgnoreLine
-		parent::tearDown();
 	}
 
 	/**

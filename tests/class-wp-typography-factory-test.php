@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017 Peter Putzer.
+ *  Copyright 2017-2019 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -46,7 +46,7 @@ class WP_Typography_Factory_Test extends TestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function setUp() { // @codingStandardsIgnoreLine
+	protected function setUp() {
 		parent::setUp();
 
 		// Set up virtual filesystem.
@@ -65,7 +65,7 @@ class WP_Typography_Factory_Test extends TestCase {
 				],
 			]
 		);
-		set_include_path( 'vfs://root/' ); // @codingStandardsIgnoreLine
+		set_include_path( 'vfs://root/' ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_set_include_path
 	}
 
 	/**

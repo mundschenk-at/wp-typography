@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2018 Peter Putzer.
+ *  Copyright 2017-2019 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -80,7 +80,7 @@ class WP_Typography_Test extends TestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function setUp() { // @codingStandardsIgnoreLine
+	protected function setUp() {
 
 		// Mock WP_Typography\Data_Storage\Options instance.
 		$this->options = m::mock( \WP_Typography\Data_Storage\Options::class )
@@ -114,7 +114,7 @@ class WP_Typography_Test extends TestCase {
 	/**
 	 * Necesssary clean-up work.
 	 */
-	protected function tearDown() { // @codingStandardsIgnoreLine
+	protected function tearDown() {
 
 		// Reset singleton.
 		$this->setStaticValue( \WP_Typography::class, 'instance', null );
