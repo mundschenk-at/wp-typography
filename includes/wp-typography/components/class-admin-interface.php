@@ -436,7 +436,8 @@ class Admin_Interface implements Plugin_Component {
 		// Create sidebar.
 		$sidebar = '<p>' . \__( 'Useful resources:', 'wp-typography' ) . '</p><ul>';
 		foreach ( $this->admin_resource_links as $anchor => $url ) {
-			$sidebar .= '<li><a href="' . \esc_url( $url ) . '">' . \__( $anchor, 'wp-typography' ) . '</a></li>';  // @codingStandardsIgnoreLine.
+			// $anchor is already translated.
+			$sidebar .= '<li><a href="' . \esc_url( $url ) . '">' . $anchor . '</a></li>';
 		}
 		$sidebar .= '</ul>';
 
