@@ -407,9 +407,9 @@ class Implementation extends \WP_Typography {
 			$typo = $this->get_typography_instance();
 
 			if ( $feed ) { // Feed readers are strange sometimes.
-				$processed_text = $typo->process_feed( $text, $settings, $is_title, $this->body_classes );
+				$processed_text = $typo->process_feed( $text, /* @scrutinizer ignore-type */ $settings, $is_title, $this->body_classes );
 			} else {
-				$processed_text = $typo->process( $text, $settings, $is_title, $this->body_classes );
+				$processed_text = $typo->process( $text, /* @scrutinizer ignore-type */ $settings, $is_title, $this->body_classes );
 			}
 
 			/**
