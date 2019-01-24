@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2018 Peter Putzer.
+ *  Copyright 2017-2019 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -99,7 +99,7 @@ class Admin_Interface_Test extends TestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function setUp() { // @codingStandardsIgnoreLine
+	protected function setUp() {
 		parent::setUp();
 
 		// Set up virtual filesystem.
@@ -119,7 +119,7 @@ class Admin_Interface_Test extends TestCase {
 				],
 			]
 		);
-		set_include_path( 'vfs://root/' ); // @codingStandardsIgnoreLine
+		set_include_path( 'vfs://root/' ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_set_include_path
 
 		// Mock WP_Typography\Data_Storage\Options instance.
 		$this->options = m::mock( Options::class )
@@ -150,13 +150,6 @@ class Admin_Interface_Test extends TestCase {
 		);
 		Functions\expect( 'is_admin' )->once()->andReturn( true );
 		$this->admin->run( $this->plugin );
-	}
-
-	/**
-	 * Necesssary clean-up work.
-	 */
-	protected function tearDown() { // @codingStandardsIgnoreLine
-		parent::tearDown();
 	}
 
 	/**

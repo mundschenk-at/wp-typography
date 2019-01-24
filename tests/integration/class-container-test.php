@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2018 Peter Putzer.
+ *  Copyright 2018-2019 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -71,7 +71,7 @@ class Container_Test extends TestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function setUp() { // @codingStandardsIgnoreLine
+	protected function setUp() {
 		parent::setUp();
 
 		$this->int1 = m::mock( Plugin_Integration::class );
@@ -80,13 +80,6 @@ class Container_Test extends TestCase {
 		// Mock WP_Typography\Components\Container instance.
 		$this->integrations = m::mock( Container::class, [ [ $this->int1, $this->int2 ] ] )
 			->shouldAllowMockingProtectedMethods()->makePartial();
-	}
-
-	/**
-	 * Necesssary clean-up work.
-	 */
-	protected function tearDown() { // @codingStandardsIgnoreLine
-		parent::tearDown();
 	}
 
 	/**

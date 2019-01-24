@@ -35,13 +35,14 @@
         "mundschenk-at/wp-settings-ui": "dev-master"
     },
     "require-dev": {
-        "squizlabs/php_codesniffer": "dev-master",
-        "wp-coding-standards/wpcs": "^1.0",
-        "wimg/php-compatibility": "^8.0",
-        "dealerdirect/phpcodesniffer-composer-installer": "^0.4",
+        "squizlabs/php_codesniffer": "^3.4",
+        "wp-coding-standards/wpcs": "^2.0",
+        "phpcompatibility/php-compatibility": "^9.0",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.5",
         "phpunit/phpunit": "5.*||6.*||7.*",
         "mikey179/vfsStream": "~1",
-        "brain/monkey": "^2.2"
+        "brain/monkey": "^2.2",
+        "roave/security-advisories": "dev-master"
     },
 
     "minimum-stability": "dev",
@@ -72,7 +73,7 @@
           "@phpstan"
       ],
       "phpcs": [
-          "phpcs -p -s includes/ admin/ tests/ --ignore='includes/_language_names.php' --extensions=php"
+          "phpcs -ps includes/ admin/ tests/ --ignore='includes/_language_names.php' --extensions=php && phpcs -ps *.php --runtime-set testVersion 5.2-"
       ],
       "phpstan": [
           "@composer require phpstan/phpstan --dev --quiet",
