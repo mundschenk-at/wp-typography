@@ -1,5 +1,10 @@
 # Changes
 
+## 5.5.0 - unreleased
+*   _Feature_: xxx
+*   _Change_: xxx
+*   _Bugfix_: xxx
+
 ## 5.4.2 - September 30, 2018
 *   _Bugfix_: Advanced Custom Fields 5 now uses the correct default values for `text`, `textarea` and `wysiwyg` field types.
 
