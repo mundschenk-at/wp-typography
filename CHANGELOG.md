@@ -1,9 +1,11 @@
 # Changes
 
 ## 5.5.0 - unreleased
-*   _Feature_: xxx
+*   _Feature_: French (1<sup>ère</sup>) and "Latin" (1<sup>o</sup>) ordinal numbers are now supported by the smart ordinals feature (also with Roman numerals, e.g. XIX<sup>ème</sup>).
 *   _Change_: xxx
-*   _Bugfix_: xxx
+*   _Bugfix_: Unit spacing is now properly applied to monetary symbols ($, €, etc.).
+*   _Bugfix_: Certain HTML entities (e.g. `&amp;`) were accidentally dropped in rare cases.
+*   _Bugfix_: Comply with the new WordPress Coding Standards 2.0.
 
 ## 5.4.2 - September 30, 2018
 *   _Bugfix_: Advanced Custom Fields 5 now uses the correct default values for `text`, `textarea` and `wysiwyg` field types.
