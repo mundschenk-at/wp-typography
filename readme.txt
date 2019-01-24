@@ -3,7 +3,7 @@ Contributors: pputzer, kingjeffrey
 Tags: typography, hyphenation, smart quotes, formatting, widows, orphans, typogrify, quotes, prettify, small caps, diacritics
 Requires at least: 4.6
 Requires PHP: 5.6
-Tested up to: 4.9
+Tested up to: 5.0
 Stable tag: 5.4.2
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
