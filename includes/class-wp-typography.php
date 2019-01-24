@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2014-2018 Peter Putzer.
+ *  Copyright 2014-2019 Peter Putzer.
  *  Copyright 2009-2011 KINGdesk, LLC.
  *
  *  This program is free software; you can redistribute it and/or
@@ -66,7 +66,7 @@ abstract class WP_Typography {
 	 *
 	 * @var WP_Typography
 	 */
-	private static $_instance;
+	private static $instance;
 
 	/**
 	 * Retrieves (and if necessary creates) the WP_Typography instance. Should not be called outside of plugin set-up.
@@ -80,8 +80,8 @@ abstract class WP_Typography {
 	 * @throws BadMethodCallException Thrown when WP_Typography::set_instance after plugin initialization.
 	 */
 	public static function set_instance( WP_Typography $instance ) {
-		if ( null === self::$_instance ) {
-			self::$_instance = $instance;
+		if ( null === self::$instance ) {
+			self::$instance = $instance;
 		} else {
 			throw new BadMethodCallException( 'WP_Typography::set_instance called more than once.' );
 		}
@@ -98,11 +98,11 @@ abstract class WP_Typography {
 	 * @return WP_Typography
 	 */
 	public static function get_instance() {
-		if ( null === self::$_instance ) {
+		if ( null === self::$instance ) {
 			throw new BadMethodCallException( 'WP_Typography::get_instance called without prior plugin intialization.' );
 		}
 
-		return self::$_instance;
+		return self::$instance;
 	}
 
 	/**
@@ -117,8 +117,8 @@ abstract class WP_Typography {
 	 * @return mixed
 	 */
 	public static function __callStatic( $name, array $arguments ) {
-		if ( method_exists( self::$_instance, $name ) ) {
-			return self::$_instance->$name( ...$arguments );
+		if ( method_exists( self::$instance, $name ) ) {
+			return self::$instance->$name( ...$arguments );
 		} else {
 			throw new BadMethodCallException( "Static method WP_Typography::$name does not exist." );
 		}

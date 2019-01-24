@@ -56,7 +56,7 @@ class WP_Typography_Singleton_Test extends TestCase {
 	protected function tearDown() { // @codingStandardsIgnoreLine
 
 		// Reset singleton.
-		$this->setStaticValue( \WP_Typography::class, '_instance', null );
+		$this->setStaticValue( \WP_Typography::class, 'instance', null );
 
 		parent::tearDown();
 	}

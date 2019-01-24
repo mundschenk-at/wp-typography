@@ -55,7 +55,7 @@ class Plugin_Controller_Test extends TestCase {
 	 */
 	protected function tearDown() { // @codingStandardsIgnoreLine
 		// Reset singleton.
-		$this->setStaticValue( \WP_Typography::class, '_instance', null );
+		$this->setStaticValue( \WP_Typography::class, 'instance', null );
 
 		parent::tearDown();
 	}
