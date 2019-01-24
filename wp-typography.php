@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2014-2018 Peter Putzer.
+ *  Copyright 2014-2019 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -53,7 +53,7 @@ require_once dirname( __FILE__ ) . '/vendor/mundschenk-at/check-wp-requirements/
  *
  * It's necessary to do this here because main class relies on namespaces.
  */
-function run_wp_typography() {
+function wp_typography_run() {
 	// Define our requirements.
 	$reqs = array(
 		'php'       => '5.6.0',
@@ -65,7 +65,7 @@ function run_wp_typography() {
 	$requirements = new Mundschenk_WP_Requirements( 'wp-Typography', __FILE__, 'wp-typography', $reqs );
 	if ( $requirements->check() ) {
 		// Autoload the rest of our classes.
-		require_once __DIR__ . '/vendor/autoload.php';
+		require_once __DIR__ . '/vendor/autoload.php'; // phpcs:ignore PHPCompatibility.Keywords.NewKeywords.t_dirFound
 
 		// Create the plugin.
 		$plugin = WP_Typography_Factory::get( __FILE__ )->create( 'WP_Typography\Plugin_Controller' );
@@ -74,4 +74,4 @@ function run_wp_typography() {
 		$plugin->run();
 	}
 }
-run_wp_typography();
+wp_typography_run();
