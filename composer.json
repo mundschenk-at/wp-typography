@@ -73,7 +73,7 @@
           "@phpstan"
       ],
       "phpcs": [
-          "phpcs -p -s includes/ admin/ tests/ --ignore='includes/_language_names.php' --extensions=php"
+          "phpcs -ps includes/ admin/ tests/ --ignore='includes/_language_names.php' --extensions=php && phpcs -ps *.php --runtime-set testVersion 5.2-"
       ],
       "phpstan": [
           "@composer require phpstan/phpstan --dev --quiet",
