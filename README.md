@@ -40,21 +40,27 @@ wp-Typography can easily be ported to any other PHP-based content management sys
 
 View the [wp-Typography homepage](https://code.mundschenk.at/wp-typography/ "wp-Typography Homepage") for more information.
 
+
 ## Frequently Asked Questions ##
 
 FAQs are maintained at the [wp-Typography website](https://code.mundschenk.at/wp-typography/frequently-asked-questions/ "wp-Typography FAQs").
 
-Two questions come up so frequently, we will republish their answers here:
+Three questions come up so frequently, we will republish their answers here:
 
 ### Will this plu­gin slow my page load­ing times? ###
 
-Yes. Use [WP Super Cache](http://wordpress.org/extend/plugins/wp-super-cache/).
+Maybe. For best performance, use a [persistent object cache](https://wptavern.com/persistent-object-caching) plugin like [WP Redis](https://wordpress.org/plugins/wp-redis/).
 
 ### This plugin breaks post title links.  What gives? ###
 
 More likely than not, your WordPress theme is using an improper function to set the title attribute of your heading's link.  It is probably using the `the_title()` function, which delivers the post title *after* filtering.  It should be using `the_title_attribute()` which delivers the post title *before* filtering.  Change out this function throughout your theme when it is used inside of an HTML tag, and the problem should go away.
 
 If you are uncomfortable editing your theme's code, you may alternatively go to the wp-Typography settings page in your admin panel and add `h1` and `h2` to the "Do not process the content of these HTML elements:" field.  This will disable typographic processing within improperly designed page title links <em>and</em> page titles.
+
+### What are the privacy implications of using the plugin? ###
+
+wp-Typography does not store, transmit or otherwise process personal data as such. It does cache the content of the site's posts. If necessary, you can clear this cache from the plugin's settings page.
+
 
 ## Changelog ##
 
