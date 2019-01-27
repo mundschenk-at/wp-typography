@@ -616,6 +616,8 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @since 5.6.0
 	 *
+	 * @internal
+	 *
 	 * @param  string $custom_exceptions Additional exceptions configured via the settings page (as a comma-separated string).
 	 *
 	 * @return string[]       An array of replacements, indexed by the key and sorted by descending key length.
