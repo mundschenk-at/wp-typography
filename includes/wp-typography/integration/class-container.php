@@ -75,6 +75,7 @@ class Container {
 			}
 		}
 
+		// No need to restrict these to the frontend, that's already done by Public_Interface.
 		\add_filter( 'typo_content_filters', [ $this, 'get_content_filters' ] );
 	}
 
