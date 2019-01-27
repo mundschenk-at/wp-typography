@@ -152,27 +152,3 @@ please upgrade PHP or continue to use version 4.2.2.
 * _Bugfix_: Smart diacritics won't try to "correct" the spelling of `Uber` anymore.
 * _Bugfix_: French punctuation is now correctly applied to quotes preceeded or followed by round and square brackets.
 * _Bugfix_: Smart quotes replacement could result in invalid unicode sequences in rare cases.
-
-= 5.3.5 - May 10, 2018 =
-* _Bugfix_: 50/50 (and x/x except 1/1) are not treated as fractions anymore.
-* _Bugfix_: The French spacing rules were not applied to closing guillemets followed by a comma.
-
-= 5.3.4 - April 22, 2018 =
-* _Bugfix_: Update used libraries to the latest versions.
-
-= 5.3.3 - April 08, 2018 =
-* _Bugfix_: Correctly match smart fractions even if the are followed by a comma (i.e. `1/4,`).
-
-= 5.3.2 - March 24, 2018 =
-* _Bugfix_: Prevent future conflicts with other plugins by updating included libraries.
-
-= 5.3.1 - March 15, 2018 =
-* _Bugfix_: Always clear the cache after updates to prevent frontend whitescreens under certain circumstances.
-
-= 5.3.0 - March 13, 2018 =
-* _Feature_: True integration with Advanced Custom Fields 5, making the filters adjustable for each field via the settings UI.
-* _Feature_: The script to remove soft hyphens from clipboard selections has been refactored to reduce the number of loaded resources.
-* _Change_: Some API methods have been deprecated and will be removed in 6.0.0:
-  - The static methods `WP_Typography::filter*` should be replaced by static calls to the existing `process*` method family.
-  - In general, all instance methods of the new class `WP_Typography\Implementation` can now be called statically on the singleton via the `WP_Typography` superclass.
-* _Bugfix_: In rare cases, UTF-8 characters like `Å` caused all content within the same tag to disappear.
