@@ -1,10 +1,9 @@
 # Changes
 
-## 5.5.0 - unreleased
+## 5.5.0 - January 27, 2019
 *   _Feature_: French (1<sup>ère</sup>) and "Latin" (1<sup>o</sup>) ordinal numbers are now supported by the smart ordinals feature (also with Roman numerals, e.g. XIX<sup>ème</sup>).
 *   _Feature_: The list of smart quotes exceptions (words beginning with apostrophes) can now be customized.
 *   _Feature_: HTML5 parser performance hugely improved (up to 11× faster).
-*   _Change_: xxx
 *   _Bugfix_: Output filtering is now suspended during WP-CLI commands.
 *   _Bugfix_: Unit spacing is now properly applied to monetary symbols ($, €, etc.).
 *   _Bugfix_: Certain HTML entities (e.g. `&amp;`) were accidentally dropped in rare cases.
