@@ -111,6 +111,10 @@ please upgrade PHP or continue to use version 4.2.2.
 
 == Changelog ==
 
+= 5.5.1 - January 27, 2019 =
+* _Bugfix_: Parts of hyphenated words should not be detected as Roman numerals anymore.
+* _Bugfix_: The Unicode hyphen character (‐) is recognized as a valid word combiner.
+
 = 5.5.0 - January 27, 2019 =
 * _Feature_: French (1<sup>ère</sup>) and "Latin" (1<sup>o</sup>) ordinal numbers are now supported by the smart ordinals feature (also with Roman numerals, e.g. XIX<sup>ème</sup>).
 * _Feature_: The list of smart quotes exceptions (words beginning with apostrophes) can now be customized.
