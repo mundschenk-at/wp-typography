@@ -5,6 +5,7 @@
 *   _Feature_: The list of smart quotes exceptions (words beginning with apostrophes) can now be customized.
 *   _Feature_: HTML5 parser performance hugely improved (up to 11× faster).
 *   _Change_: xxx
+*   _Bugfix_: Output filtering is now suspended during WP-CLI commands.
 *   _Bugfix_: Unit spacing is now properly applied to monetary symbols ($, €, etc.).
 *   _Bugfix_: Certain HTML entities (e.g. `&amp;`) were accidentally dropped in rare cases.
 *   _Bugfix_: Comply with the new WordPress Coding Standards 2.0.

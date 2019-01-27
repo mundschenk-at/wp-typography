@@ -89,8 +89,8 @@ class Public_Interface implements Plugin_Component {
 	public function run( \WP_Typography $plugin ) {
 		$this->plugin = $plugin;
 
-		if ( ! \is_admin() ) {
-			// Load settings.
+		// Do not run our filters on the admin side or during a WP-CLI command.
+		if ( ! \is_admin() && ! defined( 'WP_CLI' ) ) {
 			\add_action( 'init', [ $this, 'init' ] );
 		}
 	}
