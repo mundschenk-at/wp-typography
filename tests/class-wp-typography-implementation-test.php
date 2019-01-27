@@ -212,6 +212,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 				Config::SMART_ORDINALS                 => false,
 				Config::SMART_MARKS                    => false,
 				Config::SMART_QUOTES                   => false,
+				Config::SMART_QUOTES_EXCEPTIONS        => [],
 				Config::SMART_DIACRITICS               => false,
 				Config::DIACRITIC_LANGUAGES            => 'en-US',
 				Config::DIACRITIC_CUSTOM_REPLACEMENTS  => [],
@@ -255,6 +256,8 @@ class WP_Typography_Implementation_Test extends TestCase {
 		);
 		$this->transients->shouldReceive( 'cache_object' )->once();
 
+		$this->wp_typo->shouldReceive( 'prepare_smart_quotes_exceptions' )->once()->with( m::type( 'array' ) )->andReturn( [] );
+
 		Functions\expect( 'wp_json_encode' )->once()->andReturn( '{ json: "value" }' );
 		Filters\expectApplied( 'typo_narrow_no_break_space' )->with( false )->once();
 		Filters\expectApplied( 'typo_ignore_parser_errors' )->with( false )->once();
@@ -288,6 +291,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 				Config::SMART_ORDINALS                 => false,
 				Config::SMART_MARKS                    => false,
 				Config::SMART_QUOTES                   => false,
+				Config::SMART_QUOTES_EXCEPTIONS        => [],
 				Config::SMART_DIACRITICS               => false,
 				Config::DIACRITIC_LANGUAGES            => 'en-US',
 				Config::DIACRITIC_CUSTOM_REPLACEMENTS  => [],
@@ -337,6 +341,67 @@ class WP_Typography_Implementation_Test extends TestCase {
 		$s = $this->wp_typo->get_settings();
 
 		$this->assertInstanceOf( \PHP_Typography\Settings::class, $s );
+	}
+
+	/**
+	 * Tests prepare_smart_quotes_exceptions.
+	 *
+	 * @covers ::prepare_smart_quotes_exceptions
+	 *
+	 * @uses WP_Typography\Settings\Tools::array_map_assoc
+	 * @uses WP_Typography\Settings\Tools::parse_smart_quote_exceptions_string
+	 */
+	public function test_prepare_smart_quotes_exceptions() {
+		$custom_string = "rock 'n' roll";
+		$expected_keys = [
+			$custom_string,
+			"'tain't",
+			"'twere",
+			"'twill",
+			"'round",
+			"'cause",
+			"'twas",
+			"'bout",
+			"'nuff",
+			"'tis",
+			"'til",
+			"'em",
+		];
+
+		Functions\when( '_x' )->returnArg();
+
+		$result = $this->invokeMethod( $this->wp_typo, 'prepare_smart_quotes_exceptions', [ $custom_string ] );
+
+		$this->assertSame( $expected_keys, \array_keys( $result ) );
+	}
+
+	/**
+	 * Tests prepare_smart_quotes_exceptions.
+	 *
+	 * @covers ::prepare_smart_quotes_exceptions
+	 *
+	 * @uses WP_Typography\Settings\Tools::array_map_assoc
+	 * @uses WP_Typography\Settings\Tools::parse_smart_quote_exceptions_string
+	 */
+	public function test_prepare_smart_quotes_exceptions_wp_cockney_replace() {
+		global $wp_cockneyreplace;
+
+		$custom_string     = "rock 'n' roll";
+		$wp_cockneyreplace = [ // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+			"'foo"    => '’foo',
+			"'foobar" => '’foobar',
+		];
+		$expected_keys     = [
+			$custom_string,
+			"'foobar",
+			"'foo",
+		];
+
+		Functions\when( '_x' )->returnArg();
+
+		$result = $this->invokeMethod( $this->wp_typo, 'prepare_smart_quotes_exceptions', [ $custom_string ] );
+
+		$this->assertSame( $expected_keys, \array_keys( $result ) );
 	}
 
 	/**

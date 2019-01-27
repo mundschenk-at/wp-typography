@@ -31,10 +31,12 @@ use WP_Typography\Data_Storage\Cache;
 use WP_Typography\Data_Storage\Options;
 use WP_Typography\Data_Storage\Transients;
 
+use WP_Typography\Settings\Tools as Settings_Tools;
 use WP_Typography\Settings\Plugin_Configuration as Config;
 
 use PHP_Typography\PHP_Typography;
 use PHP_Typography\Settings;
+use PHP_Typography\U;
 use PHP_Typography\Hyphenator\Cache as Hyphenator_Cache;
 
 /**
@@ -523,6 +525,7 @@ class Implementation extends \WP_Typography {
 			$s->set_smart_ordinal_suffix( $config[ Config::SMART_ORDINALS ] );
 			$s->set_smart_marks( $config[ Config::SMART_MARKS ] );
 			$s->set_smart_quotes( $config[ Config::SMART_QUOTES ] );
+			$s->set_smart_quotes_exceptions( $this->prepare_smart_quotes_exceptions( $config[ Config::SMART_QUOTES_EXCEPTIONS ] ) );
 
 			$s->set_smart_diacritics( $config[ Config::SMART_DIACRITICS ] );
 			$s->set_diacritic_language( $config[ Config::DIACRITIC_LANGUAGES ] );
@@ -604,6 +607,71 @@ class Implementation extends \WP_Typography {
 		 * @param bool $ignore Default false.
 		 */
 		$s->set_ignore_parser_errors( $config[ Config::IGNORE_PARSER_ERRORS ] || \apply_filters( 'typo_ignore_parser_errors', false ) );
+	}
+
+	/**
+	 * Prepares a list of smart quotes exceptions from WordPress' "cockney" list
+	 * and any custom exceptions configured in the settings, maintaining compatibility
+	 * with the `wp_texturize` function.
+	 *
+	 * @since 5.6.0
+	 *
+	 * @param  string $custom_exceptions Additional exceptions configured via the settings page (as a comma-separated string).
+	 *
+	 * @return string[]       An array of replacements, indexed by the key and sorted by descending key length.
+	 */
+	protected function prepare_smart_quotes_exceptions( $custom_exceptions ) {
+		global $wp_cockneyreplace;
+
+		// The combined exceptions list.
+		$exceptions = [];
+
+		// If a plugin has provided an autocorrect array, use it.
+		if ( ! empty( $wp_cockneyreplace ) && \is_array( $wp_cockneyreplace ) ) {
+			$exceptions = $wp_cockneyreplace;
+		} else {
+			/*
+			* translators: This is a comma-separated list of words that defy the syntax of quotations in normal use,
+			* for example...  'We do not have enough words yet' ... is a typical quoted phrase.  But when we write
+			* lines of code 'til we have enough of 'em, then we need to insert apostrophes instead of quotes.
+			*/
+			$patterns     = \explode(
+				',',
+				\_x( // phpcs:ignore WordPress.WP.I18n.MissingArgDomain -- text domain missing to use Core translations.
+					"'tain't,'twere,'twas,'tis,'twill,'til,'bout,'nuff,'round,'cause,'em",
+					'Comma-separated list of words to texturize in your language'
+				)
+			);
+			$replacements = \explode(
+				',',
+				\html_entity_decode(
+					\_x(  // phpcs:ignore WordPress.WP.I18n.MissingArgDomain -- text domain missing to use Core translations.
+						'&#8217;tain&#8217;t,&#8217;twere,&#8217;twas,&#8217;tis,&#8217;twill,&#8217;til,&#8217;bout,&#8217;nuff,&#8217;round,&#8217;cause,&#8217;em',
+						'Comma-separated list of replacement words in your language'
+					),
+					ENT_QUOTES | ENT_HTML5,
+					'UTF-8'
+				)
+			);
+
+			$exceptions = \array_combine( $patterns, $replacements );
+		}
+
+		// If necessary, merge custom exceptions.
+		$custom_exceptions = Settings_Tools::parse_smart_quote_exceptions_string( $custom_exceptions );
+		if ( ! empty( $custom_exceptions ) ) {
+			$exceptions = \array_merge( $exceptions, $custom_exceptions );
+		}
+
+		// Longest strings first.
+		\uksort(
+			$exceptions,
+			function( $a, $b ) {
+				return \strlen( $b ) - \strlen( $a );
+			}
+		);
+
+		return $exceptions;
 	}
 
 	/**

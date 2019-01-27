@@ -63,6 +63,7 @@ abstract class Plugin_Configuration {
 	const DIACRITIC_CUSTOM_REPLACEMENTS    = 'diacritic_custom_replacements';
 	const SMART_QUOTES_PRIMARY             = 'smart_quotes_primary';
 	const SMART_QUOTES_SECONDARY           = 'smart_quotes_secondary';
+	const SMART_QUOTES_EXCEPTIONS          = 'smart_quotes_exceptions';
 	const SINGLE_CHARACTER_WORD_SPACING    = 'single_character_word_spacing';
 	const DASH_SPACING                     = 'dash_spacing';
 	const FRACTION_SPACING                 = 'fraction_spacing';
@@ -294,6 +295,18 @@ abstract class Plugin_Configuration {
 					'label'         => \__( "Secondary quotation style: Convert <code>'foo'</code> to %1\$s.", 'wp-typography' ),
 					'option_values' => self::get_quote_style_option_values(),
 					'default'       => Quote_Style::SINGLE_CURLED, // @codeCoverageIgnore
+				],
+				self::SMART_QUOTES_EXCEPTIONS          => [
+					'ui'            => Controls\Textarea::class,
+					'tab_id'        => Tabs::CHARACTER_REPLACEMENT,
+					'grouped_with'  => self::SMART_QUOTES,
+					/* translators: 1: style dropdown */
+					'label'         => \__( 'Additional words beginning or ending with an apostrophe:', 'wp-typography' ),
+					'help_text'     => \__( 'Separate words or phrases with commas. All single straight quotes will be treated as apostrophes (e.g. <code>rock \'n\' roll</code> will become <code>rock ’n’ roll</code>). The entries are case-sensitive.', 'wp-typography' ),
+					'attributes'    => [
+						'rows' => '2',
+					],
+					'default'       => "runnin', rock 'n' roll", // @codeCoverageIgnore
 				],
 				self::SMART_DASHES                     => [
 					'ui'            => Controls\Checkbox_Input::class,
