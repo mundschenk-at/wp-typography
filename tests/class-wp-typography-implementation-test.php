@@ -356,15 +356,15 @@ class WP_Typography_Implementation_Test extends TestCase {
 		$expected_keys = [
 			$custom_string,
 			"'tain't",
+			"'cause",
+			"'round",
 			"'twere",
 			"'twill",
-			"'round",
-			"'cause",
-			"'twas",
 			"'bout",
 			"'nuff",
-			"'tis",
+			"'twas",
 			"'til",
+			"'tis",
 			"'em",
 		];
 

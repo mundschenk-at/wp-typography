@@ -669,7 +669,7 @@ class Implementation extends \WP_Typography {
 		\uksort(
 			$exceptions,
 			function( $a, $b ) {
-				return \strlen( $b ) - \strlen( $a );
+				return \strlen( $b ) - \strlen( $a ) ?: strcmp( $a, $b );
 			}
 		);
 
