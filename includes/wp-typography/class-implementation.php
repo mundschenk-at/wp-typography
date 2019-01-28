@@ -523,6 +523,7 @@ class Implementation extends \WP_Typography {
 			$s->set_smart_exponents( $config[ Config::SMART_MATH ] );
 			$s->set_smart_fractions( $config[ Config::SMART_FRACTIONS ] );
 			$s->set_smart_ordinal_suffix( $config[ Config::SMART_ORDINALS ] );
+			$s->set_smart_ordinal_suffix_match_roman_numerals( $config[ Config::SMART_ORDINALS_ROMAN_NUMBERS ] );
 			$s->set_smart_marks( $config[ Config::SMART_MARKS ] );
 			$s->set_smart_quotes( $config[ Config::SMART_QUOTES ] );
 			$s->set_smart_quotes_exceptions( $this->prepare_smart_quotes_exceptions( $config[ Config::SMART_QUOTES_EXCEPTIONS ] ) );
