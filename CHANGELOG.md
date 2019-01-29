@@ -1,5 +1,8 @@
 # Changes
 
+## 5.5.2 - January 29, 2019
+*   _Bugfix_: To prevent common false positives for single-letter Roman ordinals (especially in French and Dutch), Roman numeral matching now has to be explicitly enabled in the settings. In addition, only `I`, `V`, and `X` are accepted as single-letter Roman numbers.
+
 ## 5.5.1 - January 27, 2019
 *   _Bugfix_: Parts of hyphenated words should not be detected as Roman numerals anymore.
 *   _Bugfix_: The Unicode hyphen character (‐) is recognized as a valid word combiner.

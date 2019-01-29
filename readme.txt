@@ -4,7 +4,7 @@ Tags: typography, hyphenation, smart quotes, formatting, widows, orphans, typogr
 Requires at least: 4.6
 Requires PHP: 5.6
 Tested up to: 5.0
-Stable tag: 5.5.1
+Stable tag: 5.5.2
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
@@ -110,6 +110,9 @@ The plugin now requires at least PHP 5.6. If you are still running an earlier ve
 please upgrade PHP or continue to use version 4.2.2.
 
 == Changelog ==
+
+= 5.5.2 - January 29, 2019 =
+* _Bugfix_: To prevent common false positives for single-letter Roman ordinals (especially in French and Dutch), Roman numeral matching now has to be explicitly enabled in the settings. In addition, only `I`, `V`, and `X` are accepted as single-letter Roman numbers.
 
 = 5.5.1 - January 27, 2019 =
 * _Bugfix_: Parts of hyphenated words should not be detected as Roman numerals anymore.

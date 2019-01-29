@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2018 Peter Putzer.
+ *  Copyright 2017-2019 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -56,6 +56,7 @@ abstract class Plugin_Configuration {
 	const SMART_MATH                       = 'smart_math';
 	const SMART_FRACTIONS                  = 'smart_fractions';
 	const SMART_ORDINALS                   = 'smart_ordinals';
+	const SMART_ORDINALS_ROMAN_NUMBERS     = 'smart_ordinals_roman_numbers';
 	const SMART_MARKS                      = 'smart_marks';
 	const SMART_QUOTES                     = 'smart_quotes';
 	const SMART_DIACRITICS                 = 'smart_diacritics';
@@ -402,6 +403,14 @@ abstract class Plugin_Configuration {
 					'short'         => \__( 'Ordinal numbers', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Transform ordinal suffixes [ <code>1st</code> ] to  pretty ordinals [ <code>1<sup>st</sup></code> ].', 'wp-typography' ),
+					'default'       => 0,
+				],
+				self::SMART_ORDINALS_ROMAN_NUMBERS     => [
+					'ui'            => Controls\Checkbox_Input::class,
+					'tab_id'        => Tabs::CHARACTER_REPLACEMENT,
+					'grouped_with'  => self::SMART_ORDINALS,
+					/* translators: 1: checkbox HTML */
+					'label'         => \__( '%1$s Include Roman numbers: [ <code>XXe</code> ] to pretty ordinals [ <code>XX<sup>e</sup></code> ].', 'wp-typography' ),
 					'default'       => 0,
 				],
 				self::SINGLE_CHARACTER_WORD_SPACING    => [
