@@ -72,6 +72,22 @@ class Public_Interface implements Plugin_Component {
 	 */
 	protected $config;
 
+	const CLEAN_CSS_PATTERNS = [
+		"`^([\t\s]+)`Ssm",
+		'`^\/\*(.+?)\*\/`Ssm',
+		"`([\n\A;]+)\/\*(.+?)\*\/`Ssm",
+		"`([\n\A;\s]+)//(.+?)[\n\r]`Ssm",
+		"`(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+`Ssm",
+	];
+
+	const CLEAN_CSS_REPLACEMENTS = [
+		'',
+		'',
+		'$1',
+		"\$1\n",
+		"\n",
+	];
+
 	/**
 	 * Creates a new instance of the Public_Interface.
 	 *
@@ -249,7 +265,7 @@ class Public_Interface implements Plugin_Component {
 			\wp_enqueue_style( 'wp-typography-custom' );
 
 			// Print the inline styles.
-			\wp_add_inline_style( 'wp-typography-custom', $this->config[ Config::STYLE_CSS ] ); // This should be escaped somehow.
+			\wp_add_inline_style( 'wp-typography-custom', $this->clean_styles( $this->config[ Config::STYLE_CSS ] ) );
 		}
 
 		// The Safari bug workaround.
@@ -275,5 +291,33 @@ class Public_Interface implements Plugin_Component {
 
 			\wp_enqueue_script( 'wp-typography-cleanup-clipboard', "{$plugin_dir}js/clean-clipboard$suffix.js", [ 'jquery' ], $version, true );
 		}
+	}
+
+	/**
+	 * Cleans up the user-supplied CSS rules for output. Removes comments and most
+	 * whitespace and filters the rules through `safecss_filter_attr`.
+	 *
+	 * @since 5.5.3
+	 *
+	 * @param  string $css A string of CSS styles.
+	 *
+	 * @return string      Filtered string of CSS styles.
+	 */
+	protected function clean_styles( $css ) {
+		$cleaned = \preg_replace( self::CLEAN_CSS_PATTERNS, self::CLEAN_CSS_REPLACEMENTS, $css );
+		$css     = '';
+
+		if ( \preg_match_all( '/\s*(?<selector>[^{}]+?)\s*\{\s*(?<rules>[^{}]+?)\s*\}\s*/sS', $cleaned, $matches, PREG_SET_ORDER ) ) {
+			foreach ( $matches as $m ) {
+				$selector = \wp_strip_all_tags( $m['selector'] );
+				$rules    = \safecss_filter_attr( $m['rules'] );
+
+				if ( ! empty( $selector ) && ! empty( $rules ) ) {
+					$css .= "{$selector}{{$rules}}";
+				}
+			}
+		}
+
+		return $css;
 	}
 }

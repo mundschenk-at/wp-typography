@@ -294,6 +294,7 @@ class Public_Interface_Test extends TestCase {
 	 */
 	public function test_enqueue_styles_css() {
 		$custom_style = 'my: css;';
+		$clean_style  = 'my: clean css;';
 		$this->prepareOptions(
 			[
 				Config::STYLE_CSS_INCLUDE                => true,
@@ -304,7 +305,10 @@ class Public_Interface_Test extends TestCase {
 
 		Functions\expect( 'wp_register_style' )->once()->with( 'wp-typography-custom', false );
 		Functions\expect( 'wp_enqueue_style' )->once()->with( 'wp-typography-custom' );
-		Functions\expect( 'wp_add_inline_style' )->once()->with( 'wp-typography-custom', $custom_style );
+
+		$this->public_if->shouldReceive( 'clean_styles' )->once()->with( $custom_style )->andReturn( $clean_style );
+
+		Functions\expect( 'wp_add_inline_style' )->once()->with( 'wp-typography-custom', $clean_style );
 
 		$this->assertNull( $this->public_if->enqueue_styles() );
 	}
@@ -350,5 +354,27 @@ class Public_Interface_Test extends TestCase {
 		$this->public_if->enqueue_scripts();
 
 		$this->assertTrue( true );
+	}
+
+	/**
+	 * Test clean_styles.
+	 *
+	 * @covers ::clean_styles
+	 */
+	public function test_clean_styles() {
+		$selector1     = 'foo, bar';
+		$selector2     = 'bar < foobar';
+		$rules1        = 'foo-attribute: bar;bar-attribute: foo;';
+		$rules2        = 'foo-attribute: x;bar-attribute: y;';
+		$styles        = "{$selector1} { {$rules1} }\n{$selector2} { {$rules2} }";
+		$with_comments = "/* A comment */{$styles}\n/* Another comment,\n * multiline */";
+		$result        = 'clean selector#1{cleaned rules#1}clean selector#2{cleaned rules#2}';
+
+		Functions\expect( 'wp_strip_all_tags' )->once()->with( $selector1 )->andReturn( 'clean selector#1' );
+		Functions\expect( 'wp_strip_all_tags' )->once()->with( $selector2 )->andReturn( 'clean selector#2' );
+		Functions\expect( 'safecss_filter_attr' )->once()->with( $rules1 )->andReturn( 'cleaned rules#1' );
+		Functions\expect( 'safecss_filter_attr' )->once()->with( $rules2 )->andReturn( 'cleaned rules#2' );
+
+		$this->assertSame( $result, $this->public_if->clean_styles( $with_comments ) );
 	}
 }
