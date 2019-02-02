@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2014-2018 Peter Putzer.
+ *  Copyright 2014-2019 Peter Putzer.
  *  Copyright 2009-2011 KINGdesk, LLC.
  *
  *  This program is free software; you can redistribute it and/or
@@ -121,7 +121,7 @@ class Public_Interface implements Plugin_Component {
 		\add_filter( 'body_class', [ $this->plugin, 'filter_body_class' ], $this->filter_priority );
 
 		// Add CSS Hook styling.
-		\add_action( 'wp_head', [ $this, 'add_wp_head' ] );
+		\add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
 
 		// Optionally enable clipboard clean-up.
 		\add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
@@ -237,18 +237,29 @@ class Public_Interface implements Plugin_Component {
 	}
 
 	/**
-	 * Prints CSS and JS depending on plugin options.
+	 * Enqueues custom styles.
+	 *
+	 * @since 5.5.3
 	 */
-	public function add_wp_head() {
-
+	public function enqueue_styles() {
+		// Custom styles set via the CSS Hooks settings page.
 		if ( $this->config[ Config::STYLE_CSS_INCLUDE ] && '' !== trim( $this->config[ Config::STYLE_CSS ] ) ) {
-			echo '<style type="text/css">' . "\r\n";
-			echo \esc_html( $this->config[ Config::STYLE_CSS ] ) . "\r\n";
-			echo "</style>\r\n";
+			// Register and enqueue dummy stylesheet.
+			\wp_register_style( 'wp-typography-custom', '' ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion -- only inline.
+			\wp_enqueue_style( 'wp-typography-custom' );
+
+			// Print the inline styles.
+			\wp_add_inline_style( 'wp-typography-custom', $this->config[ Config::STYLE_CSS ] ); // This should be escaped somehow.
 		}
 
+		// The Safari bug workaround.
 		if ( $this->config[ Config::HYPHENATE_SAFARI_FONT_WORKAROUND ] ) {
-			echo "<style type=\"text/css\">body {-webkit-font-feature-settings: \"liga\";font-feature-settings: \"liga\";-ms-font-feature-settings: normal;}</style>\r\n";
+			// Register and enqueue dummy stylesheet.
+			\wp_register_style( 'wp-typography-safari-font-workaround', '' ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion -- only inline.
+			\wp_enqueue_style( 'wp-typography-safari-font-workaround' );
+
+			// Print the inline styles.
+			\wp_add_inline_style( 'wp-typography-safari-font-workaround', 'body {-webkit-font-feature-settings: "liga";font-feature-settings: "liga";-ms-font-feature-settings: normal;}' );
 		}
 	}
 

@@ -177,7 +177,7 @@ class Public_Interface_Test extends TestCase {
 
 		self::assertTrue( has_filter( 'body_class', [ $plugin, 'filter_body_class' ] ) );
 
-		self::assertTrue( has_action( 'wp_head', [ $this->public_if, 'add_wp_head' ] ) );
+		self::assertTrue( has_action( 'wp_enqueue_scripts', [ $this->public_if, 'enqueue_styles' ] ) );
 		self::assertTrue( has_action( 'wp_enqueue_scripts', [ $this->public_if, 'enqueue_scripts' ] ) );
 		self::assertTrue( has_action( 'shutdown', [ $plugin, 'save_hyphenator_cache_on_shutdown' ] ) );
 
@@ -288,40 +288,45 @@ class Public_Interface_Test extends TestCase {
 	}
 
 	/**
-	 * Test add_wp_head.
+	 * Test enqueue_styles.
 	 *
-	 * @covers ::add_wp_head
+	 * @covers ::enqueue_styles
 	 */
-	public function test_add_wp_head_css() {
+	public function test_enqueue_styles_css() {
+		$custom_style = 'my: css;';
 		$this->prepareOptions(
 			[
 				Config::STYLE_CSS_INCLUDE                => true,
-				Config::STYLE_CSS                        => 'my: css;',
+				Config::STYLE_CSS                        => $custom_style,
 				Config::HYPHENATE_SAFARI_FONT_WORKAROUND => false,
 			]
 		);
 
-		Functions\expect( 'esc_html' )->once()->with( 'my: css;' )->andReturn( 'my: escaped_css;' );
-		$this->expectOutputString( "<style type=\"text/css\">\r\nmy: escaped_css;\r\n</style>\r\n" );
+		Functions\expect( 'wp_register_style' )->once()->with( 'wp-typography-custom', false );
+		Functions\expect( 'wp_enqueue_style' )->once()->with( 'wp-typography-custom' );
+		Functions\expect( 'wp_add_inline_style' )->once()->with( 'wp-typography-custom', $custom_style );
 
-		$this->public_if->add_wp_head();
+		$this->assertNull( $this->public_if->enqueue_styles() );
 	}
 
 	/**
-	 * Test add_wp_head.
+	 * Test enqueue_styles.
 	 *
-	 * @covers ::add_wp_head
+	 * @covers ::enqueue_styles
 	 */
-	public function test_add_wp_head_safari_workaround() {
+	public function test_enqueue_styles_safari_workaround() {
 		$this->prepareOptions(
 			[
 				Config::STYLE_CSS_INCLUDE                => false,
 				Config::HYPHENATE_SAFARI_FONT_WORKAROUND => true,
 			]
 		);
-		$this->expectOutputString( "<style type=\"text/css\">body {-webkit-font-feature-settings: \"liga\";font-feature-settings: \"liga\";-ms-font-feature-settings: normal;}</style>\r\n" );
-		$this->public_if->add_wp_head();
 
+		Functions\expect( 'wp_register_style' )->once()->with( 'wp-typography-safari-font-workaround', false );
+		Functions\expect( 'wp_enqueue_style' )->once()->with( 'wp-typography-safari-font-workaround' );
+		Functions\expect( 'wp_add_inline_style' )->once()->with( 'wp-typography-safari-font-workaround', m::type( 'string' ) );
+
+		$this->assertNull( $this->public_if->enqueue_styles() );
 	}
 
 	/**
