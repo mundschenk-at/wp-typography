@@ -211,7 +211,6 @@ class Public_Interface_Test extends TestCase {
 	 * @covers ::enable_title_filters
 	 *
 	 * @dataProvider provide_add_content_filters_data
-	 * @runInSeparateProcess
 	 *
 	 * @param bool   $content     Disable content filters if true.
 	 * @param bool   $heading     Disable heading filters if true.

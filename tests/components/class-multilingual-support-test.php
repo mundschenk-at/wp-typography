@@ -177,9 +177,6 @@ class Multilingual_Support_Test extends TestCase {
 	 *
 	 * @dataProvider provide_automatic_language_settings_data
 	 *
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 *
 	 * @param  bool $hyphenation Required.
 	 * @param  bool $diacritics  Required.
 	 */
