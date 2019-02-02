@@ -1,5 +1,8 @@
 # Changes
 
+## 5.5.3 - February 2, 2019
+*   _Bugfix_: Custom styles containing quote characters are now output correctly.
+
 ## 5.5.2 - January 29, 2019
 *   _Bugfix_: To prevent common false positives for single-letter Roman ordinals (especially in French and Dutch), Roman numeral matching now has to be explicitly enabled in the settings. In addition, only `I`, `V`, and `X` are accepted as single-letter Roman numbers.
 

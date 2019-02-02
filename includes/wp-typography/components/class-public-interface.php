@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2014-2018 Peter Putzer.
+ *  Copyright 2014-2019 Peter Putzer.
  *  Copyright 2009-2011 KINGdesk, LLC.
  *
  *  This program is free software; you can redistribute it and/or
@@ -72,6 +72,22 @@ class Public_Interface implements Plugin_Component {
 	 */
 	protected $config;
 
+	const CLEAN_CSS_PATTERNS = [
+		"`^([\t\s]+)`Ssm",
+		'`^\/\*(.+?)\*\/`Ssm',
+		"`([\n\A;]+)\/\*(.+?)\*\/`Ssm",
+		"`([\n\A;\s]+)//(.+?)[\n\r]`Ssm",
+		"`(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+`Ssm",
+	];
+
+	const CLEAN_CSS_REPLACEMENTS = [
+		'',
+		'',
+		'$1',
+		"\$1\n",
+		"\n",
+	];
+
 	/**
 	 * Creates a new instance of the Public_Interface.
 	 *
@@ -121,7 +137,7 @@ class Public_Interface implements Plugin_Component {
 		\add_filter( 'body_class', [ $this->plugin, 'filter_body_class' ], $this->filter_priority );
 
 		// Add CSS Hook styling.
-		\add_action( 'wp_head', [ $this, 'add_wp_head' ] );
+		\add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
 
 		// Optionally enable clipboard clean-up.
 		\add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
@@ -237,18 +253,29 @@ class Public_Interface implements Plugin_Component {
 	}
 
 	/**
-	 * Prints CSS and JS depending on plugin options.
+	 * Enqueues custom styles.
+	 *
+	 * @since 5.5.3
 	 */
-	public function add_wp_head() {
-
+	public function enqueue_styles() {
+		// Custom styles set via the CSS Hooks settings page.
 		if ( $this->config[ Config::STYLE_CSS_INCLUDE ] && '' !== trim( $this->config[ Config::STYLE_CSS ] ) ) {
-			echo '<style type="text/css">' . "\r\n";
-			echo \esc_html( $this->config[ Config::STYLE_CSS ] ) . "\r\n";
-			echo "</style>\r\n";
+			// Register and enqueue dummy stylesheet.
+			\wp_register_style( 'wp-typography-custom', '' ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion -- only inline.
+			\wp_enqueue_style( 'wp-typography-custom' );
+
+			// Print the inline styles.
+			\wp_add_inline_style( 'wp-typography-custom', $this->clean_styles( $this->config[ Config::STYLE_CSS ] ) );
 		}
 
+		// The Safari bug workaround.
 		if ( $this->config[ Config::HYPHENATE_SAFARI_FONT_WORKAROUND ] ) {
-			echo "<style type=\"text/css\">body {-webkit-font-feature-settings: \"liga\";font-feature-settings: \"liga\";-ms-font-feature-settings: normal;}</style>\r\n";
+			// Register and enqueue dummy stylesheet.
+			\wp_register_style( 'wp-typography-safari-font-workaround', '' ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion -- only inline.
+			\wp_enqueue_style( 'wp-typography-safari-font-workaround' );
+
+			// Print the inline styles.
+			\wp_add_inline_style( 'wp-typography-safari-font-workaround', 'body {-webkit-font-feature-settings: "liga";font-feature-settings: "liga";-ms-font-feature-settings: normal;}' );
 		}
 	}
 
@@ -264,5 +291,33 @@ class Public_Interface implements Plugin_Component {
 
 			\wp_enqueue_script( 'wp-typography-cleanup-clipboard', "{$plugin_dir}js/clean-clipboard$suffix.js", [ 'jquery' ], $version, true );
 		}
+	}
+
+	/**
+	 * Cleans up the user-supplied CSS rules for output. Removes comments and most
+	 * whitespace and filters the rules through `safecss_filter_attr`.
+	 *
+	 * @since 5.5.3
+	 *
+	 * @param  string $css A string of CSS styles.
+	 *
+	 * @return string      Filtered string of CSS styles.
+	 */
+	protected function clean_styles( $css ) {
+		$cleaned = \preg_replace( self::CLEAN_CSS_PATTERNS, self::CLEAN_CSS_REPLACEMENTS, $css );
+		$css     = '';
+
+		if ( \preg_match_all( '/\s*(?<selector>[^{}]+?)\s*\{\s*(?<rules>[^{}]+?)\s*\}\s*/sS', $cleaned, $matches, PREG_SET_ORDER ) ) {
+			foreach ( $matches as $m ) {
+				$selector = \wp_strip_all_tags( $m['selector'] );
+				$rules    = \safecss_filter_attr( $m['rules'] );
+
+				if ( ! empty( $selector ) && ! empty( $rules ) ) {
+					$css .= "{$selector}{{$rules}}";
+				}
+			}
+		}
+
+		return $css;
 	}
 }

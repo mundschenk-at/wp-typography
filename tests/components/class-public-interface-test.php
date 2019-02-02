@@ -177,7 +177,7 @@ class Public_Interface_Test extends TestCase {
 
 		self::assertTrue( has_filter( 'body_class', [ $plugin, 'filter_body_class' ] ) );
 
-		self::assertTrue( has_action( 'wp_head', [ $this->public_if, 'add_wp_head' ] ) );
+		self::assertTrue( has_action( 'wp_enqueue_scripts', [ $this->public_if, 'enqueue_styles' ] ) );
 		self::assertTrue( has_action( 'wp_enqueue_scripts', [ $this->public_if, 'enqueue_scripts' ] ) );
 		self::assertTrue( has_action( 'shutdown', [ $plugin, 'save_hyphenator_cache_on_shutdown' ] ) );
 
@@ -211,7 +211,6 @@ class Public_Interface_Test extends TestCase {
 	 * @covers ::enable_title_filters
 	 *
 	 * @dataProvider provide_add_content_filters_data
-	 * @runInSeparateProcess
 	 *
 	 * @param bool   $content     Disable content filters if true.
 	 * @param bool   $heading     Disable heading filters if true.
@@ -288,40 +287,49 @@ class Public_Interface_Test extends TestCase {
 	}
 
 	/**
-	 * Test add_wp_head.
+	 * Test enqueue_styles.
 	 *
-	 * @covers ::add_wp_head
+	 * @covers ::enqueue_styles
 	 */
-	public function test_add_wp_head_css() {
+	public function test_enqueue_styles_css() {
+		$custom_style = 'my: css;';
+		$clean_style  = 'my: clean css;';
 		$this->prepareOptions(
 			[
 				Config::STYLE_CSS_INCLUDE                => true,
-				Config::STYLE_CSS                        => 'my: css;',
+				Config::STYLE_CSS                        => $custom_style,
 				Config::HYPHENATE_SAFARI_FONT_WORKAROUND => false,
 			]
 		);
 
-		Functions\expect( 'esc_html' )->once()->with( 'my: css;' )->andReturn( 'my: escaped_css;' );
-		$this->expectOutputString( "<style type=\"text/css\">\r\nmy: escaped_css;\r\n</style>\r\n" );
+		Functions\expect( 'wp_register_style' )->once()->with( 'wp-typography-custom', false );
+		Functions\expect( 'wp_enqueue_style' )->once()->with( 'wp-typography-custom' );
 
-		$this->public_if->add_wp_head();
+		$this->public_if->shouldReceive( 'clean_styles' )->once()->with( $custom_style )->andReturn( $clean_style );
+
+		Functions\expect( 'wp_add_inline_style' )->once()->with( 'wp-typography-custom', $clean_style );
+
+		$this->assertNull( $this->public_if->enqueue_styles() );
 	}
 
 	/**
-	 * Test add_wp_head.
+	 * Test enqueue_styles.
 	 *
-	 * @covers ::add_wp_head
+	 * @covers ::enqueue_styles
 	 */
-	public function test_add_wp_head_safari_workaround() {
+	public function test_enqueue_styles_safari_workaround() {
 		$this->prepareOptions(
 			[
 				Config::STYLE_CSS_INCLUDE                => false,
 				Config::HYPHENATE_SAFARI_FONT_WORKAROUND => true,
 			]
 		);
-		$this->expectOutputString( "<style type=\"text/css\">body {-webkit-font-feature-settings: \"liga\";font-feature-settings: \"liga\";-ms-font-feature-settings: normal;}</style>\r\n" );
-		$this->public_if->add_wp_head();
 
+		Functions\expect( 'wp_register_style' )->once()->with( 'wp-typography-safari-font-workaround', false );
+		Functions\expect( 'wp_enqueue_style' )->once()->with( 'wp-typography-safari-font-workaround' );
+		Functions\expect( 'wp_add_inline_style' )->once()->with( 'wp-typography-safari-font-workaround', m::type( 'string' ) );
+
+		$this->assertNull( $this->public_if->enqueue_styles() );
 	}
 
 	/**
@@ -345,5 +353,27 @@ class Public_Interface_Test extends TestCase {
 		$this->public_if->enqueue_scripts();
 
 		$this->assertTrue( true );
+	}
+
+	/**
+	 * Test clean_styles.
+	 *
+	 * @covers ::clean_styles
+	 */
+	public function test_clean_styles() {
+		$selector1     = 'foo, bar';
+		$selector2     = 'bar < foobar';
+		$rules1        = 'foo-attribute: bar;bar-attribute: foo;';
+		$rules2        = 'foo-attribute: x;bar-attribute: y;';
+		$styles        = "{$selector1} { {$rules1} }\n{$selector2} { {$rules2} }";
+		$with_comments = "/* A comment */{$styles}\n/* Another comment,\n * multiline */";
+		$result        = 'clean selector#1{cleaned rules#1}clean selector#2{cleaned rules#2}';
+
+		Functions\expect( 'wp_strip_all_tags' )->once()->with( $selector1 )->andReturn( 'clean selector#1' );
+		Functions\expect( 'wp_strip_all_tags' )->once()->with( $selector2 )->andReturn( 'clean selector#2' );
+		Functions\expect( 'safecss_filter_attr' )->once()->with( $rules1 )->andReturn( 'cleaned rules#1' );
+		Functions\expect( 'safecss_filter_attr' )->once()->with( $rules2 )->andReturn( 'cleaned rules#2' );
+
+		$this->assertSame( $result, $this->public_if->clean_styles( $with_comments ) );
 	}
 }
