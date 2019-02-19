@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2018 Peter Putzer.
+ *  Copyright 2017-2019 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -384,19 +384,30 @@ class Multilingual_Support implements Plugin_Component {
 		 *
 		 * @param string $locale Default ''.
 		 */
-		$locale = apply_filters( 'typo_current_locale', '' );
+		$locale = \apply_filters( 'typo_current_locale', '' );
 		if ( '' === $locale ) {
-			$locale = get_locale();
+			$locale = \get_locale();
 		}
 
 		// Split locale into its parts.
-		$first_dash  = strpos( $locale, '_' );
-		$language    = substr( $locale, 0, $first_dash );
-		$country     = substr( $locale, $first_dash + 1, 2 );
-		$second_dash = strpos( $locale, '_', $first_dash + 1 );
-		$modifier    = false !== $second_dash ? substr( $locale, $second_dash + 1 ) : '';
+		$first_dash = \strpos( $locale, '_' );
+		if ( $first_dash ) {
+			// The language is the part until the first underscore/dash (2 or 3 letters).
+			$language = \substr( $locale, 0, $first_dash );
 
-		return [ str_replace( '_', '-', $locale ), $language, $country, $modifier ];
+			// The country code always consists of the 2 letters after the underscore/dash.
+			$country = \substr( $locale, $first_dash + 1, 2 );
+
+			// Some locales also have another underscore/dash, followed by an arbitrary modifer.
+			$second_dash = \strpos( $locale, '_', $first_dash + 1 );
+			$modifier    = $second_dash ? \substr( $locale, $second_dash + 1 ) : '';
+		} else {
+			$language = $locale;
+			$country  = '';
+			$modifier = '';
+		}
+
+		return [ \str_replace( '_', '-', $locale ), $language, $country, $modifier ];
 	}
 
 	/**
