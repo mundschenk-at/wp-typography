@@ -408,19 +408,36 @@ class Multilingual_Support_Test extends TestCase {
 	}
 
 	/**
+	 * Provides data for testing get_current_locale.
+	 *
+	 * @return array
+	 */
+	public function provide_get_current_locale_data() {
+		return [
+			[ 'de_DE_formal', 'de-DE-formal', 'de',  'DE', 'formal' ],
+			[ 'rup_MK',       'rup-MK',       'rup', 'MK', '' ],
+			[ 'zh_CN',        'zh-CN',        'zh',  'CN', '' ],
+			[ 'yor',          'yor',          'yor', '',   '' ],
+			[ 'fi',           'fi',           'fi',  '',   '' ],
+		];
+	}
+
+	/**
 	 * Test get_current_locale.
 	 *
 	 * @covers ::get_current_locale
+	 *
+	 * @dataProvider provide_get_current_locale_data
+	 *
+	 * @param  string $input    Raw WordPress locale string.
+	 * @param  string $locale   Expected result.
+	 * @param  string $language Optional. Expected result. Default ''.
+	 * @param  string $country  Optional. Expected result. Default ''.
+	 * @param  string $modifier Optional. Expected result. Default ''.
 	 */
-	public function test_get_current_locale() {
-		$language    = 'de';
-		$country     = 'DE';
-		$modifier    = 'foo';
-		$locale      = "{$language}-{$country}-{$modifier}";
-		$locale_orig = "{$language}_{$country}_{$modifier}";
-
+	public function test_get_current_locale( $input, $locale, $language = '', $country = '', $modifier = '' ) {
 		Filters\expectApplied( 'typo_current_locale' )->once()->with( '' )->andReturnFirstArg();
-		Functions\expect( 'get_locale' )->once()->andReturn( $locale_orig );
+		Functions\expect( 'get_locale' )->once()->andReturn( $input );
 
 		$this->assertSame( [ $locale, $language, $country, $modifier ], $this->invokeMethod( $this->multi, 'get_current_locale' ) );
 	}

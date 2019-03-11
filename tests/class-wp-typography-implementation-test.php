@@ -170,8 +170,13 @@ class WP_Typography_Implementation_Test extends TestCase {
 	public function test_get_config() {
 
 		$this->options->shouldReceive( 'get' )->once()->with( Options::CONFIGURATION )->andReturn( [ 'foo' => 'bar' ] );
+		$this->wp_typo->shouldReceive( 'get_default_options' )->once()->andReturn( [ 'newbar' => 'foobar' ] );
 
-		$this->assertInternalType( 'array', $this->wp_typo->get_config() );
+		// Check result.
+		$result = $this->wp_typo->get_config();
+		$this->assertInternalType( 'array', $result );
+		$this->assertArrayHasKey( 'foo', $result );
+		$this->assertArrayHasKey( 'newbar', $result );
 	}
 
 	/**

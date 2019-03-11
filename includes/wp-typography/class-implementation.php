@@ -244,6 +244,22 @@ class Implementation extends \WP_Typography {
 		if ( empty( $this->config ) ) {
 			$config = $this->options->get( Options::CONFIGURATION );
 			if ( \is_array( $config ) ) {
+				$config_is_dirty = false;
+
+				// Include new default options.
+				foreach ( $this->get_default_options() as $option_name => $default_value ) {
+					if ( ! isset( $config[ $option_name ] ) ) {
+						$config[ $option_name ] = $default_value;
+						$config_is_dirty        = true;
+					}
+				}
+
+				// Persist the configuration in the DB if it is dirty.
+				if ( $config_is_dirty ) {
+					$this->options->set( Options::CONFIGURATION, $config );
+				}
+
+				// Use the updated configuration.
 				$this->config = $config;
 			} else {
 				// The configuration array has been corrupted.

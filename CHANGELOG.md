@@ -1,5 +1,9 @@
 # Changes
 
+## 5.5.4 - March 11, 2019
+*   _Bugfix_: Automatic language detection now also works for locales without a country code (e.g. `fi`).
+*   _Bugfix_: No PHP notices are shown for missing options anymore.
+
 ## 5.5.3 - February 2, 2019
 *   _Bugfix_: Custom styles containing quote characters are now output correctly.
 

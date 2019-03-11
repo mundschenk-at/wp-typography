@@ -3,8 +3,8 @@ Contributors: pputzer, kingjeffrey
 Tags: typography, hyphenation, smart quotes, formatting, widows, orphans, typogrify, quotes, prettify, small caps, diacritics
 Requires at least: 4.6
 Requires PHP: 5.6
-Tested up to: 5.0
-Stable tag: 5.5.3
+Tested up to: 5.1
+Stable tag: 5.5.4
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
@@ -110,6 +110,10 @@ The plugin now requires at least PHP 5.6. If you are still running an earlier ve
 please upgrade PHP or continue to use version 4.2.2.
 
 == Changelog ==
+
+= 5.5.4 - March 11, 2019 =
+* _Bugfix_: Automatic language detection now also works for locales without a country code (e.g. `fi`).
+* _Bugfix_: No PHP notices are shown for missing options anymore.
 
 = 5.5.3 - February 2, 2019 =
 * _Bugfix_: Custom styles containing quote characters are now output correctly.
