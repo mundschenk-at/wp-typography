@@ -229,28 +229,16 @@ class Public_Interface_Test extends TestCase {
 			'the_excerpt',
 			'the_excerpt_embed',
 			'widget_text',
+			'wp_dropdown_cats',
 		];
 		$heading_hooks = [
 			'the_title',
-			'single_post_title',
-			'single_cat_title',
-			'single_tag_title',
-			'single_month_title',
-			'nav_menu_attr_title',
-			'nav_menu_description',
 			'widget_title',
-			'list_cats',
-		];
-		$title_hooks   = [
-			'wp_title'             => 'process_feed',
-			'document_title_parts' => 'process_title_parts',
-			'wp_title_parts'       => 'process_title_parts',
 		];
 
 		Filters\expectApplied( 'typo_filter_priority' )->once();
 		Filters\expectApplied( 'typo_disable_filtering' )->once()->with( false, 'content' )->andReturn( $content );
 		Filters\expectApplied( 'typo_disable_filtering' )->once()->with( false, 'heading' )->andReturn( $heading );
-		Filters\expectApplied( 'typo_disable_filtering' )->once()->with( false, 'title' )->andReturn( $title );
 
 		if ( ! $content ) {
 			Functions\expect( 'get_bloginfo' )->once()->with( 'version' )->andReturn( $wp_version );
@@ -275,13 +263,6 @@ class Public_Interface_Test extends TestCase {
 		$expected = ! $heading;
 		foreach ( $heading_hooks as $hook ) {
 			$found = has_filter( $hook, "{$plugin_class}->process_title()" );
-			$this->assertEquals( $expected, $found, "Hook $hook" . ( $expected ? '' : ' not' ) . ' expected, but' . ( $found ? '' : ' not' ) . ' found.' );
-		}
-
-		// Title hooks.
-		$expected = ! $title;
-		foreach ( $title_hooks as $hook => $method ) {
-			$found = has_filter( $hook, "{$plugin_class}->{$method}()" );
 			$this->assertEquals( $expected, $found, "Hook $hook" . ( $expected ? '' : ' not' ) . ' expected, but' . ( $found ? '' : ' not' ) . ' found.' );
 		}
 	}

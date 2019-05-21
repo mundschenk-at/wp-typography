@@ -157,8 +157,6 @@ class Public_Interface implements Plugin_Component {
 			'content' => [ $this, 'enable_content_filters' ],
 			// Add filters for headings.
 			'heading' => [ $this, 'enable_heading_filters' ],
-			// Extra care needs to be taken with the <title> tag.
-			'title'   => [ $this, 'enable_title_filters' ],
 		];
 
 		/**
@@ -189,9 +187,10 @@ class Public_Interface implements Plugin_Component {
 			 *
 			 * @since 3.6.0
 			 * @since 5.2.0 WooCommerce support added ($filter_group 'woocommerce').
+			 * @since 5.6.0 Filter group `title` removed.
 			 *
 			 * @param bool   $disable      Whether to disable automatic filtering. Default false.
-			 * @param string $filter_group Which filters to disable. Possible values 'content', 'heading', 'title', 'acf', 'woocommerce'.
+			 * @param string $filter_group Which filters to disable. Possible values 'content', 'heading', 'acf', 'woocommerce'.
 			 */
 			if ( ! \apply_filters( 'typo_disable_filtering', false, $tag ) ) {
 				$enable( $priority );
@@ -214,6 +213,7 @@ class Public_Interface implements Plugin_Component {
 		\add_filter( 'link_name',         [ $this->plugin, 'process' ], $priority );
 		\add_filter( 'the_excerpt',       [ $this->plugin, 'process' ], $priority );
 		\add_filter( 'the_excerpt_embed', [ $this->plugin, 'process' ], $priority );
+		\add_filter( 'wp_dropdown_cats',  [ $this->plugin, 'process' ], $priority );
 
 		// Preserve shortcode handling on WordPress 4.8+.
 		if ( \version_compare( \get_bloginfo( 'version' ), '4.8', '>=' ) ) {
@@ -229,27 +229,8 @@ class Public_Interface implements Plugin_Component {
 	 * @param int $priority Filter priority.
 	 */
 	private function enable_heading_filters( $priority ) {
-		\add_filter( 'the_title',            [ $this->plugin, 'process_title' ], $priority );
-		\add_filter( 'single_post_title',    [ $this->plugin, 'process_title' ], $priority );
-		\add_filter( 'single_cat_title',     [ $this->plugin, 'process_title' ], $priority );
-		\add_filter( 'single_tag_title',     [ $this->plugin, 'process_title' ], $priority );
-		\add_filter( 'single_month_title',   [ $this->plugin, 'process_title' ], $priority );
-		\add_filter( 'single_month_title',   [ $this->plugin, 'process_title' ], $priority );
-		\add_filter( 'nav_menu_attr_title',  [ $this->plugin, 'process_title' ], $priority );
-		\add_filter( 'nav_menu_description', [ $this->plugin, 'process_title' ], $priority );
-		\add_filter( 'widget_title',         [ $this->plugin, 'process_title' ], $priority );
-		\add_filter( 'list_cats',            [ $this->plugin, 'process_title' ], $priority );
-	}
-
-	/**
-	 * Enable the title (not heading) filters.
-	 *
-	 * @param int $priority Filter priority.
-	 */
-	private function enable_title_filters( $priority ) {
-		\add_filter( 'wp_title',             [ $this->plugin, 'process_feed' ],        $priority ); // WP < 4.4.
-		\add_filter( 'document_title_parts', [ $this->plugin, 'process_title_parts' ], $priority );
-		\add_filter( 'wp_title_parts',       [ $this->plugin, 'process_title_parts' ], $priority ); // WP < 4.4.
+		\add_filter( 'the_title',    [ $this->plugin, 'process_title' ], $priority );
+		\add_filter( 'widget_title', [ $this->plugin, 'process_title' ], $priority );
 	}
 
 	/**
