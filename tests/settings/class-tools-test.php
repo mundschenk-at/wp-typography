@@ -26,6 +26,8 @@ namespace WP_Typography\Tests\Settings;
 
 use WP_Typography\Settings\Tools;
 
+use PHP_Typography\U;
+
 use Brain\Monkey\Actions;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
@@ -50,17 +52,17 @@ class Tools_Test extends \WP_Typography\Tests\TestCase {
 	public function test_parse_smart_quote_exceptions_string() {
 		$input  = "'tain't,'twere,'twas,'tis,   ,'twill,'til,'bout,'nuff,'round,'cause,'em, ,";
 		$result = [
-			"'tain't" => '’tain’t',
-			"'twere"  => '’twere',
-			"'twas"   => '’twas',
-			"'tis"    => '’tis',
-			"'twill"  => '’twill',
-			"'til"    => '’til',
-			"'bout"   => '’bout',
-			"'nuff"   => '’nuff',
-			"'round"  => '’round',
-			"'cause"  => '’cause',
-			"'em"     => '’em',
+			"'tain't" => U::APOSTROPHE . 'tain' . U::APOSTROPHE . 't',
+			"'twere"  => U::APOSTROPHE . 'twere',
+			"'twas"   => U::APOSTROPHE . 'twas',
+			"'tis"    => U::APOSTROPHE . 'tis',
+			"'twill"  => U::APOSTROPHE . 'twill',
+			"'til"    => U::APOSTROPHE . 'til',
+			"'bout"   => U::APOSTROPHE . 'bout',
+			"'nuff"   => U::APOSTROPHE . 'nuff',
+			"'round"  => U::APOSTROPHE . 'round',
+			"'cause"  => U::APOSTROPHE . 'cause',
+			"'em"     => U::APOSTROPHE . 'em',
 		];
 
 		$this->assertSame( $result, Tools::parse_smart_quote_exceptions_string( $input ) );
