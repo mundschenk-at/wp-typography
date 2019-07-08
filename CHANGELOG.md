@@ -1,6 +1,9 @@
 # Changes
 
 ## 5.6.0 - unreleased
+*   _Feature_: Support for new variant of the international dash style without
+    hair spaces for numeric intervals (i.e. `9-17` becomes `9&ndash;17` instead
+    of `9&hairsp;&ndash;&hairsp;17`).
 *   _Change_: The HTML title handling has been reengineered, and consequently, the
     `title` variant of the `typo_disable_filtering` hook has been removed.
 *   _Change_: CSS class injection for ampersands, acronyms, and intial quotes is
