@@ -58,6 +58,7 @@ abstract class Plugin_Configuration {
 	const SMART_ORDINALS                   = 'smart_ordinals';
 	const SMART_ORDINALS_ROMAN_NUMBERS     = 'smart_ordinals_roman_numbers';
 	const SMART_MARKS                      = 'smart_marks';
+	const SMART_AREA_UNITS                 = 'smart_area_units';
 	const SMART_QUOTES                     = 'smart_quotes';
 	const SMART_DIACRITICS                 = 'smart_diacritics';
 	const DIACRITIC_LANGUAGES              = 'diacritic_languages';
@@ -376,6 +377,14 @@ abstract class Plugin_Configuration {
 					'short'         => \__( 'Registration marks', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Transform registration marks [ <code>(c)</code> <code>(r)</code> <code>(tm)</code> <code>(sm)</code> <code>(p)</code> ] to  proper characters [ <code>©</code> <code>®</code> <code>™</code> <code>℠</code> <code>℗</code> ].', 'wp-typography' ),
+					'default'       => 1,
+				],
+				self::SMART_AREA_UNITS                 => [
+					'ui'            => Controls\Checkbox_Input::class,
+					'tab_id'        => Tabs::CHARACTER_REPLACEMENT,
+					'short'         => \__( 'Area and volume units', 'wp-typography' ),
+					/* translators: 1: checkbox HTML */
+					'label'         => \__( '%1$s Transform area and volume units [ <code>m2</code> ] to pretty units [ <code>m²</code> ].', 'wp-typography' ),
 					'default'       => 1,
 				],
 				self::SMART_MATH                       => [
