@@ -566,7 +566,7 @@ abstract class Plugin_Configuration {
 					'short'         => \__( 'Ampersands', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Wrap ampersands [ <code>&amp;</code> ] with <code>&lt;span class="amp"&gt;</code>.', 'wp-typography' ),
-					'default'       => 1,
+					'default'       => 0,
 				],
 				self::STYLE_CAPS                       => [
 					'ui'            => Controls\Checkbox_Input::class,
@@ -574,7 +574,7 @@ abstract class Plugin_Configuration {
 					'short'         => \__( 'Caps', 'wp-typography' ),
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Wrap acronyms (all capitals) with <code>&lt;span class="caps"&gt;</code>.', 'wp-typography' ),
-					'default'       => 1,
+					'default'       => 0,
 				],
 				self::STYLE_NUMBERS                    => [
 					'ui'            => Controls\Checkbox_Input::class,
@@ -600,7 +600,7 @@ abstract class Plugin_Configuration {
 					/* translators: 1: checkbox HTML */
 					'label'         => \__( '%1$s Wrap initial quotes.', 'wp-typography' ),
 					'help_text'     => \__( 'Matches quotemarks at the beginning of blocks of text, not all opening quotemarks. <br />Single quotes [ <code>&lsquo;</code> <code>&#8218;</code> ] are wrapped with <code>&lt;span class="quo"&gt;</code>. <br />Double quotes [ <code>&ldquo;</code> <code>&#8222;</code> ] are wrapped with <code>&lt;span class="dquo"&gt;</code>. <br />Guillemets [ <code>&laquo;</code> <code>&raquo;</code> ] are wrapped with <code>&lt;span class="dquo"&gt;</code>.', 'wp-typography' ),
-					'default'       => 1,
+					'default'       => 0,
 				],
 				self::INITIAL_QUOTE_TAGS               => [
 					'ui'            => Controls\Textarea::class,
