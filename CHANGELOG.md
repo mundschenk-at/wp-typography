@@ -2,7 +2,9 @@
 
 ## 5.6.0 - unreleased
 *   _Change_: The HTML title handling has been reengineered, and consequently, the
-    `title` variant of the `typo_disable_filtering` hook has been removed.  
+    `title` variant of the `typo_disable_filtering` hook has been removed.
+*   _Change_: CSS class injection for ampersands, acronyms, and intial quotes is
+    now disabled by default.
 
 ## 5.5.4 - March 11, 2019
 *   _Bugfix_: Automatic language detection now also works for locales without a country code (e.g. `fi`).
