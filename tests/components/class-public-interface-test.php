@@ -208,7 +208,6 @@ class Public_Interface_Test extends TestCase {
 	 * @covers ::add_content_filters
 	 * @covers ::enable_content_filters
 	 * @covers ::enable_heading_filters
-	 * @covers ::enable_title_filters
 	 *
 	 * @dataProvider provide_add_content_filters_data
 	 *
