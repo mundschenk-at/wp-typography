@@ -325,8 +325,9 @@ abstract class Plugin_Configuration {
 					'label'         => \__( 'Use the %1$s style for dashes.', 'wp-typography' ),
 					'help_text'     => \__( 'In the US, the em dash&#8202;&mdash;&#8202;with no or very little spacing&#8202;&mdash;&#8202;is used for parenthetical expressions, while internationally, the en dash &ndash; with spaces &ndash; is more prevalent.', 'wp-typography' ),
 					'option_values' => [
-						Dash_Style::TRADITIONAL_US => \__( 'Traditional US', 'wp-typography' ),
-						Dash_Style::INTERNATIONAL  => \__( 'International', 'wp-typography' ),
+						Dash_Style::TRADITIONAL_US               => \__( 'Traditional US', 'wp-typography' ),
+						Dash_Style::INTERNATIONAL                => \__( 'International', 'wp-typography' ),
+						Dash_Style::INTERNATIONAL_NO_HAIR_SPACES => \__( 'International (no hair spaces for intervals)', 'wp-typography' ),
 					],
 					'default'       => Dash_Style::TRADITIONAL_US, // @codeCoverageIgnore
 				],
