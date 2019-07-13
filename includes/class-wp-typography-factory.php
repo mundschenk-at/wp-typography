@@ -82,8 +82,8 @@ abstract class WP_Typography_Factory {
 					'shared'          => true,
 					'constructParams' => [
 						[
-							new ACF_Integration(),
-							new WooCommerce_Integration(),
+							[ 'instance' => ACF_Integration::class ],
+							[ 'instance' => WooCommerce_Integration::class ],
 						],
 					],
 				],
