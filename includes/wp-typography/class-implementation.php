@@ -679,7 +679,7 @@ class Implementation extends \WP_Typography {
 						'&#8217;tain&#8217;t,&#8217;twere,&#8217;twas,&#8217;tis,&#8217;twill,&#8217;til,&#8217;bout,&#8217;nuff,&#8217;round,&#8217;cause,&#8217;em',
 						'Comma-separated list of replacement words in your language'
 					),
-					ENT_QUOTES | ENT_HTML5,
+					\ENT_QUOTES | \ENT_HTML5,
 					'UTF-8'
 				)
 			);

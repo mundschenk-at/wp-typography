@@ -65,7 +65,7 @@ abstract class WP_Typography_Factory {
 		if ( ! isset( self::$factory ) ) {
 			// Load version from plugin data.
 			if ( ! \function_exists( 'get_plugin_data' ) ) {
-				require_once ABSPATH . 'wp-admin/includes/plugin.php';
+				require_once \ABSPATH . 'wp-admin/includes/plugin.php';
 			}
 
 			// Common rules components.

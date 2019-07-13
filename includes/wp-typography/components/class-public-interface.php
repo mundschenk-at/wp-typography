@@ -266,7 +266,7 @@ class Public_Interface implements Plugin_Component {
 	public function enqueue_scripts() {
 		if ( $this->config[ Config::HYPHENATE_CLEAN_CLIPBOARD ] ) {
 			// Set up file suffix and plugin version.
-			$suffix     = SCRIPT_DEBUG ? '' : '.min';
+			$suffix     = ( \defined( 'SCRIPT_DEBUG' ) && \SCRIPT_DEBUG ) ? '' : '.min';
 			$version    = $this->plugin->get_version();
 			$plugin_dir = \plugin_dir_url( $this->plugin_basename );
 
