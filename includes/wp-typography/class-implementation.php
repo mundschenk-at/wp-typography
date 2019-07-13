@@ -371,7 +371,7 @@ class Implementation extends \WP_Typography {
 		foreach ( $title_parts as $index => $part ) {
 			// Remove "&shy;" and "&#8203;" after processing title part.
 			$title_parts[ $index ] = \wp_strip_all_tags(
-				str_replace( [ \PHP_Typography\U::SOFT_HYPHEN, \PHP_Typography\U::ZERO_WIDTH_SPACE ], '', $this->process( $part, true, true, $settings ) )
+				\str_replace( [ \PHP_Typography\U::SOFT_HYPHEN, \PHP_Typography\U::ZERO_WIDTH_SPACE ], '', $this->process( $part, true, true, $settings ) )
 			);
 		}
 
@@ -412,7 +412,7 @@ class Implementation extends \WP_Typography {
 		$hash = isset( $hash ) ? $hash : $settings->get_hash( 32, false );
 
 		// Enable feed mode?
-		$feed = $force_feed || is_feed();
+		$feed = $force_feed || \is_feed();
 
 		// Construct cache key.
 		$key = 'frag_' . \md5( $text ) . '_' . $hash . '_' . ( $feed ? 'f' : '' ) . ( $is_title ? 't' : 's' );
@@ -437,7 +437,7 @@ class Implementation extends \WP_Typography {
 			 *
 			 * @param int $duration The duration in seconds. Defaults to 1 day.
 			 */
-			$duration = apply_filters( 'typo_processed_text_caching_duration', DAY_IN_SECONDS );
+			$duration = \apply_filters( 'typo_processed_text_caching_duration', DAY_IN_SECONDS );
 
 			// Save text fragment for later.
 			$this->cache->set( $key, $processed_text, $duration );
@@ -697,7 +697,7 @@ class Implementation extends \WP_Typography {
 		\uksort(
 			$exceptions,
 			function( $a, $b ) {
-				return \strlen( $b ) - \strlen( $a ) ?: strcmp( $a, $b );
+				return \strlen( $b ) - \strlen( $a ) ?: \strcmp( $a, $b );
 			}
 		);
 
@@ -778,7 +778,7 @@ class Implementation extends \WP_Typography {
 		 *
 		 * @param array $errors An array of error messages.
 		 */
-		return apply_filters( 'typo_handle_parser_errors', $errors );
+		return \apply_filters( 'typo_handle_parser_errors', $errors );
 	}
 
 	/**

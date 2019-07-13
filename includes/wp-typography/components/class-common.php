@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017 Peter Putzer.
+ *  Copyright 2017-2019 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -80,7 +80,7 @@ class Common implements Plugin_Component {
 		$this->plugin = $plugin;
 
 		// Load settings.
-		add_action( 'init', [ $this, 'init' ] );
+		\add_action( 'init', [ $this, 'init' ] );
 
 		// Initialize plugin integrations.
 		$this->integrations->run( $plugin );

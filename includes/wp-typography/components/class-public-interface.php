@@ -106,7 +106,7 @@ class Public_Interface implements Plugin_Component {
 		$this->plugin = $plugin;
 
 		// Do not run our filters on the admin side or during a WP-CLI command.
-		if ( ! \is_admin() && ! defined( 'WP_CLI' ) ) {
+		if ( ! \is_admin() && ! \defined( 'WP_CLI' ) ) {
 			\add_action( 'init', [ $this, 'init' ] );
 		}
 	}
@@ -240,7 +240,7 @@ class Public_Interface implements Plugin_Component {
 	 */
 	public function enqueue_styles() {
 		// Custom styles set via the CSS Hooks settings page.
-		if ( $this->config[ Config::STYLE_CSS_INCLUDE ] && '' !== trim( $this->config[ Config::STYLE_CSS ] ) ) {
+		if ( $this->config[ Config::STYLE_CSS_INCLUDE ] && '' !== \trim( $this->config[ Config::STYLE_CSS ] ) ) {
 			// Register and enqueue dummy stylesheet.
 			\wp_register_style( 'wp-typography-custom', '' ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion -- only inline.
 			\wp_enqueue_style( 'wp-typography-custom' );

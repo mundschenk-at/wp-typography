@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017 Peter Putzer.
+ *  Copyright 2017-2019 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -61,7 +61,7 @@ class Transients extends \Mundschenk\Data_Storage\Transients {
 		 * @param bool   $enabled Defaults to true.
 		 * @param string $handle  Optional. A name passed to the filters.
 		 */
-		if ( apply_filters( 'typo_php_typography_caching_enabled', true, $handle ) ) {
+		if ( \apply_filters( 'typo_php_typography_caching_enabled', true, $handle ) ) {
 			/**
 			 * Filters the caching duration for the PHP_Typography engine state.
 			 *
@@ -71,7 +71,7 @@ class Transients extends \Mundschenk\Data_Storage\Transients {
 			 * @param int    $duration The duration in seconds. Defaults to 0 (no expiration).
 			 * @param string $handle   Optional. A name passed to the filters.
 			 */
-			$duration = apply_filters( 'typo_php_typography_caching_duration', 0, $handle );
+			$duration = \apply_filters( 'typo_php_typography_caching_duration', 0, $handle );
 
 			$this->set_large_object( $transient, $object, $duration );
 		}

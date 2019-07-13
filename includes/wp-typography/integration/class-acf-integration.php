@@ -138,19 +138,19 @@ class ACF_Integration implements Plugin_Integration {
 
 		// Define field properties.
 		$props = [
-			'label'         => __( 'Typography', 'wp-typography' ),
-			'instructions'  => __( 'Select the wp-Typography filter to apply', 'wp-typography' ),
+			'label'         => \__( 'Typography', 'wp-typography' ),
+			'instructions'  => \__( 'Select the wp-Typography filter to apply', 'wp-typography' ),
 			'name'          => self::FILTER_SETTING,
 			'type'          => 'select',
 			'choices'       => [
-				self::DO_NOT_FILTER                     => __( 'Do not filter', 'wp-typography' ),
-				__( 'Standard Posts', 'wp-typography' ) => [
-					self::CONTENT_FILTER => __( 'Treat as body text', 'wp-typography' ),
-					self::TITLE_FILTER   => __( 'Treat as title', 'wp-typography' ),
+				self::DO_NOT_FILTER                      => \__( 'Do not filter', 'wp-typography' ),
+				\__( 'Standard Posts', 'wp-typography' ) => [
+					self::CONTENT_FILTER => \__( 'Treat as body text', 'wp-typography' ),
+					self::TITLE_FILTER   => \__( 'Treat as title', 'wp-typography' ),
 				],
-				__( 'RSS Feeds', 'wp-typography' )      => [
-					self::FEED_CONTENT_FILTER => __( 'Treat as feed body text', 'wp-typography' ),
-					self::FEED_TITLE_FILTER   => __( 'Treat as feed title', 'wp-typography' ),
+				\__( 'RSS Feeds', 'wp-typography' )      => [
+					self::FEED_CONTENT_FILTER => \__( 'Treat as feed body text', 'wp-typography' ),
+					self::FEED_TITLE_FILTER   => \__( 'Treat as feed title', 'wp-typography' ),
 				],
 			],
 			'default_value' => $default,

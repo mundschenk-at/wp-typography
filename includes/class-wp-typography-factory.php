@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2018 Peter Putzer.
+ *  Copyright 2017-2019 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -64,7 +64,7 @@ abstract class WP_Typography_Factory {
 	public static function get( $full_plugin_path ) {
 		if ( ! isset( self::$factory ) ) {
 			// Load version from plugin data.
-			if ( ! function_exists( 'get_plugin_data' ) ) {
+			if ( ! \function_exists( 'get_plugin_data' ) ) {
 				require_once ABSPATH . 'wp-admin/includes/plugin.php';
 			}
 
@@ -96,7 +96,7 @@ abstract class WP_Typography_Factory {
 					],
 				],
 				WP_Typography::class    => [
-					'constructParams' => [ get_plugin_data( $full_plugin_path, false, false )['Version'] ],
+					'constructParams' => [ \get_plugin_data( $full_plugin_path, false, false )['Version'] ],
 				],
 
 				// Additional parameters for components.
