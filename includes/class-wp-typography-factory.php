@@ -47,6 +47,9 @@ use WP_Typography\Integration\WooCommerce_Integration;
  */
 abstract class WP_Typography_Factory {
 
+	// Common rules components.
+	const SHARED = [ 'shared' => true ];
+
 	/**
 	 * The factory instance.
 	 *
@@ -68,14 +71,11 @@ abstract class WP_Typography_Factory {
 				require_once \ABSPATH . 'wp-admin/includes/plugin.php';
 			}
 
-			// Common rules components.
-			$shared_rule = [ 'shared' => true ];
-
 			$rules = [
 				// Shared helpers.
-				Cache::class            => $shared_rule,
-				Transients::class       => $shared_rule,
-				Options::class          => $shared_rule,
+				Cache::class            => self::SHARED,
+				Transients::class       => self::SHARED,
+				Options::class          => self::SHARED,
 
 				// Plugin integrations are also shared.
 				Integrations::class     => [
