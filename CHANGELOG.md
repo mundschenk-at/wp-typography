@@ -5,6 +5,9 @@
     hair spaces for numeric intervals (i.e. `9-17` becomes `9&ndash;17` instead
     of `9&hairsp;&ndash;&hairsp;17`).
 *   _Feature_: Smart area and volume units (`5m2` is transformed into `5 m²`).
+*   _Feature_: The use of narrow no-break spaces and the true Unicode hyphen can
+    now be enabled via the GUI. Consequently, the filter hook `typo_narrow_no_break_space`
+    has been deprecated.
 *   _Change_: The HTML title handling has been reengineered, and consequently, the
     `title` variant of the `typo_disable_filtering` hook has been removed.
 *   _Change_: CSS class injection for ampersands, acronyms, and intial quotes is
