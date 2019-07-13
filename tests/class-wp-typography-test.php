@@ -42,7 +42,6 @@ use Mockery as m;
  * @usesDefaultClass \WP_Typography
  *
  * @uses \WP_Typography\Components\Admin_Interface::__construct
- * @uses \WP_Typography\Components\Public_Interface::__construct
  * @uses \WP_Typography\Components\Setup::__construct
  * @uses \WP_Typography\Components\Common::__construct
  */
@@ -127,7 +126,7 @@ class WP_Typography_Test extends TestCase {
 	 *
 	 * @covers ::get_user_settings
 	 *
-	 * @uses ::get_instance
+	 * @uses WP_Typography::get_instance
 	 */
 	public function test_get_user_settings() {
 		$this->setStaticValue( \WP_Typography::class, 'instance', $this->wp_typo );

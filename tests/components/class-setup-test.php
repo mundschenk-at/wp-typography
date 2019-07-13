@@ -81,7 +81,7 @@ class Setup_Test extends TestCase {
 			->getMock();
 
 		// Mock WP_Typography\Components\Setup instance.
-		$this->setup = m::mock( Setup::class, [ '/plugin/path', $this->options ] )
+		$this->setup = m::mock( Setup::class, [ $this->options ] )
 			->shouldAllowMockingProtectedMethods()->makePartial();
 
 		$this->plugin = m::mock( \WP_Typography::class )->shouldReceive( 'get_version' )->andReturn( '6.6.6' )->byDefault()->getMock();
@@ -101,9 +101,8 @@ class Setup_Test extends TestCase {
 	 * @covers ::__construct
 	 */
 	public function test_constructor() {
-		$setup = m::mock( Setup::class, [ '/plugin/path', $this->options ] );
+		$setup = m::mock( Setup::class, [ $this->options ] );
 
-		$this->assertAttributeSame( '/plugin/path', 'plugin_file', $setup );
 		$this->assertAttributeSame( $this->options, 'options', $setup );
 	}
 
