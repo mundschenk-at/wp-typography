@@ -202,12 +202,15 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 * @uses ::init_settings_from_options
 	 */
 	public function test_get_settings() {
+		$remap_narrow_no_break_space = false;
 
 		$this->wp_typo->shouldReceive( 'get_config' )->once()->andReturn(
 			[
 				Config::IGNORE_TAGS                    => [ 'script' ],
 				Config::IGNORE_CLASSES                 => [ 'noTypo' ],
 				Config::IGNORE_IDS                     => [],
+				Config::REMAP_NARROW_NO_BREAK_SPACE    => $remap_narrow_no_break_space,
+				Config::REMAP_HYPHEN                   => false,
 				Config::SMART_CHARACTERS               => true,
 				Config::SMART_DASHES                   => false,
 				Config::SMART_DASHES_STYLE             => 'international',
@@ -266,7 +269,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 		$this->wp_typo->shouldReceive( 'prepare_smart_quotes_exceptions' )->once()->with( m::type( 'array' ) )->andReturn( [] );
 
 		Functions\expect( 'wp_json_encode' )->once()->andReturn( '{ json: "value" }' );
-		Filters\expectApplied( 'typo_narrow_no_break_space' )->with( false )->once();
+		Filters\expectApplied( 'typo_narrow_no_break_space' )->with( ! $remap_narrow_no_break_space )->once();
 		Filters\expectApplied( 'typo_ignore_parser_errors' )->with( false )->once();
 
 		$s = $this->wp_typo->get_settings();
@@ -283,12 +286,15 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 * @uses ::init_settings_from_options
 	 */
 	public function test_get_settings_hyphenation_off() {
+		$remap_narrow_no_break_space = false;
 
 		$this->wp_typo->shouldReceive( 'get_config' )->once()->andReturn(
 			[
 				Config::IGNORE_TAGS                    => [ 'script' ],
 				Config::IGNORE_CLASSES                 => [ 'noTypo' ],
 				Config::IGNORE_IDS                     => [],
+				Config::REMAP_NARROW_NO_BREAK_SPACE    => $remap_narrow_no_break_space,
+				Config::REMAP_HYPHEN                   => false,
 				Config::SMART_CHARACTERS               => false,
 				Config::SMART_DASHES                   => false,
 				Config::SMART_DASHES_STYLE             => 'international',
@@ -344,7 +350,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 		$this->transients->shouldReceive( 'cache_object' )->once();
 
 		Functions\expect( 'wp_json_encode' )->once()->andReturn( '{ json: "value" }' );
-		Filters\expectApplied( 'typo_narrow_no_break_space' )->with( false )->once();
+		Filters\expectApplied( 'typo_narrow_no_break_space' )->with( ! $remap_narrow_no_break_space )->once();
 		Filters\expectApplied( 'typo_ignore_parser_errors' )->with( false )->once();
 
 		$s = $this->wp_typo->get_settings();

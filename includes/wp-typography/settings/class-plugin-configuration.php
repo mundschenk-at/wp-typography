@@ -48,6 +48,8 @@ abstract class Plugin_Configuration {
 	const IGNORE_TAGS                      = 'ignore_tags';
 	const IGNORE_CLASSES                   = 'ignore_classes';
 	const IGNORE_IDS                       = 'ignore_ids';
+	const REMAP_NARROW_NO_BREAK_SPACE      = 'remap_narrow_no_break_space';
+	const REMAP_HYPHEN                     = 'remap_hyphen';
 	const ENABLE_MULTILINGUAL_SUPPORT      = 'enable_multilingual_support';
 	const SMART_CHARACTERS                 = 'smart_characters';
 	const SMART_DASHES                     = 'smart_dashes';
@@ -156,6 +158,24 @@ abstract class Plugin_Configuration {
 					'label'         => \__( '%1$s Enable support for using multiple languages on the same site.', 'wp-typography' ),
 					'help_text'     => \__( 'Enable if you are using multilingual plugin like WPML or Polylang and want automatic hyphenation language, dash and quote style adjustments.', 'wp-typography' ),
 					'default'       => 0,
+				],
+				self::REMAP_NARROW_NO_BREAK_SPACE      => [
+					'ui'            => Controls\Checkbox_Input::class,
+					'tab_id'        => Tabs::GENERAL_SCOPE,
+					'section'       => Sections::SPECIAL_CHARACTERS,
+					'short'         => \__( 'Narrow no-break space', 'wp-typography' ),
+					/* translators: 1: checkbox HTML */
+					'label'         => \__( '%1$s Replace narrow no-break spaces [ <code>X&#8239;Y</code> ] with regular no-break spaces [ <code>X&nbsp;Y</code> ].', 'wp-typography' ),
+					'default'       => 1,
+				],
+				self::REMAP_HYPHEN                     => [
+					'ui'            => Controls\Checkbox_Input::class,
+					'tab_id'        => Tabs::GENERAL_SCOPE,
+					'section'       => Sections::SPECIAL_CHARACTERS,
+					'short'         => \__( 'Hyphen', 'wp-typography' ),
+					/* translators: 1: checkbox HTML */
+					'label'         => \__( '%1$s Replace Unicode hyphens [ <code>&#8208;</code> ] with the ASCII hyphen-minus [ <code>-</code> ].', 'wp-typography' ),
+					'default'       => 1,
 				],
 				self::ENABLE_HYPHENATION               => [
 					'ui'            => Controls\Checkbox_Input::class,
