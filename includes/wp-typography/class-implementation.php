@@ -529,6 +529,28 @@ class Implementation extends \WP_Typography {
 		$s->set_classes_to_ignore( $config[ Config::IGNORE_CLASSES ] );
 		$s->set_ids_to_ignore( $config[ Config::IGNORE_IDS ] );
 
+		// Remap problematic Unicode characters.
+		$hyphen = ! empty( $config[ Config::REMAP_HYPHEN ] ) ? U::HYPHEN_MINUS : U::HYPHEN;
+		$s->remap_character( U::HYPHEN, $hyphen );
+
+		/**
+		 * Filters whether to use the NARROW NO-BREAK SPACE character (U+202F, &#8239;)
+		 * where appropriate.
+		 *
+		 * Historically, browser and/or font support for this character has been limited,
+		 * so by default it is replaced by the normal (non-narrow) NO-BREAK SPACE (U+00A0, &nbsp;).
+		 *
+		 * @since 5.1.0
+		 *
+		 * @deprecated 5.6.0 Use the GUI setting instead or filter the option
+		 *                   'remap_narrow_no_break_space' (with inverse meaning
+		 *                   of the boolean value).
+		 *
+		 * @param bool $enable Default true if the UI is set to not remap the character.
+		 */
+		$narrow_no_break_space = \apply_filters( 'typo_narrow_no_break_space', empty( $config[ Config::REMAP_NARROW_NO_BREAK_SPACE ] ) ) ? U::NO_BREAK_NARROW_SPACE : U::NO_BREAK_SPACE;
+		$s->remap_character( U::NO_BREAK_NARROW_SPACE, $narrow_no_break_space );
+
 		if ( $config[ Config::SMART_CHARACTERS ] ) {
 			$s->set_smart_dashes( $config[ Config::SMART_DASHES ] );
 			$s->set_smart_ellipses( $config[ Config::SMART_ELLIPSES ] );
@@ -573,19 +595,6 @@ class Implementation extends \WP_Typography {
 		$s->set_dewidow( $config[ Config::PREVENT_WIDOWS ] );
 		$s->set_max_dewidow_length( $config[ Config::WIDOW_MIN_LENGTH ] );
 		$s->set_max_dewidow_pull( $config[ Config::WIDOW_MAX_PULL ] );
-
-		/**
-		 * Filters whether to use the NARROW NO-BREAK SPACE character (U+202F, &#8239;)
-		 * where appropriate.
-		 *
-		 * Historically, browser and/or font support for this character has been limited,
-		 * so by default it is replaced by the normal (non-narrow) NO-BREAK SPACE (U+00A0, &nbsp;).
-		 *
-		 * @since 5.1.0
-		 *
-		 * @param bool $enable Default false.
-		 */
-		$s->set_true_no_break_narrow_space( apply_filters( 'typo_narrow_no_break_space', false ) );
 
 		// Line wrapping.
 		$s->set_wrap_hard_hyphens( $config[ Config::WRAP_HYPHENS ] );

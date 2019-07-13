@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017 Peter Putzer.
+ *  Copyright 2017-2019 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -36,8 +36,9 @@ namespace WP_Typography\UI;
 abstract class Sections {
 
 	// Section ID constants.
-	const MATH_REPLACEMENTS = 'math-replacements';
-	const LINE_WRAPPING     = 'line-wrapping';
+	const MATH_REPLACEMENTS  = 'math-replacements';
+	const SPECIAL_CHARACTERS = 'special-characters';
+	const LINE_WRAPPING      = 'line-wrapping';
 
 	/**
 	 * The defaults array.
@@ -62,12 +63,17 @@ abstract class Sections {
 	public static function get_sections() {
 		if ( empty( self::$sections ) ) {
 			self::$sections = [ // @codeCoverageIgnore
-				self::MATH_REPLACEMENTS => [
+				self::SPECIAL_CHARACTERS => [
+					'heading'     => \__( 'Special Characters', 'wp-typography' ),
+					'description' => \__( 'Some Unicode characters still cause issues with certain browsers, and some fonts may be missing the correct glyphs.', 'wp-typography' ),
+					'tab_id'      => Tabs::GENERAL_SCOPE,
+				],
+				self::MATH_REPLACEMENTS  => [
 					'heading'     => \__( 'Math & Numbers', 'wp-typography' ),
 					'description' => \__( 'Not all number formattings are appropriate for all languages.', 'wp-typography' ),
 					'tab_id'      => Tabs::CHARACTER_REPLACEMENT,
 				],
-				self::LINE_WRAPPING     => [
+				self::LINE_WRAPPING      => [
 					'heading'     => \__( 'Line Wrapping', 'wp-typography' ),
 					'description' => \__( 'Sometimes you want to enable certain long words to wrap to a new line, while at other times you want to prevent wrapping.', 'wp-typography' ),
 					'tab_id'      => Tabs::SPACE_CONTROL,
