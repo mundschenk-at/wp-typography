@@ -117,7 +117,7 @@ abstract class WP_Typography {
 	 * @return mixed
 	 */
 	public static function __callStatic( $name, array $arguments ) {
-		if ( method_exists( self::$instance, $name ) ) {
+		if ( \method_exists( self::$instance, $name ) ) {
 			return self::$instance->$name( ...$arguments );
 		} else {
 			throw new BadMethodCallException( "Static method WP_Typography::$name does not exist." );
@@ -235,8 +235,8 @@ abstract class WP_Typography {
 	private static function hash_version_string( $version ) {
 		$hash = '';
 
-		foreach ( explode( '.', $version ) as $part ) {
-			$hash .= chr( 64 + preg_replace( '/[^0-9]/', '', $part ) );
+		foreach ( \explode( '.', $version ) as $part ) {
+			$hash .= \chr( 64 + \preg_replace( '/[^0-9]/', '', $part ) );
 		}
 
 		return $hash;

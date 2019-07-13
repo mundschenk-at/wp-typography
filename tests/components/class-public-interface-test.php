@@ -41,7 +41,6 @@ use Mockery as m;
  * @coversDefaultClass \WP_Typography\Components\Public_Interface
  * @usesDefaultClass \WP_Typography\Components\Public_Interface
  *
- * @uses ::__construct
  * @uses ::run
  */
 class Public_Interface_Test extends TestCase {
@@ -61,7 +60,7 @@ class Public_Interface_Test extends TestCase {
 		parent::setUp();
 
 		// Mock WP_Typography\Components\Public_Interface instance.
-		$this->public_if = m::mock( Public_Interface::class, [ 'plugin_basename' ] )
+		$this->public_if = m::mock( Public_Interface::class )
 			->shouldAllowMockingProtectedMethods()->makePartial();
 
 		Functions\expect( 'is_admin' )->once()->andReturn( false );
@@ -84,18 +83,6 @@ class Public_Interface_Test extends TestCase {
 
 		return $options;
 	}
-
-	/**
-	 * Test constructor.
-	 *
-	 * @covers ::__construct
-	 */
-	public function test_constructor() {
-		$public_if = m::mock( Public_Interface::class, [ 'plugin_basename' ] );
-
-		$this->assertAttributeSame( 'plugin_basename', 'plugin_basename', $public_if );
-	}
-
 
 	/**
 	 * Test run.
@@ -326,7 +313,8 @@ class Public_Interface_Test extends TestCase {
 
 		define( 'SCRIPT_DEBUG', false );
 
-		Functions\expect( 'plugin_dir_url' )->andReturn( 'dummy/path' );
+		Functions\expect( 'plugin_basename' )->once()->with( \WP_TYPOGRAPHY_PLUGIN_FILE )->andReturn( 'plugin/basename' );
+		Functions\expect( 'plugin_dir_url' )->once()->with( 'plugin/basename' )->andReturn( 'dummy/path' );
 		Functions\expect( 'wp_enqueue_script' )
 			->once()
 			->with( 'wp-typography-cleanup-clipboard', m::type( 'string' ), m::type( 'array' ), m::type( 'string' ), true );

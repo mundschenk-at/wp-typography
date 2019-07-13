@@ -57,6 +57,7 @@ use Mockery as m;
  * @uses \WP_Typography\Settings\Plugin_Configuration::get_defaults
  * @uses \WP_Typography\UI\Tabs::get_tabs
  * @uses \WP_Typography\UI\Sections::get_sections
+ * @uses \plugin_basename
  */
 class Admin_Interface_Test extends TestCase {
 
@@ -128,7 +129,7 @@ class Admin_Interface_Test extends TestCase {
 			->getMock();
 
 		// Mock WP_Typography\Components\Admin_Interface instance.
-		$this->admin = m::mock( Admin_Interface::class, [ 'plugin/basename', 'plugin/plugin.php', $this->options ] )
+		$this->admin = m::mock( Admin_Interface::class, [ $this->options ] )
 			->shouldAllowMockingProtectedMethods()->makePartial();
 
 		$this->plugin = m::mock( \WP_Typography\Implementation::class )->shouldReceive( 'get_version' )->andReturn( '6.6.6' )->byDefault()->getMock();
@@ -149,6 +150,7 @@ class Admin_Interface_Test extends TestCase {
 			}
 		);
 		Functions\expect( 'is_admin' )->once()->andReturn( true );
+		Functions\expect( 'plugin_basename' )->once()->with( \WP_TYPOGRAPHY_PLUGIN_FILE )->andReturn( 'plugin/basename' );
 		$this->admin->run( $this->plugin );
 	}
 
@@ -158,9 +160,8 @@ class Admin_Interface_Test extends TestCase {
 	 * @covers ::__construct
 	 */
 	public function test_constructor() {
-		$admin = m::mock( Admin_Interface::class, [ 'plugin/basename', '/plugin/path', $this->options ] );
+		$admin = m::mock( Admin_Interface::class, [ $this->options ] );
 
-		$this->assertAttributeSame( '/plugin/path', 'plugin_file', $admin );
 		$this->assertAttributeSame( $this->options, 'options', $admin );
 	}
 
@@ -178,6 +179,8 @@ class Admin_Interface_Test extends TestCase {
 	 */
 	public function test_run() {
 		Functions\expect( 'is_admin' )->once()->andReturn( true );
+		Functions\expect( 'plugin_basename' )->once()->with( \WP_TYPOGRAPHY_PLUGIN_FILE )->andReturn( 'plugin/basename' );
+
 		Actions\expectAdded( 'admin_menu' )->with( [ $this->admin, 'add_options_page' ] )->once();
 		Actions\expectAdded( 'admin_init' )->with( [ $this->admin, 'register_the_settings' ] )->once();
 		Actions\expectAdded( 'admin_init' )->with( [ $this->admin, 'maybe_add_privacy_notice_content' ] )->once();

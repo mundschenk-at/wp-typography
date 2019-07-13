@@ -43,9 +43,17 @@
  *     Hamish Macpherson - http://www.hamstu.com/
  */
 
-/**
- * Load requirements class in a PHP 5.2 compatible manner.
- */
+// Don't do anything if called directly.
+if ( ! defined( 'ABSPATH' ) || ! defined( 'WPINC' ) ) {
+	die();
+}
+
+// Make plugin file path available globally.
+if ( ! defined( 'WP_TYPOGRAPHY_PLUGIN_FILE' ) ) {
+	define( 'WP_TYPOGRAPHY_PLUGIN_FILE', __FILE__ );
+}
+
+// Load requirements class in a PHP 5.2 compatible manner.
 require_once dirname( __FILE__ ) . '/vendor/mundschenk-at/check-wp-requirements/class-mundschenk-wp-requirements.php';
 
 /**
@@ -62,13 +70,13 @@ function wp_typography_run() {
 	);
 
 	// Validate the requirements.
-	$requirements = new Mundschenk_WP_Requirements( 'wp-Typography', __FILE__, 'wp-typography', $reqs );
+	$requirements = new Mundschenk_WP_Requirements( 'wp-Typography', WP_TYPOGRAPHY_PLUGIN_FILE, 'wp-typography', $reqs );
 	if ( $requirements->check() ) {
 		// Autoload the rest of our classes.
 		require_once __DIR__ . '/vendor/autoload.php'; // phpcs:ignore PHPCompatibility.Keywords.NewKeywords.t_dirFound
 
 		// Create the plugin.
-		$plugin = WP_Typography_Factory::get( __FILE__ )->create( 'WP_Typography\Plugin_Controller' );
+		$plugin = WP_Typography_Factory::get()->create( 'WP_Typography\Plugin_Controller' );
 
 		// Start the plugin for real.
 		$plugin->run();

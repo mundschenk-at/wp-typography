@@ -39,6 +39,7 @@ use PHP_Typography\Settings\Quote_Style;
  * The public (non-admin) functionality of the plugin.
  *
  * @since 5.1.0
+ * @sicne 5.6.0 Obsolete property $plugin_basename and superfluous constructor removed.
  *
  * @author Peter Putzer <github@mundschenk.at>
  */
@@ -57,13 +58,6 @@ class Public_Interface implements Plugin_Component {
 	 * @var int
 	 */
 	private $filter_priority = 9999;
-
-	/**
-	 * The result of plugin_basename() for the main plugin file (relative from plugins folder).
-	 *
-	 * @var string $plugin_basename
-	 */
-	private $plugin_basename;
 
 	/**
 	 * The plugin configuration.
@@ -89,15 +83,6 @@ class Public_Interface implements Plugin_Component {
 	];
 
 	/**
-	 * Creates a new instance of the Public_Interface.
-	 *
-	 * @param string $plugin_basename The result of plugin_basename() for the main plugin file.
-	 */
-	public function __construct( $plugin_basename ) {
-		$this->plugin_basename = $plugin_basename;
-	}
-
-	/**
 	 * Set up the various hooks for the admin side.
 	 *
 	 * @param \WP_Typography $plugin The plugin object.
@@ -106,7 +91,7 @@ class Public_Interface implements Plugin_Component {
 		$this->plugin = $plugin;
 
 		// Do not run our filters on the admin side or during a WP-CLI command.
-		if ( ! \is_admin() && ! defined( 'WP_CLI' ) ) {
+		if ( ! \is_admin() && ! \defined( 'WP_CLI' ) ) {
 			\add_action( 'init', [ $this, 'init' ] );
 		}
 	}
@@ -240,7 +225,7 @@ class Public_Interface implements Plugin_Component {
 	 */
 	public function enqueue_styles() {
 		// Custom styles set via the CSS Hooks settings page.
-		if ( $this->config[ Config::STYLE_CSS_INCLUDE ] && '' !== trim( $this->config[ Config::STYLE_CSS ] ) ) {
+		if ( $this->config[ Config::STYLE_CSS_INCLUDE ] && '' !== \trim( $this->config[ Config::STYLE_CSS ] ) ) {
 			// Register and enqueue dummy stylesheet.
 			\wp_register_style( 'wp-typography-custom', '' ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion -- only inline.
 			\wp_enqueue_style( 'wp-typography-custom' );
@@ -266,9 +251,9 @@ class Public_Interface implements Plugin_Component {
 	public function enqueue_scripts() {
 		if ( $this->config[ Config::HYPHENATE_CLEAN_CLIPBOARD ] ) {
 			// Set up file suffix and plugin version.
-			$suffix     = SCRIPT_DEBUG ? '' : '.min';
+			$suffix     = ( \defined( 'SCRIPT_DEBUG' ) && \SCRIPT_DEBUG ) ? '' : '.min';
 			$version    = $this->plugin->get_version();
-			$plugin_dir = \plugin_dir_url( $this->plugin_basename );
+			$plugin_dir = \plugin_dir_url( \plugin_basename( \WP_TYPOGRAPHY_PLUGIN_FILE ) );
 
 			\wp_enqueue_script( 'wp-typography-cleanup-clipboard', "{$plugin_dir}js/clean-clipboard$suffix.js", [ 'jquery' ], $version, true );
 		}

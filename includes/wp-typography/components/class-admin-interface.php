@@ -45,6 +45,8 @@ use PHP_Typography\Settings\Quote_Style;
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  *
+ * @since 5.6.0 Obsolete property $plugin_file removed.
+ *
  * @since      3.1.0
  * @author     Peter Putzer <github@mundschenk.at>
  */
@@ -77,14 +79,6 @@ class Admin_Interface implements Plugin_Component {
 	 * @var string
 	 */
 	private $plugin_basename;
-
-	/**
-	 * The full path to the main plugin file.
-	 *
-	 * @since 5.1.0
-	 * @var   string
-	 */
-	private $plugin_file;
 
 	/**
 	 * The full version string of the plugin.
@@ -170,14 +164,12 @@ class Admin_Interface implements Plugin_Component {
 	/**
 	 * Create a new instace of admin backend.
 	 *
-	 * @param string  $basename    The result of plugin_basename() for the main plugin file.
-	 * @param string  $plugin_path The full path to the main plugin file.
-	 * @param Options $options     The Options API handler.
+	 * @since 5.6.0 Parameters $basename and $plugin_path removed.
+	 *
+	 * @param Options $options The Options API handler.
 	 */
-	public function __construct( $basename, $plugin_path, Options $options ) {
-		$this->plugin_file     = $plugin_path;
-		$this->plugin_basename = $basename;
-		$this->options         = $options;
+	public function __construct( Options $options ) {
+		$this->options = $options;
 	}
 
 	/**
@@ -191,6 +183,9 @@ class Admin_Interface implements Plugin_Component {
 		$this->plugin  = $plugin;
 
 		if ( \is_admin() ) {
+
+			// Cache the plugin basename.
+			$this->plugin_basename = \plugin_basename( \WP_TYPOGRAPHY_PLUGIN_FILE );
 
 			// Set up default options.
 			$this->defaults = Config::get_defaults();
@@ -244,9 +239,9 @@ class Admin_Interface implements Plugin_Component {
 				'heading' => \__( 'Introduction', 'wp-typography' ),
 				'content' =>
 					'<p>' .
-					__( 'Improve your web typography with <em>hyphenation</em>, <em>space control</em>, <em>intelligent character replacement</em>, and <em>CSS hooks</em>. These improvements can be enabled separately via the settings tabs provided below. We try to provide reasonable default values, but please check that they are suitable for your site language.', 'wp-typography' ) .
+					\__( 'Improve your web typography with <em>hyphenation</em>, <em>space control</em>, <em>intelligent character replacement</em>, and <em>CSS hooks</em>. These improvements can be enabled separately via the settings tabs provided below. We try to provide reasonable default values, but please check that they are suitable for your site language.', 'wp-typography' ) .
 					'</p><p>' .
-					__( 'Please keep in mind that technically, WordPress applies the typographic fixes on the individual content parts used in your site templates, e.g. <code>the_title</code>, <code>the_content</code>, not the page as a whole. For this reason, HTML tags (including classes and IDs) from the theme\'s template files cannot be used to limit the scope of wp-Typography\'s processing.', 'wp-typography' ) .
+					\__( 'Please keep in mind that technically, WordPress applies the typographic fixes on the individual content parts used in your site templates, e.g. <code>the_title</code>, <code>the_content</code>, not the page as a whole. For this reason, HTML tags (including classes and IDs) from the theme\'s template files cannot be used to limit the scope of wp-Typography\'s processing.', 'wp-typography' ) .
 					'</p>',
 			],
 		];
@@ -459,7 +454,7 @@ class Admin_Interface implements Plugin_Component {
 		}
 
 		// Load the settings page HTML.
-		require \dirname( $this->plugin_file ) . '/admin/partials/settings/section.php';
+		require \dirname( \WP_TYPOGRAPHY_PLUGIN_FILE ) . '/admin/partials/settings/section.php';
 	}
 
 	/**
@@ -493,7 +488,7 @@ class Admin_Interface implements Plugin_Component {
 		$this->admin_form_controls[ Config::DIACRITIC_LANGUAGES ]->set_option_values( $this->plugin->get_diacritic_languages() );
 
 		// Load the settings page HTML.
-		require \dirname( $this->plugin_file ) . '/admin/partials/settings/settings-page.php';
+		require \dirname( \WP_TYPOGRAPHY_PLUGIN_FILE ) . '/admin/partials/settings/settings-page.php';
 	}
 
 

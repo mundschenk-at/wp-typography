@@ -119,7 +119,7 @@ class Multilingual_Support implements Plugin_Component {
 	 */
 	public function enable_automatic_language_settings() {
 		if ( $this->plugin->get_config()[ Config::ENABLE_MULTILINGUAL_SUPPORT ] ) {
-			add_filter( 'typo_settings', [ $this, 'automatic_language_settings' ] );
+			\add_filter( 'typo_settings', [ $this, 'automatic_language_settings' ] );
 		}
 	}
 

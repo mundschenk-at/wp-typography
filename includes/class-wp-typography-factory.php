@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2018 Peter Putzer.
+ *  Copyright 2017-2019 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -47,6 +47,9 @@ use WP_Typography\Integration\WooCommerce_Integration;
  */
 abstract class WP_Typography_Factory {
 
+	// Common rules components.
+	const SHARED = [ 'shared' => true ];
+
 	/**
 	 * The factory instance.
 	 *
@@ -57,34 +60,30 @@ abstract class WP_Typography_Factory {
 	/**
 	 * Retrieves a factory set up for creating WP_Typography instances.
 	 *
-	 * @param string $full_plugin_path The full path to the main plugin file (i.e. __FILE__).
+	 * @since 5.6.0 Parameter $full_plugin_path removed.
 	 *
 	 * @return Dice
 	 */
-	public static function get( $full_plugin_path ) {
+	public static function get() {
 		if ( ! isset( self::$factory ) ) {
 			// Load version from plugin data.
-			if ( ! function_exists( 'get_plugin_data' ) ) {
-				require_once ABSPATH . 'wp-admin/includes/plugin.php';
+			if ( ! \function_exists( 'get_plugin_data' ) ) {
+				require_once \ABSPATH . 'wp-admin/includes/plugin.php';
 			}
-
-			// Common rules components.
-			$shared_rule     = [ 'shared' => true ];
-			$plugin_basename = \plugin_basename( $full_plugin_path );
 
 			$rules = [
 				// Shared helpers.
-				Cache::class            => $shared_rule,
-				Transients::class       => $shared_rule,
-				Options::class          => $shared_rule,
+				Cache::class            => self::SHARED,
+				Transients::class       => self::SHARED,
+				Options::class          => self::SHARED,
 
 				// Plugin integrations are also shared.
 				Integrations::class     => [
 					'shared'          => true,
 					'constructParams' => [
 						[
-							new ACF_Integration(),
-							new WooCommerce_Integration(),
+							[ 'instance' => ACF_Integration::class ],
+							[ 'instance' => WooCommerce_Integration::class ],
 						],
 					],
 				],
@@ -96,18 +95,7 @@ abstract class WP_Typography_Factory {
 					],
 				],
 				WP_Typography::class    => [
-					'constructParams' => [ get_plugin_data( $full_plugin_path, false, false )['Version'] ],
-				],
-
-				// Additional parameters for components.
-				Admin_Interface::class  => [
-					'constructParams' => [ $plugin_basename, $full_plugin_path ],
-				],
-				Public_Interface::class => [
-					'constructParams' => [ $plugin_basename ],
-				],
-				Setup::class            => [
-					'constructParams' => [ $full_plugin_path ],
+					'constructParams' => [ \get_plugin_data( \WP_TYPOGRAPHY_PLUGIN_FILE, false, false )['Version'] ],
 				],
 			];
 

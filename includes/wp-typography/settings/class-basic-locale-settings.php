@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2018 Peter Putzer.
+ *  Copyright 2017-2019 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -75,16 +75,16 @@ class Basic_Locale_Settings extends Abstract_Locale_Settings {
 	 */
 	public function __construct( array $languages, array $countries, array $modifiers, $dash, $primary_quote, $secondary_quote, $french_punctuation ) {
 		parent::__construct(
-			self::LANGUAGE_PRIORITY * count( $languages ) + self::COUNTRY_PRIORITY * count( $countries ) + self::MODIFIER_PRIORITY * count( $modifiers ),
+			self::LANGUAGE_PRIORITY * \count( $languages ) + self::COUNTRY_PRIORITY * \count( $countries ) + self::MODIFIER_PRIORITY * \count( $modifiers ),
 			$dash,
 			$primary_quote,
 			$secondary_quote,
 			$french_punctuation
 		);
 
-		$this->valid_languages = array_flip( $languages );
-		$this->valid_countries = array_flip( $countries );
-		$this->valid_modifiers = array_flip( $modifiers );
+		$this->valid_languages = \array_flip( $languages );
+		$this->valid_countries = \array_flip( $countries );
+		$this->valid_modifiers = \array_flip( $modifiers );
 	}
 
 	/**
