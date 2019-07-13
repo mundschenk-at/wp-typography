@@ -74,8 +74,6 @@ class WP_Typography_Factory_Test extends TestCase {
 	 * @covers ::get
 	 */
 	public function test_get() {
-		Functions\expect( 'plugin_basename' )->once()->andReturn( 'path' );
-
 		define( 'ABSPATH', 'wordpress/path/' );
 
 		$this->assertInstanceOf( Dice::class, \WP_Typography_Factory::get( '/dummy/path' ) );

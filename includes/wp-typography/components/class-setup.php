@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2014-2018 Peter Putzer.
+ *  Copyright 2014-2019 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -36,6 +36,7 @@ use WP_Typography\Settings\Plugin_Configuration as Config;
  *
  * @since 3.1.0
  * @since 5.1.0 Now implements the Plugin_Component interface.
+ * @since 5.6.0 Obsolete property $plugin_file removed.
  *
  * @author Peter Putzer <github@mundschenk.at>
  */
@@ -54,14 +55,6 @@ class Setup implements Plugin_Component {
 	 * @var string
 	 */
 	const UPGRADING = 'UPGRADING_WP_TYPOGRAPHY';
-
-	/**
-	 * The full path to the main plugin file.
-	 *
-	 * @since 5.1.0
-	 * @var   string
-	 */
-	private $plugin_file;
 
 	/**
 	 * The plugin object.
@@ -83,12 +76,12 @@ class Setup implements Plugin_Component {
 	/**
 	 * Create a new instace of WP_Typography\Setup.
 	 *
-	 * @param string  $plugin_path The full path to the main plugin file.
-	 * @param Options $options     The Options API handler.
+	 * @since 5.6.0 Parameter $plugin_path removed.
+	 *
+	 * @param Options $options The Options API handler.
 	 */
-	public function __construct( $plugin_path, Options $options ) {
-		$this->plugin_file = $plugin_path;
-		$this->options     = $options;
+	public function __construct( Options $options ) {
+		$this->options = $options;
 	}
 
 	/**
@@ -100,9 +93,9 @@ class Setup implements Plugin_Component {
 		$this->plugin = $plugin;
 
 		// Register various hooks.
-		\register_activation_hook( $this->plugin_file,   [ $this,     'activate' ] );
-		\register_deactivation_hook( $this->plugin_file, [ $this,     'deactivate' ] );
-		\register_uninstall_hook( $this->plugin_file,    [ __CLASS__, 'uninstall' ] );
+		\register_activation_hook( \WP_TYPOGRAPHY_PLUGIN_FILE,   [ $this,     'activate' ] );
+		\register_deactivation_hook( \WP_TYPOGRAPHY_PLUGIN_FILE, [ $this,     'deactivate' ] );
+		\register_uninstall_hook( \WP_TYPOGRAPHY_PLUGIN_FILE,    [ __CLASS__, 'uninstall' ] );
 
 		// Run necessary upgrade actions.
 		\add_action( 'plugins_loaded', [ $this, 'plugin_update_check' ] );

@@ -57,11 +57,11 @@ abstract class WP_Typography_Factory {
 	/**
 	 * Retrieves a factory set up for creating WP_Typography instances.
 	 *
-	 * @param string $full_plugin_path The full path to the main plugin file (i.e. __FILE__).
+	 * @since 5.6.0 Parameter $full_plugin_path removed.
 	 *
 	 * @return Dice
 	 */
-	public static function get( $full_plugin_path ) {
+	public static function get() {
 		if ( ! isset( self::$factory ) ) {
 			// Load version from plugin data.
 			if ( ! \function_exists( 'get_plugin_data' ) ) {
@@ -69,8 +69,7 @@ abstract class WP_Typography_Factory {
 			}
 
 			// Common rules components.
-			$shared_rule     = [ 'shared' => true ];
-			$plugin_basename = \plugin_basename( $full_plugin_path );
+			$shared_rule = [ 'shared' => true ];
 
 			$rules = [
 				// Shared helpers.
@@ -96,18 +95,7 @@ abstract class WP_Typography_Factory {
 					],
 				],
 				WP_Typography::class    => [
-					'constructParams' => [ \get_plugin_data( $full_plugin_path, false, false )['Version'] ],
-				],
-
-				// Additional parameters for components.
-				Admin_Interface::class  => [
-					'constructParams' => [ $plugin_basename, $full_plugin_path ],
-				],
-				Public_Interface::class => [
-					'constructParams' => [ $plugin_basename ],
-				],
-				Setup::class            => [
-					'constructParams' => [ $full_plugin_path ],
+					'constructParams' => [ \get_plugin_data( \WP_TYPOGRAPHY_PLUGIN_FILE, false, false )['Version'] ],
 				],
 			];
 
