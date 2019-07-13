@@ -46,6 +46,12 @@
 /**
  * Load requirements class in a PHP 5.2 compatible manner.
  */
+// Don't do anything if called directly.
+if ( ! defined( 'ABSPATH' ) || ! defined( 'WPINC' ) ) {
+	die();
+}
+
+// Load requirements class in a PHP 5.2 compatible manner.
 require_once dirname( __FILE__ ) . '/vendor/mundschenk-at/check-wp-requirements/class-mundschenk-wp-requirements.php';
 
 /**
