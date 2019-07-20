@@ -47,7 +47,8 @@ matrix:
 # Failures in this section will result in build status 'errored'.
 before_install:
     - if [[ "$SCOPE" == "tests" || "$SCOPE" == "coverage" ]]; then
-            composer install --no-interaction --dev;
+            composer remove humbug/php-scoper --dev --no-interaction;
+            composer install --no-interaction;
             phpenv rehash;
       fi
     - if [[ "$SCOPE" == "coverage" ]]; then composer require php-coveralls/php-coveralls --dev; fi
@@ -64,9 +65,8 @@ script:
     # Search for PHP syntax errors.
     - if [[ "$SCOPE" == "php52" ]]; then
             find -L . -name 'wp-typography.php' -print0 | xargs -0 -n 1 -P 4 php -l;
-            find -L . -name 'class-wp-typography-requirements.php' -print0 | xargs -0 -n 1 -P 4 php -l;
       else
-            find -L . -not \( -path ./tests -prune \) -not \( -path ./vendor -prune \) -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l;
+            find -L . -not \( -path ./tests -prune \) -not \( -path ./vendor -prune \) -name '*.php'  -not \( -name .scoper.inc.php -prune \) -print0 | xargs -0 -n 1 -P 4 php -l;
       fi
     # WordPress Coding Standards.
     - if [[ "$PHPCS" == "1" ]]; then composer phpcs; fi

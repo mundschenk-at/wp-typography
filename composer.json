@@ -42,7 +42,8 @@
         "phpunit/phpunit": "5.*||6.*||7.*",
         "mikey179/vfsstream": "~1",
         "brain/monkey": "^2.2",
-        "roave/security-advisories": "dev-master"
+        "roave/security-advisories": "dev-master",
+        "humbug/php-scoper": "^0.12.4"
     },
 
     "minimum-stability": "dev",
@@ -81,9 +82,13 @@
           "#phpstan analyse --configuration=.phpstan.neon --level=6 --ansi tests/",
           "@composer remove phpstan/phpstan --dev --quiet"
       ],
+      "scope-dependencies": [
+          "@php vendor/bin/php-scoper add-prefix --config=.scoper.inc.php --force --quiet"
+      ],
       "build-wordpress": [
           "@composer require mundschenk-at/composer-for-wordpress=dev-master --no-update",
-          "@composer update --no-dev"
+          "@composer update --no-dev",
+          "@composer dump-autoload --classmap-authoritative --no-dev"
       ],
       "clean-wordpress": [
           "@composer remove mundschenk-at/composer-for-wordpress"
