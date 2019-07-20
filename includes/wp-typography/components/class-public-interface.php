@@ -67,11 +67,18 @@ class Public_Interface implements Plugin_Component {
 	protected $config;
 
 	const CLEAN_CSS_PATTERNS = [
-		"`^([\t\s]+)`Ssm",
+		// Remove whitespace from beginning of line.
+		'`^\s+`Ssm',
+		// Remove block comments from begining of line.
 		'`^\/\*(.+?)\*\/`Ssm',
-		"`([\n\A;]+)\/\*(.+?)\*\/`Ssm",
-		"`([\n\A;\s]+)//(.+?)[\n\r]`Ssm",
-		"`(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+`Ssm",
+		// Remove block comments from middle/end of line.
+		'`((?:\s;)+)\/\*(.+?)\*\/`Ssm',
+		// Remove inline comments from middle/end of line and use \n as line seperator.
+		'`((?:\s;)+)//(.+?)\R`Ssm',
+		// Replace multiple newlines/empty lines with single line seperator.
+		'`(^\R*|\R+)\s*\R+`Ssm',
+		// Remove newlines between rules.
+		'`;\R`Ssm',
 	];
 
 	const CLEAN_CSS_REPLACEMENTS = [
@@ -80,6 +87,7 @@ class Public_Interface implements Plugin_Component {
 		'$1',
 		"\$1\n",
 		"\n",
+		';',
 	];
 
 	/**
