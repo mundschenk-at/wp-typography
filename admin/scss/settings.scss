@@ -1,15 +1,22 @@
+$monospace-font: Consolas, Monaco, "Lucida Console", "Courier New", Courier, monospace;
+
 .submit .aux-buttons {
 	float: right;
 	display: block;
 }
 
 textarea {
-	font-family: Consolas, Monaco, "Lucida Console", "Courier New", Courier, monospace !important;
+	font-family: $monospace-font !important;
 }
 
 select,
 input {
 	margin-top: -.1em;
+}
+
+#typo_configuration\[smart_quotes_primary\],
+#typo_configuration\[smart_quotes_secondary\] {
+	font-family: $monospace-font;
 }
 
 input[type=number] {

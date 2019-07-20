@@ -1,7 +1,7 @@
 /*
  * Styled sub- and superscripts.
  */
-sup, sub {
+sub, sup {
   font-size: 75%;
   line-height: 100%;
 }
