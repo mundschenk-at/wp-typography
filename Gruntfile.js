@@ -1,4 +1,7 @@
 'use strict';
+
+const sass = require('sass');
+
 module.exports = function(grunt) {
 
     // Initialize configuration.
@@ -146,6 +149,9 @@ module.exports = function(grunt) {
         },
 
         sass: {
+            options: {
+                implementation: sass,
+            },
             dist: {
                 options: {
                     outputStyle: 'compressed',
@@ -196,9 +202,8 @@ module.exports = function(grunt) {
             options: {
                 map: true, // inline sourcemaps.
                 processors: [
-                    require('autoprefixer')({
-                        browsers: ['>1%', 'last 2 versions', 'IE 9', 'IE 10']
-                    }) // add vendor prefixes
+                    // add vendor prefixes
+                    require('autoprefixer')()
                 ]
             },
             dev: {
