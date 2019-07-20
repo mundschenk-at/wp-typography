@@ -8,6 +8,8 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
+        wpversion: grunt.file.read( 'wp-typography.php' ).toString().match(/Version:\s*([0-9](?:\w|\.|\-)*)\s|\Z/)[1],
+
         eslint: {
             src: [
                 'js/**/*.js',
@@ -298,6 +300,20 @@ module.exports = function(grunt) {
                 } ]
             }
         },
+        compress: {
+          beta: {
+            options: {
+              mode: 'zip',
+              archive: '<%= pkg.name %>-<%= wpversion %>.zip'
+            },
+            files: [{
+                expand: true,
+                cwd: 'build/',
+                src: [ '**/*' ],
+                dest: '<%= pkg.name %>/',
+            }],
+          }
+        },
     });
 
     // load all standard tasks
@@ -352,6 +368,11 @@ module.exports = function(grunt) {
         'clean:autoloader',
         'string-replace:autoloader'
     ]);
+
+    grunt.registerTask( 'build-beta', [
+			'build',
+			'compress:beta',
+	] );
 
     grunt.registerTask('deploy', [
         'phpcs',

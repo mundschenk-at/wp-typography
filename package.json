@@ -8,6 +8,7 @@
     "grunt-composer": "^0.4",
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-copy": "^1.0",
+    "grunt-contrib-compress": "fwextensions/grunt-contrib-compress#fwextensions-update-iltorb",
     "grunt-contrib-uglify": "^4.0.1",
     "grunt-curl": "^2.5.1",
     "grunt-eslint": "^22.0.0",
