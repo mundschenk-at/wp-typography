@@ -57,19 +57,8 @@ module.exports = function(grunt) {
                         'includes/**',
                         'admin/**',
                         '!**/scss/**',
-                        'composer.*',
-                        'vendor/composer/**',
-                        'vendor/level-2/dice/Dice.php',
-                        'vendor/masterminds/html5/src/**/*.php',
-                        'vendor/mundschenk-at/check-wp-requirements/*.php',
-                        'vendor/mundschenk-at/check-wp-requirements/partials/*.php',
-                        'vendor/mundschenk-at/wp-settings-ui/src/**/*.php',
-                        'vendor/mundschenk-at/wp-settings-ui/partials/**/*.php',
-                        'vendor/mundschenk-at/wp-data-storage/src/**/*.php',
-                        'vendor/mundschenk-at/php-typography/src/**',
-                        '!vendor/mundschenk-at/php-typography/src/bin/**',
                         'js/**',
-                        '!vendor/**/tests/**'
+                        'vendor/**/partials/**',
                     ],
                     dest: 'build/'
                 }],
@@ -92,7 +81,7 @@ module.exports = function(grunt) {
 
         clean: {
             build: ["build/*"],
-            autoloader: [ "build/tests", "build/composer.*", "build/vendor/composer/*.json", "build/vendor/mundschenk-at/composer-for-wordpress/**" ]
+            autoloader: [ "build/composer.*", "build/vendor/composer/*.json", "build/vendor/scoper-autoload.php", "build/vendor/mundschenk-at/composer-for-wordpress/**" ]
         },
 
         "string-replace": {
@@ -292,6 +281,37 @@ module.exports = function(grunt) {
                 }
             }
         },
+
+        replace: {
+            fix_dice_namespace: {
+                options: {
+                    patterns: [ {
+                        match: /use Dice\\Dice;/g,
+                        replacement: 'use WP_Typography\\Vendor\\Dice\\Dice;'
+                    } ],
+                },
+                files: [ {
+                    expand: true,
+                    flatten: false,
+                    src: ['build/includes/class-wp-typography-factory.php'],
+                    dest: '',
+                } ]
+            },
+            fix_mundschenk_namespace: {
+                options: {
+                    patterns: [ {
+                        match: /(\b\\?)(Mundschenk\\[\w_]+)/g,
+                        replacement: '$1WP_Typography\\Vendor\\$2'
+                    } ],
+                },
+                files: [ {
+                    expand: true,
+                    flatten: false,
+                    src: ['build/includes/**/*.php'],
+                    dest: '',
+                } ]
+            }
+        },
     });
 
     // load all standard tasks
@@ -332,13 +352,14 @@ module.exports = function(grunt) {
 
     grunt.registerTask('build', [
         'clean:build',
+        'composer:dev:scope-dependencies',
         'regex_extract:language_names',
         'exec:update_iana',
         'copy:main',
         'copy:meta',
-        'mkdir:build_tests',
+        'replace:fix_dice_namespace',
+        'replace:fix_mundschenk_namespace',
         'composer:build:build-wordpress',
-        'composer:build:dump-autoload:classmap-authoritative:no-dev',
         'clean:autoloader',
         'string-replace:autoloader',
         'newer:delegate:sass:dist',
