@@ -12,6 +12,9 @@
     `title` variant of the `typo_disable_filtering` hook has been removed.
 *   _Change_: CSS class injection for ampersands, acronyms, and intial quotes is
     now disabled by default.
+*   _Change_: The smart quotes preview in the settings page should now be easier to read.
+*   _Bugfix_: The regular expression for cleaning user-supplied CSS no longer uses
+    invalid syntax. This should fix any errors in PHP 7.3.
 
 ## 5.5.4 - March 11, 2019
 *   _Bugfix_: Automatic language detection now also works for locales without a country code (e.g. `fi`).

@@ -306,7 +306,7 @@ class Admin_Interface implements Plugin_Component {
 		if ( empty( $this->active_tab ) ) {
 			// Check active tab.
 			if ( ! empty( $_REQUEST['tab'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-				$this->active_tab = \sanitize_key( $_REQUEST['tab'] );
+				$this->active_tab = \sanitize_key( $_REQUEST['tab'] );  // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			} elseif ( ! empty( $_REQUEST['option_page'] ) && 0 === \strpos( \sanitize_key( $_REQUEST['option_page'] ), self::OPTION_GROUP ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 				$this->active_tab = \substr( \sanitize_key( $_REQUEST['option_page'] ), \strlen( self::OPTION_GROUP ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			} else {

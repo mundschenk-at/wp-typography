@@ -523,7 +523,7 @@ class Admin_Interface_Test extends TestCase {
 		$page                    = Admin_Interface::OPTION_GROUP . 'my-tab';
 		$_REQUEST['option_page'] = $page;
 
-		unset( $_REQUEST['tab'] ); // WPCS: input var okay.
+		unset( $_REQUEST['tab'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 		// Set up expectations.
 		Functions\expect( 'sanitize_key' )->twice()->with( $page )->andReturn( $page );
@@ -547,8 +547,8 @@ class Admin_Interface_Test extends TestCase {
 		// Set up data.
 		$this->setValue( $this->admin, 'admin_form_tabs', $tabs, Admin_Interface::class );
 
-		unset( $_REQUEST['option_page'] ); // WPCS: input var okay.
-		unset( $_REQUEST['tab'] );         // WPCS: input var okay.
+		unset( $_REQUEST['option_page'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		unset( $_REQUEST['tab'] );         // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 		// Do it.
 		$this->assertSame( '1st_tab', $this->invokeMethod( $this->admin, 'get_active_settings_tab' ) );

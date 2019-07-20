@@ -1,0 +1,13 @@
+{
+  "extends": "wordpress",
+  "rules": {
+    "space-in-parens": [
+      "error",
+      "always", {
+        "exceptions": [
+          "empty"
+        ]
+      }
+    ]
+  }
+}
