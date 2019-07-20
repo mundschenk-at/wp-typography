@@ -1,6 +1,6 @@
 # Changes
 
-## 5.6.0 - unreleased
+## 5.6.0 - July 21, 2019
 *   _Feature_: Support for new variant of the international dash style without
     hair spaces for numeric intervals (i.e. `9-17` becomes `9&ndash;17` instead
     of `9&hairsp;&ndash;&hairsp;17`).
@@ -13,6 +13,8 @@
 *   _Change_: CSS class injection for ampersands, acronyms, and intial quotes is
     now disabled by default.
 *   _Change_: The smart quotes preview in the settings page should now be easier to read.
+*   _Change_: All external PHP dependencies have been moved to the namespace
+    `WP_Typography\Vendor` to reduce the chance of conflicts with other plugins.
 *   _Bugfix_: The regular expression for cleaning user-supplied CSS no longer uses
     invalid syntax. This should fix any errors in PHP 7.3.
 
