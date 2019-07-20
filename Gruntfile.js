@@ -132,20 +132,21 @@ module.exports = function(grunt) {
                     sourceComments: false,
                     sourcemap: 'none'
                 },
-                files: [{
-                        expand: true,
-                        cwd: 'admin/scss',
-                        src: ['*.scss'],
-                        dest: 'build/admin/css',
-                        ext: '.min.css'
-                    },
-                    {
-                        expand: true,
-                        cwd: 'public/scss',
-                        src: ['*.scss'],
-                        dest: 'build/public/css',
-                        ext: '.min.css'
-                    }
+                files: [
+                  {
+                      expand: true,
+                      cwd: 'admin/scss',
+                      src: ['*.scss', '!default-styles.scss'],
+                      dest: 'build/admin/css',
+                      ext: '.min.css'
+                  },
+                  {
+                      expand: true,
+                      cwd: 'public/scss',
+                      src: ['*.scss'],
+                      dest: 'build/public/css',
+                      ext: '.min.css'
+                  }
                 ]
             },
             dev: {
@@ -340,16 +341,16 @@ module.exports = function(grunt) {
         'composer:dev:scope-dependencies',
         'regex_extract:language_names',
         'exec:update_iana',
+        'newer:sass:dist',
+        'newer:postcss:dist',
+        'newer:minify',
         'copy:main',
         'copy:meta',
         'replace:fix_dice_namespace',
         'replace:fix_mundschenk_namespace',
         'composer:build:build-wordpress',
         'clean:autoloader',
-        'string-replace:autoloader',
-        'newer:delegate:sass:dist',
-        'newer:postcss:dist',
-        'newer:minify'
+        'string-replace:autoloader'
     ]);
 
     grunt.registerTask('deploy', [
