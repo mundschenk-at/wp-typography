@@ -8,26 +8,11 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
-        jshint: {
-            files: [
-                'js/**/*.js',
-            ],
-            options: {
-                expr: true,
-                globals: {
-                    jQuery: true,
-                    console: true,
-                    module: true,
-                    document: true
-                }
-            }
-        },
-
-        jscs: {
+        eslint: {
             src: [
-                'js/**/*.js'
-            ],
-            options: {}
+                'js/**/*.js',
+                '!**/*.min.js',
+            ]
         },
 
         composer : {
@@ -369,7 +354,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('deploy', [
         'phpcs',
-        'jscs',
+        'eslint',
         'build',
         'wp_deploy:release'
     ]);
@@ -387,7 +372,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('default', [
         'phpcs',
-        'jscs',
+        'newer:eslint',
         'regex_extract:language_names',
         'newer:delegate:sass:dev',
         'newer:postcss:dev',
