@@ -41,7 +41,7 @@ jQuery( function( $ ) {
 				i, shadow;
 
 			for ( i = 0; i < rangeCount; i++ ) {
-				 ranges[i] = sel.getRangeAt( i );
+				ranges[i] = sel.getRangeAt( i );
 			}
 
 			// Create new div containing cleaned HTML content
@@ -65,7 +65,7 @@ jQuery( function( $ ) {
 				// Restore selection
 				sel.removeAllRanges();
 				for ( i = 0; i < rangeCount; i++ ) {
-					 sel.addRange( ranges[i] );
+					sel.addRange( ranges[i] );
 				}
 			}, 0 );
 		} );
