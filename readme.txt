@@ -3,8 +3,8 @@ Contributors: pputzer, kingjeffrey
 Tags: typography, hyphenation, smart quotes, formatting, widows, orphans, typogrify, quotes, prettify, small caps, diacritics
 Requires at least: 4.6
 Requires PHP: 5.6
-Tested up to: 5.1
-Stable tag: 5.5.4
+Tested up to: 5.2
+Stable tag: 5.6.0
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
@@ -38,7 +38,7 @@ Improve your web typography with:
 
 = Requirements =
 
-wp‐Typography has the following requirements:
+wp-Typography has the following requirements:
 
 * the host server must run PHP 5.6.0 or later
 * your installation of PHP must include the [mbstring extension](http://us3.php.net/manual/en/mbstring.installation.php) (most do)
@@ -75,41 +75,17 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 4. wp-Typography "Space Control" settings page.
 4. wp-Typography "Add CSS Hooks" settings page.
 
-== Upgrade Notice ==
-
-= 5.1.3 =
-The plugin now requires at least PHP 5.6. If you are still running an earlier version,
-please upgrade PHP or continue to use version 4.2.2.
-
-= 5.1.2 =
-The plugin now requires at least PHP 5.6. If you are still running an earlier version,
-please upgrade PHP or continue to use version 4.2.2.
-
-= 5.1.0 =
-The plugin now requires at least PHP 5.6. If you are still running an earlier version,
-please upgrade PHP or continue to use version 4.2.2.
-
-= 5.0.4 =
-The plugin now requires at least PHP 5.6. If you are still running an earlier version,
-please upgrade PHP or continue to use version 4.2.2.
-
-= 5.0.3 =
-The plugin now requires at least PHP 5.6. If you are still running an earlier version,
-please upgrade PHP or continue to use version 4.2.2.
-
-= 5.0.2 =
-The plugin now requires at least PHP 5.6. If you are still running an earlier version,
-please upgrade PHP or continue to use version 4.2.2.
-
-= 5.0.1 =
-The plugin now requires at least PHP 5.6. If you are still running an earlier version,
-please upgrade PHP or continue to use version 4.2.2.
-
-= 5.0.0 =
-The plugin now requires at least PHP 5.6. If you are still running an earlier version,
-please upgrade PHP or continue to use version 4.2.2.
-
 == Changelog ==
+
+= 5.6.0 - July 21, 2019 =
+*   _Feature_: Support for new variant of the international dash style without hair spaces for numeric intervals (i.e. `9-17` becomes `9&ndash;17` instead of `9&hairsp;&ndash;&hairsp;17`).
+*   _Feature_: Smart area and volume units (`5m2` is transformed into `5 m²`).
+*   _Feature_: The use of narrow no-break spaces and the true Unicode hyphen can now be enabled via the GUI. Consequently, the filter hook `typo_narrow_no_break_space` has been deprecated.
+*   _Change_: The HTML title handling has been reengineered, and consequently, the `title` variant of the `typo_disable_filtering` hook has been removed.
+*   _Change_: CSS class injection for ampersands, acronyms, and intial quotes is now disabled by default.
+*   _Change_: The smart quotes preview in the settings page should now be easier to read.
+*   _Change_: All external PHP dependencies have been moved to the namespace `WP_Typography\Vendor` to reduce the chance of conflicts with other plugins.
+*   _Bugfix_: The regular expression for cleaning user-supplied CSS no longer uses invalid syntax. This should fix any errors in PHP 7.3.
 
 = 5.5.4 - March 11, 2019 =
 * _Bugfix_: Automatic language detection now also works for locales without a country code (e.g. `fi`).
@@ -133,36 +109,3 @@ please upgrade PHP or continue to use version 4.2.2.
 * _Bugfix_: Unit spacing is now properly applied to monetary symbols ($, €, etc.).
 * _Bugfix_: Certain HTML entities (e.g. `&amp;`) were accidentally dropped in rare cases.
 * _Bugfix_: Comply with the new WordPress Coding Standards 2.0.
-
-= 5.4.2 - September 30, 2018 =
-* _Bugfix_: Advanced Custom Fields 5 now uses the correct default values for `text`, `textarea` and `wysiwyg` field types.
-
-= 5.4.1 - September 15, 2018 =
-* _Bugfix_: Comply with new WordPress Coding Standards 1.1.
-* _Bugfix_: Work around GlotPress issue preventing language pack generation.
-
-= 5.4.0 - September 9, 2018 =
-* _Feature_: New hooks for implementing your own typography fixes:
-  - `typo_custom_characters_node_fix`,
-  - `typo_custom_spacing_pre_node_fix`,
-  - `typo_custom_spacing_post_node_fix`,
-  - `typo_custom_html_insertion_node_fix`,
-  - `typo_custom_mixed_words_token_fix`,
-  - `typo_custom_compound_words_token_fix`,
-  - `typo_custom_words_token_fix`,
-  - `typo_custom_other_token_fix`.
-* _Feature_: A privacy statement has been added on WordPress 4.9.6+.
-* _Feature_: A narrow no-break space is now inserted between adjacent primary and secondary quotes.
-* _Change_: The Unicode hyphen character (`‐`) is now used instead of the hyphen-minus (`-`).
-* _Change_: Significantly updated hyphenation patterns for:
-  - Bulgarian,
-  - German,
-  - German (Traditional),
-  - German (Swiss Traditional),
-  - Latin (Liturgical), and
-  - Thai.
-* _Bugfix_: The comma is now recognized as a decimal separator (e.g. `1,5`, in addition to `1.5`).
-* _Bugfix_: Smart maths properly handles 2-digit years in dates.
-* _Bugfix_: Smart diacritics won't try to "correct" the spelling of `Uber` anymore.
-* _Bugfix_: French punctuation is now correctly applied to quotes preceeded or followed by round and square brackets.
-* _Bugfix_: Smart quotes replacement could result in invalid unicode sequences in rare cases.

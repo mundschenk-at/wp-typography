@@ -348,7 +348,7 @@ abstract class Plugin_Configuration {
 					'option_values' => [
 						Dash_Style::TRADITIONAL_US               => \__( 'Traditional US', 'wp-typography' ),
 						Dash_Style::INTERNATIONAL                => \__( 'International', 'wp-typography' ),
-						Dash_Style::INTERNATIONAL_NO_HAIR_SPACES => \__( 'International (no hair spaces for intervals)', 'wp-typography' ),
+						Dash_Style::INTERNATIONAL_NO_HAIR_SPACES => \__( 'International (no hair spaces)', 'wp-typography' ),
 					],
 					'default'       => Dash_Style::TRADITIONAL_US, // @codeCoverageIgnore
 				],

@@ -123,6 +123,13 @@ return [
             $prefix = \preg_quote( $prefix, '#' );
 
             if (
+                // Fix bad constant-patching in class-re.php.
+                \preg_match( '#.*/php-typography/src/class-re\.php$#', $file_path )
+            ) {
+                $contents = \str_replace( "const NORMAL_SPACES = '{$prefix}\\\\ \\\\f\\\\n\\\\r\\\\t\\\\v';", 'const NORMAL_SPACES = \' \f\n\r\t\v\';', $contents );
+            }
+
+            if (
                 // Skip partials and dummy files.
                 \preg_match( '#.*/partials/\w+.*\.php$#', $file_path ) ||
                 \preg_match( '#.*/includes/_language_names\.php$#', $file_path )
