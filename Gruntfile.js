@@ -47,7 +47,10 @@ module.exports = function(grunt) {
                         'js/**',
                         'vendor/**/partials/**',
                     ],
-                    dest: 'build/'
+                    dest: 'build/',
+                    rename: function(dest, src) {
+                        return dest + src.replace( /\bvendor\b/, 'vendor-scoped');
+                    }
                 }],
             },
             meta: {
@@ -61,20 +64,32 @@ module.exports = function(grunt) {
                         'vendor/{composer,level-2,masterminds,mundschenk-at}/**/COPYING*',
                         'vendor/{composer,level-2,masterminds,mundschenk-at}/**/CHANGE*',
                     ],
-                    dest: 'build/'
+                    dest: 'build/',
+                    rename: function(dest, src) {
+                        return dest + src.replace( /\bvendor\b/, 'vendor-scoped');
+                    }
                 }],
+            }
+        },
+
+        rename: {
+            vendor: {
+                files: [{
+                    src: "build/vendor",
+                    dest: "build/vendor-scoped"
+                }]
             }
         },
 
         clean: {
             build: ["build/*"],
-            autoloader: [ "build/composer.*", "build/vendor/composer/*.json", "build/vendor/scoper-autoload.php", "build/vendor/mundschenk-at/composer-for-wordpress/**" ]
+            autoloader: [ "build/composer.*", "build/vendor-scoped/composer/*.json", "build/vendor-scoped/scoper-autoload.php", "build/vendor-scoped/mundschenk-at/composer-for-wordpress/**" ]
         },
 
         "string-replace": {
             autoloader: {
                 files: {
-                    "build/": "build/vendor/composer/autoload_{classmap,psr4,static}.php",
+                    "build/": "build/vendor-scoped/composer/autoload_{classmap,psr4,static}.php",
                 },
                 options: {
                     replacements: [{
@@ -88,6 +103,34 @@ module.exports = function(grunt) {
                         replacement: 'FOOBAR'
                     }]
                 }
+            },
+            "composer-vendor-dir": {
+                options: {
+                    replacements: [{
+                        pattern: /"vendor-dir":\s*"vendor"/g,
+                        replacement: '"vendor-dir": "vendor-scoped"'
+                    }],
+                },
+                files: [{
+                    expand: true,
+                    flatten: false,
+                    src: ['build/composer.json'],
+                    dest: '',
+                }]
+            },
+            "vendor-dir": {
+                options: {
+                    replacements: [{
+                        pattern: /vendor\//g,
+                        replacement: 'vendor-scoped/'
+                    }],
+                },
+                files: [{
+                    expand: true,
+                    flatten: false,
+                    src: ['build/**/*.php'],
+                    dest: '',
+                }]
             }
         },
 
@@ -353,19 +396,30 @@ module.exports = function(grunt) {
     ]);
 
     grunt.registerTask('build', [
+        // Clean house
         'clean:build',
+        // Scope dependencies
         'composer:dev:scope-dependencies',
+        // Rename vendor directory
+        'string-replace:composer-vendor-dir',
+        'rename:vendor',
+        // Extract language names for translation
         'regex_extract:language_names',
+        // Update valid top-level domains
         'exec:update_iana',
+        // Generate stylesheets
         'newer:sass:dist',
         'newer:postcss:dist',
         'newer:minify',
+        // Copy other files
         'copy:main',
         'copy:meta',
+        // Use scoped dependencies
         'replace:fix_dice_namespace',
         'replace:fix_mundschenk_namespace',
         'composer:build:build-wordpress',
         'clean:autoloader',
+        'string-replace:vendor-dir',
         'string-replace:autoloader'
     ]);
 
