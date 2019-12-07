@@ -11,6 +11,7 @@
 	<rule ref="WordPress">
 		<exclude name="WordPress.Arrays.CommaAfterArrayItem.SpaceAfterComma" />
 		<exclude name="Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma" />
+		<exclude name="Generic.Arrays.DisallowShortArraySyntax" />
 	</rule>
 	<rule ref="WordPress-Docs" />
 	<rule ref="WordPress-Extra" />
