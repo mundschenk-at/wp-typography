@@ -261,7 +261,7 @@ class Public_Interface implements Plugin_Component {
 			// Set up file suffix and plugin version.
 			$suffix     = ( \defined( 'SCRIPT_DEBUG' ) && \SCRIPT_DEBUG ) ? '' : '.min';
 			$version    = $this->plugin->get_version();
-			$plugin_dir = \plugin_dir_url( \plugin_basename( \WP_TYPOGRAPHY_PLUGIN_FILE ) );
+			$plugin_dir = \plugin_dir_url( \WP_TYPOGRAPHY_PLUGIN_FILE );
 
 			\wp_enqueue_script( 'wp-typography-cleanup-clipboard', "{$plugin_dir}js/clean-clipboard$suffix.js", [ 'jquery' ], $version, true );
 		}
