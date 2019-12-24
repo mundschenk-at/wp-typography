@@ -29,7 +29,7 @@ build:
         memcached: false
         neo4j: false
         php:
-            version: 7.2
+            version: 7.4
     nodes:
         analysis:
             project_setup:
