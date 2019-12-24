@@ -313,8 +313,7 @@ class Public_Interface_Test extends TestCase {
 
 		define( 'SCRIPT_DEBUG', false );
 
-		Functions\expect( 'plugin_basename' )->once()->with( \WP_TYPOGRAPHY_PLUGIN_FILE )->andReturn( 'plugin/basename' );
-		Functions\expect( 'plugin_dir_url' )->once()->with( 'plugin/basename' )->andReturn( 'dummy/path' );
+		Functions\expect( 'plugin_dir_url' )->once()->with( \WP_TYPOGRAPHY_PLUGIN_FILE )->andReturn( 'dummy/path' );
 		Functions\expect( 'wp_enqueue_script' )
 			->once()
 			->with( 'wp-typography-cleanup-clipboard', m::type( 'string' ), m::type( 'array' ), m::type( 'string' ), true );

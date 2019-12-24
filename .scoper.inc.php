@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Isolated\Symfony\Component\Finder\Finder;
 
-const WP_TYPOGRAPHY_EXCLUDED_FILES      = '.*\\.dist|Makefile|composer\\.json|composer\\.lock|phpcs\\.xml|phpunit.xml|phpbench\\.json|.*\\.md|.*\\.txt';
+const WP_TYPOGRAPHY_EXCLUDED_FILES      = '.*\\.dist|Makefile|composer\\.json|composer\\.lock|phpcs\\.xml|phpunit.xml|phpbench\\.json|.*\\.md';
 const WP_TYPOGRAPHY_EXCLUDED_DIRS       = [
     'bin',
     'doc',

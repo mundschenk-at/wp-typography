@@ -373,7 +373,7 @@ class Admin_Interface implements Plugin_Component {
 		if (
 			 // phpcs:ignore WordPress.Security.NonceVerification.Missing -- we are only checking that the button was clicked.
 			! empty( $_POST[ $this->options->get_name( $setting_name ) ] ) &&
-			empty( $this->triggered_notice[ $setting_name  ] )
+			empty( $this->triggered_notice[ $setting_name ] )
 		) {
 			\add_settings_error( self::OPTION_GROUP . $this->get_active_settings_tab(), $notice_id, $message, $notice_level );
 
