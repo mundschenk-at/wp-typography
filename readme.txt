@@ -77,6 +77,11 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 
 == Changelog ==
 
+= 5.6.1 - December 24, 2019 =
+*   _Bugfix_: Some error messages were not getting translated because of a [WP.org infrastructure change](https://make.wordpress.org/core/2018/11/09/new-javascript-i18n-support-in-wordpress/).
+*   _Bugfix_: No more whitescreens when the underlying DOM parser fails.
+*   _Bugfix_: The path for script assets is now correctly constructed when wp-Typography is used as MU plugin.
+
 = 5.6.0 - July 21, 2019 =
 *   _Feature_: Support for new variant of the international dash style without hair spaces for numeric intervals (i.e. `9-17` becomes `9&ndash;17` instead of `9&hairsp;&ndash;&hairsp;17`).
 *   _Feature_: Smart area and volume units (`5m2` is transformed into `5 m²`).
