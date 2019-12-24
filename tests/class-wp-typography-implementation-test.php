@@ -42,7 +42,6 @@ use Mockery as m;
  * @usesDefaultClass \WP_Typography\Implementation
  *
  * @uses ::__construct
- * @uses ::hash_version_string
  * @uses \WP_Typography\Components\Admin_Interface::__construct
  * @uses \WP_Typography\Components\Setup::__construct
  * @uses \WP_Typography\Components\Common::__construct
