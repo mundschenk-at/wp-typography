@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2014-2019 Peter Putzer.
+ *  Copyright 2014-2020 Peter Putzer.
  *  Copyright 2009-2011 KINGdesk, LLC.
  *
  *  This program is free software; you can redistribute it and/or
@@ -697,7 +697,7 @@ class Implementation extends \WP_Typography {
 		\uksort(
 			$exceptions,
 			function( $a, $b ) {
-				return \strlen( $b ) - \strlen( $a ) ?: \strcmp( $a, $b );
+				return ( \strlen( $b ) - \strlen( $a ) ) ?: \strcmp( $a, $b ); // phpcs:ignore WordPress.PHP.DisallowShortTernary
 			}
 		);
 
