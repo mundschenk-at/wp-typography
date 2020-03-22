@@ -18,7 +18,6 @@
     "grunt-postcss": "^0.9",
     "grunt-regex-extract": "git://github.com/mpau23/grunt-regex-extract.git",
     "grunt-rename-util": "^1.0.0",
-    "grunt-replace": "^1.0.1",
     "grunt-sass": "^3.0.2",
     "grunt-shell": "^3",
     "grunt-string-replace": "^1.3",
