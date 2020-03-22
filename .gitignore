@@ -23,3 +23,6 @@ includes/_language_names.php
 
 # macOS Finder
 .DS_Store
+
+# Atom/Serenata support files
+.serenata/*
