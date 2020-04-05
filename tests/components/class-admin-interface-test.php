@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2019 Peter Putzer.
+ *  Copyright 2017-2020 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -100,8 +100,8 @@ class Admin_Interface_Test extends TestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function setUp() {
-		parent::setUp();
+	protected function set_up() {
+		parent::set_up();
 
 		// Set up virtual filesystem.
 		vfsStream::setup(
@@ -162,7 +162,7 @@ class Admin_Interface_Test extends TestCase {
 	public function test_constructor() {
 		$admin = m::mock( Admin_Interface::class, [ $this->options ] );
 
-		$this->assertAttributeSame( $this->options, 'options', $admin );
+		$this->assert_attribute_same( $this->options, 'options', $admin );
 	}
 
 
@@ -190,7 +190,7 @@ class Admin_Interface_Test extends TestCase {
 
 		$this->admin->run( $this->plugin );
 
-		$this->assertAttributeSame( $this->plugin, 'plugin', $this->admin );
+		$this->assert_attribute_same( $this->plugin, 'plugin', $this->admin );
 	}
 
 	/**

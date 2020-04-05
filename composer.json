@@ -43,7 +43,8 @@
         "mikey179/vfsstream": "~1",
         "brain/monkey": "^2.2",
         "roave/security-advisories": "dev-master",
-        "humbug/php-scoper": "^0.12.4"
+        "humbug/php-scoper": "^0.12.4",
+        "mundschenk-at/phpunit-cross-version": "dev-master"
     },
 
     "minimum-stability": "dev",

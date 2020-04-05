@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2019 Peter Putzer.
+ *  Copyright 2017-2020 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -50,7 +50,7 @@ class Tabs_Test extends \WP_Typography\Tests\TestCase {
 
 		$tabs = Tabs::get_tabs();
 
-		$this->assertInternalType( 'array', $tabs, 'Plugin_Configuration::get_defaults should return an array.' );
+		$this->assert_is_array( $tabs, 'Plugin_Configuration::get_defaults should return an array.' );
 		$this->assertGreaterThan( 1, count( $tabs ), 'The defaults array should contain more than one element.' );
 		$this->assertContainsOnly( 'array', $tabs );
 	}

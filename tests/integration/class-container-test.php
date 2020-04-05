@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2018-2019 Peter Putzer.
+ *  Copyright 2018-2020 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -71,8 +71,8 @@ class Container_Test extends TestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function setUp() {
-		parent::setUp();
+	protected function set_up() {
+		parent::set_up();
 
 		$this->int1 = m::mock( Plugin_Integration::class );
 		$this->int2 = m::mock( Plugin_Integration::class );
@@ -90,7 +90,7 @@ class Container_Test extends TestCase {
 	public function test_constructor() {
 		$integrations = m::mock( Container::class, [ [ $this->int1, $this->int2 ] ] );
 
-		$this->assertAttributeCount( 2, 'integrations', $integrations );
+		$this->assert_attribute_count( 2, 'integrations', $integrations );
 	}
 
 

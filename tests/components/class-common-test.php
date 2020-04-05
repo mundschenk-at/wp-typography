@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2019 Peter Putzer.
+ *  Copyright 2017-2020 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -80,8 +80,8 @@ class Common_Test extends TestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function setUp() {
-		parent::setUp();
+	protected function set_up() {
+		parent::set_up();
 
 		// Mock WP_Typography\Data_Storage\Options instance.
 		$this->options = m::mock( \WP_Typography\Data_Storage\Options::class )
@@ -114,7 +114,7 @@ class Common_Test extends TestCase {
 	public function test_constructor() {
 		$common = m::mock( Common::class, [ $this->options, $this->integrations ] );
 
-		$this->assertAttributeSame( $this->options, 'options', $common );
+		$this->assert_attribute_same( $this->options, 'options', $common );
 	}
 
 
@@ -129,7 +129,7 @@ class Common_Test extends TestCase {
 
 		$this->common->run( $this->plugin );
 
-		$this->assertAttributeSame( $this->plugin, 'plugin', $this->common );
+		$this->assert_attribute_same( $this->plugin, 'plugin', $this->common );
 	}
 
 	/**

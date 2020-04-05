@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2019 Peter Putzer.
+ *  Copyright 2017-2020 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -56,8 +56,8 @@ class Public_Interface_Test extends TestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function setUp() {
-		parent::setUp();
+	protected function set_up() {
+		parent::set_up();
 
 		// Mock WP_Typography\Components\Public_Interface instance.
 		$this->public_if = m::mock( Public_Interface::class )
@@ -169,7 +169,7 @@ class Public_Interface_Test extends TestCase {
 		self::assertTrue( has_action( 'shutdown', [ $plugin, 'save_hyphenator_cache_on_shutdown' ] ) );
 
 		if ( $nextgen ) {
-			$this->assertAttributeSame( PHP_INT_MAX, 'filter_priority', $this->public_if );
+			$this->assert_attribute_same( PHP_INT_MAX, 'filter_priority', $this->public_if );
 		}
 	}
 
