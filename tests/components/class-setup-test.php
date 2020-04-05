@@ -189,10 +189,6 @@ class Setup_Test extends TestCase {
 	 *
 	 * @covers ::get_old_option_name
 	 *
-	 * @uses \array_shift
-	 * @uses \explode
-	 * @uses \ucfirst
-	 *
 	 * @param string $input    New option name (e.g. 'typo_foo_bar').
 	 * @param string $expected Old option name (e.g. 'typoFooBar').
 	 */
@@ -248,8 +244,6 @@ class Setup_Test extends TestCase {
 	 * Test plugin_updated.
 	 *
 	 * @covers ::plugin_updated
-	 *
-	 * @uses \version_compare
 	 *
 	 * @dataProvider provide_plugin_updated_data
 	 *

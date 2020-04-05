@@ -57,7 +57,6 @@ use Mockery as m;
  * @uses \WP_Typography\Settings\Plugin_Configuration::get_defaults
  * @uses \WP_Typography\UI\Tabs::get_tabs
  * @uses \WP_Typography\UI\Sections::get_sections
- * @uses \plugin_basename
  */
 class Admin_Interface_Test extends TestCase {
 
