@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2019 Peter Putzer.
+ *  Copyright 2017-2020 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -30,4 +30,7 @@ require_once \dirname( __DIR__ ) . '/vendor/autoload.php';
 // wp-Typography constants.
 if ( ! \defined( 'WP_TYPOGRAPHY_PLUGIN_FILE' ) ) {
 	\define( 'WP_TYPOGRAPHY_PLUGIN_FILE', 'plugin/file' );
+}
+if ( ! \defined( 'WP_TYPOGRAPHY_PLUGIN_PATH' ) ) {
+	\define( 'WP_TYPOGRAPHY_PLUGIN_PATH', 'plugin' );
 }
