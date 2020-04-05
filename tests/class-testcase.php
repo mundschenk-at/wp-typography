@@ -2,7 +2,7 @@
 /**
  *  This file is part of PHP-Typography.
  *
- *  Copyright 2017-2019 Peter Putzer.
+ *  Copyright 2017-2020 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -29,23 +29,7 @@ use Brain\Monkey;
 /**
  * Abstract base class for \PHP_Typography\* unit tests.
  */
-abstract class TestCase extends \PHPUnit\Framework\TestCase {
-
-	/**
-	 * Set up Brain Monkey.
-	 */
-	protected function setUp() {
-		parent::setUp();
-		Monkey\setUp();
-	}
-
-	/**
-	 * Tear down Brain Monkey.
-	 */
-	protected function tearDown() {
-		Monkey\tearDown();
-		parent::tearDown();
-	}
+abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 
 	/**
 	 * Return encoded HTML string (everything except <>"').

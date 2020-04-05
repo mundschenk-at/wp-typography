@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2019 Peter Putzer.
+ *  Copyright 2017-2020 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -72,7 +72,7 @@ class Setup_Test extends TestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function setUp() {
+	protected function set_up() {
 
 		// Mock WP_Typography\Data_Storage\Options instance.
 		$this->options = m::mock( \WP_Typography\Data_Storage\Options::class )
@@ -92,7 +92,7 @@ class Setup_Test extends TestCase {
 		Functions\expect( 'register_uninstall_hook' )->once();
 		$this->setup->run( $this->plugin );
 
-		parent::setUp();
+		parent::set_up();
 	}
 
 	/**
@@ -103,7 +103,7 @@ class Setup_Test extends TestCase {
 	public function test_constructor() {
 		$setup = m::mock( Setup::class, [ $this->options ] );
 
-		$this->assertAttributeSame( $this->options, 'options', $setup );
+		$this->assert_attribute_same( $this->options, 'options', $setup );
 	}
 
 
@@ -121,7 +121,7 @@ class Setup_Test extends TestCase {
 
 		$this->setup->run( $this->plugin );
 
-		$this->assertAttributeSame( $this->plugin, 'plugin', $this->setup );
+		$this->assert_attribute_same( $this->plugin, 'plugin', $this->setup );
 	}
 
 	/**
@@ -189,10 +189,6 @@ class Setup_Test extends TestCase {
 	 *
 	 * @covers ::get_old_option_name
 	 *
-	 * @uses \array_shift
-	 * @uses \explode
-	 * @uses \ucfirst
-	 *
 	 * @param string $input    New option name (e.g. 'typo_foo_bar').
 	 * @param string $expected Old option name (e.g. 'typoFooBar').
 	 */
@@ -248,8 +244,6 @@ class Setup_Test extends TestCase {
 	 * Test plugin_updated.
 	 *
 	 * @covers ::plugin_updated
-	 *
-	 * @uses \version_compare
 	 *
 	 * @dataProvider provide_plugin_updated_data
 	 *

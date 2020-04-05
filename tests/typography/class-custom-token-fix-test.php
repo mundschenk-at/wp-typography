@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2018-2019 Peter Putzer.
+ *  Copyright 2018-2020 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -50,7 +50,7 @@ class Custom_Token_Fix_Test extends \WP_Typography\Tests\TestCase {
 	public function test_constructor() {
 		$fix = new Custom_Token_Fix( 'words' );
 
-		$this->assertAttributeSame( 'words', 'type', $fix );
+		$this->assert_attribute_same( 'words', 'type', $fix );
 	}
 
 	/**

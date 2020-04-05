@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2019 Peter Putzer.
+ *  Copyright 2017-2020 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -80,7 +80,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function setUp() {
+	protected function set_up() {
 
 		// Mock WP_Typography\Data_Storage\Options instance.
 		$this->options = m::mock( \WP_Typography\Data_Storage\Options::class )
@@ -108,7 +108,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 			->shouldAllowMockingProtectedMethods()
 			->makePartial();
 
-		parent::setUp();
+		parent::set_up();
 	}
 
 	/**
@@ -134,7 +134,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 		);
 
 		$this->assertInstanceOf( \WP_Typography\Implementation::class, $typo );
-		$this->assertAttributeSame( '6.6.6', 'version', $typo );
+		$this->assert_attribute_same( '6.6.6', 'version', $typo );
 	}
 
 	/**
@@ -172,7 +172,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 
 		// Check result.
 		$result = $this->wp_typo->get_config();
-		$this->assertInternalType( 'array', $result );
+		$this->assert_is_array( $result );
 		$this->assertArrayHasKey( 'foo', $result );
 		$this->assertArrayHasKey( 'newbar', $result );
 	}
@@ -606,7 +606,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 		$result = $this->wp_typo->filter_body_class( $classes );
 
 		$this->assertSame( $classes, $result );
-		$this->assertAttributeSame( $classes, 'body_classes', $this->wp_typo );
+		$this->assert_attribute_same( $classes, 'body_classes', $this->wp_typo );
 	}
 
 	/**
@@ -660,7 +660,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 		Functions\expect( 'wp_list_pluck' )->once()->with( m::type( 'array' ), 'default' )->andReturn( [ 'bar' => 'foo' ] );
 		Functions\expect( '__' )->atLeast()->once()->andReturn( 'translated_string' );
 
-		$this->assertInternalType( 'array', $this->wp_typo->get_default_options() );
+		$this->assert_is_array( $this->wp_typo->get_default_options() );
 	}
 
 	/**
@@ -695,7 +695,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 * @covers ::get_version
 	 */
 	public function test_get_version() {
-		$this->assertInternalType( 'string', $this->wp_typo->get_version() );
+		$this->assert_is_string( $this->wp_typo->get_version() );
 	}
 
 	/**

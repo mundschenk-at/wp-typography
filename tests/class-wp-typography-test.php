@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2019 Peter Putzer.
+ *  Copyright 2017-2020 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -79,7 +79,7 @@ class WP_Typography_Test extends TestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function setUp() {
+	protected function set_up() {
 
 		// Mock WP_Typography\Data_Storage\Options instance.
 		$this->options = m::mock( \WP_Typography\Data_Storage\Options::class )
@@ -107,18 +107,18 @@ class WP_Typography_Test extends TestCase {
 			->shouldAllowMockingProtectedMethods()
 			->makePartial();
 
-		parent::setUp();
+		parent::set_up();
 	}
 
 	/**
 	 * Necesssary clean-up work.
 	 */
-	protected function tearDown() {
+	protected function tear_down() {
 
 		// Reset singleton.
 		$this->setStaticValue( \WP_Typography::class, 'instance', null );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**
@@ -168,15 +168,15 @@ class WP_Typography_Test extends TestCase {
 	 * @covers ::__callStatic
 	 *
 	 * @uses ::get_instance
-	 *
-	 * @expectedException \BadMethodCallException
-	 * @expectedExceptionMessage Static method WP_Typography::foobar does not exist.
 	 */
 	public function test_call_static_foobar() {
 		// Set up singleton.
 		$this->setStaticValue( \WP_Typography::class, 'instance', $this->wp_typo );
 
 		$this->wp_typo->shouldNotReceive( 'foobar' );
+
+		$this->expect_exception( \BadMethodCallException::class );
+		$this->expect_exception_message_matches( '/Static method WP_Typography::foobar does not exist/' );
 
 		$this->assertNull( \WP_Typography::foobar() );
 	}

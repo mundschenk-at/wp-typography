@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2018-2019 Peter Putzer.
+ *  Copyright 2018-2020 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -54,8 +54,8 @@ class ACF_Integration_Test extends TestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function setUp() {
-		parent::setUp();
+	protected function set_up() {
+		parent::set_up();
 
 		// Mock WP_Typography\Components\ACF_Integration instance.
 		$this->acf_i = m::mock( ACF_Integration::class )
@@ -91,7 +91,7 @@ class ACF_Integration_Test extends TestCase {
 
 		$this->acf_i->run( m::mock( \WP_Typography::class ) );
 
-		$this->assertAttributeInstanceOf( \WP_Typography::class, 'plugin', $this->acf_i );
+		$this->assert_attribute_instance_of( \WP_Typography::class, 'plugin', $this->acf_i );
 	}
 
 	/**
@@ -113,7 +113,7 @@ class ACF_Integration_Test extends TestCase {
 
 		$this->acf_i->run( m::mock( \WP_Typography::class ) );
 
-		$this->assertAttributeInstanceOf( \WP_Typography::class, 'plugin', $this->acf_i );
+		$this->assert_attribute_instance_of( \WP_Typography::class, 'plugin', $this->acf_i );
 	}
 
 

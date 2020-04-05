@@ -131,6 +131,34 @@ module.exports = function(grunt) {
                     src: ['build/**/*.php'],
                     dest: '',
                 }]
+            },
+            fix_dice_namespace: {
+                options: {
+                    replacements: [ {
+                        pattern: /use Dice\\Dice;/g,
+                        replacement: 'use WP_Typography\\Vendor\\Dice\\Dice;'
+                    } ],
+                },
+                files: [ {
+                    expand: true,
+                    flatten: false,
+                    src: ['build/includes/class-wp-typography-factory.php'],
+                    dest: '',
+                } ]
+            },
+            fix_mundschenk_namespace: {
+                options: {
+                    replacements: [ {
+                        pattern: /(\b\\?)(Mundschenk\\[\w_]+)/g,
+                        replacement: '$1WP_Typography\\Vendor\\$2'
+                    } ],
+                },
+                files: [ {
+                    expand: true,
+                    flatten: false,
+                    src: ['build/includes/**/*.php'],
+                    dest: '',
+                } ]
             }
         },
 
@@ -313,36 +341,6 @@ module.exports = function(grunt) {
             }
         },
 
-        replace: {
-            fix_dice_namespace: {
-                options: {
-                    patterns: [ {
-                        match: /use Dice\\Dice;/g,
-                        replacement: 'use WP_Typography\\Vendor\\Dice\\Dice;'
-                    } ],
-                },
-                files: [ {
-                    expand: true,
-                    flatten: false,
-                    src: ['build/includes/class-wp-typography-factory.php'],
-                    dest: '',
-                } ]
-            },
-            fix_mundschenk_namespace: {
-                options: {
-                    patterns: [ {
-                        match: /(\b\\?)(Mundschenk\\[\w_]+)/g,
-                        replacement: '$1WP_Typography\\Vendor\\$2'
-                    } ],
-                },
-                files: [ {
-                    expand: true,
-                    flatten: false,
-                    src: ['build/includes/**/*.php'],
-                    dest: '',
-                } ]
-            }
-        },
         compress: {
           beta: {
             options: {
@@ -415,8 +413,8 @@ module.exports = function(grunt) {
         'copy:main',
         'copy:meta',
         // Use scoped dependencies
-        'replace:fix_dice_namespace',
-        'replace:fix_mundschenk_namespace',
+        'string-replace:fix_dice_namespace',
+        'string-replace:fix_mundschenk_namespace',
         'composer:build:build-wordpress',
         'clean:autoloader',
         'string-replace:vendor-dir',

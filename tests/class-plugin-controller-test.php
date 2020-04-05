@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2018-2019 Peter Putzer.
+ *  Copyright 2018-2020 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -45,11 +45,11 @@ class Plugin_Controller_Test extends TestCase {
 	/**
 	 * Necesssary clean-up work.
 	 */
-	protected function tearDown() {
+	protected function tear_down() {
 		// Reset singleton.
 		$this->setStaticValue( \WP_Typography::class, 'instance', null );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**
