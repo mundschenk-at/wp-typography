@@ -52,6 +52,9 @@ if ( ! defined( 'ABSPATH' ) || ! defined( 'WPINC' ) ) {
 if ( ! defined( 'WP_TYPOGRAPHY_PLUGIN_FILE' ) ) {
 	define( 'WP_TYPOGRAPHY_PLUGIN_FILE', __FILE__ );
 }
+if ( ! defined( 'WP_TYPOGRAPHY_PLUGIN_PATH' ) ) {
+	define( 'WP_TYPOGRAPHY_PLUGIN_PATH', dirname( __FILE__ ) );
+}
 
 // Load requirements class in a PHP 5.2 compatible manner.
 require_once dirname( __FILE__ ) . '/includes/class-wp-typography-requirements.php';

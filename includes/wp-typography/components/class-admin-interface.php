@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2014-2019 Peter Putzer.
+ *  Copyright 2014-2020 Peter Putzer.
  *  Copyright 2012-2013 Marie Hogebrandt.
  *  Copyright 2009-2011 KINGdesk, LLC.
  *
@@ -454,7 +454,7 @@ class Admin_Interface implements Plugin_Component {
 		}
 
 		// Load the settings page HTML.
-		require \dirname( \WP_TYPOGRAPHY_PLUGIN_FILE ) . '/admin/partials/settings/section.php';
+		require \WP_TYPOGRAPHY_PLUGIN_PATH . '/admin/partials/settings/section.php';
 	}
 
 	/**
@@ -488,7 +488,7 @@ class Admin_Interface implements Plugin_Component {
 		$this->admin_form_controls[ Config::DIACRITIC_LANGUAGES ]->set_option_values( $this->plugin->get_diacritic_languages() );
 
 		// Load the settings page HTML.
-		require \dirname( \WP_TYPOGRAPHY_PLUGIN_FILE ) . '/admin/partials/settings/settings-page.php';
+		require \WP_TYPOGRAPHY_PLUGIN_PATH . '/admin/partials/settings/settings-page.php';
 	}
 
 
