@@ -101,11 +101,11 @@ class WP_Typography_Singleton_Test extends TestCase {
 	 * Tests ::get_instance without a previous call to ::_get_instance (i.e. _doing_it_wrong).
 	 *
 	 * @covers ::get_instance
-	 *
-	 * @expectedException \BadMethodCallException
-	 * @expectedExceptionMessage WP_Typography::get_instance called without prior plugin intialization.
 	 */
 	public function test_get_instance_failing() {
+		$this->expect_exception( \BadMethodCallException::class );
+		$this->expect_exception_message_matches( '/WP_Typography::get_instance called without prior plugin intialization/' );
+
 		$typo = \WP_Typography::get_instance();
 		$this->assertInstanceOf( \WP_Typography::class, $typo );
 	}
@@ -114,9 +114,6 @@ class WP_Typography_Singleton_Test extends TestCase {
 	 * Tests ::get_instance without a previous call to ::_get_instance (i.e. _doing_it_wrong).
 	 *
 	 * @covers ::set_instance
-	 *
-	 * @expectedException \BadMethodCallException
-	 * @expectedExceptionMessage WP_Typography::set_instance called more than once.
 	 */
 	public function test_set_instance_failing() {
 		$transients = m::mock( \WP_Typography\Data_Storage\Transients::class );
@@ -125,6 +122,10 @@ class WP_Typography_Singleton_Test extends TestCase {
 
 		$typo = m::mock( \WP_Typography::class );
 		\WP_Typography::set_instance( $typo );
+
+		$this->expect_exception( \BadMethodCallException::class );
+		$this->expect_exception_message_matches( '/WP_Typography::set_instance called more than once/' );
+
 		\WP_Typography::set_instance( $typo );
 	}
 }

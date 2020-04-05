@@ -168,15 +168,15 @@ class WP_Typography_Test extends TestCase {
 	 * @covers ::__callStatic
 	 *
 	 * @uses ::get_instance
-	 *
-	 * @expectedException \BadMethodCallException
-	 * @expectedExceptionMessage Static method WP_Typography::foobar does not exist.
 	 */
 	public function test_call_static_foobar() {
 		// Set up singleton.
 		$this->setStaticValue( \WP_Typography::class, 'instance', $this->wp_typo );
 
 		$this->wp_typo->shouldNotReceive( 'foobar' );
+
+		$this->expect_exception( \BadMethodCallException::class );
+		$this->expect_exception_message_matches( '/Static method WP_Typography::foobar does not exist/' );
 
 		$this->assertNull( \WP_Typography::foobar() );
 	}
