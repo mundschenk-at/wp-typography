@@ -12,7 +12,7 @@ module.exports = function(grunt) {
 
         eslint: {
             src: [
-                'js/**/*.js',
+                'js/**/src/**/*.js',
                 '!**/*.min.js',
             ]
         },
@@ -83,7 +83,12 @@ module.exports = function(grunt) {
 
         clean: {
             build: ["build/*"],
-            autoloader: [ "build/composer.*", "build/vendor-scoped/composer/*.json", "build/vendor-scoped/scoper-autoload.php", "build/vendor-scoped/mundschenk-at/composer-for-wordpress/**" ]
+            autoloader: [
+              "build/composer.*",
+              "build/vendor-scoped/composer/*.json",
+              "build/vendor-scoped/scoper-autoload.php",
+              "build/vendor-scoped/mundschenk-at/composer-for-wordpress/**"
+            ],
         },
 
         "string-replace": {
@@ -132,34 +137,20 @@ module.exports = function(grunt) {
                     dest: '',
                 }]
             },
-            fix_dice_namespace: {
+            namespaces: {
                 options: {
-                    replacements: [ {
-                        pattern: /use Dice\\Dice;/g,
-                        replacement: 'use WP_Typography\\Vendor\\Dice\\Dice;'
-                    } ],
+                    replacements: [{
+                        pattern: '', // Set later.
+                        replacement: '$1' + 'WP_Typography\\Vendor\\' + '$2'
+                    }],
                 },
-                files: [ {
-                    expand: true,
-                    flatten: false,
-                    src: ['build/includes/class-wp-typography-factory.php'],
-                    dest: '',
-                } ]
-            },
-            fix_mundschenk_namespace: {
-                options: {
-                    replacements: [ {
-                        pattern: /(\b\\?)(Mundschenk\\[\w_]+)/g,
-                        replacement: '$1WP_Typography\\Vendor\\$2'
-                    } ],
-                },
-                files: [ {
+                files: [{
                     expand: true,
                     flatten: false,
                     src: ['build/includes/**/*.php'],
                     dest: '',
-                } ]
-            }
+                }]
+            },
         },
 
         extract_language_names: {
@@ -307,7 +298,12 @@ module.exports = function(grunt) {
 
         minify: {
             dist: {
-                files: grunt.file.expandMapping(['js/**/*.js', '!js/**/*min.js'], '', {
+                files: grunt.file.expandMapping(
+                    [
+                        'js/**/*.js',
+                        '!js/**/*min.js',
+                        '!js/src/**/*.js'
+                    ], '', {
                     rename: function(destBase, destPath) {
                         return destBase + destPath.replace('.js', '.min.js');
                     }
@@ -347,10 +343,19 @@ module.exports = function(grunt) {
         },
     });
 
+    // Set correct pattern for naemspace replacement.
+    grunt.config(
+        'string-replace.namespaces.options.replacements.0.pattern',
+        new RegExp( '([^\\w\\\\]|\\B\\\\?)((?:' + grunt.config('pkg.phpPrefixNamespaces').join('|') + ')\\\\[\\w_]+)', 'g' )
+    );
+
     // load all standard tasks
     require('load-grunt-tasks')(grunt, {
         scope: 'devDependencies'
     });
+
+    // Load NPM scripts as tasks.
+    require('grunt-load-npm-run-tasks')(grunt);
 
     // Extract languages from JSON files.
     grunt.registerMultiTask('extract_language_names', function() {
@@ -432,14 +437,16 @@ module.exports = function(grunt) {
         'newer:minify',
         // Copy other files
         'copy:main',
-        'copy:meta',
-        // Use scoped dependencies
-        'string-replace:fix_dice_namespace',
-        'string-replace:fix_mundschenk_namespace',
+        'npmRun:build-clipboard',
         'composer:build:build-wordpress',
+        // Use scoped dependencies
+        'string-replace:namespaces',
+        // Clean up unused packages
         'clean:autoloader',
         'string-replace:vendor-dir',
-        'string-replace:autoloader'
+        'string-replace:autoloader',
+        // Copy documentation and license files
+        'copy:meta',
     ]);
 
     grunt.registerTask( 'build-beta', [
@@ -472,6 +479,7 @@ module.exports = function(grunt) {
         'newer:delegate:sass:dev',
         'newer:postcss:dev',
         'newer:postcss:dev_default_styles',
+        'npmRun:build-clipboard',
         'newer:minify'
     ]);
 };
