@@ -32,9 +32,12 @@ Improve your web typography with:
 
 wp‐Typography has the following requirements:
 
-*   the host server must run PHP 5.6.0 or later
-*   your installation of PHP must include the [mbstring extension](http://us3.php.net/manual/en/mbstring.installation.php) (most do)
-*   text must be encoded UTF‐8
+*   The host server must run PHP 5.6.0 or later,
+*   your installation of PHP must include the following PHP extensions (most do):
+    -   [mbstring](https://www.php.net/manual/en/mbstring.installation.php),
+    -   [DOM](https://www.php.net/manual/en/dom.installation.php), and
+*   text must be encoded in UTF‐8.
+
 
 wp-Typography can easily be ported to any other PHP-based content management system. The Composer package [`mundschenk-at/php-typography`](https://github.com/mundschenk-at/php-typography) assembles all typographic functionality (without any WordPress-specific code) in an object oriented format that is ready use.
 
