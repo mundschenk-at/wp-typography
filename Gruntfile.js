@@ -162,6 +162,17 @@ module.exports = function(grunt) {
             }
         },
 
+        extract_language_names: {
+            default: {
+                files: {
+                    "includes/_language_names.php": [
+                        'vendor/mundschenk-at/php-typography/src/lang/*.json',
+                        'vendor/mundschenk-at/php-typography/src/diacritics/*.json'
+                    ],
+                }
+            },
+        },
+
         wp_deploy: {
             options: {
                 svn_url: "https://plugins.svn.wordpress.org/{plugin-slug}/",
@@ -320,27 +331,6 @@ module.exports = function(grunt) {
             },
         },
 
-        regex_extract: {
-            options: {
-
-            },
-            language_names: {
-                options: {
-                    regex: '"language"\\s*:\\s*.*("|\')([\\w\u0080-\u00FF() ]+)\\1',
-                    modifiers: 'g',
-                    output: "<?php _x( '$2', 'language name', 'wp-typography' ); ?>",
-                    verbose: false,
-                    includePath: false
-                },
-                files: {
-                    "includes/_language_names.php": [
-                        'vendor/mundschenk-at/php-typography/src/lang/*.json',
-                        'vendor/mundschenk-at/php-typography/src/diacritics/*.json'
-                    ],
-                }
-            }
-        },
-
         compress: {
           beta: {
             options: {
@@ -362,6 +352,37 @@ module.exports = function(grunt) {
         scope: 'devDependencies'
     });
 
+    // Extract languages from JSON files.
+    grunt.registerMultiTask('extract_language_names', function() {
+        this.files.forEach(function(file) {
+            if ( grunt.file.exists( file.dest ) ) {
+                if ( grunt.file.isFile( file.dest ) ) {
+                    grunt.file.delete( file.dest );
+                } else {
+                    grunt.fail.fatal( "Target destination " + file.dest + " is not a file." );
+                }
+            }
+
+            var result = '';
+
+            file.src.forEach( function( src ) {
+                if ( ! grunt.file.exists( src ) || ! grunt.file.isFile( src ) ) {
+                    grunt.fail.warn( "Target source file " + src + " does not exist or is not a file." );
+                    return;
+                }
+
+                var lang = grunt.file.readJSON( src );
+
+                if ( undefined !== lang.language ) {
+                    result += "<?php _x( '" + lang.language + "', 'language name', 'wp-typography' ); ?>\n";
+                } else {
+                    grunt.fail.warn( "File does not contain language, skipping." );
+                }
+            } );
+
+            grunt.file.write( file.dest, result );
+        });
+    });
 
     // delegate stuff
     grunt.registerTask('delegate', function() {
@@ -402,7 +423,7 @@ module.exports = function(grunt) {
         'string-replace:composer-vendor-dir',
         'rename:vendor',
         // Extract language names for translation
-        'regex_extract:language_names',
+        'extract_language_names',
         // Update valid top-level domains
         'exec:update_iana',
         // Generate stylesheets
@@ -447,7 +468,7 @@ module.exports = function(grunt) {
     grunt.registerTask('default', [
         'phpcs',
         'newer:eslint',
-        'regex_extract:language_names',
+        'extract_language_names',
         'newer:delegate:sass:dev',
         'newer:postcss:dev',
         'newer:postcss:dev_default_styles',
