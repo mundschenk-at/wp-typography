@@ -1,13 +1,24 @@
 {
-  "extends": "wordpress",
-  "rules": {
-    "space-in-parens": [
-      "error",
-      "always", {
-        "exceptions": [
-          "empty"
-        ]
-      }
-    ]
-  }
+  "extends": [ "plugin:@wordpress/eslint-plugin/recommended" ],
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "globals": {
+    "wp": true,
+    "wpApiSettings": true,
+    "window": true,
+    "document": true
+  },
+  "settings": {
+    "react": {
+      "pragma": "wp"
+    }
+  },
+  "ignorePatterns": [
+    "**/*.js",
+    "!**/src/**/*.js"
+  ]
 }
