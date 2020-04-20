@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * This file is part of wp-Typography.
  *
@@ -31,46 +33,42 @@
  *
  * @author Peter Putzer <github@mundschenk.at>
  */
-jQuery( function( $ ) {
-	'use strict';
+jQuery(function ($) {
+  'use strict';
 
-	if ( window.getSelection ) {
-		document.addEventListener( 'copy', function() {
-			const sel = window.getSelection(),
-				ranges = [],
-				rangeCount = sel.rangeCount;
+  if (window.getSelection) {
+    document.addEventListener('copy', function () {
+      var sel = window.getSelection(),
+          ranges = [],
+          rangeCount = sel.rangeCount;
 
-			for ( let i = 0; i < rangeCount; i++ ) {
-				ranges[ i ] = sel.getRangeAt( i );
-			}
+      for (var i = 0; i < rangeCount; i++) {
+        ranges[i] = sel.getRangeAt(i);
+      } // Create new div containing cleaned HTML content
 
-			// Create new div containing cleaned HTML content
-			const shadow = $( '<div>', {
-				style: { position: 'absolute', left: '-99999px' },
-				html: $( '<div></div>' )
-					.append( sel.getRangeAt( 0 ).cloneContents() )
-					.html()
-					.replace( /\u00AD/gi, '' )
-					.replace( /\u200B/gi, '' ),
-			} );
 
-			// Append to DOM
-			$( 'body' ).append( shadow );
+      var shadow = $('<div>', {
+        style: {
+          position: 'absolute',
+          left: '-99999px'
+        },
+        html: $('<div></div>').append(sel.getRangeAt(0).cloneContents()).html().replace(/\u00AD/gi, '').replace(/\u200B/gi, '')
+      }); // Append to DOM
 
-			// Select the children of our "clean" div
-			sel.selectAllChildren( shadow[ 0 ] );
+      $('body').append(shadow); // Select the children of our "clean" div
 
-			// Clean up after copy
-			window.setTimeout( function() {
-				// Remove div
-				shadow.remove();
+      sel.selectAllChildren(shadow[0]); // Clean up after copy
 
-				// Restore selection
-				sel.removeAllRanges();
-				for ( let i = 0; i < rangeCount; i++ ) {
-					sel.addRange( ranges[ i ] );
-				}
-			}, 0 );
-		} );
-	}
-} );
+      window.setTimeout(function () {
+        // Remove div
+        shadow.remove(); // Restore selection
+
+        sel.removeAllRanges();
+
+        for (var _i = 0; _i < rangeCount; _i++) {
+          sel.addRange(ranges[_i]);
+        }
+      }, 0);
+    });
+  }
+});
