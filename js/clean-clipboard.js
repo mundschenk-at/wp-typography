@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * This file is part of wp-Typography.
  *
@@ -29,42 +27,46 @@
 /* global jQuery:readonly */
 
 /**
- * Cleans up clipboard content on cut & copy. Removes &shy; and zero-width space.
- *
- * @author Peter Putzer <github@mundschenk.at>
- */
+                              * Cleans up clipboard content on cut & copy. Removes &shy; and zero-width space.
+                              *
+                              * @author Peter Putzer <github@mundschenk.at>
+                              */
 jQuery(function ($) {
   'use strict';
 
   if (window.getSelection) {
     document.addEventListener('copy', function () {
       var sel = window.getSelection(),
-          ranges = [],
-          rangeCount = sel.rangeCount;
+      ranges = [],
+      rangeCount = sel.rangeCount;
 
       for (var i = 0; i < rangeCount; i++) {
         ranges[i] = sel.getRangeAt(i);
-      } // Create new div containing cleaned HTML content
+      }
 
-
+      // Create new div containing cleaned HTML content
       var shadow = $('<div>', {
-        style: {
-          position: 'absolute',
-          left: '-99999px'
-        },
-        html: $('<div></div>').append(sel.getRangeAt(0).cloneContents()).html().replace(/\u00AD/gi, '').replace(/\u200B/gi, '')
-      }); // Append to DOM
+        style: { position: 'absolute', left: '-99999px' },
+        html: $('<div></div>').
+        append(sel.getRangeAt(0).cloneContents()).
+        html().
+        replace(/\u00AD/gi, '').
+        replace(/\u200B/gi, '') });
 
-      $('body').append(shadow); // Select the children of our "clean" div
 
-      sel.selectAllChildren(shadow[0]); // Clean up after copy
+      // Append to DOM
+      $('body').append(shadow);
 
+      // Select the children of our "clean" div
+      sel.selectAllChildren(shadow[0]);
+
+      // Clean up after copy
       window.setTimeout(function () {
         // Remove div
-        shadow.remove(); // Restore selection
+        shadow.remove();
 
+        // Restore selection
         sel.removeAllRanges();
-
         for (var _i = 0; _i < rangeCount; _i++) {
           sel.addRange(ranges[_i]);
         }
