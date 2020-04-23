@@ -7,5 +7,7 @@
         "spec": true,
       }
     ]
-  ]
+  ],
+  "sourceType": "script",
+  "retainLines": true,
 }
