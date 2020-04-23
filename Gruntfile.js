@@ -434,10 +434,10 @@ module.exports = function(grunt) {
         // Generate stylesheets
         'newer:sass:dist',
         'newer:postcss:dist',
-        'newer:minify',
+        // Build scripts.
+        'build-js',
         // Copy other files
         'copy:main',
-        'npmRun:build-clipboard',
         'composer:build:build-wordpress',
         // Use scoped dependencies
         'string-replace:namespaces',
@@ -447,6 +447,11 @@ module.exports = function(grunt) {
         'string-replace:autoloader',
         // Copy documentation and license files
         'copy:meta',
+    ]);
+
+    grunt.registerTask('build-js', [
+        'npmRun:build-clipboard',
+        'newer:minify',
     ]);
 
     grunt.registerTask( 'build-beta', [
