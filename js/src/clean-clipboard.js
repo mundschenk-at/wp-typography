@@ -36,37 +36,44 @@
 
 	if ( window.getSelection ) {
 		document.addEventListener( 'copy', function() {
-			const sel = window.getSelection(),
-				ranges = [],
-				rangeCount = sel.rangeCount;
+			// Make sure we have an un-collapsed selection.
+			const sel = window.getSelection();
+			if ( sel.isCollapsed ) {
+				// This is probably a form field selection, no way to access it.
+				return;
+			}
 
+			// Support the weird Gecko-ism with multiple ranges (even though the newer
+			// spec says that only 0 is valid).
+			const rangeCount = sel.rangeCount,
+				ranges = [];
+
+			// Save Range objects for later.
 			for ( let i = 0; i < rangeCount; i++ ) {
 				ranges[ i ] = sel.getRangeAt( i );
 			}
 
-			// Create new div containing cleaned HTML content
+			// Create new <div> containing cleaned HTML content.
 			const shadow = document.createElement( 'div' );
 			shadow.appendChild( sel.getRangeAt( 0 ).cloneContents() );
 			shadow.style.position = 'absolute';
 			shadow.style.left = '-99999px';
 			shadow.innerHTML = shadow.innerHTML
-				// Remove soft-hyphens.
+				// Remove soft hyphens.
 				.replace( /\u00AD/gi, '' )
 				// Also remove zero-width spaces.
 				.replace( /\u200B/gi, '' );
 
-			// Append to DOM
+			// Append to DOM and select the children of the "clean" <div>.
 			document.body.appendChild( shadow );
-
-			// Select the children of our "clean" div
 			sel.selectAllChildren( shadow );
 
-			// Clean up after copy
+			// Clean up after copying.
 			window.setTimeout( function() {
-				// Remove div
+				// Remove <div>.
 				shadow.remove();
 
-				// Restore selection
+				// Restore real selection.
 				sel.removeAllRanges();
 				for ( let i = 0; i < rangeCount; i++ ) {
 					sel.addRange( ranges[ i ] );
