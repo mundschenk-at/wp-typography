@@ -4,9 +4,9 @@ checks:
 
 filter:
     paths:
-        - 'includes/*'
-        - 'admin/*'
-        - 'js/*'
+        - 'includes/'
+        - 'admin/'
+        - 'js/src/'
         - 'wp-typography.php'
     dependency_paths:
         - wordpress/
@@ -41,7 +41,8 @@ build:
                 override:
                     - php-scrutinizer-run
                     - phpcs-run -p wp-typography.php includes/ admin/ --extensions=php
-                    - jshint-run
+                    - js-scrutinizer-run --enable-security-analysis
+                    - eslint-run
 
 
 tools:
