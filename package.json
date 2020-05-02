@@ -30,14 +30,14 @@
     "typescript": "^3.8.3"
   },
   "scripts": {
-    "build-blocks": "wp-scripts build admin/blocks/src/blocks.js --output-path=build/admin/blocks/js",
+    "build-blocks": "wp-scripts build admin/blocks/src/index.js --output-path=admin/blocks/js",
     "build-clipboard": "babel js/src/clean-clipboard.js --out-file=js/clean-clipboard.js",
     "check-engines": "wp-scripts check-engines",
     "check-licenses": "wp-scripts check-licenses",
     "lint:css": "wp-scripts lint-style",
     "lint:js": "wp-scripts lint-js admin/blocks/src",
     "lint:pkg-json": "wp-scripts lint-pkg-json ./package.json",
-    "start": "wp-scripts start admin/blocks/src/blocks.js --output-path=admin/blocks/js",
+    "start": "wp-scripts start admin/blocks/src/index.js --output-path=admin/blocks/js",
     "test:e2e": "wp-scripts test-e2e",
     "test:unit": "wp-scripts test-unit-js"
   },
