@@ -451,6 +451,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('build-js', [
         'npmRun:build-clipboard',
+        'npmRun:build-blocks',
         'newer:minify',
     ]);
 
