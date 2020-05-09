@@ -43,7 +43,6 @@ use Mockery as m;
  * @usesDefaultClass \WP_Typography\Components\Setup
  *
  * @uses ::__construct
- * @uses ::run
  */
 class Setup_Test extends TestCase {
 
@@ -64,35 +63,23 @@ class Setup_Test extends TestCase {
 	/**
 	 * Test fixture.
 	 *
-	 * @var WP_Typography
+	 * @var \WP_Typography\Implementation
 	 */
-	protected $plugin;
+	protected $api;
 
 	/**
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
 	protected function set_up() {
+		parent::set_up();
 
-		// Mock WP_Typography\Data_Storage\Options instance.
-		$this->options = m::mock( \WP_Typography\Data_Storage\Options::class )
-			->shouldReceive( 'get' )->andReturn( false )->byDefault()
-			->shouldReceive( 'set' )->andReturn( false )->byDefault()
-			->getMock();
+		$this->api     = m::mock( \WP_Typography\Implementation::class );
+		$this->options = m::mock( \WP_Typography\Data_Storage\Options::class );
 
 		// Mock WP_Typography\Components\Setup instance.
-		$this->setup = m::mock( Setup::class, [ $this->options ] )
+		$this->setup = m::mock( Setup::class, [ $this->api, $this->options ] )
 			->shouldAllowMockingProtectedMethods()->makePartial();
-
-		$this->plugin = m::mock( \WP_Typography::class )->shouldReceive( 'get_version' )->andReturn( '6.6.6' )->byDefault()->getMock();
-
-		// Finish setup.
-		Functions\expect( 'register_activation_hook' )->once();
-		Functions\expect( 'register_deactivation_hook' )->once();
-		Functions\expect( 'register_uninstall_hook' )->once();
-		$this->setup->run( $this->plugin );
-
-		parent::set_up();
 	}
 
 	/**
@@ -101,8 +88,9 @@ class Setup_Test extends TestCase {
 	 * @covers ::__construct
 	 */
 	public function test_constructor() {
-		$setup = m::mock( Setup::class, [ $this->options ] );
+		$setup = m::mock( Setup::class, [ $this->api, $this->options ] );
 
+		$this->assert_attribute_same( $this->api, 'api', $setup );
 		$this->assert_attribute_same( $this->options, 'options', $setup );
 	}
 
@@ -119,9 +107,7 @@ class Setup_Test extends TestCase {
 
 		Actions\expectAdded( 'plugins_loaded' )->with( [ $this->setup, 'plugin_update_check' ] )->once();
 
-		$this->setup->run( $this->plugin );
-
-		$this->assert_attribute_same( $this->plugin, 'plugin', $this->setup );
+		$this->assertNull( $this->setup->run() );
 	}
 
 	/**
@@ -130,8 +116,8 @@ class Setup_Test extends TestCase {
 	 * @covers ::activate
 	 */
 	public function test_activate() {
-		$this->plugin->shouldReceive( 'get_config' )->once();
-		$this->plugin->shouldReceive( 'set_default_options' )->once();
+		$this->api->shouldReceive( 'get_config' )->once();
+		$this->api->shouldReceive( 'set_default_options' )->once();
 
 		$this->assertNull( $this->setup->activate() );
 	}
@@ -202,7 +188,7 @@ class Setup_Test extends TestCase {
 	 * @covers ::set_installed_version
 	 */
 	public function test_set_installed_version() {
-		$this->plugin->shouldReceive( 'get_version' )->once()->andReturn( '9.9.9' );
+		$this->api->shouldReceive( 'get_version' )->once()->andReturn( '9.9.9' );
 		$this->options->shouldReceive( 'set' )->with( Options::INSTALLED_VERSION, '9.9.9' )->once();
 
 		$this->assertNull( $this->invokeMethod( $this->setup, 'set_installed_version' ) );
@@ -216,7 +202,7 @@ class Setup_Test extends TestCase {
 	public function test_plugin_update_check() {
 
 		$this->options->shouldReceive( 'get' )->with( Options::INSTALLED_VERSION, '' )->once()->andReturn( '7.7.7' );
-		$this->plugin->shouldReceive( 'get_version' )->once()->andReturn( '6.6.6' );
+		$this->api->shouldReceive( 'get_version' )->once()->andReturn( '6.6.6' );
 		$this->setup->shouldReceive( 'plugin_updated' )->with( '7.7.7' )->once();
 
 		$this->assertNull( $this->setup->plugin_update_check() );
@@ -256,7 +242,7 @@ class Setup_Test extends TestCase {
 		}
 
 		$this->setup->shouldReceive( 'set_installed_version' )->once();
-		$this->plugin->shouldReceive( 'clear_cache' )->once();
+		$this->api->shouldReceive( 'clear_cache' )->once();
 
 		$this->assertNull( $this->invokeMethod( $this->setup, 'plugin_updated', [ $installed_version ] ) );
 	}
@@ -280,7 +266,7 @@ class Setup_Test extends TestCase {
 			$keys['4option'] => 'will be unknown',
 		];
 
-		$this->plugin->shouldReceive( 'get_default_options' )->once()->andReturn( $default_options );
+		$this->api->shouldReceive( 'get_default_options' )->once()->andReturn( $default_options );
 
 		foreach ( $keys as $old_option_name => $new_option_name ) {
 			$value = 'value_' . $old_option_name;
@@ -355,7 +341,7 @@ class Setup_Test extends TestCase {
 			'a_fourth_option' => 'will be unknown',
 		];
 
-		$this->plugin->shouldReceive( 'get_default_options' )->once()->andReturn( $default_options );
+		$this->api->shouldReceive( 'get_default_options' )->once()->andReturn( $default_options );
 
 		$this->options->shouldReceive( 'get' )->with( 'one_option', Setup::UPGRADING )->once()->andReturn( 'foo1' );
 		$this->options->shouldReceive( 'get' )->with( 'another_option', Setup::UPGRADING )->once()->andReturn( 'foo2' );

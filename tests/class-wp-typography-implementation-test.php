@@ -81,6 +81,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 * This method is called before a test is executed.
 	 */
 	protected function set_up() {
+		parent::set_up();
 
 		// Mock WP_Typography\Data_Storage\Options instance.
 		$this->options = m::mock( \WP_Typography\Data_Storage\Options::class )
@@ -107,8 +108,6 @@ class WP_Typography_Implementation_Test extends TestCase {
 		$this->wp_typo = m::mock( \WP_Typography\Implementation::class, [ '7.7.7', $this->transients, $this->cache, $this->options ] )
 			->shouldAllowMockingProtectedMethods()
 			->makePartial();
-
-		parent::set_up();
 	}
 
 	/**

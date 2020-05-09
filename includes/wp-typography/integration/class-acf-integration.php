@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2019 Peter Putzer.
+ *  Copyright 2017-2020 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -26,6 +26,8 @@
 
 namespace WP_Typography\Integration;
 
+use WP_Typography\Implementation;
+
 /**
  * Admin and frontend integrations for Advanced Custom Fields (https://www.advancedcustomfields.com).
  *
@@ -43,11 +45,13 @@ class ACF_Integration implements Plugin_Integration {
 	const FILTER_SETTING = 'wp-typography';
 
 	/**
-	 * The plugin API instance.
+	 * The plugin API.
+	 *
+	 * @since 5.7.0 Renamed to $api.
 	 *
 	 * @var \WP_Typography
 	 */
-	private $plugin;
+	private $api;
 
 	/**
 	 * The ACF API version.
@@ -55,6 +59,17 @@ class ACF_Integration implements Plugin_Integration {
 	 * @var int
 	 */
 	private $api_version;
+
+	/**
+	 * Creates a new integration.
+	 *
+	 * @since 5.7.0
+	 *
+	 * @param Implementation $api     The core API.
+	 */
+	public function __construct( Implementation $api ) {
+		$this->api = $api;
+	}
 
 	/**
 	 * Check if the ACF integration should be activated.
@@ -68,10 +83,9 @@ class ACF_Integration implements Plugin_Integration {
 	/**
 	 * Activate the integration.
 	 *
-	 * @param \WP_Typography $plugin The plugin object.
+	 * @since 5.7.0 Parameter $plugin removed.
 	 */
-	public function run( \WP_Typography $plugin ) {
-		$this->plugin      = $plugin;
+	public function run() {
 		$this->api_version = $this->get_acf_version();
 
 		if ( \is_admin() && 5 === $this->api_version ) {
@@ -110,9 +124,9 @@ class ACF_Integration implements Plugin_Integration {
 			\add_filter( 'acf/format_value', [ $this, 'process_acf5' ], $priority, 3 );
 		} else {
 			// Advanced Custom Fields (version 4).
-			\add_filter( 'acf/format_value_for_api/type=wysiwyg',  [ $this->plugin, 'process' ],       $priority );
-			\add_filter( 'acf/format_value_for_api/type=textarea', [ $this->plugin, 'process' ],       $priority );
-			\add_filter( 'acf/format_value_for_api/type=text',     [ $this->plugin, 'process_title' ], $priority );
+			\add_filter( 'acf/format_value_for_api/type=wysiwyg',  [ $this->api, 'process' ],       $priority );
+			\add_filter( 'acf/format_value_for_api/type=textarea', [ $this->api, 'process' ],       $priority );
+			\add_filter( 'acf/format_value_for_api/type=text',     [ $this->api, 'process_title' ], $priority );
 		}
 	}
 
@@ -189,16 +203,16 @@ class ACF_Integration implements Plugin_Integration {
 	public function process_acf5( $content, $post_id, $field ) {
 		switch ( isset( $field[ self::FILTER_SETTING ] ) ? $field[ self::FILTER_SETTING ] : '' ) {
 			case self::CONTENT_FILTER:
-				$content = $this->plugin->process( $content );
+				$content = $this->api->process( $content );
 				break;
 			case self::TITLE_FILTER:
-				$content = $this->plugin->process_title( $content );
+				$content = $this->api->process_title( $content );
 				break;
 			case self::FEED_CONTENT_FILTER:
-				$content = $this->plugin->process_feed( $content );
+				$content = $this->api->process_feed( $content );
 				break;
 			case self::FEED_TITLE_FILTER:
-				$content = $this->plugin->process_feed_title( $content );
+				$content = $this->api->process_feed_title( $content );
 				break;
 		}
 

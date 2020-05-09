@@ -44,7 +44,6 @@ use Mockery as m;
  * @usesDefaultClass \WP_Typography\Components\Common
  *
  * @uses ::__construct
- * @uses ::run
  */
 class Common_Test extends TestCase {
 
@@ -65,9 +64,9 @@ class Common_Test extends TestCase {
 	/**
 	 * Test fixture.
 	 *
-	 * @var WP_Typography
+	 * @var \WP_Typography\Implementation
 	 */
-	protected $plugin;
+	protected $api;
 
 	/**
 	 * Test fixture.
@@ -92,18 +91,12 @@ class Common_Test extends TestCase {
 		// Mock plugin integrations.
 		$this->integrations = m::mock( Integrations::class );
 
-		// Mock WP_Typography\Components\Common instance.
-		$this->common = m::mock( Common::class, [ $this->options, $this->integrations ] )
-			->shouldAllowMockingProtectedMethods()->makePartial();
-
 		// Mock plugin API.
-		$this->plugin = m::mock( \WP_Typography::class )->shouldReceive( 'get_version' )->andReturn( '6.6.6' )->byDefault()->getMock();
+		$this->api = m::mock( \WP_Typography\Implementation::class )->shouldReceive( 'get_version' )->andReturn( '6.6.6' )->byDefault()->getMock();
 
-		// Great Expectations.
-		$this->integrations->shouldReceive( 'run' )->once()->with( $this->plugin );
-
-		// Finish setup.
-		$this->common->run( $this->plugin );
+		// Mock WP_Typography\Components\Common instance.
+		$this->common = m::mock( Common::class, [ $this->api, $this->options, $this->integrations ] )
+			->shouldAllowMockingProtectedMethods()->makePartial();
 	}
 
 	/**
@@ -112,8 +105,9 @@ class Common_Test extends TestCase {
 	 * @covers ::__construct
 	 */
 	public function test_constructor() {
-		$common = m::mock( Common::class, [ $this->options, $this->integrations ] );
+		$common = m::mock( Common::class, [ $this->api, $this->options, $this->integrations ] );
 
+		$this->assert_attribute_same( $this->api, 'api', $common );
 		$this->assert_attribute_same( $this->options, 'options', $common );
 	}
 
@@ -125,11 +119,9 @@ class Common_Test extends TestCase {
 	 */
 	public function test_run() {
 		Actions\expectAdded( 'init' )->with( [ $this->common, 'init' ] )->once();
-		$this->integrations->shouldReceive( 'run' )->once()->with( $this->plugin );
+		Actions\expectAdded( 'plugins_loaded' )->with( [ $this->integrations, 'activate' ] )->once();
 
-		$this->common->run( $this->plugin );
-
-		$this->assert_attribute_same( $this->plugin, 'plugin', $this->common );
+		$this->assertNull( $this->common->run() );
 	}
 
 	/**
@@ -161,11 +153,11 @@ class Common_Test extends TestCase {
 		$this->options->shouldReceive( 'get' )->once()->with( Options::CLEAR_CACHE )->andReturn( $clear_cache );
 
 		if ( $restore_defaults ) {
-			$this->plugin->shouldReceive( 'set_default_options' )->once()->with( true );
+			$this->api->shouldReceive( 'set_default_options' )->once()->with( true );
 		}
 
 		if ( $clear_cache ) {
-			$this->plugin->shouldReceive( 'clear_cache' )->once();
+			$this->api->shouldReceive( 'clear_cache' )->once();
 		}
 
 		$this->assertNull( $this->common->init() );

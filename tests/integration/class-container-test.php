@@ -42,7 +42,6 @@ use Mockery as m;
  * @usesDefaultClass \WP_Typography\Integration\Container
  *
  * @uses ::__construct
- * @uses ::run
  */
 class Container_Test extends TestCase {
 
@@ -93,33 +92,16 @@ class Container_Test extends TestCase {
 		$this->assert_attribute_count( 2, 'integrations', $integrations );
 	}
 
-
-	/**
-	 * Test run.
-	 *
-	 * @covers ::run
-	 */
-	public function test_run() {
-		Actions\expectAdded( 'plugins_loaded' )->once();
-
-		$this->integrations->run( m::mock( \WP_Typography::class ) );
-
-		$this->assertTrue( \has_action( 'plugins_loaded', [ $this->integrations, 'activate' ] ) );
-	}
-
 	/**
 	 * Test activate.
 	 *
 	 * @covers ::activate
 	 */
 	public function test_activate() {
-		// Simulate a previous call to "run".
-		$this->setValue( $this->integrations, 'plugin', m::mock( \WP_Typography::class ), Container::class );
-
 		$this->int1->shouldReceive( 'check' )->once()->andReturn( true );
 		$this->int2->shouldReceive( 'check' )->once()->andReturn( false );
 
-		$this->int1->shouldReceive( 'run' )->once()->with( m::type( \WP_Typography::class ) );
+		$this->int1->shouldReceive( 'run' )->once();
 		$this->int2->shouldNotReceive( 'run' );
 
 		Filters\expectAdded( 'typo_content_filters' )->once();

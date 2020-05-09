@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2018 Peter Putzer.
+ *  Copyright 2018-2020 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -35,18 +35,18 @@ namespace WP_Typography\Integration;
 interface Plugin_Integration {
 
 	/**
-	 * Check if the ACF integration should be activated.
+	 * Checks if the ACF integration should be activated.
 	 *
 	 * @return bool
 	 */
 	public function check();
 
 	/**
-	 * Activate the integration.
+	 * Activates the integration.
 	 *
-	 * @param \WP_Typography $plugin The plugin object.
+	 * @since 5.7.0 Parameter $plugin removed.
 	 */
-	public function run( \WP_Typography $plugin );
+	public function run();
 
 	/**
 	 * Retrieves the identifying tag for the frontend content filters.

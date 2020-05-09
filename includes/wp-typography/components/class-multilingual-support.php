@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2019 Peter Putzer.
+ *  Copyright 2017-2020 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -26,6 +26,7 @@
 
 namespace WP_Typography\Components;
 
+use WP_Typography\Implementation;
 use WP_Typography\Settings\Basic_Locale_Settings;
 use WP_Typography\Settings\Locale_Settings;
 use WP_Typography\Settings\Plugin_Configuration as Config;
@@ -38,6 +39,7 @@ use PHP_Typography\Settings\Quote_Style;
  * Multilingual_Support support for wp-Typography.
  *
  * @since 5.0.0
+ * @since 5.7.0 Method `initialize_locale_settings` removed in favor of dependency injection.
  *
  * @author Peter Putzer <github@mundschenk.at>
  */
@@ -79,24 +81,37 @@ class Multilingual_Support implements Plugin_Component {
 	protected $diacritic_languages;
 
 	/**
-	 * The plugin instance used for setting transients.
+	 * The plugin API.
+	 *
+	 * @since 5.7.0 Renamed to $api.
 	 *
 	 * @var \WP_Typography
 	 */
-	protected $plugin;
+	protected $api;
+
+	/**
+	 * Create a new instace.
+	 *
+	 * @since 5.7.0
+	 *
+	 * @param Implementation    $api     The core API.
+	 * @param Locale_Settings[] $locales An array of locales. Will be re-sorted
+	 *                                   according to `Locale_Settings::priority()`.
+	 */
+	public function __construct( Implementation $api, array $locales ) {
+		$this->api = $api;
+
+		// Ensure proper priority order for locales.
+		usort( $locales, [ $this, 'locale_settings_sort' ] );
+		$this->locales = $locales;
+	}
 
 	/**
 	 * Set up the various hooks for multilingual support.
 	 *
-	 * @param \WP_Typography $plugin The main plugin instance.
+	 * @since 5.7.0 Parameter $plugin removed.
 	 */
-	public function run( \WP_Typography $plugin ) {
-		// Store plugin reference.
-		$this->plugin = $plugin;
-
-		// Initialize locales.
-		$this->locales = $this->initialize_locale_settings();
-
+	public function run() {
 		// Enable multilingual support.
 		\add_action( 'plugins_loaded', [ $this, 'add_plugin_defaults_filter' ] );
 		\add_action( 'init',           [ $this, 'enable_automatic_language_settings' ] );
@@ -107,8 +122,8 @@ class Multilingual_Support implements Plugin_Component {
 	 */
 	public function add_plugin_defaults_filter() {
 		// Translation of language names is irrelevant here.
-		$this->hyphenation_languages = $this->plugin->get_hyphenation_languages();
-		$this->diacritic_languages   = $this->plugin->get_diacritic_languages();
+		$this->hyphenation_languages = $this->api->get_hyphenation_languages();
+		$this->diacritic_languages   = $this->api->get_diacritic_languages();
 
 		// Filter the defaults.
 		\add_filter( 'typo_plugin_defaults', [ $this, 'filter_defaults' ] );
@@ -118,35 +133,13 @@ class Multilingual_Support implements Plugin_Component {
 	 * Enable multilingual settings.
 	 */
 	public function enable_automatic_language_settings() {
-		if ( $this->plugin->get_config()[ Config::ENABLE_MULTILINGUAL_SUPPORT ] ) {
+		if ( $this->api->get_config()[ Config::ENABLE_MULTILINGUAL_SUPPORT ] ) {
 			\add_filter( 'typo_settings', [ $this, 'automatic_language_settings' ] );
 		}
 	}
 
 	/**
-	 * Initialize the locale settings.
-	 *
-	 * @return Locale_Settings[]
-	 */
-	protected function initialize_locale_settings() {
-		$locales = [
-			new Basic_Locale_Settings( [ 'de', 'it', 'fr' ], [ 'CH' ], [], Dash_Style::INTERNATIONAL,  Quote_Style::DOUBLE_GUILLEMETS,        Quote_Style::SINGLE_GUILLEMETS,     false ),
-			new Basic_Locale_Settings( [ 'en' ],             [ 'US' ], [], Dash_Style::TRADITIONAL_US, Quote_Style::DOUBLE_CURLED,            Quote_Style::SINGLE_CURLED,         false ),
-			new Basic_Locale_Settings( [ 'en' ],             [ 'UK' ], [], Dash_Style::INTERNATIONAL,  Quote_Style::SINGLE_CURLED,            Quote_Style::DOUBLE_CURLED,         false ),
-			new Basic_Locale_Settings( [ 'de' ],             [],       [], Dash_Style::INTERNATIONAL,  Quote_Style::DOUBLE_LOW_9_REVERSED,    Quote_Style::SINGLE_LOW_9_REVERSED, false ),
-			new Basic_Locale_Settings( [ 'fr' ],             [],       [], Dash_Style::INTERNATIONAL,  Quote_Style::DOUBLE_GUILLEMETS_FRENCH, Quote_Style::DOUBLE_CURLED,         true ),
-			new Basic_Locale_Settings( [ 'nl' ],             [],       [], Dash_Style::INTERNATIONAL,  Quote_Style::DOUBLE_CURLED,            Quote_Style::SINGLE_CURLED,         false ),
-			new Basic_Locale_Settings( [ 'ja', 'zh' ],       [],       [], Dash_Style::INTERNATIONAL,  Quote_Style::CORNER_BRACKETS,          Quote_Style::WHITE_CORNER_BRACKETS, false ),
-		];
-
-		// Sort the settings by priority.
-		usort( $locales, [ $this, 'locale_settings_sort' ] );
-
-		return $locales;
-	}
-
-	/**
-	 * Comüares to Locale_Settings by their priority. Basically, this is a replacement
+	 * Compares two Locale_Settings by their priority. Basically, this is a replacement
 	 * for the PHP 7 spaceship operator `<=>`.
 	 *
 	 * @param  Locale_Settings $s1 First operand.

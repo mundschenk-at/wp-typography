@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2019 Peter Putzer.
+ *  Copyright 2017-2020 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -27,6 +27,7 @@
 namespace WP_Typography\Components;
 
 use WP_Typography\Data_Storage\Options;
+use WP_Typography\Implementation;
 use WP_Typography\Integration\Container as Integrations;
 use WP_Typography\Settings\Plugin_Configuration as Config;
 
@@ -40,11 +41,13 @@ use WP_Typography\Settings\Plugin_Configuration as Config;
 class Common implements Plugin_Component {
 
 	/**
-	 * The plugin object.
+	 * The plugin API.
 	 *
-	 * @var      \WP_Typography $plugin The main plugin class instance.
+	 * @since 5.7.0 Renamed to $api.
+	 *
+	 * @var Implementation
 	 */
-	private $plugin;
+	private $api;
 
 	/**
 	 * An abstraction of the WordPress Options API.
@@ -61,12 +64,16 @@ class Common implements Plugin_Component {
 	private $integrations;
 
 	/**
-	 * Create a new instace of WP_Typography\Setup.
+	 * Create a new instace.
 	 *
-	 * @param Options      $options      The Options API handler.
-	 * @param Integrations $integrations Available plugin integrations.
+	 * @since 5.7.0 Parameter $api added.
+	 *
+	 * @param Implementation $api          The core API.
+	 * @param Options        $options      The Options API handler.
+	 * @param Integrations   $integrations Available plugin integrations.
 	 */
-	public function __construct( Options $options, Integrations $integrations ) {
+	public function __construct( Implementation $api, Options $options, Integrations $integrations ) {
+		$this->api          = $api;
 		$this->options      = $options;
 		$this->integrations = $integrations;
 	}
@@ -74,16 +81,14 @@ class Common implements Plugin_Component {
 	/**
 	 * Registers the de-/activation/uninstall hooks for the plugin.
 	 *
-	 * @param \WP_Typography $plugin The plugin instance.
+	 * @since 5.7.0 Parameter $plugin removed.
 	 */
-	public function run( \WP_Typography $plugin ) {
-		$this->plugin = $plugin;
-
+	public function run() {
 		// Load settings.
 		\add_action( 'init', [ $this, 'init' ] );
 
 		// Initialize plugin integrations.
-		$this->integrations->run( $plugin );
+		\add_action( 'plugins_loaded', [ $this->integrations, 'activate' ] );
 	}
 
 
@@ -94,12 +99,12 @@ class Common implements Plugin_Component {
 
 		// Restore defaults if necessary.
 		if ( $this->options->get( Options::RESTORE_DEFAULTS ) ) {  // any truthy value will do.
-			$this->plugin->set_default_options( true );
+			$this->api->set_default_options( true );
 		}
 
 		// Clear cache if necessary.
 		if ( $this->options->get( Options::CLEAR_CACHE ) ) {  // any truthy value will do.
-			$this->plugin->clear_cache();
+			$this->api->clear_cache();
 		}
 	}
 }

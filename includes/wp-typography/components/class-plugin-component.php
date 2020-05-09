@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017 Peter Putzer.
+ *  Copyright 2017-2020 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -38,9 +38,9 @@ interface Plugin_Component {
 	/**
 	 * Sets up the various hooks for the plugin component.
 	 *
-	 * @param \WP_Typography $plugin The plugin instance.
+	 * @since 5.7.0 Parameter $plugin removed..
 	 *
 	 * @return void
 	 */
-	public function run( \WP_Typography $plugin );
+	public function run();
 }

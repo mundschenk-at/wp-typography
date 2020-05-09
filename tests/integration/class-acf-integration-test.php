@@ -39,6 +39,8 @@ use Mockery as m;
  *
  * @coversDefaultClass \WP_Typography\Integration\ACF_Integration
  * @usesDefaultClass \WP_Typography\Integration\ACF_Integration
+ *
+ * @uses ::__construct
  */
 class ACF_Integration_Test extends TestCase {
 
@@ -49,6 +51,12 @@ class ACF_Integration_Test extends TestCase {
 	 */
 	protected $acf_i;
 
+	/**
+	 * Test fixture.
+	 *
+	 * @var \WP_Typography\Implementation
+	 */
+	protected $api;
 
 	/**
 	 * Sets up the fixture, for example, opens a network connection.
@@ -57,9 +65,25 @@ class ACF_Integration_Test extends TestCase {
 	protected function set_up() {
 		parent::set_up();
 
+		$this->api = m::mock( \WP_Typography\Implementation::class );
+
 		// Mock WP_Typography\Components\ACF_Integration instance.
-		$this->acf_i = m::mock( ACF_Integration::class )
+		$this->acf_i = m::mock( ACF_Integration::class, [ $this->api ] )
 			->shouldAllowMockingProtectedMethods()->makePartial();
+	}
+
+	/**
+	 * Test __construct.
+	 *
+	 * @covers ::__construct
+	 */
+	public function test_constructor() {
+		$sut = m::mock( ACF_Integration::class )->shouldAllowMockingProtectedMethods()->makePartial();
+		$api = m::mock( \WP_Typography\Implementation::class );
+
+		$sut->__construct( $api );
+
+		$this->assert_attribute_same( $api, 'api', $sut );
 	}
 
 	/**
@@ -89,9 +113,7 @@ class ACF_Integration_Test extends TestCase {
 		Functions\expect( 'is_admin' )->once()->andReturn( false );
 		Actions\expectAdded( 'acf/init' )->never();
 
-		$this->acf_i->run( m::mock( \WP_Typography::class ) );
-
-		$this->assert_attribute_instance_of( \WP_Typography::class, 'plugin', $this->acf_i );
+		$this->assertNull( $this->acf_i->run() );
 	}
 
 	/**
@@ -111,9 +133,7 @@ class ACF_Integration_Test extends TestCase {
 			Actions\expectAdded( 'acf/init' )->once();
 		}
 
-		$this->acf_i->run( m::mock( \WP_Typography::class ) );
-
-		$this->assert_attribute_instance_of( \WP_Typography::class, 'plugin', $this->acf_i );
+		$this->assertNull( $this->acf_i->run() );
 	}
 
 
@@ -121,8 +141,6 @@ class ACF_Integration_Test extends TestCase {
 	 * Test check.
 	 *
 	 * @covers ::check
-	 *
-	 * @runInSeperateProcess
 	 */
 	public function test_check_failing() {
 		$this->assertFalse( $this->acf_i->check() );
@@ -156,8 +174,6 @@ class ACF_Integration_Test extends TestCase {
 	 * @covers ::get_acf_version
 	 */
 	public function test_enable_content_filters_acf4() {
-		$plugin = m::mock( \WP_Typography::class );
-		$this->setValue( $this->acf_i, 'plugin', $plugin, ACF_Integration::class );
 		$this->setValue( $this->acf_i, 'api_version', 4, ACF_Integration::class );
 
 		Filters\expectAdded( 'acf/format_value_for_api/type=wysiwyg' )->once();
@@ -166,9 +182,9 @@ class ACF_Integration_Test extends TestCase {
 
 		$this->acf_i->enable_content_filters( 666 );
 
-		$this->assertTrue( \has_filter( 'acf/format_value_for_api/type=wysiwyg', [ $plugin, 'process' ] ) );
-		$this->assertTrue( \has_filter( 'acf/format_value_for_api/type=textarea', [ $plugin, 'process' ] ) );
-		$this->assertTrue( \has_filter( 'acf/format_value_for_api/type=text', [ $plugin, 'process_title' ] ) );
+		$this->assertTrue( \has_filter( 'acf/format_value_for_api/type=wysiwyg', [ $this->api, 'process' ] ) );
+		$this->assertTrue( \has_filter( 'acf/format_value_for_api/type=textarea', [ $this->api, 'process' ] ) );
+		$this->assertTrue( \has_filter( 'acf/format_value_for_api/type=text', [ $this->api, 'process_title' ] ) );
 	}
 
 	/**
@@ -215,11 +231,8 @@ class ACF_Integration_Test extends TestCase {
 	 * @param string|null $expected       The expected method name or null.
 	 */
 	public function test_process_acf5( $filter_setting, $expected ) {
-		$plugin = m::mock( \WP_Typography::class );
-		$this->setValue( $this->acf_i, 'plugin', $plugin, ACF_Integration::class );
-
 		if ( ! empty( $expected ) ) {
-			$plugin->shouldReceive( $expected )->once()->with( 'bla' )->andReturn( 'blabla' );
+			$this->api->shouldReceive( $expected )->once()->with( 'bla' )->andReturn( 'blabla' );
 			$this->assertSame( 'blabla', $this->acf_i->process_acf5( 'bla', 77, [ 'wp-typography' => $filter_setting ] ) );
 		} else {
 			$this->assertSame( 'bla', $this->acf_i->process_acf5( 'bla', 77, [ 'wp-typography' => $filter_setting ] ) );
@@ -232,9 +245,6 @@ class ACF_Integration_Test extends TestCase {
 	 * @covers ::process_acf5
 	 */
 	public function test_process_acf5_unset() {
-		$plugin = m::mock( \WP_Typography::class );
-		$this->setValue( $this->acf_i, 'plugin', $plugin, ACF_Integration::class );
-
 		$this->assertSame( 'bla', $this->acf_i->process_acf5( 'bla', 77, [] ) );
 	}
 
