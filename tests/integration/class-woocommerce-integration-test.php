@@ -39,6 +39,8 @@ use Mockery as m;
  *
  * @coversDefaultClass \WP_Typography\Integration\WooCommerce_Integration
  * @usesDefaultClass \WP_Typography\Integration\WooCommerce_Integration
+ *
+ * @uses ::__construct
  */
 class WooCommerce_Integration_Test extends TestCase {
 
@@ -63,22 +65,33 @@ class WooCommerce_Integration_Test extends TestCase {
 	}
 
 	/**
+	 * Test __construct.
+	 *
+	 * @covers ::__construct
+	 */
+	public function test_constructor() {
+		$sut = m::mock( WooCommerce_Integration::class )->shouldAllowMockingProtectedMethods()->makePartial();
+		$api = m::mock( \WP_Typography\Implementation::class );
+
+		$sut->__construct( $api );
+
+		$this->assert_attribute_same( $api, 'api', $sut );
+	}
+
+
+	/**
 	 * Test run.
 	 *
 	 * @covers ::run
 	 */
 	public function test_run() {
-		$this->woo_i->run( m::mock( \WP_Typography::class ) );
-
-		$this->assert_attribute_instance_of( \WP_Typography::class, 'plugin', $this->woo_i );
+		$this->assertNull( $this->woo_i->run() );
 	}
 
 	/**
 	 * Test check.
 	 *
 	 * @covers ::check
-	 *
-	 * @runInSeperateProcess
 	 */
 	public function test_check_failing() {
 		$this->assertFalse( $this->woo_i->check() );
@@ -111,8 +124,8 @@ class WooCommerce_Integration_Test extends TestCase {
 	 * @covers ::enable_content_filters
 	 */
 	public function test_enable_content_filters() {
-		$plugin = m::mock( \WP_Typography::class );
-		$this->setValue( $this->woo_i, 'plugin', $plugin, WooCommerce_Integration::class );
+		$api = m::mock( \WP_Typography::class );
+		$this->setValue( $this->woo_i, 'api', $api, WooCommerce_Integration::class );
 
 		Filters\expectAdded( 'woocommerce_format_content' )->once();
 		Filters\expectAdded( 'woocommerce_add_error' )->once();
@@ -121,9 +134,9 @@ class WooCommerce_Integration_Test extends TestCase {
 
 		$this->woo_i->enable_content_filters( 666 );
 
-		$this->assertTrue( \has_filter( 'woocommerce_format_content', [ $plugin, 'process' ] ) );
-		$this->assertTrue( \has_filter( 'woocommerce_add_error', [ $plugin, 'process' ] ) );
-		$this->assertTrue( \has_filter( 'woocommerce_add_success', [ $plugin, 'process' ] ) );
-		$this->assertTrue( \has_filter( 'woocommerce_add_notice', [ $plugin, 'process' ] ) );
+		$this->assertTrue( \has_filter( 'woocommerce_format_content', [ $api, 'process' ] ) );
+		$this->assertTrue( \has_filter( 'woocommerce_add_error', [ $api, 'process' ] ) );
+		$this->assertTrue( \has_filter( 'woocommerce_add_success', [ $api, 'process' ] ) );
+		$this->assertTrue( \has_filter( 'woocommerce_add_notice', [ $api, 'process' ] ) );
 	}
 }

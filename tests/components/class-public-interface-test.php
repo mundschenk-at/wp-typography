@@ -41,7 +41,7 @@ use Mockery as m;
  * @coversDefaultClass \WP_Typography\Components\Public_Interface
  * @usesDefaultClass \WP_Typography\Components\Public_Interface
  *
- * @uses ::run
+ * @uses ::__construct
  */
 class Public_Interface_Test extends TestCase {
 
@@ -53,21 +53,24 @@ class Public_Interface_Test extends TestCase {
 	protected $public_if;
 
 	/**
+	 * Test fixture.
+	 *
+	 * @var \WP_Typography\Implementation
+	 */
+	protected $api;
+
+	/**
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
 	protected function set_up() {
 		parent::set_up();
 
+		$this->api = m::mock( \WP_Typography\Implementation::class );
+
 		// Mock WP_Typography\Components\Public_Interface instance.
-		$this->public_if = m::mock( Public_Interface::class )
+		$this->public_if = m::mock( Public_Interface::class, [ $this->api ] )
 			->shouldAllowMockingProtectedMethods()->makePartial();
-
-		Functions\expect( 'is_admin' )->once()->andReturn( false );
-
-		$this->public_if->run(
-			m::mock( \WP_Typography::class )->shouldReceive( 'get_version' )->andReturn( '6.6.6' )->byDefault()->getMock()
-		);
 	}
 
 	/**
@@ -85,6 +88,20 @@ class Public_Interface_Test extends TestCase {
 	}
 
 	/**
+	 * Test __construct.
+	 *
+	 * @covers ::__construct
+	 */
+	public function test_constructor() {
+		$sut = m::mock( Public_Interface::class )->shouldAllowMockingProtectedMethods()->makePartial();
+		$api = m::mock( \WP_Typography\Implementation::class );
+
+		$sut->__construct( $api );
+
+		$this->assert_attribute_same( $api, 'api', $sut );
+	}
+
+	/**
 	 * Test run.
 	 *
 	 * @covers ::run
@@ -93,7 +110,7 @@ class Public_Interface_Test extends TestCase {
 		Functions\expect( 'is_admin' )->once()->andReturn( false );
 		Actions\expectAdded( 'init' )->once();
 
-		$this->public_if->run( m::mock( \WP_Typography::class ) );
+		$this->assertNull( $this->public_if->run() );
 
 		$this->assertTrue( \has_action( 'init', [ $this->public_if, 'init' ] ) );
 	}
@@ -107,9 +124,8 @@ class Public_Interface_Test extends TestCase {
 		Functions\expect( 'is_admin' )->once()->andReturn( true );
 		Actions\expectAdded( 'init' )->never();
 
-		$this->public_if->run( m::mock( \WP_Typography::class ) );
+		$this->assertNull( $this->public_if->run() );
 
-		$this->assertTrue( true );
 	}
 
 	/**
@@ -141,14 +157,13 @@ class Public_Interface_Test extends TestCase {
 	 * @param bool $nextgen          Simulate enable NextGEN Gallery plugin.
 	 */
 	public function test_init( $restore_defaults, $clear_cache, $smart_characters, $nextgen ) {
-		$plugin   = $this->getValue( $this->public_if, 'plugin' );
 		$settings = $this->prepareOptions(
 			[
 				Config::SMART_CHARACTERS => $smart_characters,
 			]
 		);
 
-		$plugin->shouldReceive( 'get_config' )->once()->andReturn( $settings );
+		$this->api->shouldReceive( 'get_config' )->once()->andReturn( $settings );
 		$this->public_if->shouldReceive( 'add_content_filters' )->once();
 
 		if ( $smart_characters ) {
@@ -162,11 +177,11 @@ class Public_Interface_Test extends TestCase {
 
 		$this->public_if->init();
 
-		self::assertTrue( has_filter( 'body_class', [ $plugin, 'filter_body_class' ] ) );
+		self::assertTrue( has_filter( 'body_class', [ $this->api, 'filter_body_class' ] ) );
 
 		self::assertTrue( has_action( 'wp_enqueue_scripts', [ $this->public_if, 'enqueue_styles' ] ) );
 		self::assertTrue( has_action( 'wp_enqueue_scripts', [ $this->public_if, 'enqueue_scripts' ] ) );
-		self::assertTrue( has_action( 'shutdown', [ $plugin, 'save_hyphenator_cache_on_shutdown' ] ) );
+		self::assertTrue( has_action( 'shutdown', [ $this->api, 'save_hyphenator_cache_on_shutdown' ] ) );
 
 		if ( $nextgen ) {
 			$this->assert_attribute_same( PHP_INT_MAX, 'filter_priority', $this->public_if );
@@ -233,22 +248,22 @@ class Public_Interface_Test extends TestCase {
 		$this->public_if->add_content_filters();
 
 		// Content hooks.
-		$expected     = ! $content;
-		$plugin_class = \get_class( $this->getValue( $this->public_if, 'plugin' ) );
+		$expected  = ! $content;
+		$api_class = \get_class( $this->api );
 
 		foreach ( $content_hooks as $hook ) {
 			if ( 'widget_text' === $hook && \version_compare( $wp_version, '4.8', '>=' ) ) {
 				$hook .= '_content';
 			}
 
-			$found = has_filter( $hook, "{$plugin_class}->process()" );
+			$found = has_filter( $hook, "{$api_class}->process()" );
 			$this->assertEquals( $expected, $found, "Hook $hook" . ( $expected ? '' : ' not' ) . ' expected, but' . ( $found ? '' : ' not' ) . ' found.' );
 		}
 
 		// Heading hooks.
 		$expected = ! $heading;
 		foreach ( $heading_hooks as $hook ) {
-			$found = has_filter( $hook, "{$plugin_class}->process_title()" );
+			$found = has_filter( $hook, "{$api_class}->process_title()" );
 			$this->assertEquals( $expected, $found, "Hook $hook" . ( $expected ? '' : ' not' ) . ' expected, but' . ( $found ? '' : ' not' ) . ' found.' );
 		}
 	}
@@ -305,21 +320,40 @@ class Public_Interface_Test extends TestCase {
 	 * @covers ::enqueue_scripts
 	 */
 	public function test_enqueue_scripts() {
+		$version = '6.6.6';
 		$this->prepareOptions(
 			[
 				Config::HYPHENATE_CLEAN_CLIPBOARD => true,
 			]
 		);
 
-		define( 'SCRIPT_DEBUG', false );
+		$this->api->shouldReceive( 'get_version' )->once()->andReturn( $version );
 
 		Functions\expect( 'plugin_dir_url' )->once()->with( \WP_TYPOGRAPHY_PLUGIN_FILE )->andReturn( 'dummy/path' );
 		Functions\expect( 'wp_enqueue_script' )
 			->once()
-			->with( 'wp-typography-cleanup-clipboard', m::type( 'string' ), m::type( 'array' ), m::type( 'string' ), true );
-		$this->public_if->enqueue_scripts();
+			->with( 'wp-typography-cleanup-clipboard', m::type( 'string' ), m::type( 'array' ), $version, true );
 
-		$this->assertTrue( true );
+		$this->assertNull( $this->public_if->enqueue_scripts() );
+	}
+
+	/**
+	 * Test enqueue_scripts.
+	 *
+	 * @covers ::enqueue_scripts
+	 */
+	public function test_enqueue_scripts_no_clipboard() {
+		$this->prepareOptions(
+			[
+				Config::HYPHENATE_CLEAN_CLIPBOARD => false,
+			]
+		);
+
+		$this->api->shouldReceive( 'get_version' )->never();
+		Functions\expect( 'plugin_dir_url' )->never();
+		Functions\expect( 'wp_enqueue_script' )->never();
+
+		$this->assertNull( $this->public_if->enqueue_scripts() );
 	}
 
 	/**

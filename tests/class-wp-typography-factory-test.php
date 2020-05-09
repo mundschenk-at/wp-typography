@@ -72,7 +72,14 @@ class WP_Typography_Factory_Test extends TestCase {
 	 * Test ::get.
 	 *
 	 * @covers ::get
-	 */
+	 *
+	 * @covers WP_Typography_Factory::__construct
+	 * @covers WP_Typography_Factory::get_components
+	 * @covers WP_Typography_Factory::get_plugin_integrations
+	 * @covers WP_Typography_Factory::get_plugin_version
+	 * @covers WP_Typography_Factory::get_rules
+	 * @covers WP_Typography_Factory::get_supported_locales
+	 * */
 	public function test_get() {
 		define( 'ABSPATH', 'wordpress/path/' );
 

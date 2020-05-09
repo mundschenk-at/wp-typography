@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2018 Peter Putzer.
+ *  Copyright 2017-2020 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -26,6 +26,8 @@
 
 namespace WP_Typography\Integration;
 
+use WP_Typography\Implementation;
+
 /**
  * Admin and frontend integrations for WooCommerce.
  *
@@ -35,11 +37,24 @@ namespace WP_Typography\Integration;
 class WooCommerce_Integration implements Plugin_Integration {
 
 	/**
-	 * The plugin API instance.
+	 * The plugin API.
+	 *
+	 * @since 5.7.0 Renamed to $api.
 	 *
 	 * @var \WP_Typography
 	 */
-	private $plugin;
+	private $api;
+
+	/**
+	 * Creates a new integration.
+	 *
+	 * @since 5.7.0
+	 *
+	 * @param Implementation $api     The core API.
+	 */
+	public function __construct( Implementation $api ) {
+		$this->api = $api;
+	}
 
 	/**
 	 * Check if the ACF integration should be activated.
@@ -53,10 +68,10 @@ class WooCommerce_Integration implements Plugin_Integration {
 	/**
 	 * Activate the integration.
 	 *
-	 * @param \WP_Typography $plugin The plugin object.
+	 * @since 5.7.0 Parameter $plugin removed.
 	 */
-	public function run( \WP_Typography $plugin ) {
-		$this->plugin = $plugin;
+	public function run() {
+		// Nothing to do.
 	}
 
 	/**
@@ -76,14 +91,14 @@ class WooCommerce_Integration implements Plugin_Integration {
 	public function enable_content_filters( $priority ) {
 
 		// Page descriptions.
-		\add_filter( 'woocommerce_format_content', [ $this->plugin, 'process' ], $priority );
+		\add_filter( 'woocommerce_format_content', [ $this->api, 'process' ], $priority );
 
 		// Shop notices.
-		\add_filter( 'woocommerce_add_error',      [ $this->plugin, 'process' ], $priority );
-		\add_filter( 'woocommerce_add_success',    [ $this->plugin, 'process' ], $priority );
-		\add_filter( 'woocommerce_add_notice',     [ $this->plugin, 'process' ], $priority );
+		\add_filter( 'woocommerce_add_error',      [ $this->api, 'process' ], $priority );
+		\add_filter( 'woocommerce_add_success',    [ $this->api, 'process' ], $priority );
+		\add_filter( 'woocommerce_add_notice',     [ $this->api, 'process' ], $priority );
 
 		// Demo store banner.
-		\add_filter( 'woocommerce_demo_store',     [ $this->plugin, 'process' ], $priority );
+		\add_filter( 'woocommerce_demo_store',     [ $this->api, 'process' ], $priority );
 	}
 }

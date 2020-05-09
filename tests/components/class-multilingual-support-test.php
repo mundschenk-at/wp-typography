@@ -46,7 +46,7 @@ use Mockery as m;
  * @coversDefaultClass \WP_Typography\Components\Multilingual_Support
  * @usesDefaultClass \WP_Typography\Components\Multilingual_Support
  *
- * @uses ::run
+ * @uses ::__construct
  */
 class Multilingual_Support_Test extends TestCase {
 
@@ -60,9 +60,9 @@ class Multilingual_Support_Test extends TestCase {
 	/**
 	 * Test fixture.
 	 *
-	 * @var WP_Typography
+	 * @var \WP_Typography\Implementation
 	 */
-	protected $plugin;
+	protected $api;
 
 	/**
 	 * Test fixture (instance mock).
@@ -78,35 +78,64 @@ class Multilingual_Support_Test extends TestCase {
 	protected function set_up() {
 		parent::set_up();
 
-		$this->plugin = m::mock( \WP_Typography\Implementation::class )
-			->shouldReceive( 'get_version' )->andReturn( '6.6.6' )->byDefault()
-			->getMock()->makePartial();
+		$this->api    = m::mock( \WP_Typography\Implementation::class );
+		$this->locale = m::mock( Basic_Locale_Settings::class );
 
-		$this->locale = m::mock( Basic_Locale_Settings::class )->makePartial();
+		$locales = [
+			m::mock( Basic_Locale_Settings::class ),
+			m::mock( Basic_Locale_Settings::class ),
+			m::mock( Basic_Locale_Settings::class ),
+		];
 
 		// Mock WP_Typography\Components\Multilingual_Support instance.
 		$this->multi = m::mock( Multilingual_Support::class )
 			->shouldAllowMockingProtectedMethods()->makePartial();
 
-		$this->multi->shouldReceive( 'initialize_locale_settings' )->once()->andReturn( [ $this->locale ] );
+		// Split expectations and constructor call from mock definition.
+		$this->multi->shouldReceive( 'locale_settings_sort' )
+			->times( \count( $locales ) - 1 )
+			->with( m::type( Basic_Locale_Settings::class ), m::type( Basic_Locale_Settings::class ) )
+			->andReturn( 0 );
+		$this->multi->__construct( $this->api, $locales );
 
-		$this->multi->run( $this->plugin );
 		$this->setValue( $this->multi, 'hyphenation_languages', [ 'de' => 'Deutsch' ] );
 		$this->setValue( $this->multi, 'diacritic_languages',   [ 'en' => 'English' ] );
 	}
 
 	/**
-	 * Prepare WP_Typography options for a test.
+	 * Tests constructor.
 	 *
-	 * @param array $options An array of set options.
-	 *
-	 * @return array The options array.
+	 * @covers ::__construct
 	 */
-	protected function prepareOptions( array $options ) {
-		// Reset options.
-		$this->setValue( $this->multi, 'config', $options );
+	public function test_constructor() {
+		$sut = m::mock( Multilingual_Support::class )
+			->shouldAllowMockingProtectedMethods()
+			->makePartial();
 
-		return $options;
+		$api     = m::mock( \WP_Typography\Implementation::class );
+		$locales = [
+			m::mock( Basic_Locale_Settings::class ),
+			m::mock( Basic_Locale_Settings::class ),
+			m::mock( Basic_Locale_Settings::class ),
+			m::mock( Basic_Locale_Settings::class ),
+			m::mock( Basic_Locale_Settings::class ),
+			m::mock( Basic_Locale_Settings::class ),
+			m::mock( Basic_Locale_Settings::class ),
+		];
+
+		// We don't really care about the exact number of comparisons, some sort
+		// implementations take more until giving up (e.g. PHP 5.6).
+		$sut->shouldReceive( 'locale_settings_sort' )->atLeast()->times( \count( $locales ) - 1 )->andReturn( 0 );
+
+		$sut->__construct( $api, $locales );
+
+		$this->assert_attribute_same( $api, 'api', $sut );
+
+		$sorted_locales = $this->get_value( $sut, 'locales' );
+		$this->assertCount( \count( $locales ), $sorted_locales );
+		foreach ( $sorted_locales as $l ) {
+			$this->assertTrue( \in_array( $l, $locales, true ) );
+		}
 	}
 
 	/**
@@ -115,16 +144,10 @@ class Multilingual_Support_Test extends TestCase {
 	 * @covers ::run
 	 */
 	public function test_run() {
-		$this->multi->shouldReceive( 'initialize_locale_settings' )->once()->andReturn(
-			[
-				m::mock( Basic_Locale_Settings::class ),
-			]
-		);
-
 		Actions\expectAdded( 'plugins_loaded' )->once()->with( [ $this->multi, 'add_plugin_defaults_filter' ] );
 		Actions\expectAdded( 'init' )->once()->with( [ $this->multi, 'enable_automatic_language_settings' ] );
 
-		$this->assertNull( $this->multi->run( $this->plugin ) );
+		$this->assertNull( $this->multi->run() );
 	}
 
 	/**
@@ -134,8 +157,8 @@ class Multilingual_Support_Test extends TestCase {
 	 */
 	public function test_add_plugin_defaults_filter() {
 
-		$this->plugin->shouldReceive( 'get_hyphenation_languages' )->once()->andReturn( [ 'de' => 'Deutsch' ] );
-		$this->plugin->shouldReceive( 'get_diacritic_languages' )->once()->andReturn( [ 'en' => 'English' ] );
+		$this->api->shouldReceive( 'get_hyphenation_languages' )->once()->andReturn( [ 'de' => 'Deutsch' ] );
+		$this->api->shouldReceive( 'get_diacritic_languages' )->once()->andReturn( [ 'en' => 'English' ] );
 
 		Filters\expectAdded( 'typo_plugin_defaults' )->once()->with( [ $this->multi, 'filter_defaults' ] );
 
@@ -148,13 +171,51 @@ class Multilingual_Support_Test extends TestCase {
 	 * @covers ::enable_automatic_language_settings
 	 */
 	public function test_enable_automatic_language_settings() {
-		$this->plugin->shouldReceive( 'get_config' )->once()->andReturn( [ Config::ENABLE_MULTILINGUAL_SUPPORT => true ] );
+		$this->api->shouldReceive( 'get_config' )->once()->andReturn( [ Config::ENABLE_MULTILINGUAL_SUPPORT => true ] );
 
 		Filters\expectAdded( 'typo_settings' )->once()->with( [ $this->multi, 'automatic_language_settings' ] );
 
 		$this->assertNull( $this->multi->enable_automatic_language_settings() );
 	}
 
+	/**
+	 * Provides data for testing locale_settings_sort.
+	 *
+	 * @return array
+	 */
+	public function provide_locale_settings_sort_data() {
+		return [
+			[ 0, 0, 0 ],
+			[ 47, 47, 0 ],
+			[ 47, 11, -1 ],
+			[ 8, 15, 1 ],
+			[ 10, 11, 1 ],
+			[ 11, 10, -1 ],
+			[ 11, 11, 0 ],
+			[ 10, 10, 0 ],
+		];
+	}
+
+	/**
+	 * Tests locale_settings_sort.
+	 *
+	 * @covers ::locale_settings_sort
+	 *
+	 * @dataProvider provide_locale_settings_sort_data
+	 *
+	 * @param int $prio1  Priority of first Locale_Settings object.
+	 * @param int $prio2  Priority of second Locale_Settings object.
+	 * @param int $result Expected result.
+	 */
+	public function test_locale_settings_sort( $prio1, $prio2, $result ) {
+		$locale1 = m::mock( Locale_Settings::class );
+		$locale2 = m::mock( Locale_Settings::class );
+
+		$locale1->shouldReceive( 'priority' )->once()->andReturn( $prio1 );
+		$locale2->shouldReceive( 'priority' )->once()->andReturn( $prio2 );
+
+		$this->assertSame( $result, $this->multi->locale_settings_sort( $locale1, $locale2 ) );
+	}
 
 	/**
 	 * Provide data for testing automatic_language_settings.
@@ -387,9 +448,16 @@ class Multilingual_Support_Test extends TestCase {
 		$country  = 'DE';
 		$modifier = 'foo';
 
-		$this->locale->shouldReceive( 'match' )->once()->with( $language, $country, $modifier )->andReturn( true );
+		$locale1 = m::mock( Basic_Locale_Settings::class );
+		$locale2 = m::mock( Basic_Locale_Settings::class );
+		$locale3 = m::mock( Basic_Locale_Settings::class );
+		$this->set_value( $this->multi, 'locales', [ $locale1, $locale2, $locale3 ] );
 
-		$this->assertSame( $this->locale, $this->invokeMethod( $this->multi, 'match_locale', [ $language, $country, $modifier ] ) );
+		$locale1->shouldReceive( 'match' )->once()->with( $language, $country, $modifier )->andReturn( false );
+		$locale2->shouldReceive( 'match' )->once()->with( $language, $country, $modifier )->andReturn( true );
+		$locale3->shouldReceive( 'match' )->never();
+
+		$this->assertSame( $locale2, $this->invoke_method( $this->multi, 'match_locale', [ $language, $country, $modifier ] ) );
 	}
 
 	/**
@@ -402,9 +470,16 @@ class Multilingual_Support_Test extends TestCase {
 		$country  = 'DE';
 		$modifier = 'foo';
 
-		$this->locale->shouldReceive( 'match' )->once()->with( $language, $country, $modifier )->andReturn( false );
+		$locale1 = m::mock( Basic_Locale_Settings::class );
+		$locale2 = m::mock( Basic_Locale_Settings::class );
+		$locale3 = m::mock( Basic_Locale_Settings::class );
+		$this->set_value( $this->multi, 'locales', [ $locale1, $locale2, $locale3 ] );
 
-		$this->assertNull( $this->invokeMethod( $this->multi, 'match_locale', [ $language, $country, $modifier ] ) );
+		$locale1->shouldReceive( 'match' )->once()->with( $language, $country, $modifier )->andReturn( false );
+		$locale2->shouldReceive( 'match' )->once()->with( $language, $country, $modifier )->andReturn( false );
+		$locale3->shouldReceive( 'match' )->once()->with( $language, $country, $modifier )->andReturn( false );
+
+		$this->assertNull( $this->invoke_method( $this->multi, 'match_locale', [ $language, $country, $modifier ] ) );
 	}
 
 	/**

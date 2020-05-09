@@ -84,9 +84,9 @@ class Admin_Interface_Test extends TestCase {
 	/**
 	 * Test fixture.
 	 *
-	 * @var WP_Typography
+	 * @var \WP_Typography\Implementation
 	 */
-	protected $plugin;
+	protected $api;
 
 	/**
 	 * Test fixture.
@@ -127,8 +127,10 @@ class Admin_Interface_Test extends TestCase {
 			->shouldReceive( 'set' )->andReturn( false )->byDefault()
 			->getMock();
 
+		$this->api = m::mock( \WP_Typography\Implementation::class )->shouldReceive( 'get_version' )->andReturn( '6.6.6' )->byDefault()->getMock();
+
 		// Mock WP_Typography\Components\Admin_Interface instance.
-		$this->admin = m::mock( Admin_Interface::class, [ $this->options ] )
+		$this->admin = m::mock( Admin_Interface::class, [ $this->api, $this->options ] )
 			->shouldAllowMockingProtectedMethods()->makePartial();
 
 		$this->plugin = m::mock( \WP_Typography\Implementation::class )->shouldReceive( 'get_version' )->andReturn( '6.6.6' )->byDefault()->getMock();
@@ -159,8 +161,9 @@ class Admin_Interface_Test extends TestCase {
 	 * @covers ::__construct
 	 */
 	public function test_constructor() {
-		$admin = m::mock( Admin_Interface::class, [ $this->options ] );
+		$admin = m::mock( Admin_Interface::class, [ $this->api, $this->options ] );
 
+		$this->assert_attribute_same( $this->api, 'api', $admin );
 		$this->assert_attribute_same( $this->options, 'options', $admin );
 	}
 
@@ -187,9 +190,9 @@ class Admin_Interface_Test extends TestCase {
 
 		$this->control_factory->shouldReceive( 'initialize' )->with( m::type( 'array' ), m::type( Options::class ), m::type( 'string' ) )->andReturn( [] );
 
-		$this->admin->run( $this->plugin );
+		$this->admin->run( $this->api );
 
-		$this->assert_attribute_same( $this->plugin, 'plugin', $this->admin );
+		$this->assert_attribute_same( $this->api, 'api', $this->admin );
 	}
 
 	/**
@@ -202,8 +205,8 @@ class Admin_Interface_Test extends TestCase {
 		$this->admin_form_controls[ Config::HYPHENATE_LANGUAGES ]->shouldReceive( 'set_option_values' )->once()->with( m::type( 'array' ) );
 		$this->admin_form_controls[ Config::DIACRITIC_LANGUAGES ]->shouldReceive( 'set_option_values' )->once()->with( m::type( 'array' ) );
 
-		$this->plugin->shouldReceive( 'get_hyphenation_languages' )->andReturn( [ 'CODE' => 'Language' ] );
-		$this->plugin->shouldReceive( 'get_diacritic_languages' )->andReturn( [ 'CODE' => 'Language' ] );
+		$this->api->shouldReceive( 'get_hyphenation_languages' )->andReturn( [ 'CODE' => 'Language' ] );
+		$this->api->shouldReceive( 'get_diacritic_languages' )->andReturn( [ 'CODE' => 'Language' ] );
 
 		$this->expectOutputString( 'SETTINGS_PHP' );
 

@@ -28,6 +28,7 @@
 namespace WP_Typography\Components;
 
 use WP_Typography\Data_Storage\Options;
+use WP_Typography\Implementation;
 use WP_Typography\UI;
 use WP_Typography\Settings\Plugin_Configuration as Config;
 
@@ -46,11 +47,13 @@ use PHP_Typography\Settings\Quote_Style;
 class Public_Interface implements Plugin_Component {
 
 	/**
-	 * The plugin instance used for setting transients.
+	 * The plugin API.
+	 *
+	 * @since 5.7.0 Renamed to $api.
 	 *
 	 * @var \WP_Typography
 	 */
-	protected $plugin;
+	protected $api;
 
 	/**
 	 * The priority for our filter hooks.
@@ -91,13 +94,22 @@ class Public_Interface implements Plugin_Component {
 	];
 
 	/**
+	 * Create a new instace.
+	 *
+	 * @since 5.7.0
+	 *
+	 * @param Implementation $api The core API.
+	 */
+	public function __construct( Implementation $api ) {
+		$this->api = $api;
+	}
+
+	/**
 	 * Set up the various hooks for the admin side.
 	 *
-	 * @param \WP_Typography $plugin The plugin object.
+	 * @since 5.7.0 Parameter $plugin removed.
 	 */
-	public function run( \WP_Typography $plugin ) {
-		$this->plugin = $plugin;
-
+	public function run() {
 		// Do not run our filters on the admin side or during a WP-CLI command.
 		if ( ! \is_admin() && ! \defined( 'WP_CLI' ) ) {
 			\add_action( 'init', [ $this, 'init' ] );
@@ -108,7 +120,7 @@ class Public_Interface implements Plugin_Component {
 	 * Sets up filters and actions.
 	 */
 	public function init() {
-		$this->config = $this->plugin->get_config();
+		$this->config = $this->api->get_config();
 
 		// Disable wptexturize filter if it conflicts with our settings.
 		if ( $this->config[ Config::SMART_CHARACTERS ] ) {
@@ -127,7 +139,7 @@ class Public_Interface implements Plugin_Component {
 		$this->add_content_filters();
 
 		// Grab body classes via hook.
-		\add_filter( 'body_class', [ $this->plugin, 'filter_body_class' ], $this->filter_priority );
+		\add_filter( 'body_class', [ $this->api, 'filter_body_class' ], $this->filter_priority );
 
 		// Add CSS Hook styling.
 		\add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
@@ -136,7 +148,7 @@ class Public_Interface implements Plugin_Component {
 		\add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 
 		// Save hyphenator cache on exit, if necessary.
-		\add_action( 'shutdown', [ $this->plugin, 'save_hyphenator_cache_on_shutdown' ], 10 );
+		\add_action( 'shutdown', [ $this->api, 'save_hyphenator_cache_on_shutdown' ], 10 );
 	}
 
 	/**
@@ -197,22 +209,22 @@ class Public_Interface implements Plugin_Component {
 	 * @param int $priority Filter priority.
 	 */
 	private function enable_content_filters( $priority ) {
-		\add_filter( 'comment_author',    [ $this->plugin, 'process' ], $priority );
-		\add_filter( 'comment_text',      [ $this->plugin, 'process' ], $priority );
-		\add_filter( 'comment_text',      [ $this->plugin, 'process' ], $priority );
-		\add_filter( 'the_content',       [ $this->plugin, 'process' ], $priority );
-		\add_filter( 'term_name',         [ $this->plugin, 'process' ], $priority );
-		\add_filter( 'term_description',  [ $this->plugin, 'process' ], $priority );
-		\add_filter( 'link_name',         [ $this->plugin, 'process' ], $priority );
-		\add_filter( 'the_excerpt',       [ $this->plugin, 'process' ], $priority );
-		\add_filter( 'the_excerpt_embed', [ $this->plugin, 'process' ], $priority );
-		\add_filter( 'wp_dropdown_cats',  [ $this->plugin, 'process' ], $priority );
+		\add_filter( 'comment_author',    [ $this->api, 'process' ], $priority );
+		\add_filter( 'comment_text',      [ $this->api, 'process' ], $priority );
+		\add_filter( 'comment_text',      [ $this->api, 'process' ], $priority );
+		\add_filter( 'the_content',       [ $this->api, 'process' ], $priority );
+		\add_filter( 'term_name',         [ $this->api, 'process' ], $priority );
+		\add_filter( 'term_description',  [ $this->api, 'process' ], $priority );
+		\add_filter( 'link_name',         [ $this->api, 'process' ], $priority );
+		\add_filter( 'the_excerpt',       [ $this->api, 'process' ], $priority );
+		\add_filter( 'the_excerpt_embed', [ $this->api, 'process' ], $priority );
+		\add_filter( 'wp_dropdown_cats',  [ $this->api, 'process' ], $priority );
 
 		// Preserve shortcode handling on WordPress 4.8+.
 		if ( \version_compare( \get_bloginfo( 'version' ), '4.8', '>=' ) ) {
-			\add_filter( 'widget_text_content', [ $this->plugin, 'process' ], $priority );
+			\add_filter( 'widget_text_content', [ $this->api, 'process' ], $priority );
 		} else {
-			\add_filter( 'widget_text', [ $this->plugin, 'process' ], $priority );
+			\add_filter( 'widget_text', [ $this->api, 'process' ], $priority );
 		}
 	}
 
@@ -222,8 +234,8 @@ class Public_Interface implements Plugin_Component {
 	 * @param int $priority Filter priority.
 	 */
 	private function enable_heading_filters( $priority ) {
-		\add_filter( 'the_title',    [ $this->plugin, 'process_title' ], $priority );
-		\add_filter( 'widget_title', [ $this->plugin, 'process_title' ], $priority );
+		\add_filter( 'the_title',    [ $this->api, 'process_title' ], $priority );
+		\add_filter( 'widget_title', [ $this->api, 'process_title' ], $priority );
 	}
 
 	/**
@@ -260,7 +272,7 @@ class Public_Interface implements Plugin_Component {
 		if ( $this->config[ Config::HYPHENATE_CLEAN_CLIPBOARD ] ) {
 			// Set up file suffix and plugin version.
 			$suffix     = ( \defined( 'SCRIPT_DEBUG' ) && \SCRIPT_DEBUG ) ? '' : '.min';
-			$version    = $this->plugin->get_version();
+			$version    = $this->api->get_version();
 			$plugin_dir = \plugin_dir_url( \WP_TYPOGRAPHY_PLUGIN_FILE );
 
 			\wp_enqueue_script( 'wp-typography-cleanup-clipboard', "{$plugin_dir}js/clean-clipboard$suffix.js", [], $version, true );

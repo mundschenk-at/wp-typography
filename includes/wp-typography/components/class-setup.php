@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2014-2019 Peter Putzer.
+ *  Copyright 2014-2020 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -26,6 +26,7 @@
 
 namespace WP_Typography\Components;
 
+use WP_Typography\Implementation;
 use WP_Typography\Data_Storage\Options;
 use WP_Typography\Settings\Plugin_Configuration as Config;
 
@@ -57,12 +58,13 @@ class Setup implements Plugin_Component {
 	const UPGRADING = 'UPGRADING_WP_TYPOGRAPHY';
 
 	/**
-	 * The plugin object.
+	 * The plugin API.
 	 *
-	 * @since    3.1.0
-	 * @var      \WP_Typography $plugin The main plugin class instance.
+	 * @since 5.7.0 Renamed to $api.
+	 *
+	 * @var \WP_Typography
 	 */
-	private $plugin;
+	private $api;
 
 	/**
 	 * An abstraction of the WordPress Options API.
@@ -77,21 +79,22 @@ class Setup implements Plugin_Component {
 	 * Create a new instace of WP_Typography\Setup.
 	 *
 	 * @since 5.6.0 Parameter $plugin_path removed.
+	 * @since 5.7.0 Parameter $api added.
 	 *
-	 * @param Options $options The Options API handler.
+	 * @param Implementation $api     The core API.
+	 * @param Options        $options The Options API handler.
 	 */
-	public function __construct( Options $options ) {
+	public function __construct( Implementation $api, Options $options ) {
+		$this->api     = $api;
 		$this->options = $options;
 	}
 
 	/**
 	 * Registers the de-/activation/uninstall hooks for the plugin.
 	 *
-	 * @param \WP_Typography $plugin The plugin instance.
+	 * @since 5.7.0 Parameter $plugin removed.
 	 */
-	public function run( \WP_Typography $plugin ) {
-		$this->plugin = $plugin;
-
+	public function run() {
 		// Register various hooks.
 		\register_activation_hook( \WP_TYPOGRAPHY_PLUGIN_FILE,   [ $this,     'activate' ] );
 		\register_deactivation_hook( \WP_TYPOGRAPHY_PLUGIN_FILE, [ $this,     'deactivate' ] );
@@ -108,10 +111,10 @@ class Setup implements Plugin_Component {
 	 */
 	public function activate() {
 		// Load default values for any new options.
-		$this->plugin->get_config();
+		$this->api->get_config();
 
 		// After get_config(), otherwhise previous options are overwritten.
-		$this->plugin->set_default_options();
+		$this->api->set_default_options();
 	}
 
 	/**
@@ -123,7 +126,7 @@ class Setup implements Plugin_Component {
 		// We can ignore errors here, just carry on as if for a new installation.
 		$installed_version = (string) $this->options->get( Options::INSTALLED_VERSION, '' );
 
-		if ( $this->plugin->get_version() !== $installed_version ) {
+		if ( $this->api->get_version() !== $installed_version ) {
 			$this->plugin_updated( $installed_version );
 		}
 	}
@@ -157,7 +160,7 @@ class Setup implements Plugin_Component {
 		$this->set_installed_version();
 
 		// Always clear the cache on upgrades.
-		$this->plugin->clear_cache();
+		$this->api->clear_cache();
 	}
 
 	/**
@@ -166,7 +169,7 @@ class Setup implements Plugin_Component {
 	 * @since 5.1.0
 	 */
 	protected function upgrade_options_3_1() {
-		foreach ( $this->plugin->get_default_options() as $option_name => $option ) {
+		foreach ( $this->api->get_default_options() as $option_name => $option ) {
 			$old_option = $this->get_old_option_name( self::LEGACY_OPTIONS_PREFIX . "_{$option_name}" );
 			$old_value  = $this->options->get( $old_option, self::UPGRADING, true );
 
@@ -224,7 +227,7 @@ class Setup implements Plugin_Component {
 	 * @since 5.1.0
 	 */
 	protected function upgrade_options_to_array() {
-		$config = $this->plugin->get_default_options();
+		$config = $this->api->get_default_options();
 
 		foreach ( $config as $option_name => $default_value ) {
 			$old_value = $this->options->get( $option_name, self::UPGRADING );
@@ -245,7 +248,7 @@ class Setup implements Plugin_Component {
 	 * @since 5.1.0
 	 */
 	protected function set_installed_version() {
-		$this->options->set( Options::INSTALLED_VERSION, $this->plugin->get_version() );
+		$this->options->set( Options::INSTALLED_VERSION, $this->api->get_version() );
 	}
 
 

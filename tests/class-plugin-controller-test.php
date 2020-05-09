@@ -43,92 +43,76 @@ use Mockery as m;
 class Plugin_Controller_Test extends TestCase {
 
 	/**
+	 * The system-under-test.
+	 *
+	 * @var Plugin_Controller
+	 */
+	protected $sut;
+
+	/**
+	 * Sets up the fixture, for example, opens a network connection.
+	 * This method is called before a test is executed.
+	 */
+	protected function set_up() {
+		parent::set_up();
+
+		$this->sut = m::mock( Plugin_Controller::class )->shouldAllowMockingProtectedMethods()->makePartial();
+	}
+
+	/**
 	 * Necesssary clean-up work.
 	 */
 	protected function tear_down() {
 		// Reset singleton.
-		$this->setStaticValue( \WP_Typography::class, 'instance', null );
+		$this->set_static_value( \WP_Typography::class, 'instance', null );
 
 		parent::tear_down();
 	}
 
 	/**
-	 * Tests singleton methods.
+	 * Tests constructor methods.
 	 *
 	 * @covers ::__construct
 	 */
 	public function test_constructor() {
 
-		$multi = m::mock( \WP_Typography\Components\Multilingual_Support::class )
-			->shouldReceive( 'run' )->byDefault()
-			->getMock();
+		$api        = m::mock( \WP_Typography\Implementation::class );
+		$components = [
+			m::mock( \WP_Typography\Components\Plugin_Component::class ),
+			m::mock( \WP_Typography\Components\Plugin_Component::class ),
+			m::mock( \WP_Typography\Components\Plugin_Component::class ),
+			m::mock( \WP_Typography\Components\Plugin_Component::class ),
+		];
 
-		// Mock WP_Typography\Data_Storage\Options instance.
-		$options = m::mock( \WP_Typography\Data_Storage\Options::class )
-			->shouldReceive( 'get' )->andReturn( false )->byDefault()
-			->shouldReceive( 'set' )->andReturn( false )->byDefault()
-			->getMock();
+		$this->sut->__construct( $api, $components );
 
-		// Mock WP_Typography\Components\Setup instance.
-		$setup = m::mock( \WP_Typography\Components\Setup::class )
-			->shouldReceive( 'run' )->byDefault()
-			->getMock();
-
-		// Mock WP_Typography\Components\Common instance.
-		$common = m::mock( \WP_Typography\Components\Common::class )
-			->shouldReceive( 'run' )->byDefault()
-			->getMock();
-
-		// Mock WP_Typography\Data_Storage\Transients instance.
-		$transients = m::mock( \WP_Typography\Data_Storage\Transients::class )
-			->shouldReceive( 'get' )->byDefault()->andReturn( false )
-			->shouldReceive( 'get_large_object' )->byDefault()->andReturn( false )
-			->shouldReceive( 'set' )->andReturn( false )->byDefault()
-			->shouldReceive( 'set_large_object' )->andReturn( false )->byDefault()
-			->getMock();
-
-		// Mock WP_Typography\Data_Storage\Cache instance.
-		$cache = m::mock( \WP_Typography\Data_Storage\Cache::class )
-			->shouldReceive( 'get' )->andReturn( false )->byDefault()
-			->shouldReceive( 'set' )->andReturn( false )->byDefault()
-			->shouldReceive( 'invalidate' )->byDefault()
-			->getMock();
-
-		// Mock WP_Typography\Components\Admin_Interface instance.
-		$admin = m::mock( Admin_Interface::class )
-			->shouldReceive( 'run' )->shouldReceive( 'get_default_settings' )->andReturn( [] )->byDefault()
-			->getMock();
-
-		// Mock Public_Interface instance.
-		$public_if = m::mock( Public_Interface::class )
-			->shouldReceive( 'run' )->byDefault()
-			->getMock();
-
-		$typo = m::mock( \WP_Typography\Implementation::class );
-
-		$controller = new \WP_Typography\Plugin_Controller( $typo, $setup, $common, $admin, $public_if, $multi, $transients, $cache, $options );
-
-		$this->assertInstanceOf( \WP_Typography\Plugin_Controller::class, $controller );
-
-		return $controller;
+		$this->assert_attribute_same( $api, 'api', $this->sut );
+		$this->assert_attribute_same( $components, 'plugin_components', $this->sut );
 	}
 
 	/**
-	 * Tests constructor.
-	 *
-	 * @depends test_constructor
+	 * Tests run.
 	 *
 	 * @covers ::run
-	 *
 	 * @uses \WP_Typography::set_instance
-	 *
-	 * @param Plugin_Controller $controller Required.
 	 */
-	public function test_run( $controller ) {
-		foreach ( $this->getValue( $controller, 'plugin_components', Plugin_Controller::class ) as $component ) {
-			$component->shouldReceive( 'run' )->once()->with( m::type( \WP_Typography::class ) );
+	public function test_run() {
+		// Prepare SUT.
+		$api        = m::mock( \WP_Typography\Implementation::class );
+		$components = [
+			m::mock( \WP_Typography\Components\Plugin_Component::class ),
+			m::mock( \WP_Typography\Components\Plugin_Component::class ),
+			m::mock( \WP_Typography\Components\Plugin_Component::class ),
+			m::mock( \WP_Typography\Components\Plugin_Component::class ),
+		];
+		$this->set_value( $this->sut, 'api', $api );
+		$this->set_value( $this->sut, 'plugin_components', $components );
+
+		foreach ( $components as $component ) {
+			$component->shouldReceive( 'run' )->once();
 		}
 
-		$this->assertNull( $controller->run() );
+		$this->assertNull( $this->sut->run() );
+		$this->assertSame( $this->get_static_value( \WP_Typography::class, 'instance' ), $api );
 	}
 }

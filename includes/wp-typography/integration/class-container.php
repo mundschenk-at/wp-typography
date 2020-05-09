@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2018 Peter Putzer.
+ *  Copyright 2018-2020 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -30,16 +30,11 @@ namespace WP_Typography\Integration;
  * A registry for plugin integrations.
  *
  * @since      5.3.0
+ * @since      5.7.0 Obsolete method ::run removed.
+ *
  * @author     Peter Putzer <github@mundschenk.at>
  */
 class Container {
-
-	/**
-	 * The plugin instance used for setting transients.
-	 *
-	 * @var \WP_Typography
-	 */
-	private $plugin;
 
 	/**
 	 * An array of plugin integration instances.
@@ -71,23 +66,12 @@ class Container {
 		foreach ( $this->integrations as $integration ) {
 			if ( $integration->check() ) {
 				$this->active_integrations[] = $integration;
-				$integration->run( $this->plugin );
+				$integration->run();
 			}
 		}
 
 		// No need to restrict these to the frontend, that's already done by Public_Interface.
 		\add_filter( 'typo_content_filters', [ $this, 'get_content_filters' ] );
-	}
-
-	/**
-	 * Start up enabled integrations.
-	 *
-	 * @param \WP_Typography $plugin The plugin API instance.
-	 */
-	public function run( \WP_Typography $plugin ) {
-		$this->plugin = $plugin;
-
-		\add_action( 'plugins_loaded', [ $this, 'activate' ] );
 	}
 
 	/**

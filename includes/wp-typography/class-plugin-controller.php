@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2018 Peter Putzer.
+ *  Copyright 2018-2020 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -26,16 +26,8 @@
 
 namespace WP_Typography;
 
-use WP_Typography\Components\Admin_Interface;
-use WP_Typography\Components\Common;
-use WP_Typography\Components\Multilingual_Support;
+use WP_Typography\Implementation;
 use WP_Typography\Components\Plugin_Component;
-use WP_Typography\Components\Public_Interface;
-use WP_Typography\Components\Setup;
-
-use WP_Typography\Data_Storage\Cache;
-use WP_Typography\Data_Storage\Options;
-use WP_Typography\Data_Storage\Transients;
 
 /**
  * Registers and runs the various plugin components.
@@ -61,31 +53,14 @@ class Plugin_Controller {
 	/**
 	 * Sets up a new plugin controller instance.
 	 *
-	 * @param Implementation       $api         Required.
-	 * @param Setup                $setup       Required.
-	 * @param Common               $common      Required.
-	 * @param Admin_Interface      $admin       Required.
-	 * @param Public_Interface     $public_if   Required.
-	 * @param Multilingual_Support $multi       Required.
+	 * @since 5.7.0 Component parameters replaced with factory-cofigured array.
+	 *
+	 * @param Implementation $api        The core API.
+	 * @param Component[]    $components An array of plugin components.
 	 */
-	public function __construct( Implementation $api, Setup $setup, Common $common, Admin_Interface $admin, Public_Interface $public_if, Multilingual_Support $multi ) {
-		// Basic set-up.
-		$this->api = $api;
-
-		// Initialize activation/deactivation handler.
-		$this->plugin_components[] = $setup;
-
-		// Initialize common component.
-		$this->plugin_components[] = $common;
-
-		// Initialize multilingual support.
-		$this->plugin_components[] = $multi;
-
-		// Initialize public interface handler.
-		$this->plugin_components[] = $public_if;
-
-		// Initialize admin interface handler.
-		$this->plugin_components[] = $admin;
+	public function __construct( Implementation $api, array $components ) {
+		$this->api               = $api;
+		$this->plugin_components = $components;
 	}
 
 	/**
@@ -97,7 +72,7 @@ class Plugin_Controller {
 
 		// Run all the plugin components.
 		foreach ( $this->plugin_components as $component ) {
-			$component->run( $this->api );
+			$component->run();
 		}
 	}
 }

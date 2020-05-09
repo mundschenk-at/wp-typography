@@ -28,6 +28,7 @@
 
 namespace WP_Typography\Components;
 
+use WP_Typography\Implementation;
 use WP_Typography\Data_Storage\Options;
 use WP_Typography\UI;
 use WP_Typography\Settings\Plugin_Configuration as Config;
@@ -81,13 +82,6 @@ class Admin_Interface implements Plugin_Component {
 	private $plugin_basename;
 
 	/**
-	 * The full version string of the plugin.
-	 *
-	 * @var string $version;
-	 */
-	private $version;
-
-	/**
 	 * Links to add the settings page.
 	 *
 	 * @var array $admin_resource_links An array in the form of 'anchor text' => 'URL'.
@@ -134,11 +128,13 @@ class Admin_Interface implements Plugin_Component {
 	private $admin_form_controls = [];
 
 	/**
-	 * The plugin instance used for setting transients.
+	 * The plugin API.
+	 *
+	 * @since 5.7.0 Renamed to $api.
 	 *
 	 * @var \WP_Typography
 	 */
-	private $plugin;
+	private $api;
 
 	/**
 	 * The current active settings tab.
@@ -165,23 +161,23 @@ class Admin_Interface implements Plugin_Component {
 	 * Create a new instace of admin backend.
 	 *
 	 * @since 5.6.0 Parameters $basename and $plugin_path removed.
+	 * @since 5.7.0 Parameter $api added.
 	 *
-	 * @param Options $options The Options API handler.
+	 * @param Implementation $api     The core API.
+	 * @param Options        $options The Options API handler.
 	 */
-	public function __construct( Options $options ) {
+	public function __construct( Implementation $api, Options $options ) {
+		$this->api     = $api;
 		$this->options = $options;
+
 	}
 
 	/**
 	 * Set up the various hooks for the admin side.
 	 *
-	 * @param \WP_Typography $plugin The plugin object.
+	 * @since 5.7.0 Parameter $plugin removed.
 	 */
-	public function run( \WP_Typography $plugin ) {
-		// Save the main plugin for later use.
-		$this->version = $plugin->get_version();
-		$this->plugin  = $plugin;
-
+	public function run() {
 		if ( \is_admin() ) {
 
 			// Cache the plugin basename.
@@ -461,7 +457,7 @@ class Admin_Interface implements Plugin_Component {
 	 * Enqueue stylesheet for options page.
 	 */
 	public function print_admin_styles() {
-		\wp_enqueue_style( 'wp-typography-settings', \plugins_url( 'admin/css/settings.css', $this->plugin_basename ), [], $this->version, 'all' );
+		\wp_enqueue_style( 'wp-typography-settings', \plugins_url( 'admin/css/settings.css', $this->plugin_basename ), [], $this->api->get_version(), 'all' );
 	}
 
 	/**
@@ -484,8 +480,8 @@ class Admin_Interface implements Plugin_Component {
 	 * Display the plugin options page.
 	 */
 	public function get_admin_page_content() {
-		$this->admin_form_controls[ Config::HYPHENATE_LANGUAGES ]->set_option_values( $this->plugin->get_hyphenation_languages() );
-		$this->admin_form_controls[ Config::DIACRITIC_LANGUAGES ]->set_option_values( $this->plugin->get_diacritic_languages() );
+		$this->admin_form_controls[ Config::HYPHENATE_LANGUAGES ]->set_option_values( $this->api->get_hyphenation_languages() );
+		$this->admin_form_controls[ Config::DIACRITIC_LANGUAGES ]->set_option_values( $this->api->get_diacritic_languages() );
 
 		// Load the settings page HTML.
 		require \WP_TYPOGRAPHY_PLUGIN_PATH . '/admin/partials/settings/settings-page.php';
