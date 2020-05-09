@@ -55,52 +55,10 @@ class WP_Typography_Test extends TestCase {
 	protected $wp_typo;
 
 	/**
-	 * Test fixture.
-	 *
-	 * @var \WP_Typography\Data_Storage\Transients
-	 */
-	protected $transients;
-
-	/**
-	 * Test fixture.
-	 *
-	 * @var \WP_Typography\Data_Storage\Cache
-	 */
-	protected $cache;
-
-	/**
-	 * Test fixture.
-	 *
-	 * @var \WP_Typography\Data_Storage\Options
-	 */
-	protected $options;
-
-	/**
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
 	protected function set_up() {
-
-		// Mock WP_Typography\Data_Storage\Options instance.
-		$this->options = m::mock( \WP_Typography\Data_Storage\Options::class )
-			->shouldReceive( 'get' )->andReturn( false )->byDefault()
-			->shouldReceive( 'set' )->andReturn( false )->byDefault()
-			->getMock();
-
-		// Mock WP_Typography\Data_Storage\Transients instance.
-		$this->transients = m::mock( \WP_Typography\Data_Storage\Transients::class )
-			->shouldReceive( 'get' )->byDefault()->andReturn( false )
-			->shouldReceive( 'get_large_object' )->byDefault()->andReturn( false )
-			->shouldReceive( 'set' )->andReturn( false )->byDefault()
-			->shouldReceive( 'set_large_object' )->andReturn( false )->byDefault()
-			->getMock();
-
-		// Mock WP_Typography\Data_Storage\Cache instance.
-		$this->cache = m::mock( \WP_Typography\Data_Storage\Cache::class )
-			->shouldReceive( 'get' )->andReturn( false )->byDefault()
-			->shouldReceive( 'set' )->andReturn( false )->byDefault()
-			->shouldReceive( 'invalidate' )->byDefault()
-			->getMock();
 
 		// Create instance.
 		$this->wp_typo = m::mock( \WP_Typography\Implementation::class )
