@@ -59,13 +59,15 @@ class WP_Typography_Test extends TestCase {
 	 * This method is called before a test is executed.
 	 */
 	protected function set_up() {
+		parent::set_up();
 
 		// Create instance.
 		$this->wp_typo = m::mock( \WP_Typography\Implementation::class )
 			->shouldAllowMockingProtectedMethods()
 			->makePartial();
 
-		parent::set_up();
+		// Set up singleton.
+		$this->setStaticValue( \WP_Typography::class, 'instance', $this->wp_typo );
 	}
 
 	/**
@@ -87,8 +89,6 @@ class WP_Typography_Test extends TestCase {
 	 * @uses WP_Typography::get_instance
 	 */
 	public function test_get_user_settings() {
-		$this->setStaticValue( \WP_Typography::class, 'instance', $this->wp_typo );
-
 		$object = new \stdClass();
 
 		$this->wp_typo->shouldReceive( 'get_settings' )->once()->andReturn( $object );
@@ -109,9 +109,6 @@ class WP_Typography_Test extends TestCase {
 	 * @uses ::get_instance
 	 */
 	public function test_call_static_get_hyphenation_languages() {
-		// Set up singleton.
-		$this->setStaticValue( \WP_Typography::class, 'instance', $this->wp_typo );
-
 		$this->wp_typo->shouldReceive( 'get_hyphenation_languages' )->once()->andReturn( [ 'de' => 'German' ] );
 
 		$langs = \WP_Typography::get_hyphenation_languages();
@@ -128,9 +125,6 @@ class WP_Typography_Test extends TestCase {
 	 * @uses ::get_instance
 	 */
 	public function test_call_static_foobar() {
-		// Set up singleton.
-		$this->setStaticValue( \WP_Typography::class, 'instance', $this->wp_typo );
-
 		$this->wp_typo->shouldNotReceive( 'foobar' );
 
 		$this->expect_exception( \BadMethodCallException::class );
@@ -147,7 +141,6 @@ class WP_Typography_Test extends TestCase {
 	 * @uses ::get_instance
 	 */
 	public function test_filter() {
-		$this->setStaticValue( \WP_Typography::class, 'instance', $this->wp_typo );
 		$this->wp_typo->shouldReceive( 'process' )->once()->with( 'foobar', false, false, null )->andReturn( 'barfoo' );
 		$this->assertSame( 'barfoo', \WP_Typography::filter( 'foobar', null ) );
 	}
@@ -160,7 +153,6 @@ class WP_Typography_Test extends TestCase {
 	 * @uses ::get_instance
 	 */
 	public function test_filter_title() {
-		$this->setStaticValue( \WP_Typography::class, 'instance', $this->wp_typo );
 		$this->wp_typo->shouldReceive( 'process_title' )->once()->with( 'foobar', null )->andReturn( 'barfoo' );
 		$this->assertSame( 'barfoo', \WP_Typography::filter_title( 'foobar', null ) );
 	}
@@ -173,7 +165,6 @@ class WP_Typography_Test extends TestCase {
 	 * @uses ::get_instance
 	 */
 	public function test_filter_title_parts() {
-		$this->setStaticValue( \WP_Typography::class, 'instance', $this->wp_typo );
 		$this->wp_typo->shouldReceive( 'process_title_parts' )->once()->with( 'foobar', null )->andReturn( 'barfoo' );
 		$this->assertSame( 'barfoo', \WP_Typography::filter_title_parts( 'foobar', null ) );
 	}
@@ -186,7 +177,6 @@ class WP_Typography_Test extends TestCase {
 	 * @uses ::get_instance
 	 */
 	public function test_filter_feed() {
-		$this->setStaticValue( \WP_Typography::class, 'instance', $this->wp_typo );
 		$this->wp_typo->shouldReceive( 'process_feed' )->once()->with( 'foobar', false, null )->andReturn( 'barfoo' );
 		$this->assertSame( 'barfoo', \WP_Typography::filter_feed( 'foobar', null ) );
 	}
@@ -199,7 +189,6 @@ class WP_Typography_Test extends TestCase {
 	 * @uses ::get_instance
 	 */
 	public function test_filter_feed_title() {
-		$this->setStaticValue( \WP_Typography::class, 'instance', $this->wp_typo );
 		$this->wp_typo->shouldReceive( 'process_feed_title' )->once()->with( 'foobar', null )->andReturn( 'barfoo' );
 		$this->assertSame( 'barfoo', \WP_Typography::filter_feed_title( 'foobar', null ) );
 	}
@@ -213,10 +202,8 @@ class WP_Typography_Test extends TestCase {
 	 * @uses ::get_instance
 	 */
 	public function test_get_version_hash() {
-		$this->setStaticValue( \WP_Typography::class, 'instance', $this->wp_typo );
 		$this->wp_typo->shouldReceive( 'get_version' )->once()->andReturn( '7.6.6' );
 
 		$this->assertSame( 'GFF', $this->wp_typo->get_version_hash() );
 	}
-
 }
