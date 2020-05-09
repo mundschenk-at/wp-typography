@@ -22,6 +22,11 @@
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
+namespace WP_Typography\Tests;
+
+// Autoload everything using Composer.
+require_once \dirname( __DIR__ ) . '/vendor/autoload.php';
+
 /**
  * Autoload everything using Composer.
  */
