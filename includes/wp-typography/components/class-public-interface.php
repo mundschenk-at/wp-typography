@@ -40,7 +40,7 @@ use PHP_Typography\Settings\Quote_Style;
  * The public (non-admin) functionality of the plugin.
  *
  * @since 5.1.0
- * @sicne 5.6.0 Obsolete property $plugin_basename and superfluous constructor removed.
+ * @since 5.6.0 Obsolete property $plugin_basename and superfluous constructor removed.
  *
  * @author Peter Putzer <github@mundschenk.at>
  */
