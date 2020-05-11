@@ -259,6 +259,8 @@ class WP_Typography_Factory extends Dice {
 			[ 'instance' => Components\Public_Interface::class ],
 			[ 'instance' => Components\Admin_Interface::class ],
 			[ 'instance' => Components\Multilingual_Support::class ],
+			[ 'instance' => Components\Block_Editor::class ],
+			[ 'instance' => Components\REST_API::class ],
 		];
 	}
 
