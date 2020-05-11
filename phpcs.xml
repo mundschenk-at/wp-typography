@@ -59,4 +59,8 @@
 
 	<!-- Include sniffs for PHP cross-version compatibility. -->
 	<rule ref="PHPCompatibility" />
+
+	<!-- Exclude generated files (block assets and language names) -->
+	<exclude-pattern>*/admin/blocks/*/*\.asset\.php$</exclude-pattern>
+	<exclude-pattern>includes/_language_names.php$</exclude-pattern>
 </ruleset>
