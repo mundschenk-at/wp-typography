@@ -402,13 +402,26 @@ class Implementation extends \WP_Typography {
 		 * @param Settings $settings The settings instance.
 		 */
 		$settings = \apply_filters( 'typo_settings', $settings );
-		$hash     = $settings->get_hash( 32, false );
 
-		// Enable feed mode?
-		$feed = $force_feed || \is_feed();
+		return $this->maybe_process_fragment( $text, $is_title, $force_feed || \is_feed(), $settings );
+	}
 
+	/**
+	 * Processes the HTML fragment and caches the result. May return a cached version
+	 * if the settings and other parameters match.
+	 *
+	 * @since 5.7.0
+	 *
+	 * @param string   $text     The HTML fragment to process.
+	 * @param bool     $is_title Whether the rules for titles should be applied.
+	 * @param bool     $is_feed  Whether the rules for RSS feeds should be applied.
+	 * @param Settings $settings A settings object.
+	 *
+	 * @return string            The processed `$text`.
+	 */
+	protected function maybe_process_fragment( $text, $is_title, $is_feed, Settings $settings ) {
 		// Construct cache key.
-		$key = 'frag_' . \md5( $text ) . '_' . $hash . '_' . ( $feed ? 'f' : '' ) . ( $is_title ? 't' : 's' );
+		$key = 'frag_' . \md5( $text ) . '_' . $settings->get_hash( 32, false ) . '_' . ( $is_feed ? 'f' : '' ) . ( $is_title ? 't' : 's' );
 
 		// Retrieve cached text.
 		$found          = false;
@@ -416,8 +429,8 @@ class Implementation extends \WP_Typography {
 
 		if ( empty( $found ) || ! \is_string( $processed_text ) ) {
 			// Feed readers are strange sometimes.
-			$apply_typography = [ $this->get_typography_instance(), $feed ? 'process_feed' : 'process' ];
-			$processed_text   = $apply_typography( $text, /* @scrutinizer ignore-type */ $settings, $is_title, $this->body_classes );
+			$apply_typography = [ $this->get_typography_instance(), $is_feed ? 'process_feed' : 'process' ];
+			$processed_text   = $apply_typography( $text, $settings, $is_title, $this->body_classes );
 
 			/**
 			 * Filters the caching duration for processed text fragments.

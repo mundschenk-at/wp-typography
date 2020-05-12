@@ -28,6 +28,7 @@ use WP_Typography\Data_Storage\Options;
 use WP_Typography\Settings\Plugin_Configuration as Config;
 
 use PHP_Typography\Hyphenator_Cache;
+use PHP_Typography\Settings;
 
 use Brain\Monkey\Actions;
 use Brain\Monkey\Filters;
@@ -271,7 +272,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 
 		$s = $this->wp_typo->get_settings();
 
-		$this->assertInstanceOf( \PHP_Typography\Settings::class, $s );
+		$this->assertInstanceOf( Settings::class, $s );
 	}
 
 	/**
@@ -352,7 +353,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 
 		$s = $this->wp_typo->get_settings();
 
-		$this->assertInstanceOf( \PHP_Typography\Settings::class, $s );
+		$this->assertInstanceOf( Settings::class, $s );
 	}
 
 	/**
@@ -542,7 +543,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 			[ false, true, false, null ],
 			[ false, false, true, null ],
 			[ true, false, true, null ],
-			[ false, false, false, m::mock( \PHP_Typography\Settings::class )->shouldReceive( 'get_hash' )->andReturn( 'another_fake_hash' )->getMock() ],
+			[ false, false, false, m::mock( Settings::class ) ],
 		];
 	}
 
@@ -564,30 +565,69 @@ class WP_Typography_Implementation_Test extends TestCase {
 		Functions\expect( 'is_feed' )->andReturn( $is_feed );
 
 		if ( null === $settings ) {
-			$settings_mock = m::mock( \PHP_Typography\Settings::class )->shouldReceive( 'get_hash' )->andReturn( 'another_fake_hash' )->getMock();
+			$settings_mock = m::mock( Settings::class );
 
 			$this->wp_typo->shouldReceive( 'get_settings' )->once()->andReturn( $settings_mock );
+		} else {
+			$settings_mock = $settings;
 		}
+
+		Filters\expectApplied( 'typo_settings' )->once()->with( m::type( Settings::class ) )->andReturnFirstArg();
+
+		$this->wp_typo->shouldReceive( 'maybe_process_fragment' )
+			->once()
+			->with( 'text', $is_title, $force_feed || $is_feed, $settings_mock )
+			->andReturn( 'processed text' );
+
+		$this->assertSame( 'processed text', $this->wp_typo->process( 'text', $is_title, $force_feed, $settings ) );
+	}
+
+	/**
+	 * Provide data for testing process.
+	 *
+	 * @return array
+	 */
+	public function provide_maybe_process_fragment_data() {
+		return [
+			[ false, false ],
+			[ false, true ],
+			[ true, false ],
+			[ true, true ],
+		];
+	}
+
+	/**
+	 * Test maybe_process_fragment
+	 *
+	 * @covers ::maybe_process_fragment
+	 *
+	 * @dataProvider provide_maybe_process_fragment_data
+	 *
+	 * @param  bool $is_title Fragment is a title.
+	 * @param  bool $is_feed  Value for is_feed().
+	 */
+	public function test_maybe_process_fragment( $is_title, $is_feed ) {
+		$text     = 'some text or other';
+		$settings = m::mock( Settings::class );
 
 		// Fake filter_body_classes.
-		$this->setValue( $this->wp_typo, 'body_classes', [ 'foo', 'bar' ], \WP_Typography\Implementation::class );
+		$this->set_value( $this->wp_typo, 'body_classes', [ 'foo', 'bar' ] );
 
-		Filters\expectApplied( 'typo_settings' )->once()->with( m::type( \PHP_Typography\Settings::class ) )->andReturnFirstArg();
+		$settings->shouldReceive( 'get_hash' )->once()->with( m::type( 'int' ), false )->andReturn( '3858f62230ac3c915f300c664312c63f' );
+
 		Filters\expectApplied( 'typo_processed_text_caching_duration' )->once()->with( m::type( 'int' ) )->andReturn( 5 );
 
-		$typo_mock = m::mock( \PHP_Typography\PHP_Typography::class );
+		$process_method = $is_feed ? 'process_feed' : 'process';
+		$typo_mock      = m::mock( \PHP_Typography\PHP_Typography::class );
 		$this->wp_typo->shouldReceive( 'get_typography_instance' )->once()->andReturn( $typo_mock );
-		if ( $is_feed || $force_feed ) {
-			$typo_mock->shouldReceive( 'process_feed' )->once()->with( 'text', m::type( \PHP_Typography\Settings::class ), $is_title, [ 'foo', 'bar' ] )->andReturn( 'processed text' );
-		} else {
-			$typo_mock->shouldReceive( 'process' )->once()->with( 'text', m::type( \PHP_Typography\Settings::class ), $is_title, [ 'foo', 'bar' ] )->andReturn( 'processed text' );
-		}
+
+		$typo_mock->shouldReceive( $process_method )->once()->with( $text, m::type( Settings::class ), $is_title, [ 'foo', 'bar' ] )->andReturn( 'processed text' );
 
 		$this->cache
 			->shouldReceive( 'get' )->once()->andReturn( false )
 			->shouldReceive( 'set' )->once();
 
-		$this->assertSame( 'processed text', $this->wp_typo->process( 'text', $is_title, $force_feed, $settings ) );
+		$this->assertSame( 'processed text', $this->wp_typo->maybe_process_fragment( $text, $is_title, $is_feed, $settings ) );
 	}
 
 	/**
