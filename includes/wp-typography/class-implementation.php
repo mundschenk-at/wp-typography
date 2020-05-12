@@ -307,8 +307,10 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @since 4.0.0 Parameter $settings added.
 	 *
-	 * @param string        $text Required.
+	 * @param string        $text     The HTML fragment to process.
 	 * @param Settings|null $settings Optional. A settings object. Default null (which means the internal settings will be used).
+	 *
+	 * @return string                 The processed `$text`.
 	 */
 	public function process_title( $text, Settings $settings = null ) {
 		return $this->process( $text, true, false, $settings );
@@ -321,8 +323,10 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @since 5.3.0
 	 *
-	 * @param string        $text Required.
+	 * @param string        $text     The HTML fragment to process.
 	 * @param Settings|null $settings Optional. A settings object. Default null (which means the internal settings will be used).
+	 *
+	 * @return string                 The processed `$text`.
 	 */
 	public function process_feed_title( $text, Settings $settings = null ) {
 		return $this->process_feed( $text, true, $settings );
@@ -337,9 +341,11 @@ class Implementation extends \WP_Typography {
 	 * @since 4.0.0 Parameter $settings added.
 	 * @since 5.3.0 The method can be called both statically and dynamically.
 	 *
-	 * @param string        $text     Required.
-	 * @param bool          $is_title Optional. Default false.
+	 * @param string        $text     The HTML fragment to process.
+	 * @param bool          $is_title Optional. Whether the rules for titles should be applied. Default false.
 	 * @param Settings|null $settings Optional. A settings object. Default null (which means the internal settings will be used).
+	 *
+	 * @return string                 The processed `$text`.
 	 */
 	public function process_feed( $text, $is_title = false, Settings $settings = null ) {
 		return $this->process( $text, $is_title, true, $settings );
@@ -375,12 +381,12 @@ class Implementation extends \WP_Typography {
 	 * @since 4.0.0 Parameter $settings added.
 	 * @since 5.3.0 The method can be called both statically and dynamically.
 	 *
-	 * @param string        $text       Required.
-	 * @param bool          $is_title   Optional. Default false.
-	 * @param bool          $force_feed Optional. Default false.
+	 * @param string        $text       The HTML fragment to process.
+	 * @param bool          $is_title   Optional. Whether the rules for titles should be applied. Default false.
+	 * @param bool          $force_feed Optional. Whether to force processing according to feed rules. Default false.
 	 * @param Settings|null $settings   Optional. A settings object. Default null (which means the internal settings will be used).
 	 *
-	 * @return string The processed $text.
+	 * @return string                   The processed `$text`.
 	 */
 	public function process( $text, $is_title = false, $force_feed = false, Settings $settings = null ) {
 		// Use default settings if no argument was given.
@@ -629,9 +635,11 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @internal
 	 *
-	 * @param  string $custom_exceptions Additional exceptions configured via the settings page (as a comma-separated string).
+	 * @param  string $custom_exceptions Additional exceptions configured via the
+	 *                                   settings page (as a comma-separated string).
 	 *
-	 * @return string[]       An array of replacements, indexed by the key and sorted by descending key length.
+	 * @return string[]                  An array of replacements, indexed by the
+	 *                                   key and sorted by descending key length.
 	 */
 	protected function prepare_smart_quotes_exceptions( $custom_exceptions ) {
 		global $wp_cockneyreplace;
