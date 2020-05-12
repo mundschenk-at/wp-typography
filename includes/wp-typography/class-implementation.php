@@ -109,13 +109,6 @@ class Implementation extends \WP_Typography {
 	private $options;
 
 	/**
-	 * The PHP_Typography configuration is not changed after initialization, so the settings hash can be cached.
-	 *
-	 * @var string The settings hash for the PHP_Typography instance
-	 */
-	private $cached_settings_hash;
-
-	/**
 	 * The body classes for the current request.
 	 *
 	 * @var string[]
@@ -302,9 +295,6 @@ class Implementation extends \WP_Typography {
 
 			// Settings should be good now, so let's use them.
 			$this->typo_settings = $settings;
-
-			// Settings won't be touched again, so cache the hash.
-			$this->cached_settings_hash = $this->typo_settings->get_hash( 32, false );
 		}
 
 		return $this->typo_settings;
@@ -396,7 +386,6 @@ class Implementation extends \WP_Typography {
 		// Use default settings if no argument was given.
 		if ( null === $settings ) {
 			$settings = $this->get_settings();
-			$hash     = $this->cached_settings_hash;
 		}
 
 		/**
@@ -407,9 +396,7 @@ class Implementation extends \WP_Typography {
 		 * @param Settings $settings The settings instance.
 		 */
 		$settings = \apply_filters( 'typo_settings', $settings );
-
-		// Caclulate hash if necessary.
-		$hash = isset( $hash ) ? $hash : $settings->get_hash( 32, false );
+		$hash     = $settings->get_hash( 32, false );
 
 		// Enable feed mode?
 		$feed = $force_feed || \is_feed();
