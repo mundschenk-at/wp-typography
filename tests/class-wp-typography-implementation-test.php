@@ -561,10 +561,6 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 * @param  Settings $settings   May be null.
 	 */
 	public function test_process( $is_title, $force_feed, $is_feed, $settings = null ) {
-		if ( ! defined( 'DAY_IN_SECONDS' ) ) {
-			define( 'DAY_IN_SECONDS', 999 );
-		}
-
 		Functions\expect( 'is_feed' )->andReturn( $is_feed );
 
 		if ( null === $settings ) {
