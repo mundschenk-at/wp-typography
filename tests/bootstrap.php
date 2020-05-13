@@ -39,3 +39,20 @@ if ( ! \defined( 'WP_TYPOGRAPHY_PLUGIN_FILE' ) ) {
 if ( ! \defined( 'WP_TYPOGRAPHY_PLUGIN_PATH' ) ) {
 	\define( 'WP_TYPOGRAPHY_PLUGIN_PATH', 'plugin' );
 }
+
+// WordPress time constants.
+if ( ! defined( 'YEAR_IN_SECONDS' ) ) {
+	define( 'YEAR_IN_SECONDS', 60 * 60 * 24 * 365 );
+}
+if ( ! defined( 'WEEK_IN_SECONDS' ) ) {
+	define( 'WEEK_IN_SECONDS', 7 * 24 * 60 * 60 );
+}
+if ( ! defined( 'DAY_IN_SECONDS' ) ) {
+	define( 'DAY_IN_SECONDS', 24 * 60 * 60 );
+}
+if ( ! defined( 'HOUR_IN_SECONDS' ) ) {
+	define( 'HOUR_IN_SECONDS', 60 * 60 );
+}
+if ( ! defined( 'MINUTE_IN_SECONDS' ) ) {
+	define( 'MINUTE_IN_SECONDS', 60 );
+}
