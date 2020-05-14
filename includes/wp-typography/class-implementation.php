@@ -27,6 +27,8 @@
 
 namespace WP_Typography;
 
+use WP_Typography\Components\REST_API;
+
 use WP_Typography\Data_Storage\Cache;
 use WP_Typography\Data_Storage\Options;
 use WP_Typography\Data_Storage\Transients;
@@ -389,6 +391,11 @@ class Implementation extends \WP_Typography {
 	 * @return string                   The processed `$text`.
 	 */
 	public function process( $text, $is_title = false, $force_feed = false, Settings $settings = null ) {
+		// Check if processing is disabled for this post.
+		if ( \get_post_meta( \get_the_ID(), REST_API::WP_TYPOGRAPHY_DISABLED_META_KEY, true ) ) {
+			return $text;
+		}
+
 		// Use default settings if no argument was given.
 		if ( null === $settings ) {
 			$settings = $this->get_settings();
