@@ -24,6 +24,7 @@
 
 namespace WP_Typography\Tests;
 
+use WP_Typography\Components\REST_API;
 use WP_Typography\Data_Storage\Options;
 use WP_Typography\Settings\Plugin_Configuration as Config;
 
@@ -563,6 +564,8 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 */
 	public function test_process( $is_title, $force_feed, $is_feed, $settings = null ) {
 		Functions\expect( 'is_feed' )->andReturn( $is_feed );
+		Functions\expect( 'get_the_ID' )->once()->andReturn( false );
+		Functions\expect( 'get_post_meta' )->once()->with( false, REST_API::WP_TYPOGRAPHY_DISABLED_META_KEY, true )->andReturn( false );
 
 		if ( null === $settings ) {
 			$settings_mock = m::mock( Settings::class );
@@ -580,6 +583,37 @@ class WP_Typography_Implementation_Test extends TestCase {
 			->andReturn( 'processed text' );
 
 		$this->assertSame( 'processed text', $this->wp_typo->process( 'text', $is_title, $force_feed, $settings ) );
+	}
+
+	/**
+	 * Test process
+	 *
+	 * @covers ::process
+	 *
+	 * @uses ::set_instance
+	 *
+	 * @dataProvider provide_process_data
+	 *
+	 * @param  bool     $is_title   Fragment is a title.
+	 * @param  bool     $force_feed Enforce feed processing.
+	 * @param  bool     $is_feed    Value for is_feed().
+	 * @param  Settings $settings   May be null.
+	 */
+	public function test_process_disabled( $is_title, $force_feed, $is_feed, $settings = null ) {
+		$text    = 'my text';
+		$post_id = 67;
+
+		Functions\expect( 'is_feed' )->andReturn( $is_feed );
+		Functions\expect( 'get_the_ID' )->once()->andReturn( $post_id );
+		Functions\expect( 'get_post_meta' )->once()->with( $post_id, REST_API::WP_TYPOGRAPHY_DISABLED_META_KEY, true )->andReturn( true );
+
+		$this->wp_typo->shouldReceive( 'get_settings' )->never();
+
+		Filters\expectApplied( 'typo_settings' )->never();
+
+		$this->wp_typo->shouldReceive( 'maybe_process_fragment' )->never();
+
+		$this->assertSame( $text, $this->wp_typo->process( $text, $is_title, $force_feed, $settings ) );
 	}
 
 	/**
