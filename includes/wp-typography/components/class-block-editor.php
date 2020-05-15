@@ -57,7 +57,7 @@ class Block_Editor implements Plugin_Component {
 		$plugin_url = \plugins_url( '', \WP_TYPOGRAPHY_PLUGIN_FILE );
 
 		// Register the script containing all our block types.
-		$blocks = 'admin/blocks/js/index';
+		$blocks = 'admin/block-editor/js/index';
 		$asset  = include \WP_TYPOGRAPHY_PLUGIN_PATH . "/{$blocks}.asset.php";
 		\wp_register_script( 'wp-typography-gutenberg', "{$plugin_url}/{$blocks}.js", $asset['dependencies'], $asset['version'], false );
 
