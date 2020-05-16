@@ -132,7 +132,7 @@ class Admin_Interface implements Plugin_Component {
 	 *
 	 * @since 5.7.0 Renamed to $api.
 	 *
-	 * @var \WP_Typography
+	 * @var Implementation
 	 */
 	private $api;
 
