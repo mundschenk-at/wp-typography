@@ -21,28 +21,41 @@
  *
  * ***
  *
- * @file     This file handles the Gutenberg integration of the wp-Typography plugin.
- * @author   Peter Putzer <github@mundschenk.at>
- * @since    5.7.0
+ * @file    This file handles the Gutenberg sidebar provided by the wp-Typography plugin.
+ * @author  Peter Putzer <github@mundschenk.at>
+ * @since   5.7.0
  * @requires Gutenberg 4.3
  */
 
 /**
  * WordPress dependencies
  */
-import { registerPlugin } from '@wordpress/plugins';
+import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 
 /**
  * Internal dependencies
  */
-import * as sidebarPostToggle from './plugins/sidebar-post-toggle';
+import TypographyToggleControl from './toggle-control';
 
-// Register all our blocks.
-[ sidebarPostToggle ].forEach( ( plugin ) => {
-	if ( ! plugin ) {
-		return;
-	}
+/**
+ * Plugin metadata.
+ */
+export const name = 'wp-typography-sidebar';
+const icon = 'format-quote';
 
-	const { name, settings } = plugin;
-	registerPlugin( name, settings );
-} );
+/**
+ * Renders the plugin.
+ *
+ * @return {PluginDocumentSettingPanel} The sidebar component.
+ */
+const render = () => (
+	<PluginDocumentSettingPanel
+		name="wp-typography-settings-panel"
+		title="wp-Typography"
+	>
+		<TypographyToggleControl />
+	</PluginDocumentSettingPanel>
+);
+
+// Export settings.
+export const settings = { icon, render };
