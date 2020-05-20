@@ -563,9 +563,13 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 * @param  Settings $settings   May be null.
 	 */
 	public function test_process( $is_title, $force_feed, $is_feed, $settings = null ) {
+		$post_id = false; // Not in the loop.
+
 		Functions\expect( 'is_feed' )->andReturn( $is_feed );
-		Functions\expect( 'get_the_ID' )->once()->andReturn( false );
-		Functions\expect( 'get_post_meta' )->once()->with( false, REST_API::WP_TYPOGRAPHY_DISABLED_META_KEY, true )->andReturn( false );
+		Functions\expect( 'get_the_ID' )->once()->andReturn( $post_id );
+		Functions\expect( 'get_post_meta' )->never();
+
+		Filters\expectApplied( 'typo_disable_processing_for_post' )->once()->with( m::type( 'bool' ), $post_id )->andReturnFirstArg();
 
 		if ( null === $settings ) {
 			$settings_mock = m::mock( Settings::class );
@@ -606,6 +610,8 @@ class WP_Typography_Implementation_Test extends TestCase {
 		Functions\expect( 'is_feed' )->andReturn( $is_feed );
 		Functions\expect( 'get_the_ID' )->once()->andReturn( $post_id );
 		Functions\expect( 'get_post_meta' )->once()->with( $post_id, REST_API::WP_TYPOGRAPHY_DISABLED_META_KEY, true )->andReturn( true );
+
+		Filters\expectApplied( 'typo_disable_processing_for_post' )->once()->with( true, $post_id )->andReturnFirstArg();
 
 		$this->wp_typo->shouldReceive( 'get_settings' )->never();
 
