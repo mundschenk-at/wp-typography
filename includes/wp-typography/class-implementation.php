@@ -392,7 +392,24 @@ class Implementation extends \WP_Typography {
 	 */
 	public function process( $text, $is_title = false, $force_feed = false, Settings $settings = null ) {
 		// Check if processing is disabled for this post.
-		if ( \get_post_meta( \get_the_ID(), REST_API::WP_TYPOGRAPHY_DISABLED_META_KEY, true ) ) {
+		$post_id = \get_the_ID();
+		$disable = ! empty( $post_id ) && \get_post_meta( $post_id, REST_API::WP_TYPOGRAPHY_DISABLED_META_KEY, true );
+
+		/**
+		 * Filters whether wp-Typography should be disabled for this post. This
+		 * allows themes or plugins to override the post meta setting.
+		 *
+		 * @since 5.7.0
+		 *
+		 * @param bool     $disable  Flag for enabling or disabling typographic processing.
+		 *                           Default is the value of the post meta toggle (or false for
+		 *                           non-post uses).
+		 * @param int|false $post_id The ID of the current item in the WordPress Loop. False if $post is not set.
+		 */
+		$disable = \apply_filters( 'typo_disable_processing_for_post', $disable, $post_id );
+
+		// Return original HTML fragment if processing has been disabled.
+		if ( $disable ) {
 			return $text;
 		}
 
