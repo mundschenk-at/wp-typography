@@ -21,7 +21,7 @@
  *
  * ***
  *
- * @file     This file handles the Gutenberg integration of the wp-Typography plugin.
+ * @file     This file handles the edit function for the Typography block.
  * @author   Peter Putzer <github@mundschenk.at>
  * @since    5.7.0
  * @requires Gutenberg 4.3
@@ -30,33 +30,33 @@
 /**
  * WordPress dependencies
  */
-import { registerBlockType } from '@wordpress/blocks';
-import { registerPlugin } from '@wordpress/plugins';
+import { InnerBlocks } from '@wordpress/block-editor';
+import { __ } from '@wordpress/i18n';
 
 /**
- * Internal dependencies
+ * Edits the block attributes.
+ *
+ * Makes the markup for the editor interface.
+ *
+ * @param {Object} props {
+ *     attributes    - The block attributes.
+ *     setAttributes - The attribute setter function.
+ * }
+ *
+ * @return {Object} ECMAScript JSX Markup for the editor
  */
-import * as typographyBlock from './blocks/typography';
-import * as sidebarPlugin from './plugins/sidebar-post-toggle';
+export default ( props ) => {
+	const { className } = props;
 
-// Register all our blocks.
-[ typographyBlock ].forEach( ( block ) => {
-	if ( ! block ) {
-		return;
-	}
-	const { metadata, settings, name } = block;
-	registerBlockType( name, {
-		...metadata,
-		...settings,
-	} );
-} );
-
-// Register the plugins as well.
-[ sidebarPlugin ].forEach( ( plugin ) => {
-	if ( ! plugin ) {
-		return;
-	}
-
-	const { name, settings } = plugin;
-	registerPlugin( name, settings );
-} );
+	return (
+		<div className={ className }>
+			<span className="wp-typography-block-help">
+				{ __(
+					'Any blocks added as children will have wp-Typography fixes applied.',
+					'wp-typography'
+				) }
+			</span>
+			<InnerBlocks />
+		</div>
+	);
+};

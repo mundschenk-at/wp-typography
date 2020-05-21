@@ -86,6 +86,224 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./admin/block-editor/src/blocks/typography/block.json":
+/*!*************************************************************!*\
+  !*** ./admin/block-editor/src/blocks/typography/block.json ***!
+  \*************************************************************/
+/*! exports provided: name, title, category, icon, attributes, default */
+/***/ (function(module) {
+
+module.exports = JSON.parse("{\"name\":\"wp-typography/typography\",\"title\":\"Typography\",\"category\":\"common\",\"icon\":\"format-quote\",\"attributes\":{}}");
+
+/***/ }),
+
+/***/ "./admin/block-editor/src/blocks/typography/edit.js":
+/*!**********************************************************!*\
+  !*** ./admin/block-editor/src/blocks/typography/edit.js ***!
+  \**********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__);
+
+/**
+ * This file is part of wp-Typography.
+ *
+ * Copyright 2020 Peter Putzer.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * ***
+ *
+ * @file     This file handles the edit function for the Typography block.
+ * @author   Peter Putzer <github@mundschenk.at>
+ * @since    5.7.0
+ * @requires Gutenberg 4.3
+ */
+
+/**
+ * WordPress dependencies
+ */
+
+
+
+
+/**
+ * Edits the block attributes.
+ *
+ * Makes the markup for the editor interface.
+ *
+ * @param {Object} props {
+ *     attributes    - The block attributes.
+ *     setAttributes - The attribute setter function.
+ * }
+ *
+ * @return {Object} ECMAScript JSX Markup for the editor
+ */
+
+/* harmony default export */ __webpack_exports__["default"] = (function (props) {
+  var className = props.className;
+  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+    className: className
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("span", {
+    className: "wp-typography-block-help"
+  }, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Any blocks added as children will have wp-Typography fixes applied.', 'wp-typography')), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__["InnerBlocks"], null));
+});
+
+/***/ }),
+
+/***/ "./admin/block-editor/src/blocks/typography/index.js":
+/*!***********************************************************!*\
+  !*** ./admin/block-editor/src/blocks/typography/index.js ***!
+  \***********************************************************/
+/*! exports provided: metadata, name, settings */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "name", function() { return name; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "settings", function() { return settings; });
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./edit */ "./admin/block-editor/src/blocks/typography/edit.js");
+/* harmony import */ var _save__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./save */ "./admin/block-editor/src/blocks/typography/save.js");
+/* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./block.json */ "./admin/block-editor/src/blocks/typography/block.json");
+var _block_json__WEBPACK_IMPORTED_MODULE_3___namespace = /*#__PURE__*/__webpack_require__.t(/*! ./block.json */ "./admin/block-editor/src/blocks/typography/block.json", 1);
+/* harmony reexport (default from named exports) */ __webpack_require__.d(__webpack_exports__, "metadata", function() { return _block_json__WEBPACK_IMPORTED_MODULE_3__; });
+
+/**
+ * This file is part of wp-Typography.
+ *
+ * Copyright 2020 Peter Putzer.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * ***
+ *
+ * @file     This file handles the Typography block.
+ * @author   Peter Putzer <github@mundschenk.at>
+ * @since    5.7.0
+ * @requires Gutenberg 4.3
+ */
+
+/**
+ * WordPress dependencies
+ */
+
+
+/**
+ * Internal dependencies
+ */
+
+
+
+
+var name = _block_json__WEBPACK_IMPORTED_MODULE_3__.name;
+
+var settings = {
+  title: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__["__"])('Typography', 'wp-typography'),
+  supports: {
+    align: false,
+    html: false
+  },
+  edit: _edit__WEBPACK_IMPORTED_MODULE_1__["default"],
+  save: _save__WEBPACK_IMPORTED_MODULE_2__["default"]
+};
+
+/***/ }),
+
+/***/ "./admin/block-editor/src/blocks/typography/save.js":
+/*!**********************************************************!*\
+  !*** ./admin/block-editor/src/blocks/typography/save.js ***!
+  \**********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__);
+
+/**
+ * This file is part of wp-Typography.
+ *
+ * Copyright 2020 Peter Putzer.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * ***
+ *
+ * @file     This file handles the save function for the Typography block.
+ * @author   Peter Putzer <github@mundschenk.at>
+ * @since    5.7.0
+ * @requires Gutenberg 4.3
+ */
+
+/**
+ * WordPress dependencies
+ */
+
+
+
+/**
+ * Saves the block attributes.
+ *
+ * Makes the markup for the editor interface.
+ *
+ * @return {Object} ECMAScript JSX Markup for the editor
+ */
+
+/* harmony default export */ __webpack_exports__["default"] = (function () {
+  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__["InnerBlocks"].Content, null));
+});
+
+/***/ }),
+
 /***/ "./admin/block-editor/src/index.js":
 /*!*****************************************!*\
   !*** ./admin/block-editor/src/index.js ***!
@@ -97,10 +315,12 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
 /* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_plugins__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/plugins */ "@wordpress/plugins");
-/* harmony import */ var _wordpress_plugins__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_plugins__WEBPACK_IMPORTED_MODULE_1__);
-!(function webpackMissingModule() { var e = new Error("Cannot find module './blocks/typography'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
-/* harmony import */ var _plugins_sidebar_post_toggle__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./plugins/sidebar-post-toggle */ "./admin/block-editor/src/plugins/sidebar-post-toggle/index.js");
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_plugins__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/plugins */ "@wordpress/plugins");
+/* harmony import */ var _wordpress_plugins__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_plugins__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _blocks_typography__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./blocks/typography */ "./admin/block-editor/src/blocks/typography/index.js");
+/* harmony import */ var _plugins_sidebar_post_toggle__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./plugins/sidebar-post-toggle */ "./admin/block-editor/src/plugins/sidebar-post-toggle/index.js");
 
 /**
  * This file is part of wp-Typography.
@@ -140,6 +360,7 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 
+
 /**
  * Internal dependencies
  */
@@ -147,7 +368,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
  // Register all our blocks.
 
-[!(function webpackMissingModule() { var e = new Error("Cannot find module './blocks/typography'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())].forEach(function (block) {
+[_blocks_typography__WEBPACK_IMPORTED_MODULE_3__].forEach(function (block) {
   if (!block) {
     return;
   }
@@ -155,17 +376,17 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
   var metadata = block.metadata,
       settings = block.settings,
       name = block.name;
-  Object(_wordpress_plugins__WEBPACK_IMPORTED_MODULE_1__["registerBlockType"])(name, _objectSpread(_objectSpread({}, metadata), settings));
+  Object(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__["registerBlockType"])(name, _objectSpread(_objectSpread({}, metadata), settings));
 }); // Register the plugins as well.
 
-[_plugins_sidebar_post_toggle__WEBPACK_IMPORTED_MODULE_3__].forEach(function (plugin) {
+[_plugins_sidebar_post_toggle__WEBPACK_IMPORTED_MODULE_4__].forEach(function (plugin) {
   if (!plugin) {
     return;
   }
 
   var name = plugin.name,
       settings = plugin.settings;
-  Object(_wordpress_plugins__WEBPACK_IMPORTED_MODULE_1__["registerPlugin"])(name, settings);
+  Object(_wordpress_plugins__WEBPACK_IMPORTED_MODULE_2__["registerPlugin"])(name, settings);
 });
 
 /***/ }),
@@ -341,6 +562,28 @@ function _defineProperty(obj, key, value) {
 }
 
 module.exports = _defineProperty;
+
+/***/ }),
+
+/***/ "@wordpress/block-editor":
+/*!**********************************************!*\
+  !*** external {"this":["wp","blockEditor"]} ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+(function() { module.exports = this["wp"]["blockEditor"]; }());
+
+/***/ }),
+
+/***/ "@wordpress/blocks":
+/*!*****************************************!*\
+  !*** external {"this":["wp","blocks"]} ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+(function() { module.exports = this["wp"]["blocks"]; }());
 
 /***/ }),
 
