@@ -43,6 +43,7 @@ module.exports = function(grunt) {
                         '*.php',
                         'includes/**',
                         'admin/**',
+                        '!admin/block-editor/js/**',
                         '!**/scss/**',
                         'js/**',
                         'vendor/**/partials/**',
