@@ -1,6 +1,8 @@
 # Changes
 
 ## 5.7.0 - unreleased
+*   _Feature_: New block `wp-typography/typography` added to apply typography fixes on nested blocks
+    (e.g. in widgets). 
 *   _Bugfix_: Copying from form fields works again when `Remove hyphenation when copying to clipboard` is enabled.
 
 ## 5.6.1 - December 24, 2019
