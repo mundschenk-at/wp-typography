@@ -80,7 +80,9 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 == Changelog ==
 
 = 5.7.0 - unreleased =
-* _Feature_: New block `wp-typography/typography` added to apply typography fixes on nested blocks (e.g. in widgets). 
+* _Feature_: Disable wp-Typography for specific posts/pages (via a sidebar toggle in the block editor or the filter hook `typo_disable_processing_for_post`).
+* _Feature_: New block `wp-typography/typography` added to apply typography fixes on nested blocks (e.g. in widgets).
+* _Change_: The DOM extension is now explicitly required for running the plugin.
 * _Bugfix_: Copying from form fields works again when `Remove hyphenation when copying to clipboard` is enabled.
 
 = 5.6.1 - December 24, 2019 =
