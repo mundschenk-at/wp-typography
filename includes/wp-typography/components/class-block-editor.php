@@ -26,6 +26,8 @@
 
 namespace WP_Typography\Components;
 
+use WP_Typography\Implementation;
+
 /**
  * The component providing our Gutenberg blocks.
  *
@@ -34,6 +36,22 @@ namespace WP_Typography\Components;
  * @author Peter Putzer <github@mundschenk.at>
  */
 class Block_Editor implements Plugin_Component {
+
+	/**
+	 * The plugin API.
+	 *
+	 * @var Implementation
+	 */
+	private $api;
+
+	/**
+	 * Create a new instace.
+	 *
+	 * @param Implementation $api The core API.
+	 */
+	public function __construct( Implementation $api ) {
+		$this->api = $api;
+	}
 
 	/**
 	 * Set up the various hooks for the block editor.
@@ -45,21 +63,34 @@ class Block_Editor implements Plugin_Component {
 		}
 
 		// Register and enqueue sidebar.
-		\add_action( 'init', [ $this, 'register_sidebar' ] );
+		\add_action( 'init', [ $this, 'register_sidebar_and_blocks' ] );
 		\add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_sidebar' ] );
 	}
 
 	/**
 	 * Registers the Gutenberg sidebar.
 	 */
-	public function register_sidebar() {
+	public function register_sidebar_and_blocks() {
 		$suffix     = ( \defined( 'SCRIPT_DEBUG' ) && \SCRIPT_DEBUG ) ? '' : '.min';
 		$plugin_url = \plugins_url( '', \WP_TYPOGRAPHY_PLUGIN_FILE );
 
-		// Register the script containing all our block types.
+		// Register the script containing all our block types (and the sidebar plugin).
 		$blocks = 'admin/block-editor/js/index';
 		$asset  = include \WP_TYPOGRAPHY_PLUGIN_PATH . "/{$blocks}.asset.php";
 		\wp_register_script( 'wp-typography-gutenberg', "{$plugin_url}/{$blocks}.js", $asset['dependencies'], $asset['version'], false );
+		\wp_register_style( 'wp-typography-gutenberg-style', "{$plugin_url}/admin/css/blocks{$suffix}.css", [], $this->api->get_version() );
+
+		// Register each individual block type:
+		// The frontend form block.
+		\register_block_type(
+			'wp-typography/typography',
+			[
+				'editor_script'   => 'wp-typography-gutenberg',
+				'editor_style'    => 'wp-typography-gutenberg-style',
+				'render_callback' => [ $this, 'render_typography_block' ],
+				'attributes'      => [],
+			]
+		);
 
 		// Enable i18n.
 		\wp_set_script_translations( 'wp-typography-gutenberg', 'wp-typography' );
@@ -70,5 +101,22 @@ class Block_Editor implements Plugin_Component {
 	 */
 	public function enqueue_sidebar() {
 		\wp_enqueue_script( 'wp-typography-gutenberg' );
+	}
+
+	/**
+	 * Renders the frontend form.
+	 *
+	 * @param  array  $attributes The `wp-typography/typography` block attributes.
+	 * @param  string $content    The content of the inner blocks.
+	 *
+	 * @return string
+	 */
+	public function render_typography_block( array $attributes, $content ) {
+		// Ensure that the inner blocks are processed.
+		\add_filter( 'typo_disable_processing_for_post', '__return_false', 999, 0 );
+		$markup = $this->api->process( $content );
+		\remove_filter( 'typo_disable_processing_for_post', '__return_false', 999 );
+
+		return $markup;
 	}
 }

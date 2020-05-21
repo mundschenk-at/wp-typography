@@ -41,6 +41,8 @@ use org\bovigo\vfs\vfsStream;
  *
  * @coversDefaultClass \WP_Typography\Components\Block_Editor
  * @usesDefaultClass \WP_Typography\Components\Block_Editor
+ *
+ * @uses ::__construct
  */
 class Block_Editor_Test extends TestCase {
 
@@ -50,6 +52,13 @@ class Block_Editor_Test extends TestCase {
 	 * @var Block_Editor
 	 */
 	protected $sut;
+
+	/**
+	 * Test fixture.
+	 *
+	 * @var \WP_Typography\Implementation
+	 */
+	protected $api;
 
 	/**
 	 * Sets up the fixture, for example, opens a network connection.
@@ -62,9 +71,25 @@ class Block_Editor_Test extends TestCase {
 		$root = vfsStream::setup( 'root', null, [] );
 		\set_include_path( 'vfs://root/' ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_set_include_path
 
+		$this->api = m::mock( \WP_Typography\Implementation::class );
+
 		// Mock WP_Typography\Components\Block_Editor instance.
-		$this->sut = m::mock( Block_Editor::class )
+		$this->sut = m::mock( Block_Editor::class, [ $this->api ] )
 			->shouldAllowMockingProtectedMethods()->makePartial();
+	}
+
+	/**
+	 * Tests the constructor.
+	 *
+	 * @covers ::__construct
+	 */
+	public function test_constructor() {
+		$sut = m::mock( Block_Editor::class )->shouldAllowMockingProtectedMethods()->makePartial();
+		$api = m::mock( \WP_Typography\Implementation::class );
+
+		$sut->__construct( $api );
+
+		$this->assert_attribute_same( $api, 'api', $sut );
 	}
 
 	/**
@@ -87,19 +112,20 @@ class Block_Editor_Test extends TestCase {
 	public function test_run() {
 		Functions\when( 'register_block_type' );
 
-		Actions\expectAdded( 'init' )->with( [ $this->sut, 'register_sidebar' ] )->once();
+		Actions\expectAdded( 'init' )->with( [ $this->sut, 'register_sidebar_and_blocks' ] )->once();
 		Actions\expectAdded( 'enqueue_block_editor_assets' )->with( [ $this->sut, 'enqueue_sidebar' ] )->once();
 
 		$this->assertNull( $this->sut->run() );
 	}
 
 	/**
-	 * Tests register_sidebar.
+	 * Tests register_sidebar_and_blocks.
 	 *
-	 * @covers ::register_sidebar
+	 * @covers ::register_sidebar_and_blocks
 	 */
-	public function test_register_sidebar() {
-		$plugin_url = 'http://my_plugin/url';
+	public function test_register_sidebar_and_blocks() {
+		$plugin_url     = 'http://my_plugin/url';
+		$plugin_version = '6.6.6';
 		// Simulate blocks dependencies.
 		$blocks_version = 'fake blocks version';
 		$blocks_deps    = [ 'foo', 'bar' ];
@@ -108,7 +134,7 @@ class Block_Editor_Test extends TestCase {
 			[
 				'plugin' => [
 					'admin' => [
-						'blocks' => [
+						'block-editor' => [
 							'js' => [
 								'index.asset.php' => $asset,
 							],
@@ -118,11 +144,15 @@ class Block_Editor_Test extends TestCase {
 			]
 		);
 
+		$this->api->shouldReceive( 'get_version' )->once()->andReturn( $plugin_version );
+
 		Functions\expect( 'plugins_url' )->once()->with( '', \WP_TYPOGRAPHY_PLUGIN_FILE )->andReturn( $plugin_url );
 		Functions\expect( 'wp_register_script' )->once()->with( 'wp-typography-gutenberg', m::pattern( '/' . \preg_quote( $plugin_url, '/' ) . '.*\\.js$/' ), $blocks_deps, $blocks_version, false );
+		Functions\expect( 'wp_register_style' )->once()->with( 'wp-typography-gutenberg-style', m::pattern( '/' . \preg_quote( $plugin_url, '/' ) . '.*\\.css$/' ), [], $plugin_version );
+		Functions\expect( 'register_block_type' )->once()->with( 'wp-typography/typography', m::type( 'array' ) );
 		Functions\expect( 'wp_set_script_translations' )->once()->with( 'wp-typography-gutenberg', 'wp-typography' );
 
-		$this->assertNull( $this->sut->register_sidebar() );
+		$this->assertNull( $this->sut->register_sidebar_and_blocks() );
 	}
 
 	/**
@@ -134,5 +164,22 @@ class Block_Editor_Test extends TestCase {
 		Functions\expect( 'wp_enqueue_script' )->once()->with( 'wp-typography-gutenberg' );
 
 		$this->assertNull( $this->sut->enqueue_sidebar() );
+	}
+
+	/**
+	 * Tests render_typography_block.
+	 *
+	 * @covers ::render_typography_block
+	 */
+	public function test_render_typography_block() {
+		$attributes = [];
+		$content    = 'my content';
+
+		$this->api->shouldReceive( 'process' )->once()->with( $content );
+
+		Filters\expectAdded( 'typo_disable_processing_for_post' )->once()->with( '__return_false', 999, 0 );
+		Filters\expectRemoved( 'typo_disable_processing_for_post' )->once()->with( '__return_false', 999 );
+
+		$this->assertNull( $this->sut->render_typography_block( $attributes, $content ) );
 	}
 }

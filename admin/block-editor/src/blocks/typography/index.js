@@ -21,7 +21,7 @@
  *
  * ***
  *
- * @file     This file handles the Gutenberg integration of the wp-Typography plugin.
+ * @file     This file handles the Typography block.
  * @author   Peter Putzer <github@mundschenk.at>
  * @since    5.7.0
  * @requires Gutenberg 4.3
@@ -30,33 +30,27 @@
 /**
  * WordPress dependencies
  */
-import { registerBlockType } from '@wordpress/blocks';
-import { registerPlugin } from '@wordpress/plugins';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
  */
-import * as typographyBlock from './blocks/typography';
-import * as sidebarPlugin from './plugins/sidebar-post-toggle';
+import edit from './edit';
+import save from './save';
+import metadata from './block.json';
 
-// Register all our blocks.
-[ typographyBlock ].forEach( ( block ) => {
-	if ( ! block ) {
-		return;
-	}
-	const { metadata, settings, name } = block;
-	registerBlockType( name, {
-		...metadata,
-		...settings,
-	} );
-} );
+const { name } = metadata;
 
-// Register the plugins as well.
-[ sidebarPlugin ].forEach( ( plugin ) => {
-	if ( ! plugin ) {
-		return;
-	}
+export { metadata, name };
 
-	const { name, settings } = plugin;
-	registerPlugin( name, settings );
-} );
+export const settings = {
+	title: __( 'Typography', 'wp-typography' ),
+
+	supports: {
+		align: false,
+		html: false,
+	},
+
+	edit,
+	save,
+};
