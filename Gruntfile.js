@@ -86,6 +86,7 @@ module.exports = function(grunt) {
             build: ["build/*"],
             autoloader: [
               "build/composer.*",
+              "build/vendor-scoped/bin",
               "build/vendor-scoped/composer/*.json",
               "build/vendor-scoped/scoper-autoload.php",
               "build/vendor-scoped/mundschenk-at/composer-for-wordpress/**"
