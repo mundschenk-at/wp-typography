@@ -109,26 +109,3 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 * _Change_: The smart quotes preview in the settings page should now be easier to read.
 * _Change_: All external PHP dependencies have been moved to the namespace `WP_Typography\Vendor` to reduce the chance of conflicts with other plugins.
 * _Bugfix_: The regular expression for cleaning user-supplied CSS no longer uses invalid syntax. This should fix any errors in PHP 7.3.
-
-= 5.5.4 - March 11, 2019 =
-* _Bugfix_: Automatic language detection now also works for locales without a country code (e.g. `fi`).
-* _Bugfix_: No PHP notices are shown for missing options anymore.
-
-= 5.5.3 - February 2, 2019 =
-* _Bugfix_: Custom styles containing quote characters are now output correctly.
-
-= 5.5.2 - January 29, 2019 =
-* _Bugfix_: To prevent common false positives for single-letter Roman ordinals (especially in French and Dutch), Roman numeral matching now has to be explicitly enabled in the settings. In addition, only `I`, `V`, and `X` are accepted as single-letter Roman numbers.
-
-= 5.5.1 - January 27, 2019 =
-* _Bugfix_: Parts of hyphenated words should not be detected as Roman numerals anymore.
-* _Bugfix_: The Unicode hyphen character (‐) is recognized as a valid word combiner.
-
-= 5.5.0 - January 27, 2019 =
-* _Feature_: French (1<sup>ère</sup>) and "Latin" (1<sup>o</sup>) ordinal numbers are now supported by the smart ordinals feature (also with Roman numerals, e.g. XIX<sup>ème</sup>).
-* _Feature_: The list of smart quotes exceptions (words beginning with apostrophes) can now be customized.
-* _Feature_: HTML5 parser performance hugely improved (up to 11× faster).
-* _Bugfix_: Output filtering is now suspended during WP-CLI commands.
-* _Bugfix_: Unit spacing is now properly applied to monetary symbols ($, €, etc.).
-* _Bugfix_: Certain HTML entities (e.g. `&amp;`) were accidentally dropped in rare cases.
-* _Bugfix_: Comply with the new WordPress Coding Standards 2.0.
