@@ -79,7 +79,7 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 
 == Changelog ==
 
-= 5.7.0 - unreleased =
+= 5.7.0 - May 22, 2020 =
 * _Feature_: Disable wp-Typography for specific posts/pages (via a sidebar toggle in the block editor or the filter hook `typo_disable_processing_for_post`).
 * _Feature_: New block `wp-typography/typography` added to apply typography fixes on nested blocks (e.g. in widgets).
 * _Change_: Significantly updated hyphenation patterns for:
