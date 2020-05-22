@@ -82,6 +82,15 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 = 5.7.0 - unreleased =
 * _Feature_: Disable wp-Typography for specific posts/pages (via a sidebar toggle in the block editor or the filter hook `typo_disable_processing_for_post`).
 * _Feature_: New block `wp-typography/typography` added to apply typography fixes on nested blocks (e.g. in widgets).
+* _Change_: Significantly updated hyphenation patterns for:
+  - Amharic,
+  - Chinese pinyin (Latin),
+  - German,
+  - German (Traditional),
+  - German (Swiss Traditional),
+  - Latin (Classical),
+  - Latin (Liturgical),
+  - Spanish.
 * _Change_: The minimum version has been raised to WordPress 4.9.
 * _Change_: The DOM extension is now explicitly required for running the plugin.
 * _Bugfix_: Copying from form fields works again when `Remove hyphenation when copying to clipboard` is enabled.
