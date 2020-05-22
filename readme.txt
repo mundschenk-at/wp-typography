@@ -4,7 +4,7 @@ Tags: typography, hyphenation, smart quotes, formatting, widows, orphans, typogr
 Requires at least: 4.9
 Requires PHP: 5.6
 Tested up to: 5.4
-Stable tag: 5.6.1
+Stable tag: 5.7.0
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
