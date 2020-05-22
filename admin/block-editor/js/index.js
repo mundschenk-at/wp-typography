@@ -514,7 +514,7 @@ __webpack_require__.r(__webpack_exports__);
 var TypographyToggleControl = function TypographyToggleControl(props) {
   return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__["ToggleControl"], {
     label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('Enable enhancements.', 'wp-typography'),
-    help: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('No help is coming for you.', 'wp-typography'),
+    help: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__["__"])('wp-Typography is enabled for all posts unless you disable processing via this switch.', 'wp-typography'),
     checked: props.typographyEnabled,
     onChange: function onChange(checked) {
       props.setTypographyEnabled(checked);

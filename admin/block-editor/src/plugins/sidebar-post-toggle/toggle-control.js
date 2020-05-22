@@ -19,7 +19,10 @@ import { ToggleControl } from '@wordpress/components';
 export const TypographyToggleControl = ( props ) => (
 	<ToggleControl
 		label={ __( 'Enable enhancements.', 'wp-typography' ) }
-		help={ __( 'No help is coming for you.', 'wp-typography' ) }
+		help={ __(
+			'wp-Typography is enabled for all posts unless you disable processing via this switch.',
+			'wp-typography'
+		) }
 		checked={ props.typographyEnabled }
 		onChange={ ( checked ) => {
 			props.setTypographyEnabled( checked );
