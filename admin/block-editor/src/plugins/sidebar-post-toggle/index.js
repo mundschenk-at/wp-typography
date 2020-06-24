@@ -31,6 +31,7 @@
  * WordPress dependencies
  */
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -48,14 +49,25 @@ const icon = 'format-quote';
  *
  * @return {PluginDocumentSettingPanel} The sidebar component.
  */
-const render = () => (
-	<PluginDocumentSettingPanel
-		name="wp-typography-settings-panel"
-		title="wp-Typography"
-	>
-		<TypographyToggleControl />
-	</PluginDocumentSettingPanel>
-);
+const render = () => {
+	const isGBPost =
+		select( 'core/editor' ).getEditedPostAttribute( 'meta' ) || false;
+
+	if ( ! isGBPost ) {
+		// No custom-fields support for this custom post type.
+		// Instead of the panel, we just return an empty fragment.
+		return <></>;
+	}
+
+	return (
+		<PluginDocumentSettingPanel
+			name="wp-typography-settings-panel"
+			title="wp-Typography"
+		>
+			<TypographyToggleControl />
+		</PluginDocumentSettingPanel>
+	);
+};
 
 // Export settings.
 export const settings = { icon, render };

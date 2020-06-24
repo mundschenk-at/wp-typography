@@ -406,7 +406,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _wordpress_edit_post__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/edit-post */ "@wordpress/edit-post");
 /* harmony import */ var _wordpress_edit_post__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_edit_post__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _toggle_control__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./toggle-control */ "./admin/block-editor/src/plugins/sidebar-post-toggle/toggle-control.js");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _toggle_control__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./toggle-control */ "./admin/block-editor/src/plugins/sidebar-post-toggle/toggle-control.js");
 
 /**
  * This file is part of wp-Typography.
@@ -441,6 +443,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 /**
  * Internal dependencies
  */
@@ -459,10 +462,18 @@ var icon = 'format-quote';
  */
 
 var render = function render() {
+  var isGBPost = Object(_wordpress_data__WEBPACK_IMPORTED_MODULE_2__["select"])('core/editor').getEditedPostAttribute('meta') || false;
+
+  if (!isGBPost) {
+    // No custom-fields support for this custom post type.
+    // Instead of the panel, we just return an empty fragment.
+    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null);
+  }
+
   return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_edit_post__WEBPACK_IMPORTED_MODULE_1__["PluginDocumentSettingPanel"], {
     name: "wp-typography-settings-panel",
     title: "wp-Typography"
-  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_toggle_control__WEBPACK_IMPORTED_MODULE_2__["default"], null));
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_toggle_control__WEBPACK_IMPORTED_MODULE_3__["default"], null));
 }; // Export settings.
 
 
