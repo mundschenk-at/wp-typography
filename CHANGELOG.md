@@ -1,5 +1,10 @@
 # Changes
 
+## 5.7.1 - June 24, 2020
+*   _Bugfix_: Filters can be removed again with `remove_filter()`.
+*   _Bugfix_: The block editor does not crash anymore when trying to edit a custom
+    post type that does not support `custom-fields`.
+
 ## 5.7.0 - May 22, 2020
 *   _Feature_: Disable wp-Typography for specific posts/pages (via a sidebar toggle
     in the block editor or the filter hook `typo_disable_processing_for_post`).
