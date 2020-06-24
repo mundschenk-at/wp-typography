@@ -110,7 +110,8 @@ class WP_Typography_Factory extends Dice {
 					'instance' => \WP_Typography\Implementation::class,
 				],
 			],
-			\WP_Typography::class                  => [
+			\WP_Typography\Implementation::class   => [
+				'shared'          => true,
 				'constructParams' => [ $this->get_plugin_version( \WP_TYPOGRAPHY_PLUGIN_FILE ) ],
 			],
 
