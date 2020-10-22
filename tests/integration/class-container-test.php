@@ -108,7 +108,7 @@ class Container_Test extends TestCase {
 
 		$this->integrations->activate();
 
-		$this->assertTrue( \has_filter( 'typo_content_filters', [ $this->integrations, 'get_content_filters' ] ) );
+		$this->assertTrue( (bool) \has_filter( 'typo_content_filters', [ $this->integrations, 'get_content_filters' ] ) );
 	}
 
 	/**

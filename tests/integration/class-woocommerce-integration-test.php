@@ -134,9 +134,9 @@ class WooCommerce_Integration_Test extends TestCase {
 
 		$this->woo_i->enable_content_filters( 666 );
 
-		$this->assertTrue( \has_filter( 'woocommerce_format_content', [ $api, 'process' ] ) );
-		$this->assertTrue( \has_filter( 'woocommerce_add_error', [ $api, 'process' ] ) );
-		$this->assertTrue( \has_filter( 'woocommerce_add_success', [ $api, 'process' ] ) );
-		$this->assertTrue( \has_filter( 'woocommerce_add_notice', [ $api, 'process' ] ) );
+		$this->assertTrue( (bool) \has_filter( 'woocommerce_format_content', [ $api, 'process' ] ) );
+		$this->assertTrue( (bool) \has_filter( 'woocommerce_add_error', [ $api, 'process' ] ) );
+		$this->assertTrue( (bool) \has_filter( 'woocommerce_add_success', [ $api, 'process' ] ) );
+		$this->assertTrue( (bool) \has_filter( 'woocommerce_add_notice', [ $api, 'process' ] ) );
 	}
 }

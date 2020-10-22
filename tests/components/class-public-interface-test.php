@@ -112,7 +112,7 @@ class Public_Interface_Test extends TestCase {
 
 		$this->assertNull( $this->public_if->run() );
 
-		$this->assertTrue( \has_action( 'init', [ $this->public_if, 'init' ] ) );
+		$this->assertTrue( (bool) \has_action( 'init', [ $this->public_if, 'init' ] ) );
 	}
 
 	/**
@@ -177,11 +177,11 @@ class Public_Interface_Test extends TestCase {
 
 		$this->public_if->init();
 
-		self::assertTrue( has_filter( 'body_class', [ $this->api, 'filter_body_class' ] ) );
+		self::assertTrue( (bool) \has_filter( 'body_class', [ $this->api, 'filter_body_class' ] ) );
 
-		self::assertTrue( has_action( 'wp_enqueue_scripts', [ $this->public_if, 'enqueue_styles' ] ) );
-		self::assertTrue( has_action( 'wp_enqueue_scripts', [ $this->public_if, 'enqueue_scripts' ] ) );
-		self::assertTrue( has_action( 'shutdown', [ $this->api, 'save_hyphenator_cache_on_shutdown' ] ) );
+		self::assertTrue( (bool) \has_action( 'wp_enqueue_scripts', [ $this->public_if, 'enqueue_styles' ] ) );
+		self::assertTrue( (bool) \has_action( 'wp_enqueue_scripts', [ $this->public_if, 'enqueue_scripts' ] ) );
+		self::assertTrue( (bool) \has_action( 'shutdown', [ $this->api, 'save_hyphenator_cache_on_shutdown' ] ) );
 
 		if ( $nextgen ) {
 			$this->assert_attribute_same( PHP_INT_MAX, 'filter_priority', $this->public_if );
@@ -256,14 +256,14 @@ class Public_Interface_Test extends TestCase {
 				$hook .= '_content';
 			}
 
-			$found = has_filter( $hook, "{$api_class}->process()" );
+			$found = (bool) \has_filter( $hook, "{$api_class}->process()" );
 			$this->assertEquals( $expected, $found, "Hook $hook" . ( $expected ? '' : ' not' ) . ' expected, but' . ( $found ? '' : ' not' ) . ' found.' );
 		}
 
 		// Heading hooks.
 		$expected = ! $heading;
 		foreach ( $heading_hooks as $hook ) {
-			$found = has_filter( $hook, "{$api_class}->process_title()" );
+			$found = (bool) \has_filter( $hook, "{$api_class}->process_title()" );
 			$this->assertEquals( $expected, $found, "Hook $hook" . ( $expected ? '' : ' not' ) . ' expected, but' . ( $found ? '' : ' not' ) . ' found.' );
 		}
 	}

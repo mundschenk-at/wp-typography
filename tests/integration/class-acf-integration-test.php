@@ -182,9 +182,9 @@ class ACF_Integration_Test extends TestCase {
 
 		$this->acf_i->enable_content_filters( 666 );
 
-		$this->assertTrue( \has_filter( 'acf/format_value_for_api/type=wysiwyg', [ $this->api, 'process' ] ) );
-		$this->assertTrue( \has_filter( 'acf/format_value_for_api/type=textarea', [ $this->api, 'process' ] ) );
-		$this->assertTrue( \has_filter( 'acf/format_value_for_api/type=text', [ $this->api, 'process_title' ] ) );
+		$this->assertTrue( (bool) \has_filter( 'acf/format_value_for_api/type=wysiwyg', [ $this->api, 'process' ] ) );
+		$this->assertTrue( (bool) \has_filter( 'acf/format_value_for_api/type=textarea', [ $this->api, 'process' ] ) );
+		$this->assertTrue( (bool) \has_filter( 'acf/format_value_for_api/type=text', [ $this->api, 'process_title' ] ) );
 	}
 
 	/**
@@ -200,7 +200,7 @@ class ACF_Integration_Test extends TestCase {
 
 		$this->acf_i->enable_content_filters( 666 );
 
-		$this->assertTrue( \has_filter( 'acf/format_value', [ $this->acf_i, 'process_acf5' ] ) );
+		$this->assertTrue( (bool) \has_filter( 'acf/format_value', [ $this->acf_i, 'process_acf5' ] ) );
 	}
 
 	/**
