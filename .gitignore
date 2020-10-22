@@ -26,3 +26,6 @@ includes/_language_names.php
 
 # Atom/Serenata support files
 .serenata/*
+
+# PHPUnit cache
+.phpunit.result.cache
