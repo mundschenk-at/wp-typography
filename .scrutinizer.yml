@@ -36,7 +36,8 @@ build:
                 override: true
             dependencies:
                 before:
-                    - composer require --dev johnpbloch/wordpress-core
+                    - composer require --dev johnpbloch/wordpress-core --no-update --no-interaction
+                    - composer update --no-interaction
             tests:
                 override:
                     - php-scrutinizer-run
