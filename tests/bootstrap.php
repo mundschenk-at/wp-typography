@@ -27,11 +27,6 @@ namespace WP_Typography\Tests;
 // Autoload everything using Composer.
 require_once \dirname( __DIR__ ) . '/vendor/autoload.php';
 
-/**
- * Autoload everything using Composer.
- */
-require_once \dirname( __DIR__ ) . '/vendor/autoload.php';
-
 // wp-Typography constants.
 if ( ! \defined( 'WP_TYPOGRAPHY_PLUGIN_FILE' ) ) {
 	\define( 'WP_TYPOGRAPHY_PLUGIN_FILE', 'plugin/file' );
