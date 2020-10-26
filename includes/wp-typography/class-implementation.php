@@ -621,6 +621,7 @@ class Implementation extends \WP_Typography {
 		$s->set_dewidow( $config[ Config::PREVENT_WIDOWS ] );
 		$s->set_max_dewidow_length( $config[ Config::WIDOW_MIN_LENGTH ] );
 		$s->set_max_dewidow_pull( $config[ Config::WIDOW_MAX_PULL ] );
+		$s->set_dewidow_word_number( 1 );
 
 		// Line wrapping.
 		$s->set_wrap_hard_hyphens( $config[ Config::WRAP_HYPHENS ] );
