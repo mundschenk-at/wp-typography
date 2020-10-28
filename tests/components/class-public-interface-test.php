@@ -220,19 +220,21 @@ class Public_Interface_Test extends TestCase {
 	 */
 	public function test_add_content_filters( $content, $heading, $title, $wp_version ) {
 
-		$content_hooks = [
+		$content_hooks      = [
 			'comment_author',
 			'comment_text',
 			'the_content',
-			'term_name',
 			'term_description',
-			'link_name',
 			'the_excerpt',
 			'the_excerpt_embed',
 			'widget_text',
 			'wp_dropdown_cats',
 		];
-		$heading_hooks = [
+		$content_feed_hooks = [
+			'term_name',
+			'link_name',
+		];
+		$heading_hooks      = [
 			'the_title',
 			'widget_title',
 		];
@@ -257,6 +259,11 @@ class Public_Interface_Test extends TestCase {
 			}
 
 			$found = (bool) \has_filter( $hook, "{$api_class}->process()" );
+			$this->assertEquals( $expected, $found, "Hook $hook" . ( $expected ? '' : ' not' ) . ' expected, but' . ( $found ? '' : ' not' ) . ' found.' );
+		}
+
+		foreach ( $content_feed_hooks as $hook ) {
+			$found = (bool) \has_filter( $hook, "{$api_class}->process_feed()" );
 			$this->assertEquals( $expected, $found, "Hook $hook" . ( $expected ? '' : ' not' ) . ' expected, but' . ( $found ? '' : ' not' ) . ' found.' );
 		}
 

@@ -213,12 +213,14 @@ class Public_Interface implements Plugin_Component {
 		\add_filter( 'comment_text',      [ $this->api, 'process' ], $priority );
 		\add_filter( 'comment_text',      [ $this->api, 'process' ], $priority );
 		\add_filter( 'the_content',       [ $this->api, 'process' ], $priority );
-		\add_filter( 'term_name',         [ $this->api, 'process' ], $priority );
 		\add_filter( 'term_description',  [ $this->api, 'process' ], $priority );
-		\add_filter( 'link_name',         [ $this->api, 'process' ], $priority );
 		\add_filter( 'the_excerpt',       [ $this->api, 'process' ], $priority );
 		\add_filter( 'the_excerpt_embed', [ $this->api, 'process' ], $priority );
 		\add_filter( 'wp_dropdown_cats',  [ $this->api, 'process' ], $priority );
+
+		// FIXME: These should be moved to their own filter group in the next major release.
+		\add_filter( 'term_name', [ $this->api, 'process_feed' ], $priority );
+		\add_filter( 'link_name', [ $this->api, 'process_feed' ], $priority );
 
 		// Preserve shortcode handling on WordPress 4.8+.
 		if ( \version_compare( \get_bloginfo( 'version' ), '4.8', '>=' ) ) {
