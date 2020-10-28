@@ -694,20 +694,24 @@ class Implementation extends \WP_Typography {
 			* for example...  'We do not have enough words yet' ... is a typical quoted phrase.  But when we write
 			* lines of code 'til we have enough of 'em, then we need to insert apostrophes instead of quotes.
 			*/
-			$patterns     = \explode(
+			$patterns = \explode(
 				',',
+				// @codeCoverageIgnoreStart
 				\_x( // phpcs:ignore WordPress.WP.I18n.MissingArgDomain -- text domain missing to use Core translations.
 					"'tain't,'twere,'twas,'tis,'twill,'til,'bout,'nuff,'round,'cause,'em",
 					'Comma-separated list of words to texturize in your language'
 				)
+				// @codeCoverageIgnoreEnd
 			);
 			$replacements = \explode(
 				',',
 				\html_entity_decode(
+					// @codeCoverageIgnoreStart
 					\_x(  // phpcs:ignore WordPress.WP.I18n.MissingArgDomain -- text domain missing to use Core translations.
 						'&#8217;tain&#8217;t,&#8217;twere,&#8217;twas,&#8217;tis,&#8217;twill,&#8217;til,&#8217;bout,&#8217;nuff,&#8217;round,&#8217;cause,&#8217;em',
 						'Comma-separated list of replacement words in your language'
 					),
+					// @codeCoverageIgnoreEnd
 					\ENT_QUOTES | \ENT_HTML5,
 					'UTF-8'
 				)
