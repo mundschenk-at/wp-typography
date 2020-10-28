@@ -638,7 +638,7 @@ class Implementation extends \WP_Typography {
 		$s->set_initial_quote_tags( $config[ Config::INITIAL_QUOTE_TAGS ] );
 
 		if ( $config[ Config::ENABLE_HYPHENATION ] ) {
-			$s->set_hyphenation( $config[ Config::ENABLE_HYPHENATION ] );
+			$s->set_hyphenation( true );
 			$s->set_hyphenate_headings( $config[ Config::HYPHENATE_HEADINGS ] );
 			$s->set_hyphenate_all_caps( $config[ Config::HYPHENATE_CAPS ] );
 			$s->set_hyphenate_title_case( $config[ Config::HYPHENATE_TITLE_CASE ] );
@@ -649,7 +649,7 @@ class Implementation extends \WP_Typography {
 			$s->set_min_after_hyphenation( $config[ Config::HYPHENATE_MIN_AFTER ] );
 			$s->set_hyphenation_exceptions( $config[ Config::HYPHENATE_EXCEPTIONS ] );
 		} else { // save some cycles.
-			$s->set_hyphenation( $config[ Config::ENABLE_HYPHENATION ] );
+			$s->set_hyphenation( false );
 		}
 
 		/**
