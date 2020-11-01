@@ -31,11 +31,11 @@
  *
  * @author Peter Putzer <github@mundschenk.at>
  */
-( function() {
+( function () {
 	'use strict';
 
 	if ( window.getSelection ) {
-		document.addEventListener( 'copy', function() {
+		document.addEventListener( 'copy', function () {
 			// Make sure we have an un-collapsed selection.
 			const sel = window.getSelection();
 			if ( sel.isCollapsed ) {
@@ -69,7 +69,7 @@
 			sel.selectAllChildren( shadow );
 
 			// Clean up after copying.
-			window.setTimeout( function() {
+			window.setTimeout( function () {
 				// Remove <div>.
 				shadow.remove();
 
