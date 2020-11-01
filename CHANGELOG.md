@@ -1,5 +1,9 @@
 # Changes
 
+## 5.7.2 - November 1, 2020
+*   _Bugfix_: Dewidowing is applied again (had silently broken since wp-Typography 5.1.0).
+*   _Bugfix_: `link_name` and `term_name` will not have HTML injected anymore.
+
 ## 5.7.1 - June 24, 2020
 *   _Bugfix_: Filters can be removed again with `remove_filter()`.
 *   _Bugfix_: The block editor does not crash anymore when trying to edit a custom
