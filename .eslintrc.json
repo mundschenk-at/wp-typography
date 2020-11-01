@@ -20,5 +20,13 @@
   "ignorePatterns": [
     "**/*.js",
     "!**/src/**/*.js"
+  ],
+  "overrides": [
+    {
+      "files": [ "js/src/clean-clipboard.js" ],
+      "rules": {
+        "@wordpress/no-global-get-selection": "off"
+      }
+    }
   ]
 }
