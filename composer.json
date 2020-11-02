@@ -62,7 +62,8 @@
         "classmap-authoritative": false,
         "classloader-suffix": "WPTypography",
         "autoloader-suffix": "WPTypography",
-        "vendor-dir": "vendor"
+        "vendor-dir": "vendor",
+        "platform-check": false
     },
 
     "scripts": {
