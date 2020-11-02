@@ -64,6 +64,7 @@ module.exports = function(grunt) {
                         'vendor/{composer,level-2,masterminds,mundschenk-at}/**/CREDITS*',
                         'vendor/{composer,level-2,masterminds,mundschenk-at}/**/COPYING*',
                         'vendor/{composer,level-2,masterminds,mundschenk-at}/**/CHANGE*',
+                        '!vendor/composer/package-versions-deprecated/**',
                     ],
                     dest: 'build/',
                     rename: function(dest, src) {
@@ -88,6 +89,8 @@ module.exports = function(grunt) {
               "build/composer.*",
               "build/vendor-scoped/bin",
               "build/vendor-scoped/composer/*.json",
+              "build/vendor-scoped/composer/InstalledVersions.php",
+              "build/vendor-scoped/composer/installed.php",
               "build/vendor-scoped/scoper-autoload.php",
               "build/vendor-scoped/mundschenk-at/composer-for-wordpress/**"
             ],
@@ -105,6 +108,9 @@ module.exports = function(grunt) {
                     }, {
                         pattern: /\s+'Dangoodman\\\\ComposerForWordpress\\\\.*,(?=\n)/g,
                         replacement: ''
+                    }, {
+                       pattern: /\s+'Composer\\\\InstalledVersions.*,(?=\n)/g,
+                       replacement: ''
                     }, {
                         pattern: 'Dangoodman',
                         replacement: 'FOOBAR'
