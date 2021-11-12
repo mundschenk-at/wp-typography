@@ -61,6 +61,14 @@ class ACF_Integration implements Plugin_Integration {
 	private $api_version;
 
 	/**
+	 * Array of ACF types that return an array with the value being the field
+	 * that should be filtered by wp typography
+	 *
+	 * @var array[]
+	 */
+	private $acf_array_types;
+
+	/**
 	 * Creates a new integration.
 	 *
 	 * @since 5.7.0
@@ -69,6 +77,12 @@ class ACF_Integration implements Plugin_Integration {
 	 */
 	public function __construct( Implementation $api ) {
 		$this->api = $api;
+
+		// supported ACF array types
+		$this->acf_array_types = [
+			'link' => 'title',
+			'file' => 'title'
+		];
 	}
 
 	/**
@@ -121,7 +135,7 @@ class ACF_Integration implements Plugin_Integration {
 	public function enable_content_filters( $priority ) {
 		if ( 5 === $this->api_version ) {
 			// Advanced Custom Fields Pro (version 5).
-			\add_filter( 'acf/format_value', [ $this, 'process_acf5' ], $priority, 3 );
+			\add_filter( 'acf/format_value', [ $this, 'process_acf' ], $priority, 3 );
 		} else {
 			// Advanced Custom Fields (version 4).
 			\add_filter( 'acf/format_value_for_api/type=wysiwyg',  [ $this->api, 'process' ],       $priority );
@@ -214,6 +228,27 @@ class ACF_Integration implements Plugin_Integration {
 			case self::FEED_TITLE_FILTER:
 				$content = $this->api->process_feed_title( $content );
 				break;
+		}
+
+		return $content;
+	}
+
+	/**
+	 * filter ACF field values and also support typography inside array values
+	 *
+	 * @param $content
+	 * @param $post_id
+	 * @param $field
+	 *
+	 * @return mixed|string
+	 */
+	public function process_acf( $content, $post_id, $field ) {
+
+		if ( in_array( $field['type'], array_keys( $this->acf_array_types ) ) ) {
+			$arr_field = $this->acf_array_types[$field['type']];
+			$content[$arr_field] = $this->process_acf5( $content[$arr_field], $post_id, $field );
+		} else {
+			$content = $this->process_acf5( $content, $post_id, $field );
 		}
 
 		return $content;
