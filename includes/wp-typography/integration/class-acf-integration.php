@@ -121,7 +121,7 @@ class ACF_Integration implements Plugin_Integration {
 	public function enable_content_filters( $priority ) {
 		if ( 5 === $this->api_version ) {
 			// Advanced Custom Fields Pro (version 5).
-			\add_filter( 'acf/format_value', [ $this, 'process_acf5' ], $priority, 3 );
+			\add_filter( 'acf/format_value', [ $this, 'process_acf' ], $priority, 3 );
 		} else {
 			// Advanced Custom Fields (version 4).
 			\add_filter( 'acf/format_value_for_api/type=wysiwyg',  [ $this->api, 'process' ],       $priority );
@@ -214,6 +214,28 @@ class ACF_Integration implements Plugin_Integration {
 			case self::FEED_TITLE_FILTER:
 				$content = $this->api->process_feed_title( $content );
 				break;
+		}
+
+		return $content;
+	}
+
+	/**
+	 * filter ACF field values and also support typography inside array values
+	 *
+	 * @param $content
+	 * @param $post_id
+	 * @param $field
+	 *
+	 * @return mixed|string
+	 */
+	public function process_acf( $content, $post_id, $field ) {
+
+		if ( is_array( $content ) ) {
+			foreach ( $content as $key => $value ) {
+				$content[ $key ] = $this->process_acf5( $content[ $key ], $post_id, $field );
+			}
+		} else {
+			$content = $this->process_acf5( $content, $post_id, $field );
 		}
 
 		return $content;
