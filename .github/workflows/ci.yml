@@ -90,7 +90,9 @@ jobs:
           composer test -- --coverage-clover build/logs/phpunit.coverage.xml --log-junit=build/logs/phpunit.test-report.xml
       - name: Fix code coverage paths for SonarCloud
         working-directory: ./build/logs/
-        run: sed -i 's/\/home\/runner\/work\/wp-typography\/wp-typography\//\/github\/workspace\//g' phpunit.coverage.xml
+        run: |
+          sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' phpunit.coverage.xml
+          sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' phpunit.test-report.xml
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
