@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2020 Peter Putzer.
+ *  Copyright 2017-2021 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -38,6 +38,8 @@ use WP_Typography\Integration\Container as Integrations;
 use WP_Typography\Settings\Basic_Locale_Settings;
 use WP_Typography\Settings\Locale_Settings;
 
+use WP_Typography\Exceptions\Object_Factory_Exception;
+
 use PHP_Typography\Settings\Dash_Style;
 use PHP_Typography\Settings\Quote_Style;
 
@@ -65,26 +67,34 @@ class WP_Typography_Factory extends Dice {
 	 * Creates a new instance.
 	 *
 	 * @since 5.7.0
+	 * @since 5.8.0 Constructor is now final.
 	 */
-	protected function __construct() {
-		// Add rules.
-		foreach ( $this->get_rules() as $classname => $rule ) {
-			$this->addRule( $classname, $rule );
-		}
+	final protected function __construct() {
 	}
 
 	/**
 	 * Retrieves a factory set up for creating WP_Typography instances.
 	 *
 	 * @since 5.6.0 Parameter $full_plugin_path removed.
+	 * @since 5.8.0 Now throws an Object_Factory_Exception in case of error.
 	 *
 	 * @return WP_Typography_Factory
+	 *
+	 * @throws Object_Factory_Exception An exception is thrown if the factory cannot
+	 *                                  be created.
 	 */
 	public static function get() {
 		if ( ! isset( self::$factory ) ) {
 
 			// Create factory.
-			self::$factory = new static();
+			$factory = new static();
+			$factory = $factory->addRules( $factory->get_rules() );
+
+			if ( $factory instanceof WP_Typography_Factory ) {
+				self::$factory = $factory;
+			} else {
+				throw new Object_Factory_Exception( 'Could not create object factory.' ); // @codeCoverageIgnore
+			}
 		}
 
 		return self::$factory;
@@ -107,7 +117,7 @@ class WP_Typography_Factory extends Dice {
 			// API implementation.
 			'substitutions'                        => [
 				\WP_Typography::class => [
-					'instance' => \WP_Typography\Implementation::class,
+					self::INSTANCE => \WP_Typography\Implementation::class,
 				],
 			],
 			\WP_Typography\Implementation::class   => [
@@ -255,13 +265,13 @@ class WP_Typography_Factory extends Dice {
 	 */
 	protected function get_components() {
 		return [
-			[ 'instance' => Components\Setup::class ],
-			[ 'instance' => Components\Common::class ],
-			[ 'instance' => Components\Public_Interface::class ],
-			[ 'instance' => Components\Admin_Interface::class ],
-			[ 'instance' => Components\Multilingual_Support::class ],
-			[ 'instance' => Components\Block_Editor::class ],
-			[ 'instance' => Components\REST_API::class ],
+			[ self::INSTANCE => Components\Setup::class ],
+			[ self::INSTANCE => Components\Common::class ],
+			[ self::INSTANCE => Components\Public_Interface::class ],
+			[ self::INSTANCE => Components\Admin_Interface::class ],
+			[ self::INSTANCE => Components\Multilingual_Support::class ],
+			[ self::INSTANCE => Components\Block_Editor::class ],
+			[ self::INSTANCE => Components\REST_API::class ],
 		];
 	}
 
@@ -280,8 +290,8 @@ class WP_Typography_Factory extends Dice {
 	 */
 	protected function get_plugin_integrations() {
 		return [
-			[ 'instance' => Integration\ACF_Integration::class ],
-			[ 'instance' => Integration\WooCommerce_Integration::class ],
+			[ self::INSTANCE => Integration\ACF_Integration::class ],
+			[ self::INSTANCE => Integration\WooCommerce_Integration::class ],
 		];
 	}
 
@@ -300,13 +310,13 @@ class WP_Typography_Factory extends Dice {
 	 */
 	protected function get_supported_locales() {
 		return [
-			[ 'instance' => '$LocaleSwitzerland' ],
-			[ 'instance' => '$LocaleUnitedStates' ],
-			[ 'instance' => '$LocaleUnitedKingdom' ],
-			[ 'instance' => '$LocaleGerman' ],
-			[ 'instance' => '$LocaleFrench' ],
-			[ 'instance' => '$LocaleDutch' ],
-			[ 'instance' => '$LocaleSinoJapanese' ],
+			[ self::INSTANCE => '$LocaleSwitzerland' ],
+			[ self::INSTANCE => '$LocaleUnitedStates' ],
+			[ self::INSTANCE => '$LocaleUnitedKingdom' ],
+			[ self::INSTANCE => '$LocaleGerman' ],
+			[ self::INSTANCE => '$LocaleFrench' ],
+			[ self::INSTANCE => '$LocaleDutch' ],
+			[ self::INSTANCE => '$LocaleSinoJapanese' ],
 		];
 	}
 }

@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2020 Peter Putzer.
+ *  Copyright 2017-2021 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -34,6 +34,8 @@ use org\bovigo\vfs\vfsStream;
 
 use Mockery as m;
 
+use \WP_Typography_Factory;
+
 /**
  * WP_Typography_Factory unit test.
  *
@@ -41,6 +43,13 @@ use Mockery as m;
  * @usesDefaultClass \WP_Typography_Factory
  */
 class WP_Typography_Factory_Test extends TestCase {
+
+	/**
+	 * The system-under-test.
+	 *
+	 * @var WP_Typography_Factory
+	 */
+	private $sut;
 
 	/**
 	 * Sets up the fixture, for example, opens a network connection.
@@ -66,10 +75,41 @@ class WP_Typography_Factory_Test extends TestCase {
 			]
 		);
 		set_include_path( 'vfs://root/' ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_set_include_path
+
+		// Set up the mock.
+		$this->sut = m::mock( WP_Typography_Factory::class )->makePartial()->shouldAllowMockingProtectedMethods();
 	}
 
 	/**
-	 * Test ::get.
+	 * Tests the constructor.
+	 *
+	 * @covers ::__construct
+	 */
+	public function test_constructor() {
+		$this->sut->shouldReceive( 'get_rules' )->never();
+
+		// Manually call constructor.
+		$this->sut->__construct();
+
+		$resulting_rules = $this->get_value( $this->sut, 'rules' );
+		$this->assert_is_array( $resulting_rules );
+		$this->assertCount( 0, $resulting_rules );
+	}
+
+	/**
+	 * Test ::get_plugin_version.
+	 *
+	 * @covers ::get_plugin_version
+	 */
+	public function test_get_plugin_version() {
+		$version     = '6.6.6';
+		$plugin_file = '/the/main/plugin/file.php';
+
+		$this->assertSame( $version, $this->sut->get_plugin_version( $plugin_file ) );
+	}
+
+	/**
+	 * Test ::get. Should be run after test_get_plugin_version.
 	 *
 	 * @covers ::get
 	 *
@@ -79,10 +119,16 @@ class WP_Typography_Factory_Test extends TestCase {
 	 * @covers WP_Typography_Factory::get_plugin_version
 	 * @covers WP_Typography_Factory::get_rules
 	 * @covers WP_Typography_Factory::get_supported_locales
-	 * */
+	 */
 	public function test_get() {
-		define( 'ABSPATH', 'wordpress/path/' );
+		Functions\expect( 'get_plugin_data' )->once()->with( m::type( 'string' ), false, false )->andReturn( [ 'Version' => '42' ] );
 
-		$this->assertInstanceOf( Dice::class, \WP_Typography_Factory::get( '/dummy/path' ) );
+		$result1 = WP_Typography_Factory::get();
+
+		$this->assertInstanceOf( WP_Typography_Factory::class, $result1 );
+
+		$result2 = WP_Typography_Factory::get();
+
+		$this->assertSame( $result1, $result2 );
 	}
 }
