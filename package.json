@@ -45,10 +45,7 @@
   },
   "browserslist": [
     "last 2 version",
-    "> 1%",
-    "IE 9",
-    "IE 10",
-    "IE 11"
+    "> 1%"
   ],
   "phpPrefixNamespaces": [
     "Dice",
