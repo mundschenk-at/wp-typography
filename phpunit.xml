@@ -2,7 +2,7 @@
 <phpunit
 	bootstrap="tests/bootstrap.php"
 	beStrictAboutTestsThatDoNotTestAnything="true"
-	beStrictAboutCoversAnnotation="true"
+	beStrictAboutCoversAnnotation="false"
 	stopOnRisky="true"
 	verbose="true"
 >
@@ -12,7 +12,7 @@
 	    </testsuite>
 	</testsuites>
 	<filter>
-		<whitelist processUncoveredFilesFromWhitelist="true">
+		<whitelist processUncoveredFilesFromWhitelist="false" addUncoveredFilesFromWhitelist="false">
 	    	<directory suffix=".php">includes</directory>
 	    	<exclude>
 	    		<file>includes/_language_names.php</file>
