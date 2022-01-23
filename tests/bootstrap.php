@@ -51,3 +51,28 @@ if ( ! defined( 'HOUR_IN_SECONDS' ) ) {
 if ( ! defined( 'MINUTE_IN_SECONDS' ) ) {
 	define( 'MINUTE_IN_SECONDS', 60 );
 }
+
+// Other WordPress constants.
+if ( ! defined( 'ABSPATH' ) ) {
+	define( 'ABSPATH', 'wordpress/path/' );
+}
+if ( ! defined( 'ARRAY_A' ) ) {
+	define( 'ARRAY_A', 'ARRAY_A' );
+}
+if ( ! defined( 'ARRAY_N' ) ) {
+	define( 'ARRAY_N', 'ARRAY_N' );
+}
+if ( ! defined( 'OBJECT' ) ) {
+	define( 'OBJECT', 'OBJECT' );
+}
+if ( ! defined( 'OBJECT_K' ) ) {
+	define( 'OBJECT_K', 'OBJECT_K' );
+}
+
+// wp-Typography constants.
+if ( ! defined( 'WP_TYPOGRAPHY_PLUGIN_FILE' ) ) {
+	define( 'WP_TYPOGRAPHY_PLUGIN_FILE', 'plugin/file' );
+}
+if ( ! defined( 'WP_TYPOGRAPHY_PLUGIN_PATH' ) ) {
+	define( 'WP_TYPOGRAPHY_PLUGIN_PATH', 'plugin' );
+}
