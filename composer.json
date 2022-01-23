@@ -32,7 +32,8 @@
         "level-2/dice": "^2.0.3",
         "mundschenk-at/check-wp-requirements": "^1.0",
         "mundschenk-at/wp-data-storage": "^1.0",
-        "mundschenk-at/wp-settings-ui": "dev-master"
+        "mundschenk-at/wp-settings-ui": "dev-master",
+        "mundschenk-at/composer-for-wordpress": "dev-master"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.4",
@@ -63,7 +64,11 @@
         "classloader-suffix": "WPTypography",
         "autoloader-suffix": "WPTypography",
         "vendor-dir": "vendor",
-        "platform-check": false
+        "platform-check": false,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "mundschenk-at/composer-for-wordpress": true
+        }
     },
 
     "scripts": {
