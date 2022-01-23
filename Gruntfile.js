@@ -8,7 +8,7 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
-        wpversion: grunt.file.read( 'wp-typography.php' ).toString().match(/Version:\s*([0-9](?:\w|\.|\-)*)\s|\Z/)[1],
+        wpversion: grunt.file.read( 'wp-typography.php' ).toString().match(/Version:\s*(\d(?:\w|\.|\-)*)\s|\Z/)[1],
 
         eslint: {
             src: [
