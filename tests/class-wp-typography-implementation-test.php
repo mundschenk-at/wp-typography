@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2020 Peter Putzer.
+ *  Copyright 2017-2021 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -454,7 +454,6 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 *
 	 * @covers ::prepare_smart_quotes_exceptions
 	 *
-	 * @uses WP_Typography\Settings\Tools::array_map_assoc
 	 * @uses WP_Typography\Settings\Tools::parse_smart_quote_exceptions_string
 	 */
 	public function test_prepare_smart_quotes_exceptions() {
@@ -486,7 +485,6 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 *
 	 * @covers ::prepare_smart_quotes_exceptions
 	 *
-	 * @uses WP_Typography\Settings\Tools::array_map_assoc
 	 * @uses WP_Typography\Settings\Tools::parse_smart_quote_exceptions_string
 	 */
 	public function test_prepare_smart_quotes_exceptions_wp_cockney_replace() {
