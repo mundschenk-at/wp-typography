@@ -71,12 +71,16 @@ abstract class Tools {
 	 *
 	 * Based on https://gist.github.com/jasand-pereza/84ecec7907f003564584.
 	 *
+	 * @deprecated 5.8.0
+	 *
 	 * @param  callable $callback A callback function that needs to return [ $key => $value ] pairs.
 	 * @param  array    $array    The array.
 	 *
 	 * @return array
 	 */
 	public static function array_map_assoc( callable $callback, array $array ) {
+		\_deprecated_function( __FUNCTION__, '5.8.0' );
+
 		$new = [];
 
 		foreach ( $array as $k => $v ) {
