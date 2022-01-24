@@ -148,6 +148,9 @@ class ACF_Integration implements Plugin_Integration {
 			case 'text':
 				$default = self::TITLE_FILTER;
 				break;
+
+			default:
+				// Nothing.
 		}
 
 		// Define field properties.
@@ -214,6 +217,9 @@ class ACF_Integration implements Plugin_Integration {
 			case self::FEED_TITLE_FILTER:
 				$content = $this->api->process_feed_title( $content );
 				break;
+
+			default:
+				// Nothing.
 		}
 
 		return $content;
