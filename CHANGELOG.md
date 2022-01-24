@@ -1,5 +1,12 @@
 # Changes
 
+## 5.8.0 - unreleased
+*   _Feature_: wp-Typography is now compatible with PHP 8.0.
+*   _Change_: WordPress minimum version increased to 5.3.
+*   _Change_: PHP minimum version increased to 7.2.
+*   _Change_: Support for Internet Explorer 11 has been dropped.
+*   _Change_: A fabulous new plugin icon designed by [Johanna Amann](https://www.instagram.com/_jo_am/).
+
 ## 5.7.2 - November 1, 2020
 *   _Bugfix_: Dewidowing is applied again (had silently broken since wp-Typography 5.1.0).
 *   _Bugfix_: `link_name` and `term_name` will not have HTML injected anymore.
