@@ -1,9 +1,9 @@
 === wp-Typography ===
 Contributors: pputzer, kingjeffrey
 Tags: typography, hyphenation, smart quotes, formatting, widows, orphans, typogrify, quotes, prettify, small caps, diacritics
-Requires at least: 4.9
-Requires PHP: 7.0
-Tested up to: 5.5
+Requires at least: 5.3
+Requires PHP: 7.2
+Tested up to: 5.9
 Stable tag: 5.7.2
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
@@ -40,7 +40,7 @@ Improve your web typography with:
 
 wp-Typography has the following requirements:
 
-* The host server must run PHP 7.0.0 or later,
+* The host server must run PHP 7.2.0 or later,
 * your installation of PHP must include the following PHP extensions (most do):
   - [mbstring](https://www.php.net/manual/en/mbstring.installation.php),
   - [DOM](https://www.php.net/manual/en/dom.installation.php), and

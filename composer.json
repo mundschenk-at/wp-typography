@@ -26,7 +26,7 @@
     ],
 
     "require": {
-        "php": ">=7.0.0",
+        "php": ">=7.2.0",
         "mundschenk-at/php-typography": "^6.6.0",
         "level-2/dice": "dev-php8 as 4.0.2",
         "mundschenk-at/check-wp-requirements": "^1.0",
