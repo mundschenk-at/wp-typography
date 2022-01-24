@@ -25,12 +25,12 @@
  */
 
 /**
-     * Cleans up clipboard content on cut & copy. Removes &shy; and zero-width space.
-     *
-     * @since 5.7.0 Dependency on jQuery removed.
-     *
-     * @author Peter Putzer <github@mundschenk.at>
-     */
+ * Cleans up clipboard content on cut & copy. Removes &shy; and zero-width space.
+ *
+ * @since 5.7.0 Dependency on jQuery removed.
+ *
+ * @author Peter Putzer <github@mundschenk.at>
+ */
 (function () {
   'use strict';
 
