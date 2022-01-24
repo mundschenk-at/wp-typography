@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2019 Peter Putzer.
+ *  Copyright 2019-2021 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -49,20 +49,20 @@ abstract class Tools {
 	 * @return string[]       An array of replacements, indexed by the key.
 	 */
 	public static function parse_smart_quote_exceptions_string( $string ) {
-		return self::array_map_assoc(
-			function( $key, $replacement ) {
-				$key         = \trim( \strip_tags( $replacement ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.strip_tags_strip_tags
+		return \array_reduce(
+			preg_split( '/,/', $string, -1, PREG_SPLIT_NO_EMPTY ),
+			function( $result, $replacement ) {
+				$key         = \trim( \strip_tags( $replacement ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.strip_tags_strip_tags -- no need for WordPress' version here.
 				$replacement = \str_replace( "'", U::APOSTROPHE, $key );
 
 				// Matched keys or replacements might have contained only tags. Discard those.
-				if ( empty( $key ) || empty( $replacement ) ) {
-					return [];
+				if ( ! empty( $key ) && ! empty( $replacement ) ) {
+					$result[ $key ] = $replacement;
 				}
 
-				return [ $key => $replacement ];
+				return $result;
 			},
-			/** RE correct. @scrutinizer ignore-type */
-			\preg_split( '/,/', $string, -1, PREG_SPLIT_NO_EMPTY )
+			[]
 		);
 	}
 
