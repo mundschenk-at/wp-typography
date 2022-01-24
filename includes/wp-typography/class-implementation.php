@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2014-2020 Peter Putzer.
+ *  Copyright 2014-2021 Peter Putzer.
  *  Copyright 2009-2011 KINGdesk, LLC.
  *
  *  This program is free software; you can redistribute it and/or
@@ -58,16 +58,20 @@ class Implementation extends \WP_Typography {
 	/**
 	 * A hash containing the various plugin settings.
 	 *
+	 * @since 5.8.0 Renamed to $configuration.
+	 *
 	 * @var array
 	 */
-	private $config;
+	private $configuration;
 
 	/**
 	 * The PHP_Typography instance doing the actual work.
 	 *
+	 * @since 5.8.0 Renamed to $typography.
+	 *
 	 * @var PHP_Typography
 	 */
-	private $typo;
+	private $typography;
 
 	/**
 	 * The PHP_Typography\Settings instance.
@@ -236,7 +240,7 @@ class Implementation extends \WP_Typography {
 	 * @return array
 	 */
 	public function get_config() {
-		if ( empty( $this->config ) ) {
+		if ( empty( $this->configuration ) ) {
 			$config = $this->options->get( Options::CONFIGURATION );
 			if ( \is_array( $config ) ) {
 				$config_is_dirty = false;
@@ -255,14 +259,14 @@ class Implementation extends \WP_Typography {
 				}
 
 				// Use the updated configuration.
-				$this->config = $config;
+				$this->configuration = $config;
 			} else {
 				// The configuration array has been corrupted.
 				$this->set_default_options( true );
 			}
 		}
 
-		return $this->config;
+		return $this->configuration;
 	}
 
 	/**
@@ -494,7 +498,7 @@ class Implementation extends \WP_Typography {
 		$config = $this->get_config();
 
 		// Initialize PHP_Typography instance.
-		if ( empty( $this->typo ) ) {
+		if ( empty( $this->typography ) ) {
 			$transient = 'php_' . \md5( (string) \wp_json_encode( $config ) );
 			$typo      = $this->transients->get_large_object( $transient );
 
@@ -506,27 +510,27 @@ class Implementation extends \WP_Typography {
 				$this->transients->cache_object( $transient, $typo, 'typography' );
 			}
 
-			$this->typo = $typo;
+			$this->typography = $typo;
 		}
 
 		// Also cache hyphenators (the pattern tries are expensive to build).
 		if ( $config[ Config::ENABLE_HYPHENATION ] && empty( $this->hyphenator_cache ) ) {
-			$transient        = 'php_hyphenator_cache';
-			$hyphenator_cache = $this->transients->get_large_object( $transient );
+			$transient    = 'php_hyphenator_cache';
+			$hyphen_cache = $this->transients->get_large_object( $transient );
 
-			if ( ! $hyphenator_cache instanceof Hyphenator_Cache ) {
-				$hyphenator_cache = $this->typo->get_hyphenator_cache();
+			if ( ! $hyphen_cache instanceof Hyphenator_Cache ) {
+				$hyphen_cache = $this->typography->get_hyphenator_cache();
 
 				// Try again next time.
-				$this->transients->cache_object( $transient, $hyphenator_cache, 'hyphenator_cache' );
+				$this->transients->cache_object( $transient, $hyphen_cache, 'hyphenator_cache' );
 			}
 
 			// Let's use it!
-			$this->hyphenator_cache = $hyphenator_cache;
-			$this->typo->set_hyphenator_cache( $this->hyphenator_cache );
+			$this->hyphenator_cache = $hyphen_cache;
+			$this->typography->set_hyphenator_cache( $this->hyphenator_cache );
 		}
 
-		return $this->typo;
+		return $this->typography;
 	}
 
 	/**
@@ -748,15 +752,15 @@ class Implementation extends \WP_Typography {
 		// Grab configuration variables.
 		foreach ( $this->get_default_options() as $key => $default ) {
 			// Set or update the options with the default value if necessary.
-			if ( $force_defaults || ! isset( $this->config[ $key ] ) ) {
-				$this->config[ $key ] = $default;
-				$update               = true;
+			if ( $force_defaults || ! isset( $this->configuration[ $key ] ) ) {
+				$this->configuration[ $key ] = $default;
+				$update                      = true;
 			}
 		}
 
 		// Update stored options.
 		if ( $update ) {
-			$this->options->set( Options::CONFIGURATION, $this->config );
+			$this->options->set( Options::CONFIGURATION, $this->configuration );
 		}
 
 		if ( $force_defaults ) {
