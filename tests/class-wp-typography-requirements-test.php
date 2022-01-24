@@ -2,7 +2,7 @@
 /**
  * This file is part of wp-Typography.
  *
- * Copyright 2020 Peter Putzer.
+ * Copyright 2020-2021 Peter Putzer.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -35,18 +35,20 @@ use org\bovigo\vfs\vfsStreamDirectory;
 
 use Mockery as m;
 
+use WP_Typography\Requirements;
+
 /**
  * WP_Typography_Requirements unit test.
  *
- * @coversDefaultClass \WP_Typography_Requirements
- * @usesDefaultClass \WP_Typography_Requirements
+ * @coversDefaultClass \WP_Typography\Requirements
+ * @usesDefaultClass \WP_Typography\Requirements
  */
 class WP_Typography_Requirements_Test extends Testcase {
 
 	/**
 	 * The system-under-test.
 	 *
-	 * @var \WP_Typography_Requirements
+	 * @var Requirements
 	 */
 	private $sut;
 
@@ -59,7 +61,7 @@ class WP_Typography_Requirements_Test extends Testcase {
 	protected function set_up() {
 		parent::set_up();
 
-		$this->sut = m::mock( \WP_Typography_Requirements::class )->makePartial()->shouldAllowMockingProtectedMethods();
+		$this->sut = m::mock( Requirements::class )->makePartial()->shouldAllowMockingProtectedMethods();
 	}
 
 	/**
@@ -74,14 +76,14 @@ class WP_Typography_Requirements_Test extends Testcase {
 				return \array_merge( $defaults, $args );
 			}
 		);
-		$req = m::mock( \WP_Typography_Requirements::class )->makePartial();
+		$req = m::mock( Requirements::class )->makePartial();
 		$req->__construct( 'some_file' );
 
 		$this->assertSame( 'wp-Typography', $this->get_value( $req, 'plugin_name' ) );
 		$this->assertSame( 'wp-typography', $this->get_value( $req, 'textdomain' ) );
 		$this->assertSame(
 			[
-				'php'              => '5.6.0',
+				'php'              => '7.2.0',
 				'multibyte'        => true,
 				'utf-8'            => true,
 				'dom'              => true,

@@ -34,20 +34,20 @@ use org\bovigo\vfs\vfsStream;
 
 use Mockery as m;
 
-use \WP_Typography_Factory;
+use WP_Typography\Factory;
 
 /**
- * WP_Typography_Factory unit test.
+ * Factory unit test.
  *
- * @coversDefaultClass \WP_Typography_Factory
- * @usesDefaultClass \WP_Typography_Factory
+ * @coversDefaultClass \WP_Typography\Factory
+ * @usesDefaultClass \WP_Typography\Factory
  */
 class WP_Typography_Factory_Test extends TestCase {
 
 	/**
 	 * The system-under-test.
 	 *
-	 * @var WP_Typography_Factory
+	 * @var Factory
 	 */
 	private $sut;
 
@@ -77,7 +77,7 @@ class WP_Typography_Factory_Test extends TestCase {
 		set_include_path( 'vfs://root/' ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_set_include_path
 
 		// Set up the mock.
-		$this->sut = m::mock( WP_Typography_Factory::class )->makePartial()->shouldAllowMockingProtectedMethods();
+		$this->sut = m::mock( Factory::class )->makePartial()->shouldAllowMockingProtectedMethods();
 	}
 
 	/**
@@ -113,21 +113,21 @@ class WP_Typography_Factory_Test extends TestCase {
 	 *
 	 * @covers ::get
 	 *
-	 * @covers WP_Typography_Factory::__construct
-	 * @covers WP_Typography_Factory::get_components
-	 * @covers WP_Typography_Factory::get_plugin_integrations
-	 * @covers WP_Typography_Factory::get_plugin_version
-	 * @covers WP_Typography_Factory::get_rules
-	 * @covers WP_Typography_Factory::get_supported_locales
+	 * @covers ::__construct
+	 * @covers ::get_components
+	 * @covers ::get_plugin_integrations
+	 * @covers ::get_plugin_version
+	 * @covers ::get_rules
+	 * @covers ::get_supported_locales
 	 */
 	public function test_get() {
 		Functions\expect( 'get_plugin_data' )->once()->with( m::type( 'string' ), false, false )->andReturn( [ 'Version' => '42' ] );
 
-		$result1 = WP_Typography_Factory::get();
+		$result1 = Factory::get();
 
-		$this->assertInstanceOf( WP_Typography_Factory::class, $result1 );
+		$this->assertInstanceOf( Factory::class, $result1 );
 
-		$result2 = WP_Typography_Factory::get();
+		$result2 = Factory::get();
 
 		$this->assertSame( $result1, $result2 );
 	}
