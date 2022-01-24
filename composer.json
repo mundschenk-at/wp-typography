@@ -64,7 +64,7 @@
         "platform-check": false,
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
-            "danngoodman/composer-for-wordpress": true
+            "dangoodman/composer-for-wordpress": true
         }
     },
 

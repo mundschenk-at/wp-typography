@@ -92,6 +92,7 @@ module.exports = function(grunt) {
               "build/vendor-scoped/composer/InstalledVersions.php",
               "build/vendor-scoped/composer/installed.php",
               "build/vendor-scoped/scoper-autoload.php",
+              "build/vendor-scoped/dangoodman/**",
               "build/vendor-scoped/mundschenk-at/composer-for-wordpress/**"
             ],
         },
@@ -446,15 +447,14 @@ module.exports = function(grunt) {
         'build-js',
         // Copy other files
         'copy:main',
-        'composer:build:build-wordpress',
+        'copy:meta',
         // Use scoped dependencies
         'string-replace:namespaces',
+        'composer:build:build-wordpress',
         // Clean up unused packages
         'clean:autoloader',
         'string-replace:vendor-dir',
         'string-replace:autoloader',
-        // Copy documentation and license files
-        'copy:meta',
     ]);
 
     grunt.registerTask('build-js', [
