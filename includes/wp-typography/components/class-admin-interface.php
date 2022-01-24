@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2014-2020 Peter Putzer.
+ *  Copyright 2014-2021 Peter Putzer.
  *  Copyright 2012-2013 Marie Hogebrandt.
  *  Copyright 2009-2011 KINGdesk, LLC.
  *
@@ -343,10 +343,10 @@ class Admin_Interface implements Plugin_Component {
 	 * @return array The sanitized plugin settings.
 	 */
 	public function sanitize_settings( $input ) {
-		$active_tab = $this->get_active_settings_tab();
+		$current_tab = $this->get_active_settings_tab();
 
 		foreach ( $this->defaults as $key => $info ) {
-			if ( $active_tab === $info['tab_id'] && Checkbox_Input::class === $info['ui'] ) {
+			if ( $current_tab === $info['tab_id'] && Checkbox_Input::class === $info['ui'] ) {
 				$input[ $key ] = ! empty( $input[ $key ] );
 			}
 		}
