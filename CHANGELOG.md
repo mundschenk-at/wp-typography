@@ -1,6 +1,6 @@
 # Changes
 
-## 5.8.0 - unreleased
+## 5.8.0 - January 25, 2022
 *   _Feature_: wp-Typography is now compatible with PHP 8.0.
 *   _Change_: WordPress minimum version increased to 5.3.
 *   _Change_: PHP minimum version increased to 7.2.

@@ -4,7 +4,7 @@ Tags: typography, hyphenation, smart quotes, formatting, widows, orphans, typogr
 Requires at least: 5.3
 Requires PHP: 7.2
 Tested up to: 5.9
-Stable tag: 5.7.2
+Stable tag: 5.8.0
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
@@ -78,6 +78,13 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 4. wp-Typography "Add CSS Hooks" settings page.
 
 == Changelog ==
+
+= 5.8.0 - January 25, 2022 =
+* _Feature_: wp-Typography is now compatible with PHP 8.0.
+* _Change_: WordPress minimum version increased to 5.3.
+* _Change_: PHP minimum version increased to 7.2.
+* _Change_: Support for Internet Explorer 11 has been dropped.
+* _Change_: A fabulous new plugin icon designed by [Johanna Amann](https://www.instagram.com/_jo_am/).
 
 = 5.7.2 - November 1, 2020 =
 * _Bugfix_: Dewidowing is applied again (had silently broken since wp-Typography 5.1.0).
