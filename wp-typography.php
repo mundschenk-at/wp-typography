@@ -43,21 +43,23 @@
  *     Hamish Macpherson - http://www.hamstu.com/
  */
 
+namespace WP_Typography;
+
 // Don't do anything if called directly.
-if ( ! defined( 'ABSPATH' ) || ! defined( 'WPINC' ) ) {
+if ( ! \defined( 'ABSPATH' ) || ! \defined( 'WPINC' ) ) {
 	die();
 }
 
 // Make plugin file path available globally.
-if ( ! defined( 'WP_TYPOGRAPHY_PLUGIN_FILE' ) ) {
-	define( 'WP_TYPOGRAPHY_PLUGIN_FILE', __FILE__ );
+if ( ! \defined( 'WP_TYPOGRAPHY_PLUGIN_FILE' ) ) {
+	\define( 'WP_TYPOGRAPHY_PLUGIN_FILE', __FILE__ );
 }
-if ( ! defined( 'WP_TYPOGRAPHY_PLUGIN_PATH' ) ) {
-	define( 'WP_TYPOGRAPHY_PLUGIN_PATH', dirname( __FILE__ ) );
+if ( ! \defined( 'WP_TYPOGRAPHY_PLUGIN_PATH' ) ) {
+	\define( 'WP_TYPOGRAPHY_PLUGIN_PATH', __DIR__ );
 }
 
-// Load requirements class in a PHP 5.2 compatible manner.
-require_once dirname( __FILE__ ) . '/includes/class-wp-typography-requirements.php';
+// Initialize autoloader.
+require_once __DIR__ . '/vendor/autoload.php';
 
 /**
  * Load the plugin after checking for the necessary PHP version.
@@ -66,13 +68,12 @@ require_once dirname( __FILE__ ) . '/includes/class-wp-typography-requirements.p
  */
 function wp_typography_run() {
 	// Validate the requirements.
-	$requirements = new WP_Typography_Requirements();
-	if ( $requirements->check() ) {
+	if ( ( new Requirements() )->check() ) {
 		// Autoload the rest of our classes.
 		require_once __DIR__ . '/vendor/autoload.php'; // phpcs:ignore PHPCompatibility.Keywords.NewKeywords.t_dirFound
 
 		// Create the plugin.
-		$plugin = WP_Typography_Factory::get()->create( 'WP_Typography\Plugin_Controller' );
+		$plugin = Factory::get()->create( Plugin_Controller::class );
 
 		// Start the plugin for real.
 		$plugin->run();

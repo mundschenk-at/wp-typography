@@ -107,9 +107,7 @@ return [
     // Whitelists a list of files. Unlike the other whitelist related features, this one is about completely leaving
     // a file untouched.
     // Paths are relative to the configuration file unless if they are already absolute
-    'files-whitelist' => [
-        'vendor/mundschenk-at/check-wp-requirements/class-mundschenk-wp-requirements.php',
-    ],
+    'files-whitelist' => [],
 
     // When scoping PHP files, there will be scenarios where some of the code being scoped indirectly references the
     // original namespace. These will include, for example, strings or string manipulations. PHP-Scoper has limited

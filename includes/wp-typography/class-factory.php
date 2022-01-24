@@ -24,16 +24,14 @@
  *  @license http://www.gnu.org/licenses/gpl-2.0.html
  */
 
+namespace WP_Typography;
+
 use Dice\Dice;
 
 use WP_Typography\Data_Storage\Cache;
 use WP_Typography\Data_Storage\Options;
 use WP_Typography\Data_Storage\Transients;
 
-use WP_Typography\Implementation;
-use WP_Typography\Components;
-use WP_Typography\Integration;
-use WP_Typography\Plugin_Controller;
 use WP_Typography\Integration\Container as Integrations;
 use WP_Typography\Settings\Basic_Locale_Settings;
 use WP_Typography\Settings\Locale_Settings;
@@ -48,10 +46,11 @@ use PHP_Typography\Settings\Quote_Style;
  *
  * @since 5.1.0
  * @since 5.7.0 Class made concrete.
+ * @since 5.8.0 Moved to WP_Typography\Factory.
  *
  * @author Peter Putzer <github@mundschenk.at>
  */
-class WP_Typography_Factory extends Dice {
+class Factory extends Dice {
 
 	// Common rules components.
 	const SHARED = [ 'shared' => true ];
@@ -78,7 +77,7 @@ class WP_Typography_Factory extends Dice {
 	 * @since 5.6.0 Parameter $full_plugin_path removed.
 	 * @since 5.8.0 Now throws an Object_Factory_Exception in case of error.
 	 *
-	 * @return WP_Typography_Factory
+	 * @return Factory
 	 *
 	 * @throws Object_Factory_Exception An exception is thrown if the factory cannot
 	 *                                  be created.
@@ -90,7 +89,7 @@ class WP_Typography_Factory extends Dice {
 			$factory = new static();
 			$factory = $factory->addRules( $factory->get_rules() );
 
-			if ( $factory instanceof WP_Typography_Factory ) {
+			if ( $factory instanceof Factory ) {
 				self::$factory = $factory;
 			} else {
 				throw new Object_Factory_Exception( 'Could not create object factory.' ); // @codeCoverageIgnore
@@ -117,10 +116,10 @@ class WP_Typography_Factory extends Dice {
 			// API implementation.
 			'substitutions'                        => [
 				\WP_Typography::class => [
-					self::INSTANCE => \WP_Typography\Implementation::class,
+					self::INSTANCE => Implementation::class,
 				],
 			],
-			\WP_Typography\Implementation::class   => [
+			Implementation::class                  => [
 				'shared'          => true,
 				'constructParams' => [ $this->get_plugin_version( \WP_TYPOGRAPHY_PLUGIN_FILE ) ],
 			],
