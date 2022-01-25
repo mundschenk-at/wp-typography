@@ -18,6 +18,12 @@ const WP_TYPOGRAPHY_EXCLUDED_DIRS       = [
 ];
 // Global WordPress functions we use.
 const WP_TYPOGRAPHY_WORDPRESS_FUNCTIONS = [
+    // Hooks.
+    'add_action',
+    'add_filter',
+    'apply_filters',
+    'do_action',
+
     // Transients.
     'get_transient',
     'set_transient',
@@ -43,6 +49,10 @@ const WP_TYPOGRAPHY_WORDPRESS_FUNCTIONS = [
     // Multisite.
     'get_current_network_id',
 
+    // Translations.
+    'load_plugin_textdomain',
+    '__',
+
     // Escaping and sanitization.
     'esc_attr',
     'esc_html',
@@ -61,6 +71,10 @@ const WP_TYPOGRAPHY_WORDPRESS_FUNCTIONS = [
     // Utility functions.
     'wp_list_pluck',
     'wp_parse_args',
+    'deactivate_plugins',
+    'plugin_basename',
+    'get_bloginfo',
+    'is_admin',
 ];
 
 return [
