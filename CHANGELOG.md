@@ -1,5 +1,8 @@
 # Changes
 
+## 5.8.1 - January 25, 2022
+*   _Bugfix_: Whitescreen in `Requirements` class due to error in build process fixed.
+
 ## 5.8.0 - January 25, 2022
 *   _Feature_: wp-Typography is now compatible with PHP 8.0.
 *   _Change_: WordPress minimum version increased to 5.3.
