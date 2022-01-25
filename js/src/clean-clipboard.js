@@ -1,7 +1,7 @@
 /**
  * This file is part of wp-Typography.
  *
- * Copyright 2016-2020 Peter Putzer.
+ * Copyright 2016-2021 Peter Putzer.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -31,14 +31,14 @@
  *
  * @author Peter Putzer <github@mundschenk.at>
  */
-( function () {
+(function () {
 	'use strict';
 
-	if ( window.getSelection ) {
-		document.addEventListener( 'copy', function () {
+	if (window.getSelection) {
+		document.addEventListener('copy', function () {
 			// Make sure we have an un-collapsed selection.
 			const sel = window.getSelection();
-			if ( sel.isCollapsed ) {
+			if (sel.isCollapsed) {
 				// This is probably a form field selection, no way to access it.
 				return;
 			}
@@ -49,36 +49,36 @@
 				ranges = [];
 
 			// Save Range objects for later.
-			for ( let i = 0; i < rangeCount; i++ ) {
-				ranges[ i ] = sel.getRangeAt( i );
+			for (let i = 0; i < rangeCount; i++) {
+				ranges[i] = sel.getRangeAt(i);
 			}
 
 			// Create new <div> containing cleaned HTML content.
-			const shadow = document.createElement( 'div' );
-			shadow.appendChild( sel.getRangeAt( 0 ).cloneContents() );
+			const shadow = document.createElement('div');
+			shadow.appendChild(sel.getRangeAt(0).cloneContents());
 			shadow.style.position = 'absolute';
 			shadow.style.left = '-99999px';
 			shadow.innerHTML = shadow.innerHTML
 				// Remove soft hyphens.
-				.replace( /\u00AD/gi, '' )
+				.replace(/\u00AD/gi, '')
 				// Also remove zero-width spaces.
-				.replace( /\u200B/gi, '' );
+				.replace(/\u200B/gi, '');
 
 			// Append to DOM and select the children of the "clean" <div>.
-			document.body.appendChild( shadow );
-			sel.selectAllChildren( shadow );
+			document.body.appendChild(shadow);
+			sel.selectAllChildren(shadow);
 
 			// Clean up after copying.
-			window.setTimeout( function () {
+			window.setTimeout(function () {
 				// Remove <div>.
 				shadow.remove();
 
 				// Restore real selection.
 				sel.removeAllRanges();
-				for ( let i = 0; i < rangeCount; i++ ) {
-					sel.addRange( ranges[ i ] );
+				for (let i = 0; i < rangeCount; i++) {
+					sel.addRange(ranges[i]);
 				}
-			}, 0 );
-		} );
+			}, 0);
+		});
 	}
-} )();
+})();
