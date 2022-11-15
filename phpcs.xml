@@ -8,7 +8,7 @@
 	</description>
 
 	<config name="minimum_supported_wp_version" value="5.3"/>
-	<config name="testVersion" value="7.2-"/>
+	<config name="testVersion" value="7.4-"/>
 
 	<!-- Include the WordPress ruleset, with exclusions. -->
 	<rule ref="WordPress">

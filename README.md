@@ -32,7 +32,7 @@ Improve your web typography with:
 
 wp‐Typography has the following requirements:
 
-*   The host server must run PHP 7.2.0 or later,
+*   The host server must run PHP 7.4.0 or later,
 *   your installation of PHP must include the following PHP extensions (most do):
     -   [mbstring](https://www.php.net/manual/en/mbstring.installation.php),
     -   [DOM](https://www.php.net/manual/en/dom.installation.php), and
