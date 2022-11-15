@@ -1,5 +1,7 @@
 # Changes
 
+## 5.9.0 - unreleased
+*   _Change_: PHP minimum version increased to 7.4.
 ## 5.8.1 - January 25, 2022
 *   _Bugfix_: Whitescreen in `Requirements` class due to error in build process fixed.
 
