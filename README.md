@@ -1,9 +1,9 @@
 # wp-Typography #
 
-[![Build Status](https://scrutinizer-ci.com/g/mundschenk-at/wp-typography/badges/build.png?b=master)](https://scrutinizer-ci.com/g/mundschenk-at/wp-typography/build-status/master)
+![Build Status](https://github.com/mundschenk-at/wp-typography/actions/workflows/ci.yml/badge.svg)
 [![Latest Stable Version](https://poser.pugx.org/mundschenk-at/wp-typography/v/stable)](https://packagist.org/packages/mundschenk-at/wp-typography)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mundschenk-at/wp-typography/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mundschenk-at/wp-typography/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/mundschenk-at/wp-typography/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/mundschenk-at/wp-typography/?branch=master)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=mundschenk-at_wp-typography&metric=alert_status)](https://sonarcloud.io/dashboard?id=mundschenk-at_wp-typography)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=mundschenk-at_wp-typography&metric=coverage)](https://sonarcloud.io/dashboard?id=mundschenk-at_wp-typography)
 [![License](https://poser.pugx.org/mundschenk-at/wp-typography/license)](https://packagist.org/packages/mundschenk-at/wp-typography)
 
 Improve your web typography with:
