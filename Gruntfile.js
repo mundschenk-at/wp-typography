@@ -17,21 +17,6 @@ module.exports = function(grunt) {
             ]
         },
 
-        composer : {
-            build : {
-                options : {
-                    flags: ['quiet'],
-                    cwd: 'build',
-                },
-            },
-            dev : {
-                options : {
-                    flags: [],
-                    cwd: '.',
-                },
-            },
-        },
-
         copy: {
             main: {
                 files: [{
@@ -112,9 +97,6 @@ module.exports = function(grunt) {
                     }, {
                        pattern: /\s+'Composer\\\\InstalledVersions.*,(?=\n)/g,
                        replacement: ''
-                    }, {
-                        pattern: 'Dangoodman',
-                        replacement: 'FOOBAR'
                     }]
                 }
             },
@@ -334,6 +316,14 @@ module.exports = function(grunt) {
             update_iana: {
                 command: "vendor/bin/update-iana.php",
             },
+            // Replacement for grunt-composer
+            composer_build: {
+                command: "composer --quiet <%= grunt.task.current.args[0] %>",
+                cwd: 'build'
+            },
+            composer_dev: {
+                command: "composer <%= grunt.task.current.args[0] %>",
+            }
         },
 
         compress: {
@@ -425,14 +415,14 @@ module.exports = function(grunt) {
     });
 
     grunt.registerTask('phpcs', [
-        'composer:dev:phpcs',
+        'newer:exec:composer_dev:phpcs',
     ]);
 
     grunt.registerTask('build', [
         // Clean house
         'clean:build',
         // Scope dependencies
-        'composer:dev:scope-dependencies',
+        'exec:composer_dev:scope-dependencies',
         // Rename vendor directory
         'string-replace:composer-vendor-dir',
         'rename:vendor',
@@ -450,7 +440,7 @@ module.exports = function(grunt) {
         'copy:meta',
         // Use scoped dependencies
         'string-replace:namespaces',
-        'composer:build:build-wordpress',
+        'exec:composer_build:build-wordpress',
         // Clean up unused packages
         'clean:autoloader',
         'string-replace:vendor-dir',
