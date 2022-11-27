@@ -43,7 +43,7 @@ class Block_Editor implements Plugin_Component {
 	 *
 	 * @var Implementation
 	 */
-	private $api;
+	private Implementation $api;
 
 	/**
 	 * Create a new instace.

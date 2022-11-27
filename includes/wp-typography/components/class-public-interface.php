@@ -55,7 +55,7 @@ class Public_Interface implements Plugin_Component {
 	 *
 	 * @var Implementation
 	 */
-	protected $api;
+	protected Implementation $api;
 
 	/**
 	 * The priority for our filter hooks.
@@ -69,7 +69,7 @@ class Public_Interface implements Plugin_Component {
 	 *
 	 * @var array<string,string|int|bool>
 	 */
-	protected $config;
+	protected array $config;
 
 	const CLEAN_CSS_PATTERNS = [
 		// Remove whitespace from beginning of line.

@@ -53,7 +53,7 @@ abstract class Tabs {
 	 *
 	 * @var Tab[]
 	 */
-	private static $tabs;
+	private static array $tabs;
 
 	/**
 	 * Retrieves the settings page tabs.

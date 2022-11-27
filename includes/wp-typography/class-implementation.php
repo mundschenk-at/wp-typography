@@ -63,7 +63,7 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @var array<string,string|int|bool>
 	 */
-	private $configuration;
+	private array $configuration;
 
 	/**
 	 * The PHP_Typography instance doing the actual work.
@@ -72,21 +72,21 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @var PHP_Typography
 	 */
-	private $typography;
+	private PHP_Typography $typography;
 
 	/**
 	 * The PHP_Typography\Settings instance.
 	 *
 	 * @var Settings
 	 */
-	private $typo_settings;
+	private Settings $typo_settings;
 
 	/**
 	 * The Hyphenator_Cache instance.
 	 *
 	 * @var Hyphenator_Cache
 	 */
-	protected $hyphenator_cache;
+	protected Hyphenator_Cache $hyphenator_cache;
 
 	/**
 	 * An abstraction of the WordPress transients API.
@@ -95,7 +95,7 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @var Transients
 	 */
-	private $transients;
+	private Transients $transients;
 
 	/**
 	 * An abstraction of the WordPress object cache.
@@ -104,7 +104,7 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @var Cache
 	 */
-	private $cache;
+	private Cache $cache;
 
 	/**
 	 * An abstraction of the WordPress Options API.
@@ -113,21 +113,21 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @var Options
 	 */
-	private $options;
+	private Options $options;
 
 	/**
 	 * The body classes for the current request.
 	 *
 	 * @var string[]
 	 */
-	private $body_classes = [];
+	private array $body_classes = [];
 
 	/**
 	 * An array of settings with their default value.
 	 *
 	 * @var array<string,string|int|bool>
 	 */
-	private $default_settings;
+	private array $default_settings;
 
 	/**
 	 * Sets up a new WP_Typography object.
@@ -242,7 +242,7 @@ class Implementation extends \WP_Typography {
 	 * @return array<string,string|int|bool>
 	 */
 	public function get_config() : array {
-		if ( empty( $this->configuration ) ) {
+		if ( ! isset( $this->configuration ) ) {
 			$config = $this->options->get( Options::CONFIGURATION );
 			if ( \is_array( $config ) ) {
 				$config_is_dirty = false;
@@ -264,6 +264,7 @@ class Implementation extends \WP_Typography {
 				$this->configuration = $config;
 			} else {
 				// The configuration array has been corrupted.
+				$this->configuration = [];
 				$this->set_default_options( true );
 			}
 		}
@@ -504,7 +505,7 @@ class Implementation extends \WP_Typography {
 		$config = $this->get_config();
 
 		// Initialize PHP_Typography instance.
-		if ( empty( $this->typography ) ) {
+		if ( ! isset( $this->typography ) ) {
 			$transient = 'php_' . \md5( (string) \wp_json_encode( $config ) );
 			$typo      = $this->transients->get_large_object( $transient );
 
@@ -520,7 +521,7 @@ class Implementation extends \WP_Typography {
 		}
 
 		// Also cache hyphenators (the pattern tries are expensive to build).
-		if ( $config[ Config::ENABLE_HYPHENATION ] && empty( $this->hyphenator_cache ) ) {
+		if ( $config[ Config::ENABLE_HYPHENATION ] && ! isset( $this->hyphenator_cache ) ) {
 			$transient    = 'php_hyphenator_cache';
 			$hyphen_cache = $this->transients->get_large_object( $transient );
 
@@ -543,7 +544,7 @@ class Implementation extends \WP_Typography {
 	 * Save hyphenator cache for the next request.
 	 */
 	public function save_hyphenator_cache_on_shutdown() : void {
-		if ( ! empty( $this->hyphenator_cache ) && $this->hyphenator_cache->has_changed() ) {
+		if ( isset( $this->hyphenator_cache ) && $this->hyphenator_cache->has_changed() ) {
 			$this->transients->cache_object( 'php_hyphenator_cache', $this->hyphenator_cache, 'hyphenator_cache' );
 		}
 	}

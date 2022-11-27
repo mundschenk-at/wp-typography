@@ -98,22 +98,22 @@ class Abstract_Locale_Settings_Test extends \WP_Typography\Tests\TestCase {
 	 * @covers ::adjust_defaults
 	 */
 	public function test_adjust_defaults() : void {
-		$this->invokeMethod( $this->locale, '__construct', [ 5, 'dash', 'primary', 'secondary', 'french' ] );
+		$this->invokeMethod( $this->locale, '__construct', [ 5, 'dash', 'primary', 'secondary', false ] );
 
 		$defaults = [
 			'foo'                              => 'bar',
+			Config::SMART_DASHES_STYLE         => 'xxx',
 			Config::SMART_QUOTES_PRIMARY       => 'xxx',
 			Config::SMART_QUOTES_SECONDARY     => 'xxx',
 			Config::FRENCH_PUNCTUATION_SPACING => 'xxx',
-			Config::SMART_DASHES_STYLE         => 'xxx',
 		];
 
 		$expected = [
 			'foo'                              => 'bar',
+			Config::SMART_DASHES_STYLE         => 'dash',
 			Config::SMART_QUOTES_PRIMARY       => 'primary',
 			Config::SMART_QUOTES_SECONDARY     => 'secondary',
-			Config::FRENCH_PUNCTUATION_SPACING => 'french',
-			Config::SMART_DASHES_STYLE         => 'dash',
+			Config::FRENCH_PUNCTUATION_SPACING => false,
 		];
 
 		$this->assertSame( $expected, $this->locale->adjust_defaults( $defaults ) );

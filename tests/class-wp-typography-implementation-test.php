@@ -207,7 +207,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 		$this->wp_typo->shouldReceive( 'set_default_options' )->once()->with( true );
 
 		// IRL set_default_options would fix the config object.
-		$this->assertSame( null, $this->wp_typo->get_config() );
+		$this->assertSame( [], $this->wp_typo->get_config() );
 	}
 
 	/**
@@ -921,9 +921,8 @@ class WP_Typography_Implementation_Test extends TestCase {
 
 		if ( null !== $hyphenator_cache ) {
 			$hyphenator_cache->shouldReceive( 'has_changed' )->andReturn( $expected );
+			$this->setValue( $this->wp_typo, 'hyphenator_cache', $hyphenator_cache );
 		}
-
-		$this->setValue( $this->wp_typo, 'hyphenator_cache', $hyphenator_cache );
 
 		if ( $expected ) {
 			$this->transients->shouldReceive( 'cache_object' )->once();
