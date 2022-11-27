@@ -62,7 +62,7 @@ abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 	 */
 	protected function invokeMethod( $object, $method_name, array $parameters = [], $classname = null ) {
 		if ( empty( $classname ) ) {
-			$classname = get_class( $object );
+			$classname = \get_class( $object );
 		}
 
 		$reflection = new \ReflectionClass( $classname );
@@ -113,7 +113,7 @@ abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 	 */
 	protected function setValue( $object, $property_name, $value, $classname = null ) : void {
 		if ( empty( $classname ) ) {
-			$classname = get_class( $object );
+			$classname = \get_class( $object );
 		}
 
 		$reflection = new \ReflectionClass( $classname );
@@ -149,7 +149,7 @@ abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 	 */
 	protected function getValue( $object, $property_name, $classname = null ) {
 		if ( empty( $classname ) ) {
-			$classname = get_class( $object );
+			$classname = \get_class( $object );
 		}
 
 		$reflection = new \ReflectionClass( $classname );
@@ -168,7 +168,7 @@ abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 	 * @param string $message   Optional. Default ''.
 	 */
 	protected function assertAttributeArrayHasKey( $key, $attribute, $object, $message = '' ) : void {
-		$ref  = new \ReflectionClass( get_class( $object ) );
+		$ref  = new \ReflectionClass( \get_class( $object ) );
 		$prop = $ref->getProperty( $attribute );
 		$prop->setAccessible( true );
 
@@ -184,7 +184,7 @@ abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 	 * @param string $message   Optional. Default ''.
 	 */
 	protected function assertAttributeArrayNotHasKey( $key, $attribute, $object, $message = '' ) : void {
-		$ref  = new \ReflectionClass( get_class( $object ) );
+		$ref  = new \ReflectionClass( \get_class( $object ) );
 		$prop = $ref->getProperty( $attribute );
 		$prop->setAccessible( true );
 

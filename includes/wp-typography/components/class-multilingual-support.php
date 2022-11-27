@@ -296,7 +296,7 @@ class Multilingual_Support implements Plugin_Component {
 		 * @param string|Dashes $dash_style A style constant (Dash_Style::TRADITIONAL_US or Dash_Style::INTERNATIONAL) or object.
 		 * @param string        $locale     The current locale with '-' as the separating character (e.g. 'en-US').
 		 */
-		$settings->set_smart_dashes_style( apply_filters( 'typo_dash_style_for_locale', $dash_style, $locale ) );
+		$settings->set_smart_dashes_style( \apply_filters( 'typo_dash_style_for_locale', $dash_style, $locale ) );
 	}
 
 	/**
@@ -324,7 +324,7 @@ class Multilingual_Support implements Plugin_Component {
 		 * @param string|Quotes $primary A quote style constant or object.
 		 * @param string        $locale  The current locale with '-' as the separating character (e.g. 'en-US').
 		 */
-		$primary = apply_filters( 'typo_primary_quote_style_for_locale', $primary, $locale );
+		$primary = \apply_filters( 'typo_primary_quote_style_for_locale', $primary, $locale );
 		if ( ! empty( $primary ) ) {
 			$settings->set_smart_quotes_primary( $primary );
 		}
@@ -462,18 +462,18 @@ class Multilingual_Support implements Plugin_Component {
 		}
 
 		// Try some heuristics..
-		$matches     = preg_grep( "/^{$language}-/", array_keys( $languages ) );
-		$match_count = count( $matches );
+		$matches     = \preg_grep( "/^{$language}-/", array_keys( $languages ) ) ?: []; // phpcs:ignore WordPress.PHP.DisallowShortTernary -- ensure array type.
+		$match_count = \count( $matches );
 
 		if ( 1 === $match_count ) {
-			$result = array_pop( $matches );
+			$result = \array_pop( $matches );
 		} elseif ( $match_count > 1 ) {
 			// Narrow the search further.
-			$matches     = preg_grep( "/^{$locale}/", $matches );
-			$match_count = count( $matches );
+			$matches     = \preg_grep( "/^{$locale}/", $matches ) ?: []; // phpcs:ignore WordPress.PHP.DisallowShortTernary -- ensure array type.
+			$match_count = \count( $matches );
 
 			if ( 1 === $match_count ) {
-				$result = array_pop( $matches );
+				$result = \array_pop( $matches );
 			}
 		}
 
