@@ -183,7 +183,7 @@ class Multilingual_Support implements Plugin_Component {
 		$settings = clone $settings;
 
 		// Determine locale.
-		list( $locale, $language, $country, $modifier ) = $this->get_current_locale();
+		[ 'locale' => $locale, 'language' => $language, 'country' => $country, 'modifier' => $modifier ] = $this->get_current_locale();
 
 		// Adjust hyphenation language.
 		$hyphenation_language_match = $this->match_language( $this->hyphenation_languages, "$language-$country", $language, self::MATCH_TYPE_HYPHENATION );
@@ -221,7 +221,7 @@ class Multilingual_Support implements Plugin_Component {
 	 * @return array<string,string|int|bool>
 	 */
 	public function filter_defaults( array $defaults ) : array {
-		list(, $language, $country, $modifier ) = $this->get_current_locale();
+		[ 'language' => $language, 'country' => $country, 'modifier' => $modifier ] = $this->get_current_locale();
 
 		// Standard adjustments.
 		$adjustment = $this->match_locale( $language, $country, $modifier );
@@ -412,7 +412,12 @@ class Multilingual_Support implements Plugin_Component {
 			$modifier = '';
 		}
 
-		return [ \str_replace( '_', '-', $locale ), $language, $country, $modifier ];
+		return [
+			'locale'   => \str_replace( '_', '-', $locale ),
+			'language' => $language,
+			'country'  => $country,
+			'modifier' => $modifier,
+		];
 	}
 
 	/**
