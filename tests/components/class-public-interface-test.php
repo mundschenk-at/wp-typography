@@ -322,6 +322,7 @@ class Public_Interface_Test extends TestCase {
 		$this->prepareOptions(
 			[
 				Config::STYLE_CSS_INCLUDE                => false,
+				Config::STYLE_CSS                        => ' ',
 				Config::HYPHENATE_SAFARI_FONT_WORKAROUND => true,
 			]
 		);
