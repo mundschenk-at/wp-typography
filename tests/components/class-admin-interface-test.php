@@ -164,7 +164,7 @@ class Admin_Interface_Test extends TestCase {
 		);
 		Functions\expect( 'is_admin' )->once()->andReturn( true );
 		Functions\expect( 'plugin_basename' )->once()->with( \WP_TYPOGRAPHY_PLUGIN_FILE )->andReturn( 'plugin/basename' );
-		$this->admin->run( $this->plugin );
+		$this->admin->run();  // @phpstan-ignore-line - We need to run this method to properly set up the fixture.
 	}
 
 	/**
@@ -435,7 +435,7 @@ class Admin_Interface_Test extends TestCase {
 		Functions\expect( 'add_settings_error' )->once()->with( Admin_Interface::OPTION_GROUP . 'my-tab', 'some-id', 'An important message.', 'notice-info' );
 
 		// Do it.
-		$this->assertSame( (bool) $input, $this->admin->trigger_admin_notice( 'setting', 'some-id', 'An important message.', 'notice-info', $input ) );
+		$this->assertSame( (bool) $input, $this->admin->trigger_admin_notice( 'setting', 'some-id', 'An important message.', 'notice-info', $input ) ); // @phpstan-ignore-line - testing protected method.
 	}
 
 	/**

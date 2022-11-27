@@ -83,7 +83,7 @@ class WP_Typography_Requirements_Test extends Testcase {
 		 * @var Requirements&m\MockInterface
 		 */
 		$req = m::mock( Requirements::class )->makePartial();
-		$req->__construct( 'some_file' );
+		$req->__construct( 'some_file' ); // @phpstan-ignore-line - testing protected method.
 
 		$this->assertSame( 'wp-Typography', $this->get_value( $req, 'plugin_name' ) );
 		$this->assertSame( 'wp-typography', $this->get_value( $req, 'textdomain' ) );
@@ -104,7 +104,7 @@ class WP_Typography_Requirements_Test extends Testcase {
 	 * @covers ::get_requirements
 	 */
 	public function test_get_requirements() : void {
-		$req_keys = \array_column( $this->sut->get_requirements(), 'enable_key' );
+		$req_keys = \array_column( $this->sut->get_requirements(), 'enable_key' ); // @phpstan-ignore-line - testing protected method.
 
 		$this->assertContains( 'dom', $req_keys );
 	}
@@ -118,7 +118,7 @@ class WP_Typography_Requirements_Test extends Testcase {
 		// Mocking tests for PHP extensions is difficult.
 		$dom = class_exists( 'DOMDocument' );
 
-		$this->assertSame( $dom, $this->sut->check_dom_support() );
+		$this->assertSame( $dom, $this->sut->check_dom_support() ); // @phpstan-ignore-line - testing protected method.
 	}
 
 	/**

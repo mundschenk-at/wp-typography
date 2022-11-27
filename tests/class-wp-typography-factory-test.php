@@ -89,7 +89,7 @@ class WP_Typography_Factory_Test extends TestCase {
 		$this->sut->shouldReceive( 'get_rules' )->never();
 
 		// Manually call constructor.
-		$this->sut->__construct();
+		$this->sut->__construct(); // @phpstan-ignore-line - testing protected method.
 
 		$resulting_rules = $this->get_value( $this->sut, 'rules' );
 		$this->assert_is_array( $resulting_rules );
@@ -105,7 +105,7 @@ class WP_Typography_Factory_Test extends TestCase {
 		$version     = '6.6.6';
 		$plugin_file = '/the/main/plugin/file.php';
 
-		$this->assertSame( $version, $this->sut->get_plugin_version( $plugin_file ) );
+		$this->assertSame( $version, $this->sut->get_plugin_version( $plugin_file ) ); // @phpstan-ignore-line - testing protected method.
 	}
 
 	/**
