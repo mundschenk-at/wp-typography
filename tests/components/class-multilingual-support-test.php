@@ -26,6 +26,8 @@ namespace WP_Typography\Tests\Components;
 
 use WP_Typography\Components\Multilingual_Support;
 
+use WP_Typography\Implementation;
+
 use WP_Typography\Settings\Basic_Locale_Settings;
 use WP_Typography\Settings\Locale_Settings;
 use WP_Typography\Settings\Plugin_Configuration as Config;
@@ -53,21 +55,21 @@ class Multilingual_Support_Test extends TestCase {
 	/**
 	 * Test fixture.
 	 *
-	 * @var Multilingual_Support
+	 * @var Multilingual_Support&m\MockInterface
 	 */
 	protected $multi;
 
 	/**
 	 * Test fixture.
 	 *
-	 * @var \WP_Typography\Implementation
+	 * @var Implementation&m\MockInterface
 	 */
 	protected $api;
 
 	/**
 	 * Test fixture (instance mock).
 	 *
-	 * @var Basic_Locale_Settings
+	 * @var Basic_Locale_Settings&m\MockInterface
 	 */
 	protected $locale;
 
@@ -78,9 +80,14 @@ class Multilingual_Support_Test extends TestCase {
 	protected function set_up() : void {
 		parent::set_up();
 
-		$this->api    = m::mock( \WP_Typography\Implementation::class );
+		$this->api    = m::mock( Implementation::class );
 		$this->locale = m::mock( Basic_Locale_Settings::class );
 
+		/**
+		 * Locale settings mock.
+		 *
+		 * @var array<Basic_Locale_Settings&m\MockInterface>
+		 */
 		$locales = [
 			m::mock( Basic_Locale_Settings::class ),
 			m::mock( Basic_Locale_Settings::class ),
@@ -108,11 +115,27 @@ class Multilingual_Support_Test extends TestCase {
 	 * @covers ::__construct
 	 */
 	public function test_constructor() : void {
+		/**
+		 * Multilingual_Support mock.
+		 *
+		 * @var Multilingual_Support&m\MockInterface
+		 */
 		$sut = m::mock( Multilingual_Support::class )
 			->shouldAllowMockingProtectedMethods()
 			->makePartial();
 
-		$api     = m::mock( \WP_Typography\Implementation::class );
+		/**
+		 * Multilingual_Support mock.
+		 *
+		 * @var Implementation&m\MockInterface
+		 */
+		$api = m::mock( Implementation::class );
+
+		/**
+		 * Locale settings mock.
+		 *
+		 * @var array<Basic_Locale_Settings&m\MockInterface>
+		 */
 		$locales = [
 			m::mock( Basic_Locale_Settings::class ),
 			m::mock( Basic_Locale_Settings::class ),
@@ -181,7 +204,7 @@ class Multilingual_Support_Test extends TestCase {
 	/**
 	 * Provides data for testing locale_settings_sort.
 	 *
-	 * @return array
+	 * @return mixed[]
 	 */
 	public function provide_locale_settings_sort_data() : array {
 		return [
@@ -208,7 +231,19 @@ class Multilingual_Support_Test extends TestCase {
 	 * @param int $result Expected result.
 	 */
 	public function test_locale_settings_sort( $prio1, $prio2, $result ) : void {
+
+		/**
+		 * Locale settings mock.
+		 *
+		 * @var Locale_Settings&m\MockInterface
+		 */
 		$locale1 = m::mock( Locale_Settings::class );
+
+		/**
+		 * Locale settings mock.
+		 *
+		 * @var Locale_Settings&m\MockInterface
+		 */
 		$locale2 = m::mock( Locale_Settings::class );
 
 		$locale1->shouldReceive( 'priority' )->once()->andReturn( $prio1 );
@@ -220,7 +255,7 @@ class Multilingual_Support_Test extends TestCase {
 	/**
 	 * Provide data for testing automatic_language_settings.
 	 *
-	 * @return array
+	 * @return mixed[]
 	 */
 	public function provide_automatic_language_settings_data() : array {
 		return [
@@ -242,6 +277,11 @@ class Multilingual_Support_Test extends TestCase {
 	 * @param  bool $diacritics  Required.
 	 */
 	public function test_automatic_language_settings( $hyphenation, $diacritics ) : void {
+		/**
+		 * Settings mock.
+		 *
+		 * @var Settings&m\MockInterface
+		 */
 		$s      = m::mock( Settings::class );
 		$locale = 'de-DE-foobar';
 
@@ -343,6 +383,11 @@ class Multilingual_Support_Test extends TestCase {
 	 * @covers ::adjust_french_punctuation_spacing
 	 */
 	public function test_adjust_french_punctuation_spacing() : void {
+		/**
+		 * Settings mock.
+		 *
+		 * @var Settings&m\MockInterface
+		 */
 		$s      = m::mock( Settings::class );
 		$locale = 'de-DE-foobar';
 
@@ -359,6 +404,11 @@ class Multilingual_Support_Test extends TestCase {
 	 * @covers ::adjust_french_punctuation_spacing
 	 */
 	public function test_adjust_french_punctuation_spacing_null_adjustment() : void {
+		/**
+		 * Settings mock.
+		 *
+		 * @var Settings&m\MockInterface
+		 */
 		$s      = m::mock( Settings::class );
 		$locale = 'de-DE-foobar';
 
@@ -374,6 +424,11 @@ class Multilingual_Support_Test extends TestCase {
 	 * @covers ::adjust_dash_style
 	 */
 	public function test_adjust_dash_style() : void {
+		/**
+		 * Settings mock.
+		 *
+		 * @var Settings&m\MockInterface
+		 */
 		$s      = m::mock( Settings::class );
 		$locale = 'de-DE-foobar';
 
@@ -390,6 +445,11 @@ class Multilingual_Support_Test extends TestCase {
 	 * @covers ::adjust_dash_style
 	 */
 	public function test_adjust_dash_style_null_adjustment() : void {
+		/**
+		 * Settings mock.
+		 *
+		 * @var Settings&m\MockInterface
+		 */
 		$s      = m::mock( Settings::class );
 		$locale = 'de-DE-foobar';
 
@@ -406,6 +466,11 @@ class Multilingual_Support_Test extends TestCase {
 	 * @covers ::adjust_quote_styles
 	 */
 	public function test_adjust_quote_styles() : void {
+		/**
+		 * Settings mock.
+		 *
+		 * @var Settings&m\MockInterface
+		 */
 		$s      = m::mock( Settings::class );
 		$locale = 'de-DE-foobar';
 
@@ -425,6 +490,11 @@ class Multilingual_Support_Test extends TestCase {
 	 * @covers ::adjust_quote_styles
 	 */
 	public function test_adjust_quote_styles_null_adjustment() : void {
+		/**
+		 * Settings mock.
+		 *
+		 * @var Settings&m\MockInterface
+		 */
 		$s      = m::mock( Settings::class );
 		$locale = 'de-DE-foobar';
 
@@ -485,7 +555,7 @@ class Multilingual_Support_Test extends TestCase {
 	/**
 	 * Provides data for testing get_current_locale.
 	 *
-	 * @return array
+	 * @return mixed[]
 	 */
 	public function provide_get_current_locale_data() : array {
 		return [
@@ -504,11 +574,8 @@ class Multilingual_Support_Test extends TestCase {
 	 *
 	 * @dataProvider provide_get_current_locale_data
 	 *
-	 * @param  string $input    Raw WordPress locale string.
-	 * @param  string $locale   Expected result.
-	 * @param  string $language Optional. Expected result. Default ''.
-	 * @param  string $country  Optional. Expected result. Default ''.
-	 * @param  string $modifier Optional. Expected result. Default ''.
+	 * @param  string  $input       Raw WordPress locale string.
+	 * @param  mixed[] $locale_data Expected result.
 	 */
 	public function test_get_current_locale( $input, array $locale_data ) : void {
 		Filters\expectApplied( 'typo_current_locale' )->once()->with( '' )->andReturnFirstArg();
@@ -658,7 +725,7 @@ class Multilingual_Support_Test extends TestCase {
 	/**
 	 * Provide data for testing match_language.
 	 *
-	 * @return array
+	 * @return mixed[]
 	 */
 	public function provide_match_language_data() : array {
 		return [

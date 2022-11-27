@@ -47,7 +47,7 @@ class Transients_Test extends TestCase {
 	/**
 	 * Test fixture.
 	 *
-	 * @var \WP_Typography\Data_Storage\Transients
+	 * @var Transients&m\MockInterface
 	 */
 	protected $transients;
 

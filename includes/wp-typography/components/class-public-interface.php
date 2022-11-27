@@ -51,8 +51,9 @@ class Public_Interface implements Plugin_Component {
 	 * The plugin API.
 	 *
 	 * @since 5.7.0 Renamed to $api.
+	 * @since 5.9.0 Type hint changed to the actual API `Implementation`.
 	 *
-	 * @var \WP_Typography
+	 * @var Implementation
 	 */
 	protected $api;
 
@@ -66,7 +67,7 @@ class Public_Interface implements Plugin_Component {
 	/**
 	 * The plugin configuration.
 	 *
-	 * @var array
+	 * @var array<string,string|int|bool>
 	 */
 	protected $config;
 

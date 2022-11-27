@@ -49,7 +49,7 @@ class Abstract_Locale_Settings_Test extends \WP_Typography\Tests\TestCase {
 	/**
 	 * Test fixture.
 	 *
-	 * @var Abstract_Locale_Settings
+	 * @var Abstract_Locale_Settings&m\MockInterface
 	 */
 	protected $locale;
 

@@ -47,7 +47,7 @@ class Cache_Test extends TestCase {
 	/**
 	 * Test fixture.
 	 *
-	 * @var \WP_Typography\Data_Storage\Cache
+	 * @var Cache&m\MockInterface
 	 */
 	protected $cache;
 

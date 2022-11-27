@@ -57,9 +57,9 @@ interface Locale_Settings {
 	/**
 	 * Apply language-specific adjustments to the defaults array.
 	 *
-	 * @param  array $defaults An array of default values indexed by the option name.
+	 * @param  array<string,string|int|bool> $defaults An array of default values indexed by the option name.
 	 *
-	 * @return array
+	 * @return array<string,string|int|bool>
 	 */
 	public function adjust_defaults( array $defaults ) : array;
 

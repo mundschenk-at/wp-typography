@@ -74,11 +74,22 @@ class Custom_Token_Fix_Test extends \WP_Typography\Tests\TestCase {
 	 * @uses ::__construct
 	 */
 	public function test_apply() : void {
+		/**
+		 * Settings mock.
+		 *
+		 * @var \PHP_Typography\Settings&m\MockInterface
+		 */
+		$s       = m::mock( \PHP_Typography\Settings::class );
 		$type    = 'compound_words';
 		$fix     = new Custom_Token_Fix( $type );
-		$s       = m::mock( \PHP_Typography\Settings::class );
 		$element = new \DOMElement( 'foo', 'content' );
-		$node    = $element->firstChild;
+
+		/**
+		 * A textnode.
+		 *
+		 * @var \DOMText
+		 */
+		$node = $element->firstChild;
 
 		Filters\expectApplied( "typo_custom_{$type}_token_fix" )
 			->once()

@@ -26,6 +26,7 @@ namespace WP_Typography\Tests\Components;
 
 use WP_Typography\Components\Public_Interface;
 use WP_Typography\Settings\Plugin_Configuration as Config;
+use WP_Typography\Implementation;
 
 use WP_Typography\Tests\TestCase;
 
@@ -48,14 +49,14 @@ class Public_Interface_Test extends TestCase {
 	/**
 	 * Test fixture.
 	 *
-	 * @var Public_Interface
+	 * @var Public_Interface&m\MockInterface
 	 */
 	protected $public_if;
 
 	/**
 	 * Test fixture.
 	 *
-	 * @var \WP_Typography\Implementation
+	 * @var Implementation&m\MockInterface
 	 */
 	protected $api;
 
@@ -66,7 +67,7 @@ class Public_Interface_Test extends TestCase {
 	protected function set_up() : void {
 		parent::set_up();
 
-		$this->api = m::mock( \WP_Typography\Implementation::class );
+		$this->api = m::mock( Implementation::class );
 
 		// Mock WP_Typography\Components\Public_Interface instance.
 		$this->public_if = m::mock( Public_Interface::class, [ $this->api ] )
@@ -76,9 +77,9 @@ class Public_Interface_Test extends TestCase {
 	/**
 	 * Prepare WP_Typography options for a test.
 	 *
-	 * @param array $options An array of set options.
+	 * @param mixed[] $options An array of set options.
 	 *
-	 * @return array The options array.
+	 * @return mixed[]         The options array.
 	 */
 	protected function prepareOptions( array $options ) : array {
 		// Reset options.
@@ -93,7 +94,18 @@ class Public_Interface_Test extends TestCase {
 	 * @covers ::__construct
 	 */
 	public function test_constructor() : void {
+		/**
+		 * Public_Intefface mock.
+		 *
+		 * @var Public_Interface&m\MockInterface
+		 */
 		$sut = m::mock( Public_Interface::class )->shouldAllowMockingProtectedMethods()->makePartial();
+
+		/**
+		 * Implementation mock.
+		 *
+		 * @var Implementation&m\MockInterface
+		 */
 		$api = m::mock( \WP_Typography\Implementation::class );
 
 		$sut->__construct( $api );
@@ -131,7 +143,7 @@ class Public_Interface_Test extends TestCase {
 	/**
 	 * Provide data for testing add_content_filters.
 	 *
-	 * @return array
+	 * @return mixed[]
 	 */
 	public function provide_init_data() : array {
 		return [
@@ -191,7 +203,7 @@ class Public_Interface_Test extends TestCase {
 	/**
 	 * Provide data for testing add_content_filters.
 	 *
-	 * @return array
+	 * @return mixed[]
 	 */
 	public function provide_add_content_filters_data() : array {
 		return [

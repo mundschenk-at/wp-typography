@@ -26,7 +26,7 @@ namespace WP_Typography\Tests\Components;
 
 use WP_Typography\Components\Setup;
 use WP_Typography\Data_Storage\Options;
-use WP_Typography\Settings\Plugin_Configuration as Config;
+use WP_Typography\Implementation;
 
 use WP_Typography\Tests\TestCase;
 
@@ -49,21 +49,21 @@ class Setup_Test extends TestCase {
 	/**
 	 * Test fixture.
 	 *
-	 * @var Setup
+	 * @var Setup&m\MockInterface
 	 */
 	protected $setup;
 
 	/**
 	 * Test fixture.
 	 *
-	 * @var \WP_Typography\Data_Storage\Options
+	 * @var Options&m\MockInterface
 	 */
 	protected $options;
 
 	/**
 	 * Test fixture.
 	 *
-	 * @var \WP_Typography\Implementation
+	 * @var Implementation&m\MockInterface
 	 */
 	protected $api;
 
@@ -154,7 +154,7 @@ class Setup_Test extends TestCase {
 	/**
 	 * Provided data for testing get_old_option_name.
 	 *
-	 * @return array
+	 * @return mixed[]
 	 */
 	public function provide_get_old_option_name_data() : array {
 		return [
@@ -211,7 +211,7 @@ class Setup_Test extends TestCase {
 	/**
 	 * Provided data for testing get_old_option_name.
 	 *
-	 * @return array
+	 * @return mixed[]
 	 */
 	public function provide_plugin_updated_data() : array {
 		return [

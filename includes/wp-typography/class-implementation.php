@@ -61,7 +61,7 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @since 5.8.0 Renamed to $configuration.
 	 *
-	 * @var array
+	 * @var array<string,string|int|bool>
 	 */
 	private $configuration;
 
@@ -125,7 +125,7 @@ class Implementation extends \WP_Typography {
 	/**
 	 * An array of settings with their default value.
 	 *
-	 * @var array
+	 * @var array<string,string|int|bool>
 	 */
 	private $default_settings;
 
@@ -198,8 +198,9 @@ class Implementation extends \WP_Typography {
 			 * Filters the caching duration for the language plugin lists.
 			 *
 			 * @since 3.2.0
+			 * @since 5.9.0 Type of parameter `$duration` corrected to `int`.
 			 *
-			 * @param number $duration The duration in seconds. Defaults to 1 week.
+			 * @param int    $duration The duration in seconds. Defaults to 1 week.
 			 * @param string $list     The name language plugin list.
 			 */
 			$duration = \apply_filters( 'typo_language_list_caching_duration', WEEK_IN_SECONDS, "{$type}_languages" );
@@ -238,7 +239,7 @@ class Implementation extends \WP_Typography {
 	/**
 	 * Retrieves the plugin configuration.
 	 *
-	 * @return array
+	 * @return array<string,string|int|bool>
 	 */
 	public function get_config() : array {
 		if ( empty( $this->configuration ) ) {
@@ -365,10 +366,10 @@ class Implementation extends \WP_Typography {
 	 * @since 4.0.0 Parameter $settings added.
 	 * @since 5.3.0 The method can be called both statically and dynamically.
 	 *
-	 * @param array         $title_parts An array of strings.
+	 * @param string[]      $title_parts An array of strings.
 	 * @param Settings|null $settings    Optional. A settings object. Default null (which means the internal settings will be used).
 	 *
-	 * @return array
+	 * @return string[]
 	 */
 	public function process_title_parts( array $title_parts, Settings $settings = null ) : array {
 		foreach ( $title_parts as $index => $part ) {
@@ -492,6 +493,10 @@ class Implementation extends \WP_Typography {
 
 	/**
 	 * Retrieves the PHP_Typography instance and ensure just-in-time initialization.
+	 *
+	 * @since 5.9.0 Return typ documented.
+	 *
+	 * @return PHP_Typography
 	 */
 	protected function get_typography_instance() : PHP_Typography {
 
@@ -547,7 +552,7 @@ class Implementation extends \WP_Typography {
 	 * Initializes the Settings object for PHP_Typography from the plugin options.
 	 *
 	 * @param Settings $s      The settings instance to initialize.
-	 * @param array    $config The array of configuration entries.
+	 * @param mixed[]  $config The array of configuration entries.
 	 */
 	protected function init_settings_from_options( Settings $s, array $config ) : void {
 		// Necessary for full Settings initialization.
@@ -774,7 +779,7 @@ class Implementation extends \WP_Typography {
 	/**
 	 * Retrieves the plugin's default option values.
 	 *
-	 * @return array
+	 * @return array<string,string|int|bool>
 	 */
 	public function get_default_options() : array {
 		if ( empty( $this->default_settings ) ) {
@@ -804,9 +809,9 @@ class Implementation extends \WP_Typography {
 	/**
 	 * Makes parser errors filterable.
 	 *
-	 * @param array $errors An array of error messages.
+	 * @param  string[] $errors An array of error messages.
 	 *
-	 * @return array The filtered array.
+	 * @return string[]         The filtered array.
 	 */
 	public function parser_errors_handler( $errors ) : array {
 		/**

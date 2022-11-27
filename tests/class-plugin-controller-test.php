@@ -25,8 +25,8 @@
 namespace WP_Typography\Tests;
 
 use WP_Typography\Plugin_Controller;
-use WP_Typography\Components\Admin_Interface;
-use WP_Typography\Components\Public_Interface;
+use WP_Typography\Implementation;
+use WP_Typography\Components\Plugin_Component;
 
 use Brain\Monkey\Actions;
 use Brain\Monkey\Filters;
@@ -45,7 +45,7 @@ class Plugin_Controller_Test extends TestCase {
 	/**
 	 * The system-under-test.
 	 *
-	 * @var Plugin_Controller
+	 * @var Plugin_Controller&m\MockInterface
 	 */
 	protected $sut;
 
@@ -76,12 +76,23 @@ class Plugin_Controller_Test extends TestCase {
 	 */
 	public function test_constructor() : void {
 
-		$api        = m::mock( \WP_Typography\Implementation::class );
+		/**
+		 * Implementation mock.
+		 *
+		 * @var Implementation&m\MockInterface
+		 */
+		$api = m::mock( Implementation::class );
+
+		/**
+		 * Components mock.
+		 *
+		 * @var array<Plugin_Component&m\MockInterface>
+		 */
 		$components = [
-			m::mock( \WP_Typography\Components\Plugin_Component::class ),
-			m::mock( \WP_Typography\Components\Plugin_Component::class ),
-			m::mock( \WP_Typography\Components\Plugin_Component::class ),
-			m::mock( \WP_Typography\Components\Plugin_Component::class ),
+			m::mock( Plugin_Component::class ),
+			m::mock( Plugin_Component::class ),
+			m::mock( Plugin_Component::class ),
+			m::mock( Plugin_Component::class ),
 		];
 
 		$this->sut->__construct( $api, $components );
@@ -97,6 +108,18 @@ class Plugin_Controller_Test extends TestCase {
 	 * @uses \WP_Typography::set_instance
 	 */
 	public function test_run() : void {
+		/**
+		 * Implementation mock.
+		 *
+		 * @var Implementation&m\MockInterface
+		 */
+		$api = m::mock( \WP_Typography\Implementation::class );
+
+		/**
+		 * Components mock.
+		 *
+		 * @var array<Plugin_Component&m\MockInterface>
+		 */
 		$components = [
 			m::mock( \WP_Typography\Components\Plugin_Component::class ),
 			m::mock( \WP_Typography\Components\Plugin_Component::class ),

@@ -78,9 +78,9 @@ class Container {
 	/**
 	 * Adds the additional content filter enabling functions, indexed by tag.
 	 *
-	 * @param array $filters The filters in the form $tag => $callable.
+	 * @param  array<string,callable> $filters The filters in the form $tag => $callable.
 	 *
-	 * @return array
+	 * @return array<string,callable>
 	 */
 	public function get_content_filters( array $filters ) : array {
 		foreach ( $this->active_integrations as $integration ) {

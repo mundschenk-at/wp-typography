@@ -32,8 +32,8 @@ use WP_Typography\Settings\Locale_Settings;
 use WP_Typography\Settings\Plugin_Configuration as Config;
 
 use PHP_Typography\Settings;
-use PHP_Typography\Settings\Dash_Style;
-use PHP_Typography\Settings\Quote_Style;
+use PHP_Typography\Settings\Dashes;
+use PHP_Typography\Settings\Quotes;
 
 /**
  * Multilingual_Support support for wp-Typography.
@@ -43,6 +43,13 @@ use PHP_Typography\Settings\Quote_Style;
  * @since  5.9.0 Return type declarations added.
  *
  * @author Peter Putzer <github@mundschenk.at>
+ *
+ * @phpstan-type Locale array{
+ *     locale   : string,
+ *     language : string,
+ *     country  : string,
+ *     modifier : string,
+ * }
  */
 class Multilingual_Support implements Plugin_Component {
 
@@ -209,9 +216,9 @@ class Multilingual_Support implements Plugin_Component {
 	/**
 	 * Apply language-specific adjustments to the defaults array.
 	 *
-	 * @param  array $defaults An array of default values indexed by the option name.
+	 * @param  array<string,string|int|bool> $defaults An array of default values indexed by the option name.
 	 *
-	 * @return array
+	 * @return array<string,string|int|bool>
 	 */
 	public function filter_defaults( array $defaults ) : array {
 		list(, $language, $country, $modifier ) = $this->get_current_locale();
@@ -282,10 +289,12 @@ class Multilingual_Support implements Plugin_Component {
 		/**
 		 * Filters the dash style for the current locale.
 		 *
-		 * The returned value has to be a valid style constant from \PHP_Typography\Settings\Dash_Style.
+		 * The returned value has to be a valid style constant from \PHP_Typography\Settings\Dash_Style or a Dashes instance.
 		 *
-		 * @param string|Dash $dash_style A style constant (Dash_Style::TRADITIONAL_US or Dash_Style::INTERNATIONAL) or object.
-		 * @param string      $locale     The current locale with '-' as the separating character (e.g. 'en-US').
+		 * @since 5.9.0 Type hint for parameter `$dash_style` fixed.
+		 *
+		 * @param string|Dashes $dash_style A style constant (Dash_Style::TRADITIONAL_US or Dash_Style::INTERNATIONAL) or object.
+		 * @param string        $locale     The current locale with '-' as the separating character (e.g. 'en-US').
 		 */
 		$settings->set_smart_dashes_style( apply_filters( 'typo_dash_style_for_locale', $dash_style, $locale ) );
 	}
@@ -310,7 +319,7 @@ class Multilingual_Support implements Plugin_Component {
 		/**
 		 * Filters the primary quote style for the current locale.
 		 *
-		 * The returned value has to be a valid style constant from \PHP_Typography\Settings\Quote_Style or a \PHP_Typography\Settings\Quotes instance.
+		 * The returned value has to be a valid style constant from \PHP_Typography\Settings\Quote_Style or a Quotes instance.
 		 *
 		 * @param string|Quotes $primary A quote style constant or object.
 		 * @param string        $locale  The current locale with '-' as the separating character (e.g. 'en-US').
@@ -323,7 +332,7 @@ class Multilingual_Support implements Plugin_Component {
 		/**
 		 * Filters the secondary quote style for the current locale.
 		 *
-		 * The returned value has to be a valid style constant from \PHP_Typography\Settings\Quote_Style or a \PHP_Typography\Settings\Quotes instance.
+		 * The returned value has to be a valid style constant from \PHP_Typography\Settings\Quote_Style or a Quotes instance.
 		 *
 		 * @param string|Quotes $secondary A quote style constant or object.
 		 * @param string        $locale    The current locale with '-' as the separating character (e.g. 'en-US').
@@ -367,6 +376,8 @@ class Multilingual_Support implements Plugin_Component {
 	 *         @type string $country  A two-letter country code (e.g. 'DE').
 	 *         @type string $modifier An optional modifier string (e.g. 'formal'). Default ''.
 	 * }
+	 *
+	 * @phpstan-return Locale
 	 */
 	protected function get_current_locale() : array {
 		/**
@@ -407,12 +418,12 @@ class Multilingual_Support implements Plugin_Component {
 	/**
 	 * Match a 2-letter language code to an index in our languages list.
 	 *
-	 * @param  array  $languages An array of languages ( CODE => NAME ).
-	 * @param  string $locale    A locale string in the form en-US (i.e. with - instead of _).
-	 * @param  string $language  A 2-letter language code.
-	 * @param  string $type      Either "hyphenation" or "diacritic".
+	 * @param  array<string,string> $languages An array of languages ( CODE => NAME ).
+	 * @param  string               $locale    A locale string in the form en-US (i.e. with - instead of _).
+	 * @param  string               $language  A 2-letter language code.
+	 * @param  string               $type      Either "hyphenation" or "diacritic".
 	 *
-	 * @return String            An index in the languages array (or '' if not match was possible).
+	 * @return String                          An index in the languages array (or '' if not match was possible).
 	 */
 	protected function match_language( array $languages, $locale, $language, $type ) : string {
 		/**

@@ -45,21 +45,21 @@ class Basic_Locale_Settings extends Abstract_Locale_Settings {
 	/**
 	 * An array with valid languages as indexes.
 	 *
-	 * @var array
+	 * @var array<string,int>
 	 */
 	protected $valid_languages = [];
 
 	/**
 	 * An array with valid country codes as indexes.
 	 *
-	 * @var array
+	 * @var array<string,int>
 	 */
 	protected $valid_countries = [];
 
 	/**
 	 * An array with valid modifier strings as indexes.
 	 *
-	 * @var array
+	 * @var array<string,int>
 	 */
 	protected $valid_modifiers = [];
 

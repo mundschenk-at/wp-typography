@@ -31,14 +31,12 @@ namespace WP_Typography\Components;
 use WP_Typography\Implementation;
 use WP_Typography\Data_Storage\Options;
 use WP_Typography\UI;
-use WP_Typography\Settings\Plugin_Configuration as Config;
+use WP_Typography\Settings\Plugin_Configuration;
 
 use Mundschenk\UI\Control_Factory;
+use Mundschenk\UI\Control;
 use Mundschenk\UI\Controls\Checkbox_Input;
-
-use PHP_Typography\PHP_Typography;
-use PHP_Typography\Settings\Dash_Style;
-use PHP_Typography\Settings\Quote_Style;
+use Mundschenk\UI\Controls\Select;
 
 /**
  * The admin-specific functionality of the plugin.
@@ -52,6 +50,13 @@ use PHP_Typography\Settings\Quote_Style;
  *
  * @author Peter Putzer <github@mundschenk.at>
  *
+ * @phpstan-import-type Config from Plugin_Configuration
+ * @phpstan-import-type Tab from UI\Tabs
+ * @phpstan-import-type Section from UI\Sections
+ * @phpstan-type Help_Page array{
+ *     heading : string,
+ *     content : string,
+ * }
  */
 class Admin_Interface implements Plugin_Component {
 	/**
@@ -86,46 +91,39 @@ class Admin_Interface implements Plugin_Component {
 	/**
 	 * Links to add the settings page.
 	 *
-	 * @var array $admin_resource_links An array in the form of 'anchor text' => 'URL'.
+	 * @var array<string,string> $admin_resource_links An array in the form of 'anchor text' => 'URL'.
 	 */
 	private $admin_resource_links;
 
 	/**
 	 * Context sensitive help for the settings page.
 	 *
-	 * @var array $admin_help_pages
+	 * @var Help_Page[] $admin_help_pages
 	 */
 	private $admin_help_pages;
 
 	/**
-	 * Section IDs and headings for the settings page.
+	 * Tabs IDs and headings for the settings page.
 	 *
-	 * Sections will be displayed in the order included.
+	 * Tabs will be displayed in array order.
 	 *
-	 * @var array $adminFormSections An array in the form of 'id' => 'heading'.
+	 * @var Tab[] $admin_form_tabs
 	 */
 	private $admin_form_tabs;
 
 	/**
-	 * Fieldsets in the admin settings.
+	 * Section IDs and headings for the settings page.
 	 *
-	 * The fieldsets will be displayed in the order of inclusion.
+	 * Sections will be displayed in array order.
 	 *
-	 * @var array $admin_form_section_fieldsets {
-	 *     @type array $id {
-	 *         @type string $heading Fieldset name.
-	 *         @type string $sectionID Parent section ID.
-	 *     }
-	 * }
+	 * @var Section[] $admin_form_sections
 	 */
 	private $admin_form_sections;
 
 	/**
 	 * The form controls on the settings page.
 	 *
-	 * @var array $admin_form_controls {
-	 *      @type Control $id
-	 * }
+	 * @var Control[] $admin_form_controls
 	 */
 	private $admin_form_controls = [];
 
@@ -148,7 +146,7 @@ class Admin_Interface implements Plugin_Component {
 	/**
 	 * The plugin configuration defaults (including UI definition).
 	 *
-	 * @var array
+	 * @var array<string,Config>
 	 */
 	private $defaults;
 
@@ -186,7 +184,7 @@ class Admin_Interface implements Plugin_Component {
 			$this->plugin_basename = \plugin_basename( \WP_TYPOGRAPHY_PLUGIN_FILE );
 
 			// Set up default options.
-			$this->defaults = Config::get_defaults();
+			$this->defaults = Plugin_Configuration::get_defaults();
 
 			// Initialize admin form.
 			$this->admin_resource_links = $this->initialize_resource_links();
@@ -208,9 +206,7 @@ class Admin_Interface implements Plugin_Component {
 	/**
 	 * Initialize displayable strings for the plugin settings page.
 	 *
-	 * @return array {
-	 *     @type string $translated_anchor_text A URL.
-	 * }
+	 * @return array<string,string> The array keys consist of the translated anchor text, their values of the linked URL.
 	 */
 	private function initialize_resource_links() : array {
 		return [
@@ -230,6 +226,8 @@ class Admin_Interface implements Plugin_Component {
 	 *          @type string $content The help content.
 	 *      }
 	 * }
+	 *
+	 * @phpstan-return Help_Page[]
 	 */
 	private function initialize_help_pages() : array {
 		return [
@@ -340,9 +338,9 @@ class Admin_Interface implements Plugin_Component {
 	/**
 	 * Sanitize plugin settings array.
 	 *
-	 * @param  array $input The plugin settings.
-	 *
-	 * @return array The sanitized plugin settings.
+	 * @param  array<string,string|int|bool> $input The plugin settings.
+
+	 * @return array<string,string|int|bool>         The sanitized plugin settings.
 	 */
 	public function sanitize_settings( $input ) : array {
 		$current_tab = $this->get_active_settings_tab();
@@ -444,6 +442,8 @@ class Admin_Interface implements Plugin_Component {
 	 * Print any additional markup for the given form section.
 	 *
 	 * @param array $section The section information.
+	 *
+	 * @phpstan-param array{id : string, title? : string, callback? : callable} $section
 	 */
 	public function print_settings_section( array $section ) : void {
 		$section_id = ! empty( $section['id'] ) ? $section['id'] : '';
@@ -468,8 +468,9 @@ class Admin_Interface implements Plugin_Component {
 	/**
 	 * Add a 'Settings' link to the wp-Typography entry in the plugins list.
 	 *
-	 * @param array $links An array of links.
-	 * @return array An array of links.
+	 * @param  string[] $links An array of HTML link tags.
+	 *
+	 * @return string[]        An array of HTML link tags.
 	 */
 	public function plugin_action_links( array $links ) : array {
 		$adminurl = \trailingslashit( \admin_url() );

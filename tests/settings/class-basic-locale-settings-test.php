@@ -47,7 +47,7 @@ class Basic_Locale_Settings_Test extends \WP_Typography\Tests\TestCase {
 	/**
 	 * Provides data for testing constructors and matching behavior.
 	 *
-	 * @return array
+	 * @return mixed[]
 	 */
 	public function provide_match_data() : array {
 		return [
@@ -109,6 +109,11 @@ class Basic_Locale_Settings_Test extends \WP_Typography\Tests\TestCase {
 	 * @param  bool     $expected  Expected result.
 	 */
 	public function test_constructor_and_match( $languages, $countries, $modifiers, $language, $country, $modifier, $expected ) : void {
+		/**
+		 * Locale mock.
+		 *
+		 * @var Basic_Locale_Settings&m\MockInterface
+		 */
 		$locale = m::mock( Basic_Locale_Settings::class, [ $languages, $countries, $modifiers, 'dash', 'primary', 'secondary', false ] )->makePartial();
 
 		$this->assertSame( $expected, $locale->match( $language, $country, $modifier ) );

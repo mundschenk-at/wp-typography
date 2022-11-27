@@ -27,7 +27,7 @@ namespace WP_Typography\Tests;
 use WP_Typography\Data_Storage\Options;
 use WP_Typography\Settings\Plugin_Configuration as Config;
 
-use PHP_Typography\Hyphenator_Cache;
+use PHP_Typography\Settings;
 
 use Brain\Monkey\Actions;
 use Brain\Monkey\Filters;
@@ -50,7 +50,7 @@ class WP_Typography_Test extends TestCase {
 	/**
 	 * Test fixture.
 	 *
-	 * @var \WP_Typography
+	 * @var \WP_Typography&m\MockInterface
 	 */
 	protected $wp_typo;
 
@@ -89,7 +89,12 @@ class WP_Typography_Test extends TestCase {
 	 * @uses WP_Typography::get_instance
 	 */
 	public function test_get_user_settings() : void {
-		$object = new \stdClass();
+		/**
+		 * Settings mock.
+		 *
+		 * @var Settings&m\MockInterface
+		 */
+		$object = m::mock( Settings::class );
 
 		$this->wp_typo->shouldReceive( 'get_settings' )->once()->andReturn( $object );
 

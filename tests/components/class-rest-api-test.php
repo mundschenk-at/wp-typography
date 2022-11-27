@@ -45,7 +45,7 @@ class REST_API_Test extends TestCase {
 	/**
 	 * Test fixture.
 	 *
-	 * @var REST_API
+	 * @var REST_API&m\MockInterface
 	 */
 	protected $sut;
 
