@@ -202,7 +202,7 @@ class Admin_Interface_Test extends TestCase {
 
 		$this->control_factory->shouldReceive( 'initialize' )->with( m::type( 'array' ), m::type( Options::class ), m::type( 'string' ) )->andReturn( [] );
 
-		$this->admin->run( $this->api );
+		$this->admin->run();
 
 		$this->assert_attribute_same( $this->api, 'api', $this->admin );
 	}
