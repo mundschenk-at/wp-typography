@@ -1,0 +1,24 @@
+parameters:
+	reportUnmatchedIgnoredErrors: true
+
+	level: 7
+
+	ignoreErrors:
+		- '#^Call to an undefined method Mockery\\ExpectationInterface\|Mockery\\HigherOrderMessage::.*$#'
+		- '#^Call to an undefined method Mockery\\ExpectationInterface::byDefault\(\)\.$#'
+		- '#^Property .+ \(Mockery\\MockInterface&.+\) does not accept Mockery\\Mock\.$#'
+		- '#^Property [\w\\]+\:\:\$\w+ \(Mockery\\MockInterface&[\w\\]+\) does not accept Mockery\\LegacyMockInterface\.$#'
+
+	paths:
+		- includes
+		- tests
+
+	scanFiles:
+		- vendor/paulthewalton/acf-stubs/acf-stubs.php
+
+	excludePaths:
+		analyse:
+			- vendor
+
+		analyseAndScan:
+			- .phpstorm.meta.php

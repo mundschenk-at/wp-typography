@@ -45,7 +45,11 @@
         "humbug/php-scoper": "^0.17",
         "mundschenk-at/phpunit-cross-version": "dev-master",
         "phpstan/phpstan": "^1.9",
-        "sniccowp/php-scoper-wordpress-excludes": "^6"
+        "sniccowp/php-scoper-wordpress-excludes": "^6",
+        "szepeviktor/phpstan-wordpress": "^1.1",
+        "phpstan/extension-installer": "^1.2",
+        "paulthewalton/acf-stubs": "^5.8",
+        "phpstan/phpstan-phpunit": "^1.2"
     },
 
     "minimum-stability": "dev",
@@ -66,7 +70,8 @@
         "platform-check": false,
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
-            "dangoodman/composer-for-wordpress": true
+            "dangoodman/composer-for-wordpress": true,
+            "phpstan/extension-installer": true
         }
     },
 
@@ -85,10 +90,7 @@
           "phpcs -ps includes/ admin/ tests/ --extensions=php && phpcs -ps *.php --runtime-set testVersion 7.2-"
       ],
       "phpstan": [
-          "@composer require phpstan/phpstan --dev --quiet",
-          "phpstan analyse --configuration=.phpstan.neon --level=7 --ansi includes/",
-          "#phpstan analyse --configuration=.phpstan.neon --level=6 --ansi tests/",
-          "@composer remove phpstan/phpstan --dev --quiet"
+          "phpstan analyse --xdebug --ansi"
       ],
       "scope-dependencies": [
           "@php vendor/bin/php-scoper add-prefix --config=.scoper.inc.php --force --quiet"
