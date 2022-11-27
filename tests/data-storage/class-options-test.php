@@ -67,8 +67,14 @@ class Options_Test extends TestCase {
 	 * @covers ::__construct
 	 */
 	public function test___construct() : void {
+		/**
+		 * Options mock.
+		 *
+		 * @var Options&m\MockInterface
+		 */
+		$options = m::mock( Options::class, [ Options::PREFIX ] )->makePartial();
 
-		$this->assertInstanceOf( Options::class, $cache );
+		$this->assertInstanceOf( Options::class, $options );
 	}
 
 	/**
