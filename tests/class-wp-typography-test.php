@@ -170,8 +170,8 @@ class WP_Typography_Test extends TestCase {
 	 * @uses ::get_instance
 	 */
 	public function test_filter_title_parts() : void {
-		$this->wp_typo->shouldReceive( 'process_title_parts' )->once()->with( 'foobar', null )->andReturn( 'barfoo' );
-		$this->assertSame( 'barfoo', \WP_Typography::filter_title_parts( 'foobar', null ) );
+		$this->wp_typo->shouldReceive( 'process_title_parts' )->once()->with( [ 'foobar' ], null )->andReturn( [ 'barfoo' ] );
+		$this->assertSame( [ 'barfoo' ], \WP_Typography::filter_title_parts( [ 'foobar' ], null ) );
 	}
 
 	/**

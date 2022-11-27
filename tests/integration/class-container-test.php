@@ -128,7 +128,7 @@ class Container_Test extends TestCase {
 		$this->int1->shouldNotReceive( 'get_filter_tag' );
 		$this->int2->shouldReceive( 'get_filter_tag' )->once()->andReturn( 'fizban' );
 
-		$result = $this->integrations->get_content_filters( [ 'foo' => 'bar' ] );
+		$result = $this->integrations->get_content_filters( [ 'foo' => function(){} ] );
 
 		$this->assertArrayHasKey( 'foo', $result );
 		$this->assertArrayHasKey( 'fizban', $result );

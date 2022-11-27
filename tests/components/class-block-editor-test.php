@@ -187,12 +187,13 @@ class Block_Editor_Test extends TestCase {
 	public function test_render_typography_block() : void {
 		$attributes = [];
 		$content    = 'my content';
+		$rendered   = 'my rendered block';
 
-		$this->api->shouldReceive( 'process' )->once()->with( $content );
+		$this->api->shouldReceive( 'process' )->once()->with( $content )->andReturn( $rendered );
 
 		Filters\expectAdded( 'typo_disable_processing_for_post' )->once()->with( '__return_false', 999, 0 );
 		Filters\expectRemoved( 'typo_disable_processing_for_post' )->once()->with( '__return_false', 999 );
 
-		$this->assertNull( $this->sut->render_typography_block( $attributes, $content ) );
+		$this->assertSame( $rendered, $this->sut->render_typography_block( $attributes, $content ) );
 	}
 }
