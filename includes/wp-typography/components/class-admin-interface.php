@@ -486,13 +486,32 @@ class Admin_Interface implements Plugin_Component {
 	 * Display the plugin options page.
 	 */
 	public function get_admin_page_content() : void {
-		$this->admin_form_controls[ Config::HYPHENATE_LANGUAGES ]->set_option_values( $this->api->get_hyphenation_languages() );
-		$this->admin_form_controls[ Config::DIACRITIC_LANGUAGES ]->set_option_values( $this->api->get_diacritic_languages() );
+		$this->load_language_options( $this->admin_form_controls[ Plugin_Configuration::HYPHENATE_LANGUAGES ], $this->api->get_hyphenation_languages() );
+		$this->load_language_options( $this->admin_form_controls[ Plugin_Configuration::DIACRITIC_LANGUAGES ], $this->api->get_diacritic_languages() );
 
 		// Load the settings page HTML.
 		require \WP_TYPOGRAPHY_PLUGIN_PATH . '/admin/partials/settings/settings-page.php';
 	}
 
+	/**
+	 * Loads the available language option values into the control.
+	 *
+	 * @since 5.9.0
+	 *
+	 * @param Control              $control   The UI control (needs to be a Select element).
+	 * @param array<string,string> $languages The list of available language choices (in the form `$code => $translated_name`).
+	 *
+	 * @return bool                           Returns `true` on success.
+	 */
+	private function load_language_options( Control $control, array $languages ) : bool {
+		if ( $control instanceof Select ) {
+			$control->set_option_values( $languages );
+
+			return true;
+		}
+
+		return false;
+	}
 
 	/**
 	 * Adds a privacy notice snippet if used with WordPress 4.9.6 or greater.
