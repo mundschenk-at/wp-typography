@@ -285,7 +285,14 @@ class Multilingual_Support_Test extends TestCase {
 		$s      = m::mock( Settings::class );
 		$locale = 'de-DE-foobar';
 
-		$this->multi->shouldReceive( 'get_current_locale' )->once()->andReturn( [ $locale, 'de', 'DE', 'foobar' ] );
+		$this->multi->shouldReceive( 'get_current_locale' )->once()->andReturn(
+			[
+				'locale'   => $locale,
+				'language' => 'de',
+				'country'  => 'DE',
+				'modifier' => 'foobar',
+			]
+		);
 
 		// Hyphenation.
 		if ( ! empty( $hyphenation ) ) {
@@ -335,7 +342,14 @@ class Multilingual_Support_Test extends TestCase {
 		$locale   = 'de-DE-foobar';
 		$defaults = [];
 
-		$this->multi->shouldReceive( 'get_current_locale' )->once()->andReturn( [ $locale, 'de', 'DE', 'foobar' ] );
+		$this->multi->shouldReceive( 'get_current_locale' )->once()->andReturn(
+			[
+				'locale'   => $locale,
+				'language' => 'de',
+				'country'  => 'DE',
+				'modifier' => 'foobar',
+			]
+		);
 
 		// Hyphenation.
 		if ( ! empty( $hyphenation ) ) {
@@ -559,11 +573,51 @@ class Multilingual_Support_Test extends TestCase {
 	 */
 	public function provide_get_current_locale_data() : array {
 		return [
-			[ 'de_DE_formal', 'de-DE-formal', 'de',  'DE', 'formal' ],
-			[ 'rup_MK',       'rup-MK',       'rup', 'MK', '' ],
-			[ 'zh_CN',        'zh-CN',        'zh',  'CN', '' ],
-			[ 'yor',          'yor',          'yor', '',   '' ],
-			[ 'fi',           'fi',           'fi',  '',   '' ],
+			[
+				'de_DE_formal',
+				[
+					'locale'   => 'de-DE-formal',
+					'language' => 'de',
+					'country'  => 'DE',
+					'modifier' => 'formal',
+				],
+			],
+			[
+				'rup_MK',
+				[
+					'locale'   => 'rup-MK',
+					'language' => 'rup',
+					'country'  => 'MK',
+					'modifier' => '',
+				],
+			],
+			[
+				'zh_CN',
+				[
+					'locale'   => 'zh-CN',
+					'language' => 'zh',
+					'country'  => 'CN',
+					'modifier' => '',
+				],
+			],
+			[
+				'yor',
+				[
+					'locale'   => 'yor',
+					'language' => 'yor',
+					'country'  => '',
+					'modifier' => '',
+				],
+			],
+			[
+				'fi',
+				[
+					'locale'   => 'fi',
+					'language' => 'fi',
+					'country'  => '',
+					'modifier' => '',
+				],
+			],
 		];
 	}
 
@@ -581,7 +635,7 @@ class Multilingual_Support_Test extends TestCase {
 		Filters\expectApplied( 'typo_current_locale' )->once()->with( '' )->andReturnFirstArg();
 		Functions\expect( 'get_locale' )->once()->andReturn( $input );
 
-		$this->assertSame( [ $locale, $language, $country, $modifier ], $this->invokeMethod( $this->multi, 'get_current_locale' ) );
+		$this->assertSame( $locale_data, $this->invokeMethod( $this->multi, 'get_current_locale' ) );
 	}
 
 	/**
@@ -595,11 +649,17 @@ class Multilingual_Support_Test extends TestCase {
 		$modifier    = 'bar';
 		$locale      = "{$language}-{$country}-{$modifier}";
 		$locale_orig = "{$language}_{$country}_{$modifier}";
+		$result      = [
+			'locale'   => $locale,
+			'language' => $language,
+			'country'  => $country,
+			'modifier' => $modifier,
+		];
 
 		Filters\expectApplied( 'typo_current_locale' )->once()->with( '' )->andReturn( $locale_orig );
 		Functions\expect( 'get_locale' )->never();
 
-		$this->assertSame( [ $locale, $language, $country, $modifier ], $this->invokeMethod( $this->multi, 'get_current_locale' ) );
+		$this->assertSame( $result, $this->invokeMethod( $this->multi, 'get_current_locale' ) );
 	}
 
 	/**
