@@ -554,8 +554,8 @@ class WP_Typography_Implementation_Test extends TestCase {
 
 		$langs = $this->wp_typo->get_hyphenation_languages();
 
-		$this->assertContainsOnly( 'string', $langs, 'The languages array should only contain strings.' );
-		$this->assertContainsOnly( 'string', array_keys( $langs ), 'The languages array should be indexed by language codes.' );
+		$this->assertContainsOnly( 'string', $langs, true, 'The languages array should only contain strings.' );
+		$this->assertContainsOnly( 'string', array_keys( $langs ), true, 'The languages array should be indexed by language codes.' );
 	}
 
 	/**
@@ -582,8 +582,8 @@ class WP_Typography_Implementation_Test extends TestCase {
 
 		$langs = $this->wp_typo->get_diacritic_languages();
 
-		$this->assertContainsOnly( 'string', $langs, 'The languages array should only contain strings.' );
-		$this->assertContainsOnly( 'string', array_keys( $langs ), 'The languages array should be indexed by language codes.' );
+		$this->assertContainsOnly( 'string', $langs, true, 'The languages array should only contain strings.' );
+		$this->assertContainsOnly( 'string', array_keys( $langs ), true, 'The languages array should be indexed by language codes.' );
 	}
 
 	/**

@@ -118,8 +118,8 @@ class WP_Typography_Test extends TestCase {
 
 		$langs = \WP_Typography::get_hyphenation_languages(); // @phpstan-ignore-line -- intentionally calling non-static method statically.
 
-		$this->assertContainsOnly( 'string', $langs, 'The languages array should only contain strings.' );
-		$this->assertContainsOnly( 'string', array_keys( $langs ), 'The languages array should be indexed by language codes.' );
+		$this->assertContainsOnly( 'string', $langs, true, 'The languages array should only contain strings.' );
+		$this->assertContainsOnly( 'string', array_keys( $langs ), true, 'The languages array should be indexed by language codes.' );
 	}
 
 	/**
