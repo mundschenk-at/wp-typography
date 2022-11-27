@@ -111,8 +111,8 @@ abstract class WP_Typography {
 	 * Allows API methods to be called statically, using the instance returned by
 	 * `WP_Typography::get_instance()`.
 	 *
-	 * @param  string $name      The method name.
-	 * @param  array  $arguments The method arguments.
+	 * @param  string  $name      The method name.
+	 * @param  mixed[] $arguments The method arguments.
 	 *
 	 * @throws BadMethodCallException Thrown when a non-existent method is called statically.
 	 *
@@ -176,10 +176,10 @@ abstract class WP_Typography {
 	 *
 	 * @deprecated 5.3.0 Use `process_title_parts` instead.
 	 *
-	 * @param array         $title_parts An array of strings.
+	 * @param string[]      $title_parts An array of strings.
 	 * @param Settings|null $settings    Optional. A settings object. Default null (which means the internal settings will be used).
 	 *
-	 * @return array
+	 * @return string[]
 	 */
 	public static function filter_title_parts( array $title_parts, Settings $settings = null ) : array {
 		return self::get_instance()->process_title_parts( $title_parts, $settings );
@@ -238,7 +238,7 @@ abstract class WP_Typography {
 		$hash = '';
 
 		foreach ( \explode( '.', $version ) as $part ) {
-			$hash .= \chr( 64 + \preg_replace( '/[^0-9]/', '', $part ) );
+			$hash .= \chr( 64 + (int) \preg_replace( '/[^0-9]/', '', $part ) );
 		}
 
 		return $hash;

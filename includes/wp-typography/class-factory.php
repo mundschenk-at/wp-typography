@@ -84,7 +84,7 @@ class Factory extends Dice {
 	 *                                  be created.
 	 */
 	public static function get() : self {
-		if ( ! isset( self::$factory ) ) {
+		if ( ! self::$factory instanceof static ) {
 
 			// Create factory.
 			$factory = new static();

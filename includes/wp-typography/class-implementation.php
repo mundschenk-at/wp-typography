@@ -722,7 +722,7 @@ class Implementation extends \WP_Typography {
 				)
 			);
 
-			$exceptions = \array_combine( $patterns, $replacements );
+			$exceptions = \array_combine( $patterns, $replacements ) ?: []; // phpcs:ignore WordPress.PHP.DisallowShortTernary -- ensure array type.
 		}
 
 		// If necessary, merge custom exceptions.

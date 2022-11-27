@@ -390,11 +390,11 @@ class Multilingual_Support implements Plugin_Component {
 			$language = \substr( $locale, 0, $first_dash );
 
 			// The country code always consists of the 2 letters after the underscore/dash.
-			$country = \substr( $locale, $first_dash + 1, 2 );
+			$country = (string) \substr( $locale, $first_dash + 1, 2 );
 
 			// Some locales also have another underscore/dash, followed by an arbitrary modifer.
 			$second_dash = \strpos( $locale, '_', $first_dash + 1 );
-			$modifier    = $second_dash ? \substr( $locale, $second_dash + 1 ) : '';
+			$modifier    = $second_dash ? (string) \substr( $locale, $second_dash + 1 ) : '';
 		} else {
 			$language = $locale;
 			$country  = '';
