@@ -131,6 +131,6 @@ class WP_Typography_Requirements_Test extends Testcase {
 
 		$this->sut->shouldReceive( 'display_error_notice' )->once()->with( m::type( 'string' ), m::type( 'string' ), m::type( 'string' ) );
 
-		$this->assertNull( $this->sut->admin_notices_dom_disabled() );
+		$this->sut->admin_notices_dom_disabled();
 	}
 }

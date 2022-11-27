@@ -110,11 +110,11 @@ class Block_Editor_Test extends TestCase {
 	 *
 	 * @covers ::run
 	 */
-	public function test_run_no_block_editor() {
+	public function test_run_no_block_editor() : void {
 		Actions\expectAdded( 'init' )->never();
 		Actions\expectAdded( 'enqueue_block_editor_assets' )->never();
 
-		$this->assertNull( $this->sut->run() );
+		$this->sut->run();
 	}
 
 	/**
@@ -128,7 +128,7 @@ class Block_Editor_Test extends TestCase {
 		Actions\expectAdded( 'init' )->with( [ $this->sut, 'register_sidebar_and_blocks' ] )->once();
 		Actions\expectAdded( 'enqueue_block_editor_assets' )->with( [ $this->sut, 'enqueue_sidebar' ] )->once();
 
-		$this->assertNull( $this->sut->run() );
+		$this->sut->run();
 	}
 
 	/**
@@ -165,7 +165,7 @@ class Block_Editor_Test extends TestCase {
 		Functions\expect( 'register_block_type' )->once()->with( 'wp-typography/typography', m::type( 'array' ) );
 		Functions\expect( 'wp_set_script_translations' )->once()->with( 'wp-typography-gutenberg', 'wp-typography' );
 
-		$this->assertNull( $this->sut->register_sidebar_and_blocks() );
+		$this->sut->register_sidebar_and_blocks();
 	}
 
 	/**
@@ -176,7 +176,7 @@ class Block_Editor_Test extends TestCase {
 	public function test_enqueue_sidebar() : void {
 		Functions\expect( 'wp_enqueue_script' )->once()->with( 'wp-typography-gutenberg' );
 
-		$this->assertNull( $this->sut->enqueue_sidebar() );
+		$this->sut->enqueue_sidebar();
 	}
 
 	/**

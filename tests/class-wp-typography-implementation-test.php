@@ -468,7 +468,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 		Filters\expectApplied( 'typo_ignore_parser_errors' )->with( false )->once();
 		$s->shouldReceive( 'set_ignore_parser_errors' )->once()->with( $config[ Config::IGNORE_PARSER_ERRORS ] );
 
-		$this->assertNull( $this->wp_typo->init_settings_from_options( $s, $config ) );
+		$this->wp_typo->init_settings_from_options( $s, $config ); // @phpstan-ignore-line - testing protected method.
 	}
 
 	/**

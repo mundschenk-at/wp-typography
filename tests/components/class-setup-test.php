@@ -107,7 +107,7 @@ class Setup_Test extends TestCase {
 
 		Actions\expectAdded( 'plugins_loaded' )->with( [ $this->setup, 'plugin_update_check' ] )->once();
 
-		$this->assertNull( $this->setup->run() );
+		$this->setup->run();
 	}
 
 	/**
@@ -119,7 +119,7 @@ class Setup_Test extends TestCase {
 		$this->api->shouldReceive( 'get_config' )->once();
 		$this->api->shouldReceive( 'set_default_options' )->once();
 
-		$this->assertNull( $this->setup->activate() );
+		$this->setup->activate();
 	}
 
 	/**
@@ -129,7 +129,8 @@ class Setup_Test extends TestCase {
 	 */
 	public function test_deactivate() : void {
 		// Currently, this hook does nothing.
-		$this->assertNull( $this->setup->deactivate() );
+		$this->setup->deactivate();
+		$this->assertTrue( true );
 	}
 
 	/**
@@ -148,7 +149,7 @@ class Setup_Test extends TestCase {
 		Functions\expect( 'wp_using_ext_object_cache' )->atLeast()->once()->andReturn( true );
 
 		// Since this is a static method, we can't inject our test fixtures.
-		$this->assertNull( Setup::uninstall() );
+		Setup::uninstall();
 	}
 
 	/**
@@ -191,7 +192,7 @@ class Setup_Test extends TestCase {
 		$this->api->shouldReceive( 'get_version' )->once()->andReturn( '9.9.9' );
 		$this->options->shouldReceive( 'set' )->with( Options::INSTALLED_VERSION, '9.9.9' )->once();
 
-		$this->assertNull( $this->invokeMethod( $this->setup, 'set_installed_version' ) );
+		$this->invokeMethod( $this->setup, 'set_installed_version' );
 	}
 
 	/**
@@ -205,7 +206,7 @@ class Setup_Test extends TestCase {
 		$this->api->shouldReceive( 'get_version' )->once()->andReturn( '6.6.6' );
 		$this->setup->shouldReceive( 'plugin_updated' )->with( '7.7.7' )->once();
 
-		$this->assertNull( $this->setup->plugin_update_check() );
+		$this->setup->plugin_update_check();
 	}
 
 	/**
@@ -244,7 +245,7 @@ class Setup_Test extends TestCase {
 		$this->setup->shouldReceive( 'set_installed_version' )->once();
 		$this->api->shouldReceive( 'clear_cache' )->once();
 
-		$this->assertNull( $this->invokeMethod( $this->setup, 'plugin_updated', [ $installed_version ] ) );
+		$this->invokeMethod( $this->setup, 'plugin_updated', [ $installed_version ] );
 	}
 
 	/**
@@ -278,7 +279,7 @@ class Setup_Test extends TestCase {
 			$this->options->shouldReceive( 'delete' )->with( $old_option_name, true )->once()->andReturn( true );
 		}
 
-		$this->assertNull( $this->invokeMethod( $this->setup, 'upgrade_options_3_1' ) );
+		$this->invokeMethod( $this->setup, 'upgrade_options_3_1' );
 	}
 
 	/**
@@ -289,7 +290,7 @@ class Setup_Test extends TestCase {
 	public function test_upgrade_options_3_2() : void {
 		$this->options->shouldReceive( 'delete' )->with( 'typo_disable_caching', true )->once();
 
-		$this->assertNull( $this->invokeMethod( $this->setup, 'upgrade_options_3_2' ) );
+		$this->invokeMethod( $this->setup, 'upgrade_options_3_2' );
 	}
 
 	/**
@@ -300,7 +301,7 @@ class Setup_Test extends TestCase {
 	public function test_upgrade_options_3_3() : void {
 		$this->options->shouldReceive( 'delete' )->with( 'typo_remove_ie6', true )->once();
 
-		$this->assertNull( $this->invokeMethod( $this->setup, 'upgrade_options_3_3' ) );
+		$this->invokeMethod( $this->setup, 'upgrade_options_3_3' );
 	}
 
 	/**
@@ -312,7 +313,7 @@ class Setup_Test extends TestCase {
 		$this->options->shouldReceive( 'delete' )->with( 'typo_enable_caching', true )->once();
 		$this->options->shouldReceive( 'delete' )->with( 'typo_caching_limit', true )->once();
 
-		$this->assertNull( $this->invokeMethod( $this->setup, 'upgrade_options_3_5' ) );
+		$this->invokeMethod( $this->setup, 'upgrade_options_3_5' );
 	}
 
 	/**
@@ -325,7 +326,7 @@ class Setup_Test extends TestCase {
 		$this->options->shouldReceive( 'delete' )->with( 'typo_cache_keys', true )->once();
 		$this->setup->shouldReceive( 'upgrade_options_to_array' )->once();
 
-		$this->assertNull( $this->invokeMethod( $this->setup, 'upgrade_options_5_1' ) );
+		$this->invokeMethod( $this->setup, 'upgrade_options_5_1' );
 	}
 
 	/**
@@ -363,6 +364,6 @@ class Setup_Test extends TestCase {
 			]
 		)->once();
 
-		$this->assertNull( $this->invokeMethod( $this->setup, 'upgrade_options_to_array' ) );
+		$this->invokeMethod( $this->setup, 'upgrade_options_to_array' );
 	}
 }

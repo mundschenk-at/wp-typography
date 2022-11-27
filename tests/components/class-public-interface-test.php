@@ -122,7 +122,7 @@ class Public_Interface_Test extends TestCase {
 		Functions\expect( 'is_admin' )->once()->andReturn( false );
 		Actions\expectAdded( 'init' )->once();
 
-		$this->assertNull( $this->public_if->run() );
+		$this->public_if->run();
 
 		$this->assertTrue( (bool) \has_action( 'init', [ $this->public_if, 'init' ] ) );
 	}
@@ -136,7 +136,7 @@ class Public_Interface_Test extends TestCase {
 		Functions\expect( 'is_admin' )->once()->andReturn( true );
 		Actions\expectAdded( 'init' )->never();
 
-		$this->assertNull( $this->public_if->run() );
+		$this->public_if->run();
 
 	}
 
@@ -310,7 +310,7 @@ class Public_Interface_Test extends TestCase {
 
 		Functions\expect( 'wp_add_inline_style' )->once()->with( 'wp-typography-custom', $clean_style );
 
-		$this->assertNull( $this->public_if->enqueue_styles() );
+		$this->public_if->enqueue_styles();
 	}
 
 	/**
@@ -330,7 +330,7 @@ class Public_Interface_Test extends TestCase {
 		Functions\expect( 'wp_enqueue_style' )->once()->with( 'wp-typography-safari-font-workaround' );
 		Functions\expect( 'wp_add_inline_style' )->once()->with( 'wp-typography-safari-font-workaround', m::type( 'string' ) );
 
-		$this->assertNull( $this->public_if->enqueue_styles() );
+		$this->public_if->enqueue_styles();
 	}
 
 	/**
@@ -353,7 +353,7 @@ class Public_Interface_Test extends TestCase {
 			->once()
 			->with( 'wp-typography-cleanup-clipboard', m::type( 'string' ), m::type( 'array' ), $version, true );
 
-		$this->assertNull( $this->public_if->enqueue_scripts() );
+		$this->public_if->enqueue_scripts();
 	}
 
 	/**
@@ -372,7 +372,7 @@ class Public_Interface_Test extends TestCase {
 		Functions\expect( 'plugin_dir_url' )->never();
 		Functions\expect( 'wp_enqueue_script' )->never();
 
-		$this->assertNull( $this->public_if->enqueue_scripts() );
+		$this->public_if->enqueue_scripts();
 	}
 
 	/**
