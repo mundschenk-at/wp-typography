@@ -211,6 +211,7 @@ class Admin_Interface_Test extends TestCase {
 	 * Test get_admin_page_content.
 	 *
 	 * @covers ::get_admin_page_content
+	 * @covers ::load_language_options
 	 */
 	public function test_get_admin_page_content() : void {
 		// Set up expectations.
