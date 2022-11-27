@@ -277,7 +277,7 @@ class ACF_Integration_Test extends TestCase {
 	public function test_get_acf_version_acf5() : void {
 		Functions\expect( 'acf_get_setting' )->once()->with( 'version' )->andReturn( '5.5' );
 
-		$this->assertSame( 5, $this->acf_i->get_acf_version() );
+		$this->assertSame( 5, $this->acf_i->get_acf_version() ); // @phpstan-ignore-line - testing protected method.
 	}
 
 	/**

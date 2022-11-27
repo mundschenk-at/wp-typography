@@ -784,7 +784,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 			->shouldReceive( 'get' )->once()->andReturn( false )
 			->shouldReceive( 'set' )->once();
 
-		$this->assertSame( 'processed text', $this->wp_typo->maybe_process_fragment( $text, $is_title, $is_feed, $settings ) );
+		$this->assertSame( 'processed text', $this->wp_typo->maybe_process_fragment( $text, $is_title, $is_feed, $settings ) ); // @phpstan-ignore-line - testing protected method.
 	}
 
 	/**

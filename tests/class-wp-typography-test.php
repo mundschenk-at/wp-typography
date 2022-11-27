@@ -116,7 +116,7 @@ class WP_Typography_Test extends TestCase {
 	public function test_call_static_get_hyphenation_languages() : void {
 		$this->wp_typo->shouldReceive( 'get_hyphenation_languages' )->once()->andReturn( [ 'de' => 'German' ] );
 
-		$langs = \WP_Typography::get_hyphenation_languages();
+		$langs = \WP_Typography::get_hyphenation_languages(); // @phpstan-ignore-line -- intentionally calling non-static method statically.
 
 		$this->assertContainsOnly( 'string', $langs, 'The languages array should only contain strings.' );
 		$this->assertContainsOnly( 'string', array_keys( $langs ), 'The languages array should be indexed by language codes.' );
@@ -135,7 +135,7 @@ class WP_Typography_Test extends TestCase {
 		$this->expect_exception( \BadMethodCallException::class );
 		$this->expect_exception_message_matches( '/Static method WP_Typography::foobar does not exist/' );
 
-		$this->assertNull( \WP_Typography::foobar() );
+		\WP_Typography::foobar(); // @phpstan-ignore-line -- intentionally calling non-existant static method.
 	}
 
 	/**
