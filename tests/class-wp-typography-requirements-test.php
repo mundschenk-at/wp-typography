@@ -43,7 +43,7 @@ use WP_Typography\Requirements;
  * @coversDefaultClass \WP_Typography\Requirements
  * @usesDefaultClass \WP_Typography\Requirements
  */
-class WP_Typography_Requirements_Test extends Testcase {
+class WP_Typography_Requirements_Test extends TestCase {
 
 	/**
 	 * The system-under-test.
