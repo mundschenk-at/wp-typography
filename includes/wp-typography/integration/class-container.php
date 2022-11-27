@@ -42,14 +42,14 @@ class Container {
 	 *
 	 * @var Plugin_Integration[]
 	 */
-	private $integrations = [];
+	private array $integrations = [];
 
 	/**
 	 * An array of activated plugin integrations.
 	 *
 	 * @var Plugin_Integration[]
 	 */
-	private $active_integrations = [];
+	private array $active_integrations = [];
 
 	/**
 	 * Creates a new instance.

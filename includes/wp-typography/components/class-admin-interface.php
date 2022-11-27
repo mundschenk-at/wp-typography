@@ -100,7 +100,7 @@ class Admin_Interface implements Plugin_Component {
 	 *
 	 * @var Help_Page[] $admin_help_pages
 	 */
-	private $admin_help_pages;
+	private array $admin_help_pages;
 
 	/**
 	 * Tabs IDs and headings for the settings page.
@@ -109,7 +109,7 @@ class Admin_Interface implements Plugin_Component {
 	 *
 	 * @var Tab[] $admin_form_tabs
 	 */
-	private $admin_form_tabs;
+	private array $admin_form_tabs;
 
 	/**
 	 * Section IDs and headings for the settings page.
@@ -118,14 +118,14 @@ class Admin_Interface implements Plugin_Component {
 	 *
 	 * @var Section[] $admin_form_sections
 	 */
-	private $admin_form_sections;
+	private array $admin_form_sections;
 
 	/**
 	 * The form controls on the settings page.
 	 *
 	 * @var Control[] $admin_form_controls
 	 */
-	private $admin_form_controls = [];
+	private array $admin_form_controls = [];
 
 	/**
 	 * The plugin API.
@@ -134,7 +134,7 @@ class Admin_Interface implements Plugin_Component {
 	 *
 	 * @var Implementation
 	 */
-	private $api;
+	private Implementation $api;
 
 	/**
 	 * The current active settings tab.
@@ -148,14 +148,14 @@ class Admin_Interface implements Plugin_Component {
 	 *
 	 * @var array<string,Config>
 	 */
-	private $defaults;
+	private array $defaults;
 
 	/**
 	 * An array to keep track of triggered admin notices.
 	 *
 	 * @var bool[]
 	 */
-	private $triggered_notice = [];
+	private array $triggered_notice = [];
 
 	/**
 	 * Create a new instace of admin backend.

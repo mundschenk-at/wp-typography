@@ -52,7 +52,7 @@ abstract class Sections {
 	 *
 	 * @var Section[]
 	 */
-	private static $sections;
+	private static array $sections;
 
 	/**
 	 * Retrieves the settings page sections.

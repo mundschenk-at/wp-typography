@@ -125,7 +125,7 @@ abstract class Plugin_Configuration {
 	 *
 	 * @var array<string,Config>
 	 */
-	private static $defaults;
+	private static array $defaults;
 
 	/**
 	 * Retrieves the default settings.

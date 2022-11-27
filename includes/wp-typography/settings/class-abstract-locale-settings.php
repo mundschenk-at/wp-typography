@@ -44,35 +44,35 @@ abstract class Abstract_Locale_Settings implements Locale_Settings {
 	 *
 	 * @var int
 	 */
-	protected $priority;
+	protected int $priority;
 
 	/**
 	 * A Quote_Style constant.
 	 *
 	 * @var string
 	 */
-	protected $primary_quote_style;
+	protected string $primary_quote_style;
 
 	/**
 	 * A Quote_Style constant.
 	 *
 	 * @var string
 	 */
-	protected $secondary_quote_style;
+	protected string $secondary_quote_style;
 
 	/**
 	 * A Dash_Style constant.
 	 *
 	 * @var string
 	 */
-	protected $dash_style;
+	protected string $dash_style;
 
 	/**
 	 * Enable French punctuation spacing?
 	 *
 	 * @var bool
 	 */
-	protected $french_punctuation;
+	protected bool $french_punctuation;
 
 	/**
 	 * Creates a new instance.
@@ -119,10 +119,10 @@ abstract class Abstract_Locale_Settings implements Locale_Settings {
 	 * @return array<string,string|int|bool>
 	 */
 	public function adjust_defaults( array $defaults ) : array {
+		$defaults[ Config::SMART_DASHES_STYLE ]         = $this->dash_style;
 		$defaults[ Config::SMART_QUOTES_PRIMARY ]       = $this->primary_quote_style;
 		$defaults[ Config::SMART_QUOTES_SECONDARY ]     = $this->secondary_quote_style;
 		$defaults[ Config::FRENCH_PUNCTUATION_SPACING ] = $this->french_punctuation;
-		$defaults[ Config::SMART_DASHES_STYLE ]         = $this->dash_style;
 
 		return $defaults;
 	}
