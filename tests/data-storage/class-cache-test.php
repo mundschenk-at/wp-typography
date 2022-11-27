@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2020 Peter Putzer.
+ *  Copyright 2017-2022 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -55,7 +55,7 @@ class Cache_Test extends TestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function set_up() {
+	protected function set_up() : void {
 		parent::set_up();
 
 		$this->cache = m::mock( Cache::class )->makePartial();
@@ -69,7 +69,7 @@ class Cache_Test extends TestCase {
 	 *
 	 * @covers ::__construct
 	 */
-	public function test___construct() {
+	public function test___construct() : void {
 		Functions\expect( 'wp_cache_get' )->once()->with( m::pattern( '/incrementor/' ), Cache::GROUP )->andReturn( 0 );
 
 		$cache = m::mock( Cache::class )->makePartial()
@@ -86,7 +86,7 @@ class Cache_Test extends TestCase {
 	 *
 	 * @covers ::invalidate
 	 */
-	public function test_invalidate() {
+	public function test_invalidate() : void {
 		Functions\expect( 'wp_cache_set' )->once()->with( m::pattern( '/incrementor/' ), m::type( 'int' ), Cache::GROUP, 0 );
 
 		$this->assertNull( $this->cache->invalidate() );
@@ -99,7 +99,7 @@ class Cache_Test extends TestCase {
 	 *
 	 * @uses ::get_key
 	 */
-	public function test_get() {
+	public function test_get() : void {
 		$raw_key = 'foo';
 		$key     = $this->invokeMethod( $this->cache, 'get_key', [ $raw_key ] );
 
@@ -115,7 +115,7 @@ class Cache_Test extends TestCase {
 	 *
 	 * @uses ::get_key
 	 */
-	public function test_set() {
+	public function test_set() : void {
 		$value    = 'bar';
 		$raw_key  = 'foo';
 		$duration = 99;
@@ -133,7 +133,7 @@ class Cache_Test extends TestCase {
 	 *
 	 * @uses ::get_key
 	 */
-	public function test_delete() {
+	public function test_delete() : void {
 		$raw_key = 'foo';
 		$key     = $this->invokeMethod( $this->cache, 'get_key', [ $raw_key ] );
 

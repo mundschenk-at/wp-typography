@@ -2,7 +2,7 @@
 /**
  * This file is part of wp-Typography.
  *
- * Copyright 2020-2021 Peter Putzer.
+ * Copyright 2020-2022 Peter Putzer.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -30,8 +30,9 @@ namespace WP_Typography;
  * A custom requirements class to check for additional PHP packages and other
  * prerequisites.
  *
- * @since 5.7.0
- * @since 5.8.0 Moved to WP_Typography\Requirements.
+ * @since  5.7.0
+ * @since  5.8.0 Moved to WP_Typography\Requirements.
+ * @since  5.9.0 Return type declarations added.
  *
  * @author Peter Putzer <github@mundschenk.at>
  */
@@ -62,7 +63,7 @@ class Requirements extends \Mundschenk\WP_Requirements {
 	 *   @type callable $notice     A function displaying an appropriate error notice.
 	 * }
 	 */
-	protected function get_requirements() {
+	protected function get_requirements() : array {
 		$requirements   = parent::get_requirements();
 		$requirements[] = [
 			'enable_key' => 'dom',
@@ -78,14 +79,14 @@ class Requirements extends \Mundschenk\WP_Requirements {
 	 *
 	 * @return bool
 	 */
-	protected function check_dom_support() {
+	protected function check_dom_support() : bool {
 		return \class_exists( 'DOMDocument' );
 	}
 
 	/**
 	 * Prints 'DOM extension missing' admin notice
 	 */
-	public function admin_notices_dom_disabled() {
+	public function admin_notices_dom_disabled() : void {
 		$this->display_error_notice(
 			/* translators: 1: plugin name 2: GD documentation URL */
 			\__( 'The activated plugin %1$s requires the DOM PHP extension to be enabled on your server. Please deactivate this plugin, or <a href="%2$s">enable the extension</a>.', 'wp-typography' ),

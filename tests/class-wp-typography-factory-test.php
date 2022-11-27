@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2021 Peter Putzer.
+ *  Copyright 2017-2022 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -55,7 +55,7 @@ class WP_Typography_Factory_Test extends TestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function set_up() {
+	protected function set_up() : void {
 		parent::set_up();
 
 		// Set up virtual filesystem.
@@ -85,7 +85,7 @@ class WP_Typography_Factory_Test extends TestCase {
 	 *
 	 * @covers ::__construct
 	 */
-	public function test_constructor() {
+	public function test_constructor() : void {
 		$this->sut->shouldReceive( 'get_rules' )->never();
 
 		// Manually call constructor.
@@ -101,7 +101,7 @@ class WP_Typography_Factory_Test extends TestCase {
 	 *
 	 * @covers ::get_plugin_version
 	 */
-	public function test_get_plugin_version() {
+	public function test_get_plugin_version() : void {
 		$version     = '6.6.6';
 		$plugin_file = '/the/main/plugin/file.php';
 
@@ -120,7 +120,7 @@ class WP_Typography_Factory_Test extends TestCase {
 	 * @covers ::get_rules
 	 * @covers ::get_supported_locales
 	 */
-	public function test_get() {
+	public function test_get() : void {
 		Functions\expect( 'get_plugin_data' )->once()->with( m::type( 'string' ), false, false )->andReturn( [ 'Version' => '42' ] );
 
 		$result1 = Factory::get();

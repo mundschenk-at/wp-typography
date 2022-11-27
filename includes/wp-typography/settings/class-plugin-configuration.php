@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2019 Peter Putzer.
+ *  Copyright 2017-2022 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -38,7 +38,8 @@ use PHP_Typography\Settings\Quote_Style;
 /**
  * Default configuration for wp-Typography.
  *
- * @since 5.1.0
+ * @since  5.1.0
+ * @since  5.9.0 Return type declarations added.
  *
  * @author Peter Putzer <github@mundschenk.at>
  */
@@ -117,7 +118,7 @@ abstract class Plugin_Configuration {
 	 *
 	 * @return array
 	 */
-	public static function get_defaults() {
+	public static function get_defaults() : array {
 		if ( empty( self::$defaults ) ) {
 			self::$defaults = [ // @codeCoverageIgnore
 				self::IGNORE_TAGS                      => [
@@ -673,7 +674,7 @@ abstract class Plugin_Configuration {
 	 *
 	 * @return array
 	 */
-	private static function get_numeric_option_values( array $values ) {
+	private static function get_numeric_option_values( array $values ) : array {
 		return \array_combine( $values, $values );
 	}
 
@@ -682,7 +683,7 @@ abstract class Plugin_Configuration {
 	 *
 	 * @return array
 	 */
-	private static function get_quote_style_option_values() {
+	private static function get_quote_style_option_values() : array {
 		return [
 			Quote_Style::DOUBLE_CURLED              => '&ldquo;foo&rdquo;',
 			Quote_Style::DOUBLE_CURLED_REVERSED     => '&rdquo;foo&rdquo;', // @codeCoverageIgnoreStart

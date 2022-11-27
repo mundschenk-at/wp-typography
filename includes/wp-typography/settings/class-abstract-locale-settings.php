@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2018 Peter Putzer.
+ *  Copyright 2017-2022 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -33,7 +33,8 @@ use PHP_Typography\Settings;
 /**
  * An abstract base class for localized settings.
  *
- * @since 5.0.0
+ * @since  5.0.0
+ * @since  5.9.0 Return type declarations added.
  *
  * @author Peter Putzer <github@mundschenk.at>
  */
@@ -99,14 +100,14 @@ abstract class Abstract_Locale_Settings implements Locale_Settings {
 	 *
 	 * @return bool             True if the default is applicable to this locale, false otherwise.
 	 */
-	abstract public function match( $language, $country, $modifier = '' );
+	abstract public function match( $language, $country, $modifier = '' ) : bool;
 
 	/**
 	 * Retrieves the matching priority. A higher value means earlier matching.
 	 *
 	 * @return int
 	 */
-	public function priority() {
+	public function priority() : int {
 		return $this->priority;
 	}
 
@@ -117,7 +118,7 @@ abstract class Abstract_Locale_Settings implements Locale_Settings {
 	 *
 	 * @return array
 	 */
-	public function adjust_defaults( array $defaults ) {
+	public function adjust_defaults( array $defaults ) : array {
 		$defaults[ Config::SMART_QUOTES_PRIMARY ]       = $this->primary_quote_style;
 		$defaults[ Config::SMART_QUOTES_SECONDARY ]     = $this->secondary_quote_style;
 		$defaults[ Config::FRENCH_PUNCTUATION_SPACING ] = $this->french_punctuation;
@@ -131,7 +132,7 @@ abstract class Abstract_Locale_Settings implements Locale_Settings {
 	 *
 	 * @return string A Quote_Style constant.
 	 */
-	public function primary_quote_style() {
+	public function primary_quote_style() : string {
 		return $this->primary_quote_style;
 	}
 
@@ -140,7 +141,7 @@ abstract class Abstract_Locale_Settings implements Locale_Settings {
 	 *
 	 * @return string A Quote_Style constant.
 	 */
-	public function secondary_quote_style() {
+	public function secondary_quote_style() : string {
 		return $this->secondary_quote_style;
 	}
 
@@ -149,7 +150,7 @@ abstract class Abstract_Locale_Settings implements Locale_Settings {
 	 *
 	 * @return string A Dash_Style constant.
 	 */
-	public function dash_style() {
+	public function dash_style() : string {
 		return $this->dash_style;
 	}
 
@@ -158,7 +159,7 @@ abstract class Abstract_Locale_Settings implements Locale_Settings {
 	 *
 	 * @return bool
 	 */
-	public function use_french_punctuation_spacing() {
+	public function use_french_punctuation_spacing() : bool {
 		return $this->french_punctuation;
 	}
 }

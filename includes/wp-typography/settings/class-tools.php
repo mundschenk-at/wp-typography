@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2019-2021 Peter Putzer.
+ *  Copyright 2019-2022 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -32,7 +32,8 @@ use PHP_Typography\U;
  * An abstract class containing helper methods to convert WordPress settings to a
  * format suitable for consumption by PHP-Typography.
  *
- * @since 5.5.0
+ * @since  5.5.0
+ * @since  5.9.0 Return type declarations added.
  *
  * @author Peter Putzer <github@mundschenk.at>
  *
@@ -48,7 +49,7 @@ abstract class Tools {
 	 *
 	 * @return string[]       An array of replacements, indexed by the key.
 	 */
-	public static function parse_smart_quote_exceptions_string( $string ) {
+	public static function parse_smart_quote_exceptions_string( $string ) : array {
 		return \array_reduce(
 			preg_split( '/,/', $string, -1, PREG_SPLIT_NO_EMPTY ),
 			function( $result, $replacement ) {
@@ -78,7 +79,7 @@ abstract class Tools {
 	 *
 	 * @return array
 	 */
-	public static function array_map_assoc( callable $callback, array $array ) {
+	public static function array_map_assoc( callable $callback, array $array ) : array {
 		\_deprecated_function( __FUNCTION__, '5.8.0' );
 
 		$new = [];

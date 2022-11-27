@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2019 Peter Putzer.
+ *  Copyright 2017-2022 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -29,7 +29,8 @@ namespace WP_Typography\UI;
 /**
  * Settings section for wp-Typography.
  *
- * @since 5.1.0
+ * @since  5.1.0
+ * @since  5.9.0 Return type declarations added.
  *
  * @author Peter Putzer <github@mundschenk.at>
  */
@@ -60,7 +61,7 @@ abstract class Sections {
 	 *         }
 	 * }
 	 */
-	public static function get_sections() {
+	public static function get_sections() : array {
 		if ( empty( self::$sections ) ) {
 			self::$sections = [ // @codeCoverageIgnore
 				self::SPECIAL_CHARACTERS => [

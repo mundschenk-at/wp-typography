@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2020 Peter Putzer.
+ *  Copyright 2017-2022 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -55,7 +55,7 @@ class Transients_Test extends TestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function set_up() {
+	protected function set_up() : void {
 		parent::set_up();
 
 		$this->transients = m::mock( Transients::class )
@@ -73,7 +73,7 @@ class Transients_Test extends TestCase {
 	 *
 	 * @covers ::__construct
 	 */
-	public function test___construct() {
+	public function test___construct() : void {
 		$transients = m::mock( Transients::class )->shouldAllowMockingProtectedMethods()->makePartial()
 			->shouldReceive( 'get' )->once()->with( m::pattern( '/incrementor/' ), true )->andReturn( 0 )
 			->shouldReceive( 'invalidate' )->once()
@@ -88,7 +88,7 @@ class Transients_Test extends TestCase {
 	 *
 	 * @covers ::cache_object
 	 */
-	public function test_cache_object() {
+	public function test_cache_object() : void {
 		$key    = 'my_transient_key';
 		$object = new \stdClass();
 		$handle = 'my_handle';

@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2020 Peter Putzer.
+ *  Copyright 2017-2022 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -45,7 +45,7 @@ class WP_Typography_Singleton_Test extends TestCase {
 	/**
 	 * Necesssary clean-up work.
 	 */
-	protected function tear_down() {
+	protected function tear_down() : void {
 
 		// Reset singleton.
 		$this->setStaticValue( \WP_Typography::class, 'instance', null );
@@ -63,7 +63,7 @@ class WP_Typography_Singleton_Test extends TestCase {
 	 * @uses \WP_Typography\Data_Storage\Options::__construct
 	 * @uses \WP_Typography\Data_Storage\Transients::__construct
 	 */
-	public function test_singleton() {
+	public function test_singleton() : void {
 
 		// Mock WP_Typography\Data_Storage\Options instance.
 		$options = m::mock( \WP_Typography\Data_Storage\Options::class )
@@ -102,7 +102,7 @@ class WP_Typography_Singleton_Test extends TestCase {
 	 *
 	 * @covers ::get_instance
 	 */
-	public function test_get_instance_failing() {
+	public function test_get_instance_failing() : void {
 		$this->expect_exception( \BadMethodCallException::class );
 		$this->expect_exception_message_matches( '/WP_Typography::get_instance called without prior plugin intialization/' );
 
@@ -115,7 +115,7 @@ class WP_Typography_Singleton_Test extends TestCase {
 	 *
 	 * @covers ::set_instance
 	 */
-	public function test_set_instance_failing() {
+	public function test_set_instance_failing() : void {
 		$transients = m::mock( \WP_Typography\Data_Storage\Transients::class );
 		$cache      = m::mock( \WP_Typography\Data_Storage\Cache::class );
 		$options    = m::mock( \WP_Typography\Data_Storage\Options::class );

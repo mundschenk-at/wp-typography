@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2020 Peter Putzer.
+ *  Copyright 2017-2022 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -99,7 +99,7 @@ class Admin_Interface_Test extends TestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function set_up() {
+	protected function set_up() : void {
 		parent::set_up();
 
 		// Set up virtual filesystem.
@@ -160,7 +160,7 @@ class Admin_Interface_Test extends TestCase {
 	 *
 	 * @covers ::__construct
 	 */
-	public function test_constructor() {
+	public function test_constructor() : void {
 		$admin = m::mock( Admin_Interface::class, [ $this->api, $this->options ] );
 
 		$this->assert_attribute_same( $this->api, 'api', $admin );
@@ -179,7 +179,7 @@ class Admin_Interface_Test extends TestCase {
 	 * @uses \WP_Typography\UI\Tabs::get_tabs
 	 * @uses \WP_Typography\UI\Sections::get_sections
 	 */
-	public function test_run() {
+	public function test_run() : void {
 		Functions\expect( 'is_admin' )->once()->andReturn( true );
 		Functions\expect( 'plugin_basename' )->once()->with( \WP_TYPOGRAPHY_PLUGIN_FILE )->andReturn( 'plugin/basename' );
 
@@ -200,7 +200,7 @@ class Admin_Interface_Test extends TestCase {
 	 *
 	 * @covers ::get_admin_page_content
 	 */
-	public function test_get_admin_page_content() {
+	public function test_get_admin_page_content() : void {
 		// Set up expectations.
 		$this->admin_form_controls[ Config::HYPHENATE_LANGUAGES ]->shouldReceive( 'set_option_values' )->once()->with( m::type( 'array' ) );
 		$this->admin_form_controls[ Config::DIACRITIC_LANGUAGES ]->shouldReceive( 'set_option_values' )->once()->with( m::type( 'array' ) );
@@ -219,7 +219,7 @@ class Admin_Interface_Test extends TestCase {
 	 *
 	 * @covers ::print_admin_styles
 	 */
-	public function test_print_admin_styles() {
+	public function test_print_admin_styles() : void {
 		// Set up expectations.
 		Functions\expect( 'plugins_url' )->once()->with( 'admin/css/settings.css', m::type( 'string' ) )->andReturn( 'some/path/settings.css' );
 		Functions\expect( 'wp_enqueue_style' )->once()->with( 'wp-typography-settings', 'some/path/settings.css', m::type( 'array' ), m::type( 'string' ), 'all' );
@@ -233,7 +233,7 @@ class Admin_Interface_Test extends TestCase {
 	 *
 	 * @covers ::plugin_action_links
 	 */
-	public function test_plugin_action_links() {
+	public function test_plugin_action_links() : void {
 		// Test data.
 		$links = [
 			'foo',
@@ -255,7 +255,7 @@ class Admin_Interface_Test extends TestCase {
 	 *
 	 * @covers ::register_the_settings
 	 */
-	public function test_register_the_settings() {
+	public function test_register_the_settings() : void {
 		// Set up expectations.
 		$this->options->shouldReceive( 'get_name' )->once()->with( Options::CONFIGURATION )->andReturn( 'typo_configuration' );
 		$this->options->shouldReceive( 'get_name' )->once()->with( Options::RESTORE_DEFAULTS )->andReturn( 'typo_restore_defaults' );
@@ -282,7 +282,7 @@ class Admin_Interface_Test extends TestCase {
 	 *
 	 * @covers ::filter_update_option
 	 */
-	public function test_filter_update_option() {
+	public function test_filter_update_option() : void {
 		// Test data.
 		$old_value = [
 			'foo' => 'bar',
@@ -312,7 +312,7 @@ class Admin_Interface_Test extends TestCase {
 	 *
 	 * @covers ::filter_update_option
 	 */
-	public function test_filter_update_option_clear_cache() {
+	public function test_filter_update_option_clear_cache() : void {
 		// Test data.
 		$old_value = [
 			'foo' => 'bar',
@@ -345,7 +345,7 @@ class Admin_Interface_Test extends TestCase {
 	 *
 	 * @covers ::filter_update_option
 	 */
-	public function test_filter_update_option_restore_defaults() {
+	public function test_filter_update_option_restore_defaults() : void {
 		// Test data.
 		$old_value = [
 			'foo' => 'bar',
@@ -377,7 +377,7 @@ class Admin_Interface_Test extends TestCase {
 	 *
 	 * @covers ::sanitize_restore_defaults
 	 */
-	public function test_sanitize_restore_defaults() {
+	public function test_sanitize_restore_defaults() : void {
 		// Set up data.
 		$input = 'foo';
 
@@ -385,7 +385,7 @@ class Admin_Interface_Test extends TestCase {
 		$this->admin->shouldReceive( 'trigger_admin_notice' )->once()->with( Options::RESTORE_DEFAULTS, 'defaults-restored', m::type( 'string' ), 'updated', $input )->andReturn( $input );
 
 		// Do it.
-		$this->assertSame( $input, $this->admin->sanitize_restore_defaults( $input ) );
+		$this->assertTrue( $this->admin->sanitize_restore_defaults( $input ) );
 	}
 
 	/**
@@ -393,7 +393,7 @@ class Admin_Interface_Test extends TestCase {
 	 *
 	 * @covers ::sanitize_clear_cache
 	 */
-	public function test_sanitize_clear_cache() {
+	public function test_sanitize_clear_cache() : void {
 		// Set up data.
 		$input = 'foo';
 
@@ -401,7 +401,7 @@ class Admin_Interface_Test extends TestCase {
 		$this->admin->shouldReceive( 'trigger_admin_notice' )->once()->with( Options::CLEAR_CACHE, 'cache-cleared', m::type( 'string' ), 'notice-info', $input )->andReturn( $input );
 
 		// Do it.
-		$this->assertSame( $input, $this->admin->sanitize_clear_cache( $input ) );
+		$this->assertTrue( $this->admin->sanitize_clear_cache( $input ) );
 	}
 
 	/**
@@ -409,7 +409,7 @@ class Admin_Interface_Test extends TestCase {
 	 *
 	 * @covers ::trigger_admin_notice
 	 */
-	public function test_trigger_admin_notice() {
+	public function test_trigger_admin_notice() : void {
 		// Set up data.
 		$input = 'foo';
 
@@ -430,7 +430,7 @@ class Admin_Interface_Test extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function provide_sanitize_settings_data() {
+	public function provide_sanitize_settings_data() : array {
 		return [
 			[
 				[ 'foo' => 'bar' ],
@@ -473,7 +473,7 @@ class Admin_Interface_Test extends TestCase {
 	 * @param  array  $expected Result array.
 	 * @param  string $tab      Selected tab.
 	 */
-	public function test_sanitize_settings( $input, $expected, $tab ) {
+	public function test_sanitize_settings( $input, $expected, $tab ) : void {
 		// Set up data.
 		$defaults = [
 			'foo'    => [
@@ -504,7 +504,7 @@ class Admin_Interface_Test extends TestCase {
 	 *
 	 * @covers ::get_active_settings_tab
 	 */
-	public function test_get_active_settings_tab() {
+	public function test_get_active_settings_tab() : void {
 		// Set up data.
 		$_REQUEST['tab'] = 'my-tab';
 
@@ -520,7 +520,7 @@ class Admin_Interface_Test extends TestCase {
 	 *
 	 * @covers ::get_active_settings_tab
 	 */
-	public function test_get_active_settings_tab_options_page() {
+	public function test_get_active_settings_tab_options_page() : void {
 		// Set up data.
 		$page                    = Admin_Interface::OPTION_GROUP . 'my-tab';
 		$_REQUEST['option_page'] = $page;
@@ -539,7 +539,7 @@ class Admin_Interface_Test extends TestCase {
 	 *
 	 * @covers ::get_active_settings_tab
 	 */
-	public function test_get_active_settings_tab_default() {
+	public function test_get_active_settings_tab_default() : void {
 		$tabs = [
 			'1st_tab' => [],
 			'2nd_tab' => [],
@@ -561,7 +561,7 @@ class Admin_Interface_Test extends TestCase {
 	 *
 	 * @covers ::add_options_page
 	 */
-	public function test_add_options_page() {
+	public function test_add_options_page() : void {
 		// Set up data.
 		$hookname = 'my-options';
 		$tabs     = [
@@ -600,7 +600,7 @@ class Admin_Interface_Test extends TestCase {
 	 *
 	 * @covers ::add_options_page
 	 */
-	public function test_add_options_page_not_enough_permissions() {
+	public function test_add_options_page_not_enough_permissions() : void {
 		// Set up expectations.
 		Functions\expect( 'add_options_page' )->once()->with( 'wp-Typography', 'wp-Typography', 'manage_options', 'wp-typography', m::type( 'callable' ) )->andReturn( false );
 
@@ -614,7 +614,7 @@ class Admin_Interface_Test extends TestCase {
 	 *
 	 * @covers ::add_context_help
 	 */
-	public function test_add_context_help() {
+	public function test_add_context_help() : void {
 		// Set up data.
 		$screen = m::mock( \WP_Screen::class );
 		$help   = [
@@ -651,7 +651,7 @@ class Admin_Interface_Test extends TestCase {
 	 *
 	 * @covers ::print_settings_section
 	 */
-	public function test_print_settings_section() {
+	public function test_print_settings_section() : void {
 		// Set up data.
 		$tabs     = [
 			'1st_tab' => [
@@ -695,7 +695,7 @@ class Admin_Interface_Test extends TestCase {
 	 *
 	 * @covers ::print_settings_section
 	 */
-	public function test_print_settings_section_with_tab() {
+	public function test_print_settings_section_with_tab() : void {
 		// Set up data.
 		$tabs     = [
 			'1st_tab' => [
@@ -739,7 +739,7 @@ class Admin_Interface_Test extends TestCase {
 	 *
 	 * @covers ::maybe_add_privacy_notice_content
 	 */
-	public function test_maybe_add_privacy_notice_content_old_wp() {
+	public function test_maybe_add_privacy_notice_content_old_wp() : void {
 		// Function wp_add_privacy_policy_content does not exist, so nothing should happen.
 		$this->assertNull( $this->admin->maybe_add_privacy_notice_content() );
 	}
@@ -749,7 +749,7 @@ class Admin_Interface_Test extends TestCase {
 	 *
 	 * @covers ::maybe_add_privacy_notice_content
 	 */
-	public function test_maybe_add_privacy_notice_content_new_wp() {
+	public function test_maybe_add_privacy_notice_content_new_wp() : void {
 		Functions\expect( 'wp_add_privacy_policy_content' )->once();
 
 		$this->assertNull( $this->admin->maybe_add_privacy_notice_content() );

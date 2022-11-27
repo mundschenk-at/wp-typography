@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2020 Peter Putzer.
+ *  Copyright 2017-2022 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -75,7 +75,7 @@ class Multilingual_Support_Test extends TestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function set_up() {
+	protected function set_up() : void {
 		parent::set_up();
 
 		$this->api    = m::mock( \WP_Typography\Implementation::class );
@@ -107,7 +107,7 @@ class Multilingual_Support_Test extends TestCase {
 	 *
 	 * @covers ::__construct
 	 */
-	public function test_constructor() {
+	public function test_constructor() : void {
 		$sut = m::mock( Multilingual_Support::class )
 			->shouldAllowMockingProtectedMethods()
 			->makePartial();
@@ -143,7 +143,7 @@ class Multilingual_Support_Test extends TestCase {
 	 *
 	 * @covers ::run
 	 */
-	public function test_run() {
+	public function test_run() : void {
 		Actions\expectAdded( 'plugins_loaded' )->once()->with( [ $this->multi, 'add_plugin_defaults_filter' ] );
 		Actions\expectAdded( 'init' )->once()->with( [ $this->multi, 'enable_automatic_language_settings' ] );
 
@@ -155,7 +155,7 @@ class Multilingual_Support_Test extends TestCase {
 	 *
 	 * @covers ::add_plugin_defaults_filter
 	 */
-	public function test_add_plugin_defaults_filter() {
+	public function test_add_plugin_defaults_filter() : void {
 
 		$this->api->shouldReceive( 'get_hyphenation_languages' )->once()->andReturn( [ 'de' => 'Deutsch' ] );
 		$this->api->shouldReceive( 'get_diacritic_languages' )->once()->andReturn( [ 'en' => 'English' ] );
@@ -170,7 +170,7 @@ class Multilingual_Support_Test extends TestCase {
 	 *
 	 * @covers ::enable_automatic_language_settings
 	 */
-	public function test_enable_automatic_language_settings() {
+	public function test_enable_automatic_language_settings() : void {
 		$this->api->shouldReceive( 'get_config' )->once()->andReturn( [ Config::ENABLE_MULTILINGUAL_SUPPORT => true ] );
 
 		Filters\expectAdded( 'typo_settings' )->once()->with( [ $this->multi, 'automatic_language_settings' ] );
@@ -183,7 +183,7 @@ class Multilingual_Support_Test extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function provide_locale_settings_sort_data() {
+	public function provide_locale_settings_sort_data() : array {
 		return [
 			[ 0, 0, 0 ],
 			[ 47, 47, 0 ],
@@ -207,7 +207,7 @@ class Multilingual_Support_Test extends TestCase {
 	 * @param int $prio2  Priority of second Locale_Settings object.
 	 * @param int $result Expected result.
 	 */
-	public function test_locale_settings_sort( $prio1, $prio2, $result ) {
+	public function test_locale_settings_sort( $prio1, $prio2, $result ) : void {
 		$locale1 = m::mock( Locale_Settings::class );
 		$locale2 = m::mock( Locale_Settings::class );
 
@@ -222,7 +222,7 @@ class Multilingual_Support_Test extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function provide_automatic_language_settings_data() {
+	public function provide_automatic_language_settings_data() : array {
 		return [
 			[ false, false ],
 			[ true, false ],
@@ -241,7 +241,7 @@ class Multilingual_Support_Test extends TestCase {
 	 * @param  bool $hyphenation Required.
 	 * @param  bool $diacritics  Required.
 	 */
-	public function test_automatic_language_settings( $hyphenation, $diacritics ) {
+	public function test_automatic_language_settings( $hyphenation, $diacritics ) : void {
 		$s      = m::mock( Settings::class );
 		$locale = 'de-DE-foobar';
 
@@ -291,7 +291,7 @@ class Multilingual_Support_Test extends TestCase {
 	 * @param  bool $hyphenation Required.
 	 * @param  bool $diacritics  Required.
 	 */
-	public function test_filter_defaults( $hyphenation, $diacritics ) {
+	public function test_filter_defaults( $hyphenation, $diacritics ) : void {
 		$locale   = 'de-DE-foobar';
 		$defaults = [];
 
@@ -342,7 +342,7 @@ class Multilingual_Support_Test extends TestCase {
 	 *
 	 * @covers ::adjust_french_punctuation_spacing
 	 */
-	public function test_adjust_french_punctuation_spacing() {
+	public function test_adjust_french_punctuation_spacing() : void {
 		$s      = m::mock( Settings::class );
 		$locale = 'de-DE-foobar';
 
@@ -358,7 +358,7 @@ class Multilingual_Support_Test extends TestCase {
 	 *
 	 * @covers ::adjust_french_punctuation_spacing
 	 */
-	public function test_adjust_french_punctuation_spacing_null_adjustment() {
+	public function test_adjust_french_punctuation_spacing_null_adjustment() : void {
 		$s      = m::mock( Settings::class );
 		$locale = 'de-DE-foobar';
 
@@ -373,7 +373,7 @@ class Multilingual_Support_Test extends TestCase {
 	 *
 	 * @covers ::adjust_dash_style
 	 */
-	public function test_adjust_dash_style() {
+	public function test_adjust_dash_style() : void {
 		$s      = m::mock( Settings::class );
 		$locale = 'de-DE-foobar';
 
@@ -389,7 +389,7 @@ class Multilingual_Support_Test extends TestCase {
 	 *
 	 * @covers ::adjust_dash_style
 	 */
-	public function test_adjust_dash_style_null_adjustment() {
+	public function test_adjust_dash_style_null_adjustment() : void {
 		$s      = m::mock( Settings::class );
 		$locale = 'de-DE-foobar';
 
@@ -405,7 +405,7 @@ class Multilingual_Support_Test extends TestCase {
 	 *
 	 * @covers ::adjust_quote_styles
 	 */
-	public function test_adjust_quote_styles() {
+	public function test_adjust_quote_styles() : void {
 		$s      = m::mock( Settings::class );
 		$locale = 'de-DE-foobar';
 
@@ -424,7 +424,7 @@ class Multilingual_Support_Test extends TestCase {
 	 *
 	 * @covers ::adjust_quote_styles
 	 */
-	public function test_adjust_quote_styles_null_adjustment() {
+	public function test_adjust_quote_styles_null_adjustment() : void {
 		$s      = m::mock( Settings::class );
 		$locale = 'de-DE-foobar';
 
@@ -443,7 +443,7 @@ class Multilingual_Support_Test extends TestCase {
 	 *
 	 * @covers ::match_locale
 	 */
-	public function test_match_locale() {
+	public function test_match_locale() : void {
 		$language = 'de';
 		$country  = 'DE';
 		$modifier = 'foo';
@@ -465,7 +465,7 @@ class Multilingual_Support_Test extends TestCase {
 	 *
 	 * @covers ::match_locale
 	 */
-	public function test_match_locale_failing() {
+	public function test_match_locale_failing() : void {
 		$language = 'de';
 		$country  = 'DE';
 		$modifier = 'foo';
@@ -487,7 +487,7 @@ class Multilingual_Support_Test extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function provide_get_current_locale_data() {
+	public function provide_get_current_locale_data() : array {
 		return [
 			[ 'de_DE_formal', 'de-DE-formal', 'de',  'DE', 'formal' ],
 			[ 'rup_MK',       'rup-MK',       'rup', 'MK', '' ],
@@ -510,7 +510,7 @@ class Multilingual_Support_Test extends TestCase {
 	 * @param  string $country  Optional. Expected result. Default ''.
 	 * @param  string $modifier Optional. Expected result. Default ''.
 	 */
-	public function test_get_current_locale( $input, $locale, $language = '', $country = '', $modifier = '' ) {
+	public function test_get_current_locale( $input, array $locale_data ) : void {
 		Filters\expectApplied( 'typo_current_locale' )->once()->with( '' )->andReturnFirstArg();
 		Functions\expect( 'get_locale' )->once()->andReturn( $input );
 
@@ -522,7 +522,7 @@ class Multilingual_Support_Test extends TestCase {
 	 *
 	 * @covers ::get_current_locale
 	 */
-	public function test_get_current_locale_filtered() {
+	public function test_get_current_locale_filtered() : void {
 		$language    = 'de';
 		$country     = 'DE';
 		$modifier    = 'bar';
@@ -542,7 +542,7 @@ class Multilingual_Support_Test extends TestCase {
 	 *
 	 * @uses ::normalize
 	 */
-	public function test_match_language() {
+	public function test_match_language() : void {
 		$type     = 'foobar';
 		$language = 'de';
 		$country  = 'DE';
@@ -566,7 +566,7 @@ class Multilingual_Support_Test extends TestCase {
 	 *
 	 * @uses ::normalize
 	 */
-	public function test_match_language_shortcut_locale() {
+	public function test_match_language_shortcut_locale() : void {
 		$type     = 'foobar';
 		$language = 'de';
 		$country  = 'DE';
@@ -590,7 +590,7 @@ class Multilingual_Support_Test extends TestCase {
 	 *
 	 * @uses ::normalize
 	 */
-	public function test_match_language_shortcut_language() {
+	public function test_match_language_shortcut_language() : void {
 		$type     = 'foobar';
 		$language = 'de';
 		$country  = 'DE';
@@ -614,7 +614,7 @@ class Multilingual_Support_Test extends TestCase {
 	 *
 	 * @uses ::normalize
 	 */
-	public function test_match_language_multiple_hits() {
+	public function test_match_language_multiple_hits() : void {
 		$type     = 'foobar';
 		$language = 'de';
 		$country  = 'DE';
@@ -638,7 +638,7 @@ class Multilingual_Support_Test extends TestCase {
 	 *
 	 * @uses ::normalize
 	 */
-	public function test_match_language_shortcut_filter() {
+	public function test_match_language_shortcut_filter() : void {
 		$type     = 'foobar';
 		$language = 'de';
 		$country  = 'DE';
@@ -660,7 +660,7 @@ class Multilingual_Support_Test extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function provide_match_language_data() {
+	public function provide_match_language_data() : array {
 		return [
 			[ 'en-US',   'en',    'US' ],
 			[ 'en-GB',   'en',    'GB' ],
@@ -693,7 +693,7 @@ class Multilingual_Support_Test extends TestCase {
 	 * @param  string      $country  Required.
 	 * @param  string|null $modifier Optional.
 	 */
-	public function test_match_language_real_language_list( $result, $language, $country = null, $modifier = null ) {
+	public function test_match_language_real_language_list( $result, $language, $country = null, $modifier = null ) : void {
 		$type      = 'hyphenation';
 		$locale    = \join( '-', \array_merge( (array) $language, (array) $country, (array) $modifier ) );
 		$languages = \PHP_Typography\PHP_Typography::get_hyphenation_languages();

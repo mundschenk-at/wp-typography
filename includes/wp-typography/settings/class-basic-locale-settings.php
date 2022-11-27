@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2019 Peter Putzer.
+ *  Copyright 2017-2022 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -31,7 +31,8 @@ use PHP_Typography\Settings;
 /**
  * A class implementing fast but versatile locale matching.
  *
- * @since 5.0.0
+ * @since  5.0.0
+ * @since  5.9.0 Return type declarations added.
  *
  * @author Peter Putzer <github@mundschenk.at>
  */
@@ -96,7 +97,7 @@ class Basic_Locale_Settings extends Abstract_Locale_Settings {
 	 *
 	 * @return bool             True if the default is applicable to this locale, false otherwise.
 	 */
-	public function match( $language, $country, $modifier = '' ) {
+	public function match( $language, $country, $modifier = '' ) : bool {
 		return ( empty( $this->valid_languages ) || isset( $this->valid_languages[ $language ] ) )
 			&& ( empty( $this->valid_countries ) || isset( $this->valid_countries[ $country ] ) )
 			&& ( empty( $modifier ) || empty( $this->valid_modifiers ) || isset( $this->valid_modifiers[ $modifier ] ) );

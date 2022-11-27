@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2020 Peter Putzer.
+ *  Copyright 2017-2022 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -47,7 +47,7 @@ class Plugin_Configuration_Test extends \WP_Typography\Tests\TestCase {
 	 * @covers ::get_numeric_option_values
 	 * @covers ::get_quote_style_option_values
 	 */
-	public function test_get_defaults() {
+	public function test_get_defaults() : void {
 		Functions\expect( '__' )->atLeast()->once()->with( m::type( 'string' ), 'wp-typography' )->andReturn( 'dummy text' );
 
 		$defaults = Config::get_defaults();
@@ -62,7 +62,7 @@ class Plugin_Configuration_Test extends \WP_Typography\Tests\TestCase {
 	 *
 	 * @covers ::get_defaults
 	 */
-	public function test_get_defaults_again() {
+	public function test_get_defaults_again() : void {
 		Functions\expect( '__' )->never();
 
 		$defaults       = Config::get_defaults();

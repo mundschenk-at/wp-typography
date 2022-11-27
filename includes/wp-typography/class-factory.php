@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2021 Peter Putzer.
+ *  Copyright 2017-2022 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -44,9 +44,10 @@ use PHP_Typography\Settings\Quote_Style;
 /**
  * A factory for creating WP_Typography instances via dependency injection.
  *
- * @since 5.1.0
- * @since 5.7.0 Class made concrete.
- * @since 5.8.0 Moved to WP_Typography\Factory.
+ * @since  5.1.0
+ * @since  5.7.0 Class made concrete.
+ * @since  5.8.0 Moved to WP_Typography\Factory.
+ * @since  5.9.0 Return type declarations added.
  *
  * @author Peter Putzer <github@mundschenk.at>
  */
@@ -82,7 +83,7 @@ class Factory extends Dice {
 	 * @throws Object_Factory_Exception An exception is thrown if the factory cannot
 	 *                                  be created.
 	 */
-	public static function get() {
+	public static function get() : self {
 		if ( ! isset( self::$factory ) ) {
 
 			// Create factory.
@@ -106,7 +107,7 @@ class Factory extends Dice {
 	 *
 	 * @return array
 	 */
-	protected function get_rules() {
+	protected function get_rules() : array {
 		return [
 			// Shared helpers.
 			Cache::class                           => self::SHARED,
@@ -239,7 +240,7 @@ class Factory extends Dice {
 	 *
 	 * @return string
 	 */
-	protected function get_plugin_version( $plugin_file ) {
+	protected function get_plugin_version( $plugin_file ) : string {
 		// Load version from plugin data.
 		if ( ! \function_exists( 'get_plugin_data' ) ) {
 			require_once \ABSPATH . 'wp-admin/includes/plugin.php';
@@ -262,7 +263,7 @@ class Factory extends Dice {
 	 *     }
 	 * }
 	 */
-	protected function get_components() {
+	protected function get_components() : array {
 		return [
 			[ self::INSTANCE => Components\Setup::class ],
 			[ self::INSTANCE => Components\Common::class ],
@@ -287,7 +288,7 @@ class Factory extends Dice {
 	 *     }
 	 * }
 	 */
-	protected function get_plugin_integrations() {
+	protected function get_plugin_integrations() : array {
 		return [
 			[ self::INSTANCE => Integration\ACF_Integration::class ],
 			[ self::INSTANCE => Integration\WooCommerce_Integration::class ],
@@ -307,7 +308,7 @@ class Factory extends Dice {
 	 *     }
 	 * }
 	 */
-	protected function get_supported_locales() {
+	protected function get_supported_locales() : array {
 		return [
 			[ self::INSTANCE => '$LocaleSwitzerland' ],
 			[ self::INSTANCE => '$LocaleUnitedStates' ],

@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2019-2021 Peter Putzer.
+ *  Copyright 2019-2022 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -49,7 +49,7 @@ class Tools_Test extends \WP_Typography\Tests\TestCase {
 	 *
 	 * @uses ::array_map_assoc
 	 */
-	public function test_parse_smart_quote_exceptions_string() {
+	public function test_parse_smart_quote_exceptions_string() : void {
 		$input  = "'tain't,'twere,'twas,'tis,   ,'twill,'til,'bout,'nuff,'round,'cause,'em, ,";
 		$result = [
 			"'tain't" => U::APOSTROPHE . 'tain' . U::APOSTROPHE . 't',
@@ -73,7 +73,7 @@ class Tools_Test extends \WP_Typography\Tests\TestCase {
 	 *
 	 * @covers ::array_map_assoc
 	 */
-	public function test_array_map_assoc() {
+	public function test_array_map_assoc() : void {
 		$callback = function( $key, $value ) {
 			return [ "cb_$key" => "cb_$value" ];
 		};

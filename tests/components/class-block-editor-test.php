@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2020 Peter Putzer.
+ *  Copyright 2020-2922 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -64,7 +64,7 @@ class Block_Editor_Test extends TestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function set_up() {
+	protected function set_up() : void {
 		parent::set_up();
 
 		// Set up virtual filesystem.
@@ -83,7 +83,7 @@ class Block_Editor_Test extends TestCase {
 	 *
 	 * @covers ::__construct
 	 */
-	public function test_constructor() {
+	public function test_constructor() : void {
 		$sut = m::mock( Block_Editor::class )->shouldAllowMockingProtectedMethods()->makePartial();
 		$api = m::mock( \WP_Typography\Implementation::class );
 
@@ -109,7 +109,7 @@ class Block_Editor_Test extends TestCase {
 	 *
 	 * @covers ::run
 	 */
-	public function test_run() {
+	public function test_run() : void {
 		Functions\when( 'register_block_type' );
 
 		Actions\expectAdded( 'init' )->with( [ $this->sut, 'register_sidebar_and_blocks' ] )->once();
@@ -123,7 +123,7 @@ class Block_Editor_Test extends TestCase {
 	 *
 	 * @covers ::register_sidebar_and_blocks
 	 */
-	public function test_register_sidebar_and_blocks() {
+	public function test_register_sidebar_and_blocks() : void {
 		$plugin_url     = 'http://my_plugin/url';
 		$plugin_version = '6.6.6';
 		// Simulate blocks dependencies.
@@ -160,7 +160,7 @@ class Block_Editor_Test extends TestCase {
 	 *
 	 * @covers ::enqueue_sidebar
 	 */
-	public function test_enqueue_sidebar() {
+	public function test_enqueue_sidebar() : void {
 		Functions\expect( 'wp_enqueue_script' )->once()->with( 'wp-typography-gutenberg' );
 
 		$this->assertNull( $this->sut->enqueue_sidebar() );
@@ -171,7 +171,7 @@ class Block_Editor_Test extends TestCase {
 	 *
 	 * @covers ::render_typography_block
 	 */
-	public function test_render_typography_block() {
+	public function test_render_typography_block() : void {
 		$attributes = [];
 		$content    = 'my content';
 

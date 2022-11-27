@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2021 Peter Putzer.
+ *  Copyright 2017-2022 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -31,8 +31,10 @@ use WP_Typography\Implementation;
 /**
  * Admin and frontend integrations for Advanced Custom Fields (https://www.advancedcustomfields.com).
  *
- * @since      5.3.0
- * @author     Peter Putzer <github@mundschenk.at>
+ * @since  5.3.0
+ * @since  5.9.0 Return type declarations added.
+ *
+ * @author Peter Putzer <github@mundschenk.at>
  */
 class ACF_Integration implements Plugin_Integration {
 
@@ -76,7 +78,7 @@ class ACF_Integration implements Plugin_Integration {
 	 *
 	 * @return bool
 	 */
-	public function check() {
+	public function check() : bool {
 		return \class_exists( 'acf' );
 	}
 
@@ -85,7 +87,7 @@ class ACF_Integration implements Plugin_Integration {
 	 *
 	 * @since 5.7.0 Parameter $plugin removed.
 	 */
-	public function run() {
+	public function run() : void {
 		$this->api_version = $this->get_acf_version();
 
 		if ( \is_admin() && 5 === $this->api_version ) {
@@ -98,15 +100,14 @@ class ACF_Integration implements Plugin_Integration {
 	 *
 	 * @return string
 	 */
-	public function get_filter_tag() {
+	public function get_filter_tag() : string {
 		return 'acf';
 	}
 
 	/**
 	 * Initializes the "Typography" field setting for all available field types.
 	 */
-	public function initialize_field_settings() {
-		$field_types = /* @scrutinizer ignore-call */ \acf_get_field_types();
+	public function initialize_field_settings() : void {
 
 		foreach ( $field_types as $type => $settings ) {
 			\add_action( "acf/render_field_settings/type=$type", [ $this, 'add_field_setting' ], 1 );
@@ -118,7 +119,7 @@ class ACF_Integration implements Plugin_Integration {
 	 *
 	 * @param int $priority The filter priority.
 	 */
-	public function enable_content_filters( $priority ) {
+	public function enable_content_filters( $priority ) : void {
 		if ( 5 === $this->api_version ) {
 			// Advanced Custom Fields Pro (version 5).
 			\add_filter( 'acf/format_value', [ $this, 'process_acf5' ], $priority, 3 );
@@ -135,7 +136,7 @@ class ACF_Integration implements Plugin_Integration {
 	 *
 	 * @param array $field The field settings.
 	 */
-	public function add_field_setting( array $field ) {
+	public function add_field_setting( array $field ) : void {
 		$default = self::DO_NOT_FILTER;
 
 		// Enable filters by default for some field types.
@@ -182,7 +183,7 @@ class ACF_Integration implements Plugin_Integration {
 	 *
 	 * @return int
 	 */
-	protected function get_acf_version() {
+	protected function get_acf_version() : int {
 		// We assume version 4 by default.
 		$acf_version = 4;
 
@@ -203,7 +204,7 @@ class ACF_Integration implements Plugin_Integration {
 	 *
 	 * @return string
 	 */
-	public function process_acf5( $content, $post_id, $field ) {
+	public function process_acf5( $content, $post_id, $field ) : string {
 		switch ( isset( $field[ self::FILTER_SETTING ] ) ? $field[ self::FILTER_SETTING ] : '' ) {
 			case self::CONTENT_FILTER:
 				$content = $this->api->process( $content );

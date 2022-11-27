@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2020 Peter Putzer.
+ *  Copyright 2017-2022 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -57,7 +57,7 @@ class Abstract_Locale_Settings_Test extends \WP_Typography\Tests\TestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function set_up() {
+	protected function set_up() : void {
 		parent::set_up();
 
 		$this->locale = m::mock( Abstract_Locale_Settings::class )
@@ -75,7 +75,7 @@ class Abstract_Locale_Settings_Test extends \WP_Typography\Tests\TestCase {
 	 * @covers ::dash_style
 	 * @covers ::use_french_punctuation_spacing
 	 */
-	public function test_constructor_and_accessors() {
+	public function test_constructor_and_accessors() : void {
 
 		$priority  = 5;
 		$dash      = Dash_Style::INTERNATIONAL;
@@ -97,7 +97,7 @@ class Abstract_Locale_Settings_Test extends \WP_Typography\Tests\TestCase {
 	 *
 	 * @covers ::adjust_defaults
 	 */
-	public function test_adjust_defaults() {
+	public function test_adjust_defaults() : void {
 		$this->invokeMethod( $this->locale, '__construct', [ 5, 'dash', 'primary', 'secondary', 'french' ] );
 
 		$defaults = [
