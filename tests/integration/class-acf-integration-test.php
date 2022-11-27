@@ -125,7 +125,7 @@ class ACF_Integration_Test extends TestCase {
 		Functions\expect( 'is_admin' )->once()->andReturn( false );
 		Actions\expectAdded( 'acf/init' )->never();
 
-		$this->assertNull( $this->acf_i->run() );
+		$this->acf_i->run();
 	}
 
 	/**
@@ -145,7 +145,7 @@ class ACF_Integration_Test extends TestCase {
 			Actions\expectAdded( 'acf/init' )->once();
 		}
 
-		$this->assertNull( $this->acf_i->run() );
+		$this->acf_i->run();
 	}
 
 
@@ -312,7 +312,7 @@ class ACF_Integration_Test extends TestCase {
 		Functions\when( '__' )->returnArg();
 		Functions\expect( 'acf_render_field_setting' )->once()->with( $field, m::subset( [ 'default_value' => $default ] ) );
 
-		$this->assertNull( $this->acf_i->add_field_setting( $field ) );
+		$this->acf_i->add_field_setting( $field );
 	}
 
 	/**
@@ -331,6 +331,6 @@ class ACF_Integration_Test extends TestCase {
 		Actions\expectAdded( 'acf/render_field_settings/type=foo' )->once()->with( [ $this->acf_i, 'add_field_setting' ], 1 );
 		Actions\expectAdded( 'acf/render_field_settings/type=bar' )->once()->with( [ $this->acf_i, 'add_field_setting' ], 1 );
 
-		$this->assertNull( $this->acf_i->initialize_field_settings() );
+		$this->acf_i->initialize_field_settings();
 	}
 }

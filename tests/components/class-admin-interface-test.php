@@ -238,7 +238,7 @@ class Admin_Interface_Test extends TestCase {
 		Functions\expect( 'wp_enqueue_style' )->once()->with( 'wp-typography-settings', 'some/path/settings.css', m::type( 'array' ), m::type( 'string' ), 'all' );
 
 		// Do it.
-		$this->assertNull( $this->admin->print_admin_styles() );
+		$this->admin->print_admin_styles();
 	}
 
 	/**
@@ -287,7 +287,7 @@ class Admin_Interface_Test extends TestCase {
 		}
 
 		// Do it.
-		$this->assertNull( $this->admin->register_the_settings() );
+		$this->admin->register_the_settings();
 	}
 
 	/**
@@ -605,7 +605,7 @@ class Admin_Interface_Test extends TestCase {
 		Actions\expectAdded( "admin_print_styles-$hookname" )->once()->with( [ $this->admin, 'print_admin_styles' ] );
 
 		// Do it.
-		$this->assertNull( $this->admin->add_options_page() );
+		$this->admin->add_options_page();
 	}
 
 	/**
@@ -618,7 +618,7 @@ class Admin_Interface_Test extends TestCase {
 		Functions\expect( 'add_options_page' )->once()->with( 'wp-Typography', 'wp-Typography', 'manage_options', 'wp-typography', m::type( 'callable' ) )->andReturn( false );
 
 		// Do it.
-		$this->assertNull( $this->admin->add_options_page() );
+		$this->admin->add_options_page();
 	}
 
 
@@ -656,7 +656,7 @@ class Admin_Interface_Test extends TestCase {
 		$screen->shouldReceive( 'set_help_sidebar' )->once()->with( m::type( 'string' ) );
 
 		// Do it.
-		$this->assertNull( $this->admin->add_context_help() );
+		$this->admin->add_context_help();
 	}
 
 	/**
@@ -737,7 +737,7 @@ class Admin_Interface_Test extends TestCase {
 		$this->expectOutputString( 'SECTION' );
 
 		// Do it.
-		$this->assertNull( $this->admin->print_settings_section( [ 'id' => 'section1' ] ) );
+		$this->admin->print_settings_section( [ 'id' => 'section1' ] );
 	}
 
 	/**
@@ -781,7 +781,7 @@ class Admin_Interface_Test extends TestCase {
 		$this->expectOutputString( 'SECTION' );
 
 		// Do it.
-		$this->assertNull( $this->admin->print_settings_section( [ 'id' => '3rd_tab' ] ) );
+		$this->admin->print_settings_section( [ 'id' => '3rd_tab' ] );
 	}
 
 	/**
@@ -791,7 +791,7 @@ class Admin_Interface_Test extends TestCase {
 	 */
 	public function test_maybe_add_privacy_notice_content_old_wp() : void {
 		// Function wp_add_privacy_policy_content does not exist, so nothing should happen.
-		$this->assertNull( $this->admin->maybe_add_privacy_notice_content() );
+		$this->admin->maybe_add_privacy_notice_content();
 	}
 
 	/**
@@ -802,6 +802,6 @@ class Admin_Interface_Test extends TestCase {
 	public function test_maybe_add_privacy_notice_content_new_wp() : void {
 		Functions\expect( 'wp_add_privacy_policy_content' )->once();
 
-		$this->assertNull( $this->admin->maybe_add_privacy_notice_content() );
+		$this->admin->maybe_add_privacy_notice_content();
 	}
 }

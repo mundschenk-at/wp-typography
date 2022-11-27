@@ -121,7 +121,7 @@ class Common_Test extends TestCase {
 		Actions\expectAdded( 'init' )->with( [ $this->common, 'init' ] )->once();
 		Actions\expectAdded( 'plugins_loaded' )->with( [ $this->integrations, 'activate' ] )->once();
 
-		$this->assertNull( $this->common->run() );
+		$this->common->run();
 	}
 
 	/**
@@ -160,6 +160,6 @@ class Common_Test extends TestCase {
 			$this->api->shouldReceive( 'clear_cache' )->once();
 		}
 
-		$this->assertNull( $this->common->init() );
+		$this->common->init();
 	}
 }

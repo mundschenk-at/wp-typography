@@ -89,7 +89,7 @@ class Cache_Test extends TestCase {
 	public function test_invalidate() : void {
 		Functions\expect( 'wp_cache_set' )->once()->with( m::pattern( '/incrementor/' ), m::type( 'int' ), Cache::GROUP, 0 );
 
-		$this->assertNull( $this->cache->invalidate() );
+		$this->cache->invalidate();
 	}
 
 	/**

@@ -133,7 +133,7 @@ class Plugin_Controller_Test extends TestCase {
 			$component->shouldReceive( 'run' )->once();
 		}
 
-		$this->assertNull( $this->sut->run() );
+		$this->sut->run();
 		$this->assertSame( $this->get_static_value( \WP_Typography::class, 'instance' ), $api );
 	}
 }

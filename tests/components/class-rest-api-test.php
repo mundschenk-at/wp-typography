@@ -69,7 +69,7 @@ class REST_API_Test extends TestCase {
 	public function test_run() : void {
 		Actions\expectAdded( 'init' )->with( [ $this->sut, 'register_meta_fields' ] )->once();
 
-		$this->assertNull( $this->sut->run() );
+		$this->sut->run();
 	}
 
 	/**
@@ -80,6 +80,6 @@ class REST_API_Test extends TestCase {
 	public function test_register_meta_fields() : void {
 		Functions\expect( 'register_post_meta' )->once()->with( '', REST_API::WP_TYPOGRAPHY_DISABLED_META_KEY, m::type( 'array' ) );
 
-		$this->assertNull( $this->sut->register_meta_fields() );
+		$this->sut->register_meta_fields();
 	}
 }
