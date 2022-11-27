@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2018-2020 Peter Putzer.
+ *  Copyright 2018-2022 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -47,7 +47,7 @@ class Custom_Token_Fix_Test extends \WP_Typography\Tests\TestCase {
 	 *
 	 * @uses PHP_Typography\Fixes\Token_fixes\Abstract_Token_Fix::__construct
 	 */
-	public function test_constructor() {
+	public function test_constructor() : void {
 		$fix = new Custom_Token_Fix( 'words' );
 
 		$this->assert_attribute_same( 'words', 'type', $fix );
@@ -60,7 +60,7 @@ class Custom_Token_Fix_Test extends \WP_Typography\Tests\TestCase {
 	 *
 	 * @uses PHP_Typography\Fixes\Token_fixes\Abstract_Token_Fix::__construct
 	 */
-	public function test_constructor_invalid() {
+	public function test_constructor_invalid() : void {
 		$this->expectException( \InvalidArgumentException::class );
 
 		$fix = new Custom_Token_Fix( 'foobar' );
@@ -73,7 +73,7 @@ class Custom_Token_Fix_Test extends \WP_Typography\Tests\TestCase {
 	 *
 	 * @uses ::__construct
 	 */
-	public function test_apply() {
+	public function test_apply() : void {
 		$type    = 'compound_words';
 		$fix     = new Custom_Token_Fix( $type );
 		$s       = m::mock( \PHP_Typography\Settings::class );

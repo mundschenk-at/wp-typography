@@ -2,7 +2,7 @@
 /**
  * This file is part of wp-Typography.
  *
- * Copyright 2020-2021 Peter Putzer.
+ * Copyright 2020-2022 Peter Putzer.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -58,7 +58,7 @@ class WP_Typography_Requirements_Test extends Testcase {
 	 *
 	 * @since 2.3.3 Renamed to `set_up`.
 	 */
-	protected function set_up() {
+	protected function set_up() : void {
 		parent::set_up();
 
 		$this->sut = m::mock( Requirements::class )->makePartial()->shouldAllowMockingProtectedMethods();
@@ -69,7 +69,7 @@ class WP_Typography_Requirements_Test extends Testcase {
 	 *
 	 * @covers ::__construct
 	 */
-	public function test_constructor() {
+	public function test_constructor() : void {
 
 		Functions\expect( 'wp_parse_args' )->andReturnUsing(
 			function( $args, $defaults ) {
@@ -97,7 +97,7 @@ class WP_Typography_Requirements_Test extends Testcase {
 	 *
 	 * @covers ::get_requirements
 	 */
-	public function test_get_requirements() {
+	public function test_get_requirements() : void {
 		$req_keys = \array_column( $this->sut->get_requirements(), 'enable_key' );
 
 		$this->assertContains( 'dom', $req_keys );
@@ -108,7 +108,7 @@ class WP_Typography_Requirements_Test extends Testcase {
 	 *
 	 * @covers ::check_dom_support
 	 */
-	public function test_check_dom_support() {
+	public function test_check_dom_support() : void {
 		// Mocking tests for PHP extensions is difficult.
 		$dom = class_exists( 'DOMDocument' );
 
@@ -120,7 +120,7 @@ class WP_Typography_Requirements_Test extends Testcase {
 	 *
 	 * @covers ::admin_notices_dom_disabled
 	 */
-	public function test_admin_notices_dom_disabled() {
+	public function test_admin_notices_dom_disabled() : void {
 		Functions\when( '__' )->returnArg();
 
 		$this->sut->shouldReceive( 'display_error_notice' )->once()->with( m::type( 'string' ), m::type( 'string' ), m::type( 'string' ) );

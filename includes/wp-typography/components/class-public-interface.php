@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2014-2020 Peter Putzer.
+ *  Copyright 2014-2022 Peter Putzer.
  *  Copyright 2009-2011 KINGdesk, LLC.
  *
  *  This program is free software; you can redistribute it and/or
@@ -39,8 +39,9 @@ use PHP_Typography\Settings\Quote_Style;
 /**
  * The public (non-admin) functionality of the plugin.
  *
- * @since 5.1.0
- * @since 5.6.0 Obsolete property $plugin_basename and superfluous constructor removed.
+ * @since  5.1.0
+ * @since  5.6.0 Obsolete property $plugin_basename and superfluous constructor removed.
+ * @since  5.9.0 Return type declarations added.
  *
  * @author Peter Putzer <github@mundschenk.at>
  */
@@ -109,7 +110,7 @@ class Public_Interface implements Plugin_Component {
 	 *
 	 * @since 5.7.0 Parameter $plugin removed.
 	 */
-	public function run() {
+	public function run() : void {
 		// Do not run our filters on the admin side or during a WP-CLI command.
 		if ( ! \is_admin() && ! \defined( 'WP_CLI' ) ) {
 			\add_action( 'init', [ $this, 'init' ] );
@@ -119,7 +120,7 @@ class Public_Interface implements Plugin_Component {
 	/**
 	 * Sets up filters and actions.
 	 */
-	public function init() {
+	public function init() : void {
 		$this->config = $this->api->get_config();
 
 		// Disable wptexturize filter if it conflicts with our settings.
@@ -154,7 +155,7 @@ class Public_Interface implements Plugin_Component {
 	/**
 	 * Adds content filter handlers.
 	 */
-	public function add_content_filters() {
+	public function add_content_filters() : void {
 
 		// Define the default filters.
 		$filters = [
@@ -208,7 +209,7 @@ class Public_Interface implements Plugin_Component {
 	 *
 	 * @param int $priority Filter priority.
 	 */
-	private function enable_content_filters( $priority ) {
+	private function enable_content_filters( $priority ) : void {
 		\add_filter( 'comment_author',    [ $this->api, 'process' ], $priority );
 		\add_filter( 'comment_text',      [ $this->api, 'process' ], $priority );
 		\add_filter( 'comment_text',      [ $this->api, 'process' ], $priority );
@@ -235,7 +236,7 @@ class Public_Interface implements Plugin_Component {
 	 *
 	 * @param int $priority Filter priority.
 	 */
-	private function enable_heading_filters( $priority ) {
+	private function enable_heading_filters( $priority ) : void {
 		\add_filter( 'the_title',    [ $this->api, 'process_title' ], $priority );
 		\add_filter( 'widget_title', [ $this->api, 'process_title' ], $priority );
 	}
@@ -245,7 +246,7 @@ class Public_Interface implements Plugin_Component {
 	 *
 	 * @since 5.5.3
 	 */
-	public function enqueue_styles() {
+	public function enqueue_styles() : void {
 		// Custom styles set via the CSS Hooks settings page.
 		if ( $this->config[ Config::STYLE_CSS_INCLUDE ] && '' !== \trim( $this->config[ Config::STYLE_CSS ] ) ) {
 			// Register and enqueue dummy stylesheet.
@@ -270,7 +271,7 @@ class Public_Interface implements Plugin_Component {
 	/**
 	 * Enqueues frontend JavaScript files.
 	 */
-	public function enqueue_scripts() {
+	public function enqueue_scripts() : void {
 		if ( $this->config[ Config::HYPHENATE_CLEAN_CLIPBOARD ] ) {
 			// Set up file suffix and plugin version.
 			$suffix     = ( \defined( 'SCRIPT_DEBUG' ) && \SCRIPT_DEBUG ) ? '' : '.min';
@@ -291,7 +292,7 @@ class Public_Interface implements Plugin_Component {
 	 *
 	 * @return string      Filtered string of CSS styles.
 	 */
-	protected function clean_styles( $css ) {
+	protected function clean_styles( $css ) : string {
 		$cleaned = \preg_replace( self::CLEAN_CSS_PATTERNS, self::CLEAN_CSS_REPLACEMENTS, $css );
 		$css     = '';
 

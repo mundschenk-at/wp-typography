@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2018-2020 Peter Putzer.
+ *  Copyright 2018-2022 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -56,7 +56,7 @@ class WooCommerce_Integration_Test extends TestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function set_up() {
+	protected function set_up() : void {
 		parent::set_up();
 
 		// Mock WP_Typography\Components\WooCommerce_Integration instance.
@@ -69,7 +69,7 @@ class WooCommerce_Integration_Test extends TestCase {
 	 *
 	 * @covers ::__construct
 	 */
-	public function test_constructor() {
+	public function test_constructor() : void {
 		$sut = m::mock( WooCommerce_Integration::class )->shouldAllowMockingProtectedMethods()->makePartial();
 		$api = m::mock( \WP_Typography\Implementation::class );
 
@@ -84,8 +84,8 @@ class WooCommerce_Integration_Test extends TestCase {
 	 *
 	 * @covers ::run
 	 */
-	public function test_run() {
-		$this->assertNull( $this->woo_i->run() );
+	public function test_run() : void {
+		$this->assertNull( $this->woo_i->run() ); // @phpstan-ignore-line - testing protected method.
 	}
 
 	/**
@@ -93,7 +93,7 @@ class WooCommerce_Integration_Test extends TestCase {
 	 *
 	 * @covers ::check
 	 */
-	public function test_check_failing() {
+	public function test_check_failing() : void {
 		$this->assertFalse( $this->woo_i->check() );
 	}
 
@@ -104,7 +104,7 @@ class WooCommerce_Integration_Test extends TestCase {
 	 *
 	 * @runInSeperateProcess
 	 */
-	public function test_check_success() {
+	public function test_check_success() : void {
 		m::mock( 'WooCommerce' );
 		$this->assertTrue( $this->woo_i->check() );
 	}
@@ -114,7 +114,7 @@ class WooCommerce_Integration_Test extends TestCase {
 	 *
 	 * @covers ::get_filter_tag
 	 */
-	public function test_get_filter_tag() {
+	public function test_get_filter_tag() : void {
 		$this->assertSame( 'woocommerce', $this->woo_i->get_filter_tag() );
 	}
 
@@ -123,7 +123,7 @@ class WooCommerce_Integration_Test extends TestCase {
 	 *
 	 * @covers ::enable_content_filters
 	 */
-	public function test_enable_content_filters() {
+	public function test_enable_content_filters() : void {
 		$api = m::mock( \WP_Typography::class );
 		$this->setValue( $this->woo_i, 'api', $api, WooCommerce_Integration::class );
 

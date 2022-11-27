@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2020 Peter Putzer.
+ *  Copyright 2017-2022 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -29,7 +29,8 @@ namespace WP_Typography\Components;
 /**
  * Implements an interface for plugin components.
  *
- * @since 5.1.0
+ * @since  5.1.0
+ * @since  5.9.0 Return type declarations added.
  *
  * @author Peter Putzer <github@mundschenk.at>
  */
@@ -42,5 +43,5 @@ interface Plugin_Component {
 	 *
 	 * @return void
 	 */
-	public function run();
+	public function run() : void;
 }

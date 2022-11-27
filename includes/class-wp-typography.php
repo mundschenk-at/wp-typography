@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2014-2019 Peter Putzer.
+ *  Copyright 2014-2022 Peter Putzer.
  *  Copyright 2009-2011 KINGdesk, LLC.
  *
  *  This program is free software; you can redistribute it and/or
@@ -37,6 +37,8 @@ use PHP_Typography\Hyphenator\Cache as Hyphenator_Cache;
 
 /**
  * Main wp-Typography plugin class. All WordPress specific code goes here.
+ *
+ * @since  5.9.0 Return type declarations added.
  *
  * @api
  *
@@ -79,7 +81,7 @@ abstract class WP_Typography {
 	 *
 	 * @throws BadMethodCallException Thrown when WP_Typography::set_instance after plugin initialization.
 	 */
-	public static function set_instance( WP_Typography $instance ) {
+	public static function set_instance( WP_Typography $instance ) : void {
 		if ( null === self::$instance ) {
 			self::$instance = $instance;
 		} else {
@@ -179,7 +181,7 @@ abstract class WP_Typography {
 	 *
 	 * @return array
 	 */
-	public static function filter_title_parts( $title_parts, Settings $settings = null ) {
+	public static function filter_title_parts( array $title_parts, Settings $settings = null ) : array {
 		return self::get_instance()->process_title_parts( $title_parts, $settings );
 	}
 

@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2018 Peter Putzer.
+ *  Copyright 2018-2022 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -32,7 +32,8 @@ use PHP_Typography\Fixes\Node_Fixes\Abstract_Node_Fix;
 /**
  * A node fix with WordPress hooks.
  *
- * @since 5.4.0
+ * @since  5.4.0
+ * @since  5.9.0 Return type declarations added.
  *
  * @author Peter Putzer <github@mundschenk.at>
  */
@@ -66,7 +67,7 @@ class Custom_Node_Fix extends Abstract_Node_Fix {
 	 *
 	 * @return void
 	 */
-	public function apply( \DOMText $textnode, Settings $settings, $is_title = false ) {
+	public function apply( \DOMText $textnode, Settings $settings, $is_title = false ) : void {
 		/**
 		 * Filters the text node content for the given group.
 		 *

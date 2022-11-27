@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2020 Peter Putzer.
+ *  Copyright 2017-2022 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -45,7 +45,7 @@ class Tabs_Test extends \WP_Typography\Tests\TestCase {
 	 *
 	 * @covers ::get_tabs
 	 */
-	public function test_get_tabs() {
+	public function test_get_tabs() : void {
 		Functions\expect( '__' )->atLeast()->once()->with( m::type( 'string' ), 'wp-typography' )->andReturn( 'dummy text' );
 
 		$tabs = Tabs::get_tabs();
@@ -60,7 +60,7 @@ class Tabs_Test extends \WP_Typography\Tests\TestCase {
 	 *
 	 * @covers ::get_tabs
 	 */
-	public function test_get_tabs_again() {
+	public function test_get_tabs_again() : void {
 		Functions\expect( '__' )->never();
 
 		$tabs       = Tabs::get_tabs();

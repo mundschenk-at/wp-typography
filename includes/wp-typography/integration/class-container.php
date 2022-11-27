@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2018-2020 Peter Putzer.
+ *  Copyright 2018-2022 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -29,10 +29,11 @@ namespace WP_Typography\Integration;
 /**
  * A registry for plugin integrations.
  *
- * @since      5.3.0
- * @since      5.7.0 Obsolete method ::run removed.
+ * @since  5.3.0
+ * @since  5.7.0 Obsolete method ::run removed.
+ * @since  5.9.0 Return type declarations added.
  *
- * @author     Peter Putzer <github@mundschenk.at>
+ * @author Peter Putzer <github@mundschenk.at>
  */
 class Container {
 
@@ -62,7 +63,7 @@ class Container {
 	/**
 	 * Activate all applicable plugin integrations.
 	 */
-	public function activate() {
+	public function activate() : void {
 		foreach ( $this->integrations as $integration ) {
 			if ( $integration->check() ) {
 				$this->active_integrations[] = $integration;
@@ -81,7 +82,7 @@ class Container {
 	 *
 	 * @return array
 	 */
-	public function get_content_filters( array $filters ) {
+	public function get_content_filters( array $filters ) : array {
 		foreach ( $this->active_integrations as $integration ) {
 			$filters[ $integration->get_filter_tag() ] = [ $integration, 'enable_content_filters' ];
 		}

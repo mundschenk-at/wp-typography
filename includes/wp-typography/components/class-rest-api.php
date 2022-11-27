@@ -2,7 +2,7 @@
 /**
  * This file is part of wp-Typography.
  *
- * Copyright 2020 Peter Putzer.
+ * Copyright 2020-2022 Peter Putzer.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,7 +29,8 @@ namespace WP_Typography\Components;
 /**
  * The component integrating with the REST API (necessary for block editor support).
  *
- * @since 5.7.0
+ * @since  5.7.0
+ * @since  5.9.0 Return type declarations added.
  *
  * @author Peter Putzer <github@mundschenk.at>
  */
@@ -45,7 +46,7 @@ class REST_API implements Plugin_Component {
 	/**
 	 * Set up the various hooks for the REST API.
 	 */
-	public function run() {
+	public function run() : void {
 		// Register and enqueue sidebar.
 		\add_action( 'init', [ $this, 'register_meta_fields' ] );
 	}
@@ -53,7 +54,7 @@ class REST_API implements Plugin_Component {
 	/**
 	 * Registers necessary meta fields the the REST API.
 	 */
-	public function register_meta_fields() {
+	public function register_meta_fields() : void {
 		\register_post_meta(
 			'', // Enable field for all post types.
 			self::WP_TYPOGRAPHY_DISABLED_META_KEY,

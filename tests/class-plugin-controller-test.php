@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2018-2020 Peter Putzer.
+ *  Copyright 2018-2022 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -53,7 +53,7 @@ class Plugin_Controller_Test extends TestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function set_up() {
+	protected function set_up() : void {
 		parent::set_up();
 
 		$this->sut = m::mock( Plugin_Controller::class )->shouldAllowMockingProtectedMethods()->makePartial();
@@ -62,7 +62,7 @@ class Plugin_Controller_Test extends TestCase {
 	/**
 	 * Necesssary clean-up work.
 	 */
-	protected function tear_down() {
+	protected function tear_down() : void {
 		// Reset singleton.
 		$this->set_static_value( \WP_Typography::class, 'instance', null );
 
@@ -74,7 +74,7 @@ class Plugin_Controller_Test extends TestCase {
 	 *
 	 * @covers ::__construct
 	 */
-	public function test_constructor() {
+	public function test_constructor() : void {
 
 		$api        = m::mock( \WP_Typography\Implementation::class );
 		$components = [
@@ -96,9 +96,7 @@ class Plugin_Controller_Test extends TestCase {
 	 * @covers ::run
 	 * @uses \WP_Typography::set_instance
 	 */
-	public function test_run() {
-		// Prepare SUT.
-		$api        = m::mock( \WP_Typography\Implementation::class );
+	public function test_run() : void {
 		$components = [
 			m::mock( \WP_Typography\Components\Plugin_Component::class ),
 			m::mock( \WP_Typography\Components\Plugin_Component::class ),

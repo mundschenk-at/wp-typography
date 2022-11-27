@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2020 Peter Putzer.
+ *  Copyright 2017-2022 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -79,7 +79,7 @@ class Common_Test extends TestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function set_up() {
+	protected function set_up() : void {
 		parent::set_up();
 
 		// Mock WP_Typography\Data_Storage\Options instance.
@@ -104,7 +104,7 @@ class Common_Test extends TestCase {
 	 *
 	 * @covers ::__construct
 	 */
-	public function test_constructor() {
+	public function test_constructor() : void {
 		$common = m::mock( Common::class, [ $this->api, $this->options, $this->integrations ] );
 
 		$this->assert_attribute_same( $this->api, 'api', $common );
@@ -117,7 +117,7 @@ class Common_Test extends TestCase {
 	 *
 	 * @covers ::run
 	 */
-	public function test_run() {
+	public function test_run() : void {
 		Actions\expectAdded( 'init' )->with( [ $this->common, 'init' ] )->once();
 		Actions\expectAdded( 'plugins_loaded' )->with( [ $this->integrations, 'activate' ] )->once();
 
@@ -129,7 +129,7 @@ class Common_Test extends TestCase {
 	 *
 	 * @return array
 	 */
-	public function provide_init_data() {
+	public function provide_init_data() : array {
 		return [
 			[ true, true ],
 			[ false, false ],
@@ -148,7 +148,7 @@ class Common_Test extends TestCase {
 	 * @param bool $restore_defaults The typo_restore_defaults value.
 	 * @param bool $clear_cache      The typo_clear_cache value.
 	 */
-	public function test_init( $restore_defaults, $clear_cache ) {
+	public function test_init( $restore_defaults, $clear_cache ) : void {
 		$this->options->shouldReceive( 'get' )->once()->with( Options::RESTORE_DEFAULTS )->andReturn( $restore_defaults );
 		$this->options->shouldReceive( 'get' )->once()->with( Options::CLEAR_CACHE )->andReturn( $clear_cache );
 
