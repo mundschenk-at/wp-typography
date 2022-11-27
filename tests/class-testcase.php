@@ -172,7 +172,7 @@ abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 		$prop = $ref->getProperty( $attribute );
 		$prop->setAccessible( true );
 
-		return $this->assertArrayHasKey( $key, $prop->getValue( $object ), $message );
+		$this->assertArrayHasKey( $key, $prop->getValue( $object ), $message );
 	}
 
 	/**
@@ -188,6 +188,6 @@ abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 		$prop = $ref->getProperty( $attribute );
 		$prop->setAccessible( true );
 
-		return $this->assertArrayNotHasKey( $key, $prop->getValue( $object ), $message );
+		$this->assertArrayNotHasKey( $key, $prop->getValue( $object ), $message );
 	}
 }
