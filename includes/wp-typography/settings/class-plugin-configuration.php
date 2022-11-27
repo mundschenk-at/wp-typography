@@ -659,7 +659,7 @@ abstract class Plugin_Configuration {
 					'attributes'    => [
 						'rows' => '10',
 					],
-					'default'       => \file_get_contents( \dirname( \dirname( \dirname( __DIR__ ) ) ) . '/admin/css/default-styles.css' ), // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+					'default'       => (string) \file_get_contents( \dirname( \dirname( \dirname( __DIR__ ) ) ) . '/admin/css/default-styles.css' ), // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 				],
 			];
 		}

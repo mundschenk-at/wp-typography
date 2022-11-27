@@ -415,6 +415,9 @@ class Admin_Interface implements Plugin_Component {
 	 */
 	public function add_context_help() : void {
 		$screen = \get_current_screen();
+		if ( empty( $screen ) ) {
+			return; // Guard against calls when no current screen is defined.
+		}
 
 		foreach ( $this->admin_help_pages as $help_id => $help ) {
 			$tab = [

@@ -647,6 +647,43 @@ class Admin_Interface_Test extends TestCase {
 	}
 
 	/**
+	 * Test add_context_help (failure path).
+	 *
+	 * @covers ::add_context_help
+	 */
+	public function test_add_context_help_no_screen() : void {
+		// Set up data.
+		$screen = m::mock( \WP_Screen::class );
+		$help   = [
+			'1st_tab' => [
+				'heading' => 'Help Page 1',
+				'content' => 'Bla bla.',
+			],
+			'2nd_tab' => [
+				'heading' => 'Help Page 2',
+				'content' => 'Bla bla.',
+			],
+			'3rd_tab' => [
+				'heading' => 'Help Page 3',
+				'content' => 'Bla bla.',
+			],
+		];
+
+		$this->setValue( $this->admin, 'admin_help_pages', $help, Admin_Interface::class );
+
+		// Set up expectations.
+		Functions\expect( 'get_current_screen' )->once()->andReturn( null );
+		Functions\expect( '__' )->never();
+		Functions\expect( 'esc_url' )->never();
+
+		$screen->shouldReceive( 'add_help_tab' )->never();
+		$screen->shouldReceive( 'set_help_sidebar' )->never();
+
+		// Do it.
+		$this->admin->add_context_help();
+	}
+
+	/**
 	 * Test print_settings_section.
 	 *
 	 * @covers ::print_settings_section

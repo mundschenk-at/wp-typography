@@ -51,7 +51,7 @@ abstract class Tools {
 	 */
 	public static function parse_smart_quote_exceptions_string( $string ) : array {
 		return \array_reduce(
-			preg_split( '/,/', $string, -1, PREG_SPLIT_NO_EMPTY ),
+			\preg_split( '/,/', $string, -1, \PREG_SPLIT_NO_EMPTY ) ?: [], // phpcs:ignore WordPress.PHP.DisallowShortTernary -- ensure array type.
 			function( $result, $replacement ) {
 				$key         = \trim( \strip_tags( $replacement ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.strip_tags_strip_tags -- no need for WordPress' version here.
 				$replacement = \str_replace( "'", U::APOSTROPHE, $key );

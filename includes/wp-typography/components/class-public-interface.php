@@ -248,13 +248,14 @@ class Public_Interface implements Plugin_Component {
 	 */
 	public function enqueue_styles() : void {
 		// Custom styles set via the CSS Hooks settings page.
-		if ( $this->config[ Config::STYLE_CSS_INCLUDE ] && '' !== \trim( $this->config[ Config::STYLE_CSS ] ) ) {
+		$custom_styles = \trim( (string) $this->config[ Config::STYLE_CSS ] );
+		if ( ! empty( $custom_styles ) ) {
 			// Register and enqueue dummy stylesheet.
 			\wp_register_style( 'wp-typography-custom', '' ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion -- only inline.
 			\wp_enqueue_style( 'wp-typography-custom' );
 
 			// Print the inline styles.
-			\wp_add_inline_style( 'wp-typography-custom', $this->clean_styles( $this->config[ Config::STYLE_CSS ] ) );
+			\wp_add_inline_style( 'wp-typography-custom', $this->clean_styles( $custom_styles ) );
 		}
 
 		// The Safari bug workaround.
@@ -293,7 +294,7 @@ class Public_Interface implements Plugin_Component {
 	 * @return string      Filtered string of CSS styles.
 	 */
 	protected function clean_styles( $css ) : string {
-		$cleaned = \preg_replace( self::CLEAN_CSS_PATTERNS, self::CLEAN_CSS_REPLACEMENTS, $css );
+		$cleaned = (string) \preg_replace( self::CLEAN_CSS_PATTERNS, self::CLEAN_CSS_REPLACEMENTS, $css );
 		$css     = '';
 
 		if ( \preg_match_all( '/\s*(?<selector>[^{}]+?)\s*\{\s*(?<rules>[^{}]+?)\s*\}\s*/sS', $cleaned, $matches, PREG_SET_ORDER ) ) {
