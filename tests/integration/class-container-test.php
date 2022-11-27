@@ -48,21 +48,21 @@ class Container_Test extends TestCase {
 	/**
 	 * Test fixture.
 	 *
-	 * @var Container
+	 * @var Container&m\MockInterface
 	 */
 	protected $integrations;
 
 	/**
 	 * Test fixture.
 	 *
-	 * @var Plugin_Integration
+	 * @var Plugin_Integration&m\MockInterface
 	 */
 	protected $int1;
 
 	/**
 	 * Test fixture.
 	 *
-	 * @var Plugin_Integration
+	 * @var Plugin_Integration&m\MockInterface
 	 */
 	protected $int2;
 
@@ -87,6 +87,11 @@ class Container_Test extends TestCase {
 	 * @covers ::__construct
 	 */
 	public function test_constructor() : void {
+		/**
+		 * Container mock.
+		 *
+		 * @var Container&m\MockInterface
+		 */
 		$integrations = m::mock( Container::class, [ [ $this->int1, $this->int2 ] ] );
 
 		$this->assert_attribute_count( 2, 'integrations', $integrations );

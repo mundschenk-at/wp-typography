@@ -26,6 +26,8 @@ namespace WP_Typography\Tests\Components;
 
 use WP_Typography\Components\Block_Editor;
 
+use WP_Typography\Implementation;
+
 use WP_Typography\Tests\TestCase;
 
 use Brain\Monkey\Actions;
@@ -49,14 +51,14 @@ class Block_Editor_Test extends TestCase {
 	/**
 	 * Test fixture.
 	 *
-	 * @var Block_Editor
+	 * @var Block_Editor&m\MockInterface
 	 */
 	protected $sut;
 
 	/**
 	 * Test fixture.
 	 *
-	 * @var \WP_Typography\Implementation
+	 * @var Implementation&m\MockInterface
 	 */
 	protected $api;
 
@@ -71,7 +73,7 @@ class Block_Editor_Test extends TestCase {
 		$root = vfsStream::setup( 'root', null, [] );
 		\set_include_path( 'vfs://root/' ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_set_include_path
 
-		$this->api = m::mock( \WP_Typography\Implementation::class );
+		$this->api = m::mock( Implementation::class );
 
 		// Mock WP_Typography\Components\Block_Editor instance.
 		$this->sut = m::mock( Block_Editor::class, [ $this->api ] )
@@ -84,8 +86,19 @@ class Block_Editor_Test extends TestCase {
 	 * @covers ::__construct
 	 */
 	public function test_constructor() : void {
+		/**
+		 * Block_Editor mock.
+		 *
+		 * @var Block_Editor&m\MockInterface
+		 */
 		$sut = m::mock( Block_Editor::class )->shouldAllowMockingProtectedMethods()->makePartial();
-		$api = m::mock( \WP_Typography\Implementation::class );
+
+		/**
+		 * Block_Editor mock.
+		 *
+		 * @var Implementation&m\MockInterface
+		 */
+		$api = m::mock( Implementation::class );
 
 		$sut->__construct( $api );
 

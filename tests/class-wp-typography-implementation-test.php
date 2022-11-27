@@ -24,11 +24,15 @@
 
 namespace WP_Typography\Tests;
 
+use WP_Typography\Implementation;
+
 use WP_Typography\Components\REST_API;
+use WP_Typography\Data_Storage\Cache;
 use WP_Typography\Data_Storage\Options;
+use WP_Typography\Data_Storage\Transients;
 use WP_Typography\Settings\Plugin_Configuration as Config;
 
-use PHP_Typography\Hyphenator_Cache;
+use PHP_Typography\Hyphenator\Cache as Hyphenator_Cache;
 use PHP_Typography\Settings;
 use PHP_Typography\U;
 
@@ -54,28 +58,28 @@ class WP_Typography_Implementation_Test extends TestCase {
 	/**
 	 * Test fixture.
 	 *
-	 * @var \WP_Typography\Implementation
+	 * @var Implementation&m\MockInterface
 	 */
 	protected $wp_typo;
 
 	/**
 	 * Test fixture.
 	 *
-	 * @var \WP_Typography\Data_Storage\Transients
+	 * @var Transients&m\MockInterface
 	 */
 	protected $transients;
 
 	/**
 	 * Test fixture.
 	 *
-	 * @var \WP_Typography\Data_Storage\Cache
+	 * @var Cache&m\MockInterface
 	 */
 	protected $cache;
 
 	/**
 	 * Test fixture.
 	 *
-	 * @var \WP_Typography\Data_Storage\Options
+	 * @var Options&m\MockInterface
 	 */
 	protected $options;
 
@@ -87,28 +91,28 @@ class WP_Typography_Implementation_Test extends TestCase {
 		parent::set_up();
 
 		// Mock WP_Typography\Data_Storage\Options instance.
-		$this->options = m::mock( \WP_Typography\Data_Storage\Options::class )
+		$this->options = m::mock( Options::class );
+		$this->options
 			->shouldReceive( 'get' )->andReturn( false )->byDefault()
-			->shouldReceive( 'set' )->andReturn( false )->byDefault()
-			->getMock();
+			->shouldReceive( 'set' )->andReturn( false )->byDefault();
 
 		// Mock WP_Typography\Data_Storage\Transients instance.
-		$this->transients = m::mock( \WP_Typography\Data_Storage\Transients::class )
+		$this->transients = m::mock( Transients::class );
+		$this->transients
 			->shouldReceive( 'get' )->byDefault()->andReturn( false )
 			->shouldReceive( 'get_large_object' )->byDefault()->andReturn( false )
 			->shouldReceive( 'set' )->andReturn( false )->byDefault()
-			->shouldReceive( 'set_large_object' )->andReturn( false )->byDefault()
-			->getMock();
+			->shouldReceive( 'set_large_object' )->andReturn( false )->byDefault();
 
 		// Mock WP_Typography\Data_Storage\Cache instance.
-		$this->cache = m::mock( \WP_Typography\Data_Storage\Cache::class )
+		$this->cache = m::mock( Cache::class );
+		$this->cache
 			->shouldReceive( 'get' )->andReturn( false )->byDefault()
 			->shouldReceive( 'set' )->andReturn( false )->byDefault()
-			->shouldReceive( 'invalidate' )->byDefault()
-			->getMock();
+			->shouldReceive( 'invalidate' )->byDefault();
 
 		// Create instance.
-		$this->wp_typo = m::mock( \WP_Typography\Implementation::class, [ '7.7.7', $this->transients, $this->cache, $this->options ] )
+		$this->wp_typo = m::mock( Implementation::class, [ '7.7.7', $this->transients, $this->cache, $this->options ] )
 			->shouldAllowMockingProtectedMethods()
 			->makePartial();
 	}
@@ -127,15 +131,28 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 * @uses \WP_Typography\Data_Storage\Transients::get_keys_from_database
 	 */
 	public function test_constructor() : void {
+		/**
+		 * Mock.
+		 *
+		 * @var Transients&m\MockInterface
+		 */
+		$transients = m::mock( Transients::class );
+		/**
+		 * Mock.
+		 *
+		 * @var Cache&m\MockInterface
+		 */
+		$cache = m::mock( Cache::class );
+		/**
+		 * Mock.
+		 *
+		 * @var Options&m\MockInterface
+		 */
+		$options = m::mock( Options::class );
 
-		$typo = new \WP_Typography\Implementation(
-			'6.6.6',
-			m::mock( \WP_Typography\Data_Storage\Transients::class ),
-			m::mock( \WP_Typography\Data_Storage\Cache::class ),
-			m::mock( \WP_Typography\Data_Storage\Options::class )
-		);
+		$typo = new Implementation( '6.6.6', $transients, $cache, $options );
 
-		$this->assertInstanceOf( \WP_Typography\Implementation::class, $typo );
+		$this->assertInstanceOf( Implementation::class, $typo );
 		$this->assert_attribute_same( '6.6.6', 'version', $typo );
 	}
 
@@ -272,7 +289,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	/**
 	 * Provides data for testing init_settings_from_options.
 	 *
-	 * @return array
+	 * @return mixed[]
 	 */
 	public function provide_init_settings_from_options_data() : array {
 		return [
@@ -296,6 +313,11 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 * @param  bool $remap_narrow_no_break_space Whether REMAP_NARROW_NO_BREAK_SPACE is enabled.
 	 */
 	public function test_init_settings_from_options( $smart_chars, $hyphenation, $remap_hyphen, $remap_narrow_no_break_space ) : void {
+		/**
+		 * Settings mock.
+		 *
+		 * @var Settings&m\MockInterface
+		 */
 		$s      = m::mock( Settings::class );
 		$config = [
 			Config::IGNORE_TAGS                    => [ 'script' ],
@@ -625,7 +647,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	/**
 	 * Provide data for testing process.
 	 *
-	 * @return array
+	 * @return mixed[]
 	 */
 	public function provide_process_data() : array {
 		return [
@@ -715,7 +737,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	/**
 	 * Provide data for testing process.
 	 *
-	 * @return array
+	 * @return mixed[]
 	 */
 	public function provide_maybe_process_fragment_data() : array {
 		return [
@@ -737,7 +759,13 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 * @param  bool $is_feed  Value for is_feed().
 	 */
 	public function test_maybe_process_fragment( $is_title, $is_feed ) : void {
+		/**
+		 * Settings mock.
+		 *
+		 * @var Settings&m\MockInterface
+		 */
 		$settings = m::mock( Settings::class );
+		$text     = 'some text or other';
 
 		// Fake filter_body_classes.
 		$this->set_value( $this->wp_typo, 'body_classes', [ 'foo', 'bar' ] );
@@ -865,7 +893,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	/**
 	 * Provide data for testing save_hyphenator_cache_on_shutdown.
 	 *
-	 * @return array
+	 * @return mixed[]
 	 */
 	public function provide_save_hyphenator_cache_on_shutdown_data() : array {
 		return [
@@ -886,6 +914,8 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 * @param bool                  $enable_hyphenation The typo_enable_hyphenation value.
 	 * @param Hyphenator_Cache|null $hyphenator_cache   The hyphenator cache instance.
 	 * @param bool                  $expected           If the hyphenator cache should be saved.
+	 *
+	 * @phpstan-param (Hyphenator_Cache&m\MockInterface)|null $hyphenator_cache
 	 */
 	public function test_save_hyphenator_cache_on_shutdown( $enable_hyphenation, $hyphenator_cache, $expected ) : void {
 

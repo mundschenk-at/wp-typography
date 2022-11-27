@@ -48,7 +48,7 @@ class WP_Typography_Requirements_Test extends Testcase {
 	/**
 	 * The system-under-test.
 	 *
-	 * @var Requirements
+	 * @var Requirements&m\MockInterface
 	 */
 	private $sut;
 
@@ -76,6 +76,12 @@ class WP_Typography_Requirements_Test extends Testcase {
 				return \array_merge( $defaults, $args );
 			}
 		);
+
+		/**
+		 * Requirements mock.
+		 *
+		 * @var Requirements&m\MockInterface
+		 */
 		$req = m::mock( Requirements::class )->makePartial();
 		$req->__construct( 'some_file' );
 

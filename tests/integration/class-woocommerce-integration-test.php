@@ -25,6 +25,7 @@
 namespace WP_Typography\Tests\Integration;
 
 use WP_Typography\Integration\WooCommerce_Integration;
+use WP_Typography\Implementation;
 
 use WP_Typography\Tests\TestCase;
 
@@ -47,7 +48,7 @@ class WooCommerce_Integration_Test extends TestCase {
 	/**
 	 * Test fixture.
 	 *
-	 * @var WooCommerce_Integration
+	 * @var WooCommerce_Integration&m\MockInterface
 	 */
 	protected $woo_i;
 
@@ -70,8 +71,19 @@ class WooCommerce_Integration_Test extends TestCase {
 	 * @covers ::__construct
 	 */
 	public function test_constructor() : void {
+		/**
+		 * WooCommerce_Integration mock.
+		 *
+		 * @var WooCommerce_Integration&m\MockInterface
+		 */
 		$sut = m::mock( WooCommerce_Integration::class )->shouldAllowMockingProtectedMethods()->makePartial();
-		$api = m::mock( \WP_Typography\Implementation::class );
+
+		/**
+		 * Implementation mock.
+		 *
+		 * @var Implementation&m\MockInterface
+		 */
+		$api = m::mock( Implementation::class );
 
 		$sut->__construct( $api );
 

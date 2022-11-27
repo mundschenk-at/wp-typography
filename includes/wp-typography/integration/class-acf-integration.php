@@ -108,6 +108,12 @@ class ACF_Integration implements Plugin_Integration {
 	 * Initializes the "Typography" field setting for all available field types.
 	 */
 	public function initialize_field_settings() : void {
+		/**
+		 * Retrieve the used field types.
+		 *
+		 * @var array<string,mixed[]>
+		 */
+		$field_types = \acf_get_field_types();
 
 		foreach ( $field_types as $type => $settings ) {
 			\add_action( "acf/render_field_settings/type=$type", [ $this, 'add_field_setting' ], 1 );
@@ -134,7 +140,7 @@ class ACF_Integration implements Plugin_Integration {
 	/**
 	 * Adds a custom setting for the wp-Typography filters to the ACF field settings.
 	 *
-	 * @param array $field The field settings.
+	 * @param mixed[] $field The field settings.
 	 */
 	public function add_field_setting( array $field ) : void {
 		$default = self::DO_NOT_FILTER;
@@ -198,9 +204,9 @@ class ACF_Integration implements Plugin_Integration {
 	/**
 	 * Custom filter for ACF to allow fine-grained control over individual fields.
 	 *
-	 * @param  string $content The field content.
-	 * @param  int    $post_id The post ID.
-	 * @param  array  $field   An array containing all the field settings for the field.
+	 * @param  string  $content The field content.
+	 * @param  int     $post_id The post ID.
+	 * @param  mixed[] $field   An array containing all the field settings for the field.
 	 *
 	 * @return string
 	 */

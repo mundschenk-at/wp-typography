@@ -61,11 +61,22 @@ class Custom_Node_Fix_Test extends \WP_Typography\Tests\TestCase {
 	 * @uses ::__construct
 	 */
 	public function test_apply() : void {
+		/**
+		 * Settings mock.
+		 *
+		 * @var \PHP_Typography\Settings&m\MockInterface
+		 */
+		$s       = m::mock( \PHP_Typography\Settings::class );
 		$group   = 'foobar';
 		$fix     = new Custom_Node_Fix( $group );
-		$s       = m::mock( \PHP_Typography\Settings::class );
 		$element = new \DOMElement( 'foo', 'content' );
-		$node    = $element->firstChild;
+
+		/**
+		 * Textnode.
+		 *
+		 * @var \DOMText
+		 */
+		$node = $element->firstChild;
 
 		Filters\expectApplied( "typo_custom_{$group}_node_fix" )
 			->once()

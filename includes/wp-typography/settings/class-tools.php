@@ -74,10 +74,12 @@ abstract class Tools {
 	 *
 	 * @deprecated 5.8.0
 	 *
-	 * @param  callable $callback A callback function that needs to return [ $key => $value ] pairs.
-	 * @param  array    $array    The array.
+	 * @template T
 	 *
-	 * @return array
+	 * @param  callable $callback A callback function that needs to return [ $key => $value ] pairs.
+	 * @param  array<T> $array    The array.
+	 *
+	 * @return array<T>
 	 */
 	public static function array_map_assoc( callable $callback, array $array ) : array {
 		\_deprecated_function( __FUNCTION__, '5.8.0' );

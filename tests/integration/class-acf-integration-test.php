@@ -25,6 +25,7 @@
 namespace WP_Typography\Tests\Integration;
 
 use WP_Typography\Integration\ACF_Integration;
+use WP_Typography\Implementation;
 
 use WP_Typography\Tests\TestCase;
 
@@ -47,14 +48,14 @@ class ACF_Integration_Test extends TestCase {
 	/**
 	 * Test fixture.
 	 *
-	 * @var ACF_Integration
+	 * @var ACF_Integration&m\MockInterface
 	 */
 	protected $acf_i;
 
 	/**
 	 * Test fixture.
 	 *
-	 * @var \WP_Typography\Implementation
+	 * @var Implementation&m\MockInterface
 	 */
 	protected $api;
 
@@ -65,7 +66,7 @@ class ACF_Integration_Test extends TestCase {
 	protected function set_up() : void {
 		parent::set_up();
 
-		$this->api = m::mock( \WP_Typography\Implementation::class );
+		$this->api = m::mock( Implementation::class );
 
 		// Mock WP_Typography\Components\ACF_Integration instance.
 		$this->acf_i = m::mock( ACF_Integration::class, [ $this->api ] )
@@ -77,9 +78,20 @@ class ACF_Integration_Test extends TestCase {
 	 *
 	 * @covers ::__construct
 	 */
-	public function test_constructor() {
+	public function test_constructor() : void {
+		/**
+		 * ACF_Integration mock.
+		 *
+		 * @var ACF_Integration&m\MockInterface
+		 */
 		$sut = m::mock( ACF_Integration::class )->shouldAllowMockingProtectedMethods()->makePartial();
-		$api = m::mock( \WP_Typography\Implementation::class );
+
+		/**
+		 * Implementation mock.
+		 *
+		 * @var Implementation&m\MockInterface
+		 */
+		$api = m::mock( Implementation::class );
 
 		$sut->__construct( $api );
 
@@ -89,7 +101,7 @@ class ACF_Integration_Test extends TestCase {
 	/**
 	 * Provides data for testing run.
 	 *
-	 * @return array
+	 * @return mixed[]
 	 */
 	public function provide_run_data() : array {
 		return [
@@ -206,7 +218,7 @@ class ACF_Integration_Test extends TestCase {
 	/**
 	 * Provide data for testing process_acf5.
 	 *
-	 * @return array
+	 * @return mixed[]
 	 */
 	public function provide_process_acf5_data() : array {
 		return [
@@ -271,7 +283,7 @@ class ACF_Integration_Test extends TestCase {
 	/**
 	 * Provide data for testing add_field_setting.
 	 *
-	 * @return array
+	 * @return mixed[]
 	 */
 	public function provide_add_field_setting_data() : array {
 		return [

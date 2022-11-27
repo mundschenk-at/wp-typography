@@ -53,10 +53,10 @@ abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 	/**
 	 * Call protected/private method of a class.
 	 *
-	 * @param object $object      Instantiated object that we will run method on.
-	 * @param string $method_name Method name to call.
-	 * @param array  $parameters  Array of parameters to pass into method.
-	 * @param string $classname   Optional. The class to use for accessing private properties.
+	 * @param object        $object      Instantiated object that we will run method on.
+	 * @param string        $method_name Method name to call.
+	 * @param mixed[]       $parameters  Array of parameters to pass into method.
+	 * @param ?class-string $classname   Optional. The class to use for accessing private properties.
 	 *
 	 * @return mixed Method return.
 	 */
@@ -75,11 +75,11 @@ abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 	/**
 	 * Call protected/private method of a class.
 	 *
-	 * @param string $classname   A class that we will run the method on.
-	 * @param string $method_name Method name to call.
-	 * @param array  $parameters  Array of parameters to pass into method.
+	 * @param class-string $classname   A class that we will run the method on.
+	 * @param string       $method_name Method name to call.
+	 * @param mixed[]      $parameters  Array of parameters to pass into method.
 	 *
-	 * @return mixed Method return.
+	 * @return mixed                    Method return value.
 	 */
 	protected function invokeStaticMethod( $classname, $method_name, array $parameters = [] ) {
 		$reflection = new \ReflectionClass( $classname );
@@ -92,9 +92,9 @@ abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 	/**
 	 * Sets the value of a private/protected property of a class.
 	 *
-	 * @param string     $classname     A class whose property we will access.
-	 * @param string     $property_name Property to set.
-	 * @param mixed|null $value         The new value.
+	 * @param class-string $classname     A class whose property we will access.
+	 * @param string       $property_name Property to set.
+	 * @param mixed|null   $value         The new value.
 	 */
 	protected function setStaticValue( $classname, $property_name, $value ) : void {
 		$reflection = new \ReflectionClass( $classname );
@@ -106,10 +106,10 @@ abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 	/**
 	 * Sets the value of a private/protected property of a class.
 	 *
-	 * @param object     $object        Instantiated object that we will run method on.
-	 * @param string     $property_name Property to set.
-	 * @param mixed|null $value         The new value.
-	 * @param string     $classname     Optional. The class to use for accessing private properties.
+	 * @param object        $object        Instantiated object that we will run method on.
+	 * @param string        $property_name Property to set.
+	 * @param mixed|null    $value         The new value.
+	 * @param ?class-string $classname     Optional. The class to use for accessing private properties.
 	 */
 	protected function setValue( $object, $property_name, $value, $classname = null ) : void {
 		if ( empty( $classname ) ) {
@@ -125,8 +125,8 @@ abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 	/**
 	 * Retrieves the value of a private/protected property of a class.
 	 *
-	 * @param string $classname     A class whose property we will access.
-	 * @param string $property_name Property to set.
+	 * @param class-string $classname     A class whose property we will access.
+	 * @param string       $property_name Property to set.
 	 *
 	 * @return mixed
 	 */
@@ -141,13 +141,13 @@ abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 	/**
 	 * Retrieves the value of a private/protected property of a class.
 	 *
-	 * @param object $object        Instantiated object that we will run method on.
-	 * @param string $property_name Property to set.
-	 * @param string $classname     Optional. The class to use for accessing private properties.
+	 * @param object        $object        Instantiated object that we will run method on.
+	 * @param string        $property_name Property to set.
+	 * @param ?class-string $classname     Optional. The class to use for accessing private properties.
 	 *
 	 * @return mixed
 	 */
-	protected function getValue( $object, $property_name, $classname = '' ) {
+	protected function getValue( $object, $property_name, $classname = null ) {
 		if ( empty( $classname ) ) {
 			$classname = get_class( $object );
 		}

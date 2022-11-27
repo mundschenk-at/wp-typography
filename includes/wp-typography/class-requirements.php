@@ -56,12 +56,18 @@ class Requirements extends \Mundschenk\WP_Requirements {
 	 * Retrieves an array of requirement specifications.
 	 *
 	 * @return array {
-	 *         An array of requirements checks.
+	 *     An array of requirements checks.
 	 *
-	 *   @type string   $enable_key An index in the $install_requirements array to switch the check on and off.
-	 *   @type callable $check      A function returning true if the check was successful, false otherwise.
-	 *   @type callable $notice     A function displaying an appropriate error notice.
+	 *     @type string   $enable_key An index in the $install_requirements array to switch the check on and off.
+	 *     @type callable $check      A function returning true if the check was successful, false otherwise.
+	 *     @type callable $notice     A function displaying an appropriate error notice.
 	 * }
+	 *
+	 * @phpstan-return array<array{
+	 *     enable_key : string,
+	 *     check      : callable,
+	 *     notice     : callable,
+	 * }>
 	 */
 	protected function get_requirements() : array {
 		$requirements   = parent::get_requirements();

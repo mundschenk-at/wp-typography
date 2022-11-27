@@ -47,7 +47,7 @@ class WP_Typography_Factory_Test extends TestCase {
 	/**
 	 * The system-under-test.
 	 *
-	 * @var Factory
+	 * @var Factory&m\MockInterface
 	 */
 	private $sut;
 

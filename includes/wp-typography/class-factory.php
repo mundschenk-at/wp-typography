@@ -59,7 +59,7 @@ class Factory extends Dice {
 	/**
 	 * The factory instance.
 	 *
-	 * @var Dice
+	 * @var Factory
 	 */
 	private static $factory;
 
@@ -105,7 +105,7 @@ class Factory extends Dice {
 	 *
 	 * @since 5.7.0
 	 *
-	 * @return array
+	 * @return mixed[]
 	 */
 	protected function get_rules() : array {
 		return [
@@ -262,6 +262,8 @@ class Factory extends Dice {
 	 *         @type string $instance The classname.
 	 *     }
 	 * }
+	 *
+	 * @phpstan-return array<array<self::INSTANCE,class-string<Components\Plugin_Component>>>
 	 */
 	protected function get_components() : array {
 		return [
@@ -287,6 +289,8 @@ class Factory extends Dice {
 	 *         @type string $instance The classname.
 	 *     }
 	 * }
+	 *
+	 * @phpstan-return array<array<self::INSTANCE,class-string<Integration\Plugin_Integration>>>
 	 */
 	protected function get_plugin_integrations() : array {
 		return [
@@ -307,6 +311,8 @@ class Factory extends Dice {
 	 *         @type string $instance The classname.
 	 *     }
 	 * }
+	 *
+	 * @phpstan-return array<array<self::INSTANCE,string>>>
 	 */
 	protected function get_supported_locales() : array {
 		return [

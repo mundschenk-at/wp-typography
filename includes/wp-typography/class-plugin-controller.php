@@ -56,8 +56,8 @@ class Plugin_Controller {
 	 *
 	 * @since 5.7.0 Component parameters replaced with factory-cofigured array.
 	 *
-	 * @param Implementation $api        The core API.
-	 * @param Component[]    $components An array of plugin components.
+	 * @param Implementation     $api        The core API.
+	 * @param Plugin_Component[] $components An array of plugin components.
 	 */
 	public function __construct( Implementation $api, array $components ) {
 		$this->api               = $api;

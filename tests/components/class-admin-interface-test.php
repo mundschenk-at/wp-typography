@@ -26,10 +26,10 @@ namespace WP_Typography\Tests\Components;
 
 use WP_Typography\Components\Admin_Interface;
 use WP_Typography\Data_Storage\Options;
+use WP_Typography\Implementation;
 use WP_Typography\Settings\Plugin_Configuration as Config;
 
-use Mundschenk\UI\Control_Factory;
-use Mundschenk\UI\Controls;
+use Mundschenk\UI;
 
 use WP_Typography\Tests\TestCase;
 
@@ -63,35 +63,35 @@ class Admin_Interface_Test extends TestCase {
 	/**
 	 * Test fixture.
 	 *
-	 * @var Admin_Interface
+	 * @var Admin_Interface&m\MockInterface
 	 */
 	protected $admin;
 
 	/**
 	 * Test fixture.
 	 *
-	 * @var \Mundschenk\UI\Control[]
+	 * @var array<string,UI\Control&m\MockInterface>
 	 */
 	protected $admin_form_controls;
 
 	/**
 	 * Test fixture.
 	 *
-	 * @var Options
+	 * @var Options&m\MockInterface
 	 */
 	protected $options;
 
 	/**
 	 * Test fixture.
 	 *
-	 * @var \WP_Typography\Implementation
+	 * @var Implementation&m\MockInterface
 	 */
 	protected $api;
 
 	/**
 	 * Test fixture.
 	 *
-	 * @var Control_Factory
+	 * @var UI\Control_Factory&m\MockInterface
 	 */
 	protected $control_factory;
 
@@ -127,20 +127,32 @@ class Admin_Interface_Test extends TestCase {
 			->shouldReceive( 'set' )->andReturn( false )->byDefault()
 			->getMock();
 
-		$this->api = m::mock( \WP_Typography\Implementation::class )->shouldReceive( 'get_version' )->andReturn( '6.6.6' )->byDefault()->getMock();
+		$this->api = m::mock( Implementation::class )->shouldReceive( 'get_version' )->andReturn( '6.6.6' )->byDefault()->getMock();
 
 		// Mock WP_Typography\Components\Admin_Interface instance.
 		$this->admin = m::mock( Admin_Interface::class, [ $this->api, $this->options ] )
 			->shouldAllowMockingProtectedMethods()->makePartial();
 
-		$this->plugin = m::mock( \WP_Typography\Implementation::class )->shouldReceive( 'get_version' )->andReturn( '6.6.6' )->byDefault()->getMock();
+		/**
+		 * UI control mock.
+		 *
+		 * @var UI\Control&m\MockInterface
+		 */
+		$control1 = m::mock( UI\Controls\Select::class );
+
+		/**
+		 * UI control mock.
+		 *
+		 * @var UI\Control&m\MockInterface
+		 */
+		$control2 = m::mock( UI\Controls\Select::class );
 
 		$this->admin_form_controls = [
-			Config::HYPHENATE_LANGUAGES => m::mock( Controls\Select::class ),
-			Config::DIACRITIC_LANGUAGES => m::mock( Controls\Select::class ),
+			Config::HYPHENATE_LANGUAGES => $control1,
+			Config::DIACRITIC_LANGUAGES => $control2,
 		];
 
-		$this->control_factory = m::mock( 'alias:' . Control_Factory::class )
+		$this->control_factory = m::mock( 'alias:' . UI\Control_Factory::class )
 			->shouldReceive( 'initialize' )->with( m::type( 'array' ), m::type( Options::class ), m::type( 'string' ) )->andReturn( $this->admin_form_controls )->byDefault()
 			->getMock();
 
@@ -428,7 +440,7 @@ class Admin_Interface_Test extends TestCase {
 	/**
 	 * Provide data for testing sanitize_settings.
 	 *
-	 * @return array
+	 * @return mixed[]
 	 */
 	public function provide_sanitize_settings_data() : array {
 		return [
@@ -469,24 +481,24 @@ class Admin_Interface_Test extends TestCase {
 	 *
 	 * @covers ::sanitize_settings
 	 *
-	 * @param  array  $input    Input array.
-	 * @param  array  $expected Result array.
-	 * @param  string $tab      Selected tab.
+	 * @param  mixed[] $input    Input array.
+	 * @param  mixed[] $expected Result array.
+	 * @param  string  $tab      Selected tab.
 	 */
 	public function test_sanitize_settings( $input, $expected, $tab ) : void {
 		// Set up data.
 		$defaults = [
 			'foo'    => [
 				'tab_id' => 'my-tab',
-				'ui'     => Controls\Number_Input::class,
+				'ui'     => UI\Controls\Number_Input::class,
 			],
 			'check1' => [
 				'tab_id' => 'my-tab',
-				'ui'     => Controls\Checkbox_Input::class,
+				'ui'     => UI\Controls\Checkbox_Input::class,
 			],
 			'check2' => [
 				'tab_id' => 'other-tab',
-				'ui'     => Controls\Checkbox_Input::class,
+				'ui'     => UI\Controls\Checkbox_Input::class,
 			],
 		];
 

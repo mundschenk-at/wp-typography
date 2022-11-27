@@ -33,6 +33,12 @@ namespace WP_Typography\UI;
  * @since  5.9.0 Return type declarations added.
  *
  * @author Peter Putzer <github@mundschenk.at>
+ *
+ * @phpstan-type Section array{
+ *     heading     : string,
+ *     description : string,
+ *     tab_id      : string,
+ * }
  */
 abstract class Sections {
 
@@ -44,7 +50,7 @@ abstract class Sections {
 	/**
 	 * The defaults array.
 	 *
-	 * @var array
+	 * @var Section[]
 	 */
 	private static $sections;
 
@@ -60,6 +66,8 @@ abstract class Sections {
 	 *               @type string $tab_id      Tab ID.
 	 *         }
 	 * }
+	 *
+	 * @phpstan-return Section[]
 	 */
 	public static function get_sections() : array {
 		if ( empty( self::$sections ) ) {

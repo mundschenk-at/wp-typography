@@ -42,6 +42,20 @@ use PHP_Typography\Settings\Quote_Style;
  * @since  5.9.0 Return type declarations added.
  *
  * @author Peter Putzer <github@mundschenk.at>
+ *
+ * @phpstan-type Config array{
+ *     ui             : class-string<\Mundschenk\UI\Control>,
+ *     tab_id         : Tabs::*,
+ *     section?       : Sections::*,
+ *     grouped_with?  : self::*,
+ *     short?         : string,
+ *     label?         : string,
+ *     help_text?     : string,
+ *     help_inline?   : bool,
+ *     attributes?    : array<string,string>,
+ *     option_values? : array<string,string>|array<int,int>,
+ *     default        : string|int|bool,
+ * }
  */
 abstract class Plugin_Configuration {
 
@@ -109,14 +123,14 @@ abstract class Plugin_Configuration {
 	/**
 	 * The defaults array.
 	 *
-	 * @var array
+	 * @var array<string,Config>
 	 */
 	private static $defaults;
 
 	/**
 	 * Retrieves the default settings.
 	 *
-	 * @return array
+	 * @return array<string,Config>
 	 */
 	public static function get_defaults() : array {
 		if ( empty( self::$defaults ) ) {
@@ -670,9 +684,9 @@ abstract class Plugin_Configuration {
 	/**
 	 * Returns numeric values as in associative form $value => $value.
 	 *
-	 * @param array $values Option values.
+	 * @param int[] $values Option values.
 	 *
-	 * @return array
+	 * @return array<int,int>
 	 */
 	private static function get_numeric_option_values( array $values ) : array {
 		return \array_combine( $values, $values );
@@ -681,7 +695,7 @@ abstract class Plugin_Configuration {
 	/**
 	 * Returns quote style constants in the form $value => $display.
 	 *
-	 * @return array
+	 * @return array<string,string>
 	 */
 	private static function get_quote_style_option_values() : array {
 		return [

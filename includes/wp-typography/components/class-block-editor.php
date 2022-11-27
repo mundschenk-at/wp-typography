@@ -107,8 +107,8 @@ class Block_Editor implements Plugin_Component {
 	/**
 	 * Renders the frontend form.
 	 *
-	 * @param  array  $attributes The `wp-typography/typography` block attributes.
-	 * @param  string $content    The content of the inner blocks.
+	 * @param  mixed[] $attributes The `wp-typography/typography` block attributes.
+	 * @param  string  $content    The content of the inner blocks.
 	 *
 	 * @return string
 	 */

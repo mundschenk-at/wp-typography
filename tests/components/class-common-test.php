@@ -25,9 +25,9 @@
 namespace WP_Typography\Tests\Components;
 
 use WP_Typography\Components\Common;
+use WP_Typography\Implementation;
 use WP_Typography\Data_Storage\Options;
 use WP_Typography\Integration\Container as Integrations;
-use WP_Typography\Settings\Plugin_Configuration as Config;
 
 use WP_Typography\Tests\TestCase;
 
@@ -50,28 +50,28 @@ class Common_Test extends TestCase {
 	/**
 	 * Test fixture.
 	 *
-	 * @var Common
+	 * @var Common&m\MockInterface
 	 */
 	protected $common;
 
 	/**
 	 * Test fixture.
 	 *
-	 * @var \WP_Typography\Data_Storage\Options
+	 * @var Options&m\MockInterface
 	 */
 	protected $options;
 
 	/**
 	 * Test fixture.
 	 *
-	 * @var \WP_Typography\Implementation
+	 * @var Implementation&m\MockInterface
 	 */
 	protected $api;
 
 	/**
 	 * Test fixture.
 	 *
-	 * @var \WP_Typography\Integration\Container
+	 * @var Integrations&m\MockInterface
 	 */
 	protected $integrations;
 
@@ -83,7 +83,7 @@ class Common_Test extends TestCase {
 		parent::set_up();
 
 		// Mock WP_Typography\Data_Storage\Options instance.
-		$this->options = m::mock( \WP_Typography\Data_Storage\Options::class )
+		$this->options = m::mock( Options::class )
 			->shouldReceive( 'get' )->andReturn( false )->byDefault()
 			->shouldReceive( 'set' )->andReturn( false )->byDefault()
 			->getMock();
@@ -92,7 +92,7 @@ class Common_Test extends TestCase {
 		$this->integrations = m::mock( Integrations::class );
 
 		// Mock plugin API.
-		$this->api = m::mock( \WP_Typography\Implementation::class )->shouldReceive( 'get_version' )->andReturn( '6.6.6' )->byDefault()->getMock();
+		$this->api = m::mock( Implementation::class )->shouldReceive( 'get_version' )->andReturn( '6.6.6' )->byDefault()->getMock();
 
 		// Mock WP_Typography\Components\Common instance.
 		$this->common = m::mock( Common::class, [ $this->api, $this->options, $this->integrations ] )
@@ -127,7 +127,7 @@ class Common_Test extends TestCase {
 	/**
 	 * Provide data for testing add_content_filters.
 	 *
-	 * @return array
+	 * @return mixed[]
 	 */
 	public function provide_init_data() : array {
 		return [

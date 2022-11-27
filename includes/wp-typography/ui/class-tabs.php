@@ -33,6 +33,11 @@ namespace WP_Typography\UI;
  * @since  5.9.0 Return type declarations added.
  *
  * @author Peter Putzer <github@mundschenk.at>
+ *
+ * @phpstan-type Tab array{
+ *     heading     : string,
+ *     description : string,
+ * }
  */
 abstract class Tabs {
 
@@ -46,7 +51,7 @@ abstract class Tabs {
 	/**
 	 * The defaults array.
 	 *
-	 * @var array
+	 * @var Tab[]
 	 */
 	private static $tabs;
 
@@ -61,6 +66,8 @@ abstract class Tabs {
 	 *            @type string $description Tab description (translated).
 	 *      }
 	 * }
+	 *
+	 * @phpstan-return Tab[]
 	 */
 	public static function get_tabs() : array {
 		if ( empty( self::$tabs ) ) {
