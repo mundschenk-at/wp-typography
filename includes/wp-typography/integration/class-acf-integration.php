@@ -90,7 +90,7 @@ class ACF_Integration implements Plugin_Integration {
 	public function run() : void {
 		$this->api_version = $this->get_acf_version();
 
-		if ( \is_admin() && 5 === $this->api_version ) {
+		if ( \is_admin() && $this->api_version >= 5 ) {
 			\add_action( 'acf/init', [ $this, 'initialize_field_settings' ] );
 		}
 	}
@@ -126,8 +126,8 @@ class ACF_Integration implements Plugin_Integration {
 	 * @param int $priority The filter priority.
 	 */
 	public function enable_content_filters( $priority ) : void {
-		if ( 5 === $this->api_version ) {
-			// Advanced Custom Fields Pro (version 5).
+		if ( $this->api_version >= 5 ) {
+			// Advanced Custom Fields (version 5 and above).
 			\add_filter( 'acf/format_value', [ $this, 'process_acf5' ], $priority, 3 );
 		} else {
 			// Advanced Custom Fields (version 4).
