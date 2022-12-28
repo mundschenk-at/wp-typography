@@ -2,6 +2,7 @@
 
 ## 5.9.0 - unreleased
 *   _Feature_: wp-Typography is now compatible with PHP 8.1.
+*   _Feature_: Support for Advanced Custom Fields 6 added.
 *   _Change_: PHP minimum version increased to 7.4.
 
 ## 5.8.1 - January 25, 2022
