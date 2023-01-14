@@ -1,7 +1,7 @@
 /**
  * This file is part of wp-Typography.
  *
- * Copyright 2016-2020 Peter Putzer.
+ * Copyright 2016-2021 Peter Putzer.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -46,7 +46,7 @@
       // Support the weird Gecko-ism with multiple ranges (even though the newer
       // spec says that only 0 is valid).
       var rangeCount = sel.rangeCount,
-      ranges = [];
+        ranges = [];
 
       // Save Range objects for later.
       for (var i = 0; i < rangeCount; i++) {
