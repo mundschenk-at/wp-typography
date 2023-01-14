@@ -222,6 +222,147 @@ class ACF_Integration_Test extends TestCase {
 	 */
 	public function provide_process_acf5_data() : array {
 		return [
+			[
+				'some text',
+				[
+					'type'          => 'text',
+					'wp-typography' => 'some-filter',
+				],
+				'some text_processed',
+			],
+			[
+				[ 'some text' ],
+				[
+					'type'          => 'text',
+					'wp-typography' => 'some-filter',
+				],
+				[ 'some text' ],
+			],
+			[
+				[
+					'checkbox 1',
+					'checkbox 2',
+					'checkbox 3',
+				],
+				[
+					'type'          => 'checkbox',
+					'wp-typography' => 'some-filter',
+				],
+				[
+					'checkbox 1_processed',
+					'checkbox 2_processed',
+					'checkbox 3_processed',
+				],
+			],
+			[
+				[
+					'https://example.org/url1',
+					'https://example.org/url2',
+					'https://example.org/url3',
+				],
+				[
+					'type'          => 'page_link',
+					'wp-typography' => 'some-filter',
+				],
+				[
+					'https://example.org/url1_processed',
+					'https://example.org/url2_processed',
+					'https://example.org/url3_processed',
+				],
+			],
+			[
+				[
+					'Some value',
+					'Some other value',
+				],
+				[
+					'type'          => 'select',
+					'wp-typography' => 'some-filter',
+				],
+				[
+					'Some value_processed',
+					'Some other value_processed',
+				],
+			],
+			[
+				[
+					'foo'     => 'bar',
+					'title'   => 'File title',
+					'caption' => 'File caption',
+				],
+				[
+					'type'          => 'file',
+					'wp-typography' => 'some-filter',
+				],
+				[
+					'foo'     => 'bar',
+					'title'   => 'File title_processed',
+					'caption' => 'File caption_processed',
+				],
+			],
+			[
+				[
+					'url'   => 'https://example.org/some/image',
+					'title' => 'Image title',
+				],
+				[
+					'type'          => 'image',
+					'wp-typography' => 'some-filter',
+				],
+				[
+					'url'   => 'https://example.org/some/image',
+					'title' => 'Image title_processed',
+				],
+			],
+			[
+				[
+					'url'    => 'https://example.org/some/image',
+					'title'  => 'Link title',
+					'target' => 'ref',
+				],
+				[
+					'type'          => 'link',
+					'wp-typography' => 'some-filter',
+				],
+				[
+					'url'    => 'https://example.org/some/image',
+					'title'  => 'Link title_processed',
+					'target' => 'ref',
+				],
+			],
+		];
+	}
+
+	/**
+	 * Test process_acf5.
+	 *
+	 * @covers ::process_acf5
+	 *
+	 * @dataProvider provide_process_acf5_data
+	 *
+	 * @param string|string[] $content  The field content.
+	 * @param mixed[]         $field    The field settings.
+	 * @param string|string[] $expected The expected method name or null.
+	 */
+	public function test_process_acf5( $content, $field, $expected ) : void {
+		$post_id = 77;
+
+		$this->acf_i->shouldReceive( 'process_acf_content' )->zeroOrMoreTimes()->with( m::type( 'string' ), $field )->andReturnUsing(
+			function( $content ) {
+				return "{$content}_processed";
+			}
+		);
+
+		$this->assertSame( $expected, $this->acf_i->process_acf5( $content, $post_id, $field ) );
+	}
+
+	/**
+	 * Provide data for testing process_acf_content.
+	 *
+	 * @return mixed[]
+	 */
+	public function provide_process_acf_content_data() : array {
+		return [
 			[ ACF_Integration::CONTENT_FILTER, 'process' ],
 			[ ACF_Integration::TITLE_FILTER, 'process_title' ],
 			[ ACF_Integration::FEED_CONTENT_FILTER, 'process_feed' ],
@@ -233,31 +374,31 @@ class ACF_Integration_Test extends TestCase {
 	}
 
 	/**
-	 * Test process_acf5.
+	 * Test process_acf_content.
 	 *
-	 * @covers ::process_acf5
+	 * @covers ::process_acf_content
 	 *
-	 * @dataProvider provide_process_acf5_data
+	 * @dataProvider provide_process_acf_content_data
 	 *
 	 * @param string      $filter_setting The field setting.
 	 * @param string|null $expected       The expected method name or null.
 	 */
-	public function test_process_acf5( $filter_setting, $expected ) : void {
+	public function test_process_acf_content( $filter_setting, $expected ) : void {
 		if ( ! empty( $expected ) ) {
 			$this->api->shouldReceive( $expected )->once()->with( 'bla' )->andReturn( 'blabla' );
-			$this->assertSame( 'blabla', $this->acf_i->process_acf5( 'bla', 77, [ 'wp-typography' => $filter_setting ] ) );
+			$this->assertSame( 'blabla', $this->invokeMethod( $this->acf_i, 'process_acf_content', [ 'bla', [ 'wp-typography' => $filter_setting ] ] ) );
 		} else {
-			$this->assertSame( 'bla', $this->acf_i->process_acf5( 'bla', 77, [ 'wp-typography' => $filter_setting ] ) );
+			$this->assertSame( 'bla', $this->invokeMethod( $this->acf_i, 'process_acf_content', [ 'bla', [ 'wp-typography' => $filter_setting ] ] ) );
 		}
 	}
 
 	/**
-	 * Test process_acf5 without a set filter.
+	 * Test process_acf_content without a set filter.
 	 *
-	 * @covers ::process_acf5
+	 * @covers ::process_acf_content
 	 */
-	public function test_process_acf5_unset() : void {
-		$this->assertSame( 'bla', $this->acf_i->process_acf5( 'bla', 77, [] ) );
+	public function test_process_acf_content_filter_unset() : void {
+		$this->assertSame( 'bla', $this->invokeMethod( $this->acf_i, 'process_acf_content', [ 'bla', [] ] ) );
 	}
 
 	/**
