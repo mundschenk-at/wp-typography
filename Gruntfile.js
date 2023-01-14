@@ -76,14 +76,13 @@ module.exports = function(grunt) {
               "build/vendor-scoped/composer/*.json",
               "build/vendor-scoped/composer/InstalledVersions.php",
               "build/vendor-scoped/composer/installed.php",
-              "build/vendor-scoped/scoper-autoload.php",
               "build/vendor-scoped/dangoodman/**",
               "build/vendor-scoped/mundschenk-at/composer-for-wordpress/**"
             ],
         },
 
         "string-replace": {
-            autoloader: {
+            "autoloader": {
                 files: {
                     "build/": "build/vendor-scoped/composer/autoload_{classmap,psr4,static}.php",
                 },
@@ -97,6 +96,17 @@ module.exports = function(grunt) {
                     }, {
                        pattern: /\s+'Composer\\\\InstalledVersions.*,(?=\n)/g,
                        replacement: ''
+                    }]
+                }
+            },
+            "autoloader-aliases": {
+                files: {
+                    "build/": "wp-typography.php",
+                },
+                options: {
+                    replacements: [{
+                        pattern: /require_once __DIR__ . '\/vendor\/autoload.php';/g,
+                        replacement: 'require_once __DIR__ . \'/vendor-scoped/scoper-autoload.php\';'
                     }]
                 }
             },
@@ -455,6 +465,7 @@ module.exports = function(grunt) {
         'clean:autoloader',
         'string-replace:vendor-dir',
         'string-replace:autoloader',
+        'string-replace:autoloader-aliases',
     ]);
 
     grunt.registerTask('build-js', [
