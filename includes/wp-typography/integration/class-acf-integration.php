@@ -47,6 +47,36 @@ class ACF_Integration implements Plugin_Integration {
 	const FILTER_SETTING = 'wp-typography';
 
 	/**
+	 * An array of supported subfields for ACF array types.
+	 *
+	 * @since 5.9.0
+	 *
+	 * @var array<string,string[]|string>
+	 */
+	private const SUPPORTED_ARRAY_TYPES = [
+		'checkbox'  => '*', // Format 'array' unsupported.
+		'file'      => [
+			'title',
+			'caption',
+		],
+		'image'     => [
+			'title',
+		],
+		'link'      => [
+			'title',
+		],
+		'page_link' => '*', // Probably not really useful as its just URLs.
+		'select'    => '*', // Format 'array' unsupported.
+
+		// Additional types that need extra support:
+		// 'checkbox' - array of arrays,
+		// 'gallery'  - array of arrays,
+		// 'taxonomy' - WP_Term objects,
+		// 'user'     - User objects.
+	];
+
+
+	/**
 	 * The plugin API.
 	 *
 	 * @since 5.7.0 Renamed to $api.
@@ -204,13 +234,46 @@ class ACF_Integration implements Plugin_Integration {
 	/**
 	 * Custom filter for ACF to allow fine-grained control over individual fields.
 	 *
-	 * @param  string  $content The field content.
-	 * @param  int     $post_id The post ID.
-	 * @param  mixed[] $field   An array containing all the field settings for the field.
+	 * @since  5.9.0 Support for certain array-type fields added.
+	 *
+	 * @param  string|string[] $content The field content.
+	 * @param  int             $post_id The post ID.
+	 * @param  mixed[]         $field   An array containing all the settings for the field.
+	 *
+	 * @return string|string[]
+	 */
+	public function process_acf5( $content, $post_id, array $field ) {
+		if ( \is_array( $content ) ) {
+			$supported_subfields = self::SUPPORTED_ARRAY_TYPES[ $field['type'] ] ?? [];
+
+			if ( ! \is_array( $supported_subfields ) && '*' === $supported_subfields ) {
+				$supported_subfields = \array_keys( $content );
+			}
+
+			foreach ( $supported_subfields as $subfield ) {
+				if ( ! empty( $content[ $subfield ] ) && \is_string( $content[ $subfield ] ) ) {
+					$content[ $subfield ] = $this->process_acf_content( $content[ $subfield ], $field );
+				}
+			}
+
+			return $content;
+		}
+
+		return $this->process_acf_content( (string) $content, $field );
+	}
+
+	/**
+	 * Processes ACF string content according to the field settings.
+	 *
+	 * @since  5.9.0
+	 *
+	 * @param  string  $content The field content to process.
+	 * @param  mixed[] $field   An array containing all the settings for the field.
 	 *
 	 * @return string
 	 */
-	public function process_acf5( $content, $post_id, $field ) : string {
+	protected function process_acf_content( string $content, array $field ) : string {
+
 		switch ( isset( $field[ self::FILTER_SETTING ] ) ? $field[ self::FILTER_SETTING ] : '' ) {
 			case self::CONTENT_FILTER:
 				$content = $this->api->process( $content );
