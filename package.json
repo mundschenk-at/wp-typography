@@ -6,7 +6,7 @@
     "@babel/preset-env": "^7.12.1",
     "@lodder/grunt-postcss": "^3.0.0",
     "@wordpress/eslint-plugin": "^13.6.0",
-    "@wordpress/scripts": "^24.6.0",
+    "@wordpress/scripts": "^25.1.0",
     "autoprefixer": "^10.4.2",
     "coffeescript": "^2.5.1",
     "grunt": "^1.4.0",
