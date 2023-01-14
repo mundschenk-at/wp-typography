@@ -142,7 +142,7 @@ module.exports = function(grunt) {
                 options: {
                     replacements: [{
                         pattern: '', // Set later.
-                        replacement: '$1' + 'WP_Typography\\Vendor\\' + '$2'
+                        replacement: `\$1WP_Typography\\Vendor\\\$2`
                     }],
                 },
                 files: [{
