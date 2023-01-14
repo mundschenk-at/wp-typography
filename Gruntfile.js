@@ -102,10 +102,20 @@ module.exports = function(grunt) {
             },
             "composer-vendor-dir": {
                 options: {
-                    replacements: [{
-                        pattern: /"vendor-dir":\s*"vendor"/g,
-                        replacement: '"vendor-dir": "vendor-scoped"'
-                    }],
+                    replacements: [
+                        {
+                            pattern: /"vendor-dir":\s*"vendor"/g,
+                            replacement: '"vendor-dir": "vendor-scoped"'
+                        },
+                        {
+                            pattern: /"dealerdirect\\\/phpcodesniffer-composer-installer":\s*true/g,
+                            replacement: '"dealerdirect\/phpcodesniffer-composer-installer": false'
+                        },
+                        {
+                            pattern: /"phpstan\\\/extension-installer":\s*true/g,
+                            replacement: '"phpstan\/extension-installer": false'
+                        },
+                    ],
                 },
                 files: [{
                     expand: true,
