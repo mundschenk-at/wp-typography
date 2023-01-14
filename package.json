@@ -1,5 +1,5 @@
 {
-  "name": "wp-Typography",
+  "name": "wp-typography",
   "devDependencies": {
     "@babel/cli": "^7.14",
     "@babel/core": "^7.14",
