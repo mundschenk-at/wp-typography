@@ -6,6 +6,7 @@
     -    wp-Typography is now compatible with Advanced Custom Fields 6.
     -    The return type `array` is now supported for most fields.
 *   _Change_: PHP minimum version increased to 7.4.
+*   _Change_: `Prevent widows` is now disabled by default.
 
 ## 5.8.1 - January 25, 2022
 *   _Bugfix_: Whitescreen in `Requirements` class due to error in build process fixed.
