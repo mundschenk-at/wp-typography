@@ -1,6 +1,6 @@
 # Changes
 
-## 5.9.0 - unreleased
+## 5.9.0 - January 21, 2023
 *   _Feature_: wp-Typography is now compatible with PHP 8.1.
 *   _Feature_: Improved Advanced Custom Fields support:
     -    wp-Typography is now compatible with Advanced Custom Fields 6.
