@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2022 Peter Putzer.
+ *  Copyright 2017-2023 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -583,7 +583,7 @@ abstract class Plugin_Configuration {
 					'label'         => \__( '%1$s Prevent widows.', 'wp-typography' ),
 					'help_text'     => \__( 'Widows are the last word in a block of text that wraps to its own line.', 'wp-typography' ),
 					'help_inline'   => true,
-					'default'       => 1,
+					'default'       => 0,
 				],
 				self::WIDOW_MIN_LENGTH                 => [
 					'ui'            => Controls\Select::class,
