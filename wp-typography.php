@@ -69,9 +69,6 @@ require_once __DIR__ . '/vendor/autoload.php';
 function wp_typography_run() {
 	// Validate the requirements.
 	if ( ( new Requirements() )->check() ) {
-		// Autoload the rest of our classes.
-		require_once __DIR__ . '/vendor/autoload.php'; // phpcs:ignore PHPCompatibility.Keywords.NewKeywords.t_dirFound
-
 		// Create the plugin.
 		$plugin = Factory::get()->create( Plugin_Controller::class );
 
