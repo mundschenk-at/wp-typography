@@ -77,6 +77,9 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 
 == Changelog ==
 
+= 5.9.1 - January 22, 2023 =
+* _Bugfix_: Only apply filters to ACF fields returning strings to preserve type expectations for downstream code.
+
 = 5.9.0 - January 21, 2023 =
 * _Feature_: wp-Typography is now compatible with PHP 8.1.
 * _Feature_: Improved Advanced Custom Fields support:
