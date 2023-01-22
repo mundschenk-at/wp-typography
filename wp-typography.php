@@ -29,7 +29,7 @@
  *  Description: Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
  *  Author: Peter Putzer
  *  Author URI: https://code.mundschenk.at
- *  Version: 5.9.0
+ *  Version: 5.9.1
  *  Requires at least: 5.3
  *  Requires PHP: 7.4
  *  License: GNU General Public License v2 or later
