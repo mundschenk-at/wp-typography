@@ -2,7 +2,7 @@
 Contributors: pputzer, kingjeffrey
 Tags: typography, hyphenation, smart quotes, formatting, widows, orphans, typogrify, quotes, prettify, small caps, diacritics
 Tested up to: 6.1
-Stable tag: 5.9.0
+Stable tag: 5.9.1
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
