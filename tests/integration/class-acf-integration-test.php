@@ -231,6 +231,14 @@ class ACF_Integration_Test extends TestCase {
 				'some text_processed',
 			],
 			[
+				666, // not a string.
+				[
+					'type'          => 'range',
+					'wp-typography' => 'some-filter',
+				],
+				666, // not processed.
+			],
+			[
 				[ 'some text' ],
 				[
 					'type'          => 'text',

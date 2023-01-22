@@ -235,12 +235,14 @@ class ACF_Integration implements Plugin_Integration {
 	 * Custom filter for ACF to allow fine-grained control over individual fields.
 	 *
 	 * @since  5.9.0 Support for certain array-type fields added.
+	 * @since  5.9.1 Parameter `$content` and return type changed to `mixed`, as ACF
+	 *               also allows non-string/non-array field values.
 	 *
-	 * @param  string|string[] $content The field content.
-	 * @param  int             $post_id The post ID.
-	 * @param  mixed[]         $field   An array containing all the settings for the field.
+	 * @param  mixed   $content The field content.
+	 * @param  int     $post_id The post ID.
+	 * @param  mixed[] $field   An array containing all the settings for the field.
 	 *
-	 * @return string|string[]
+	 * @return mixed
 	 */
 	public function process_acf5( $content, $post_id, array $field ) {
 		if ( \is_array( $content ) ) {
@@ -257,9 +259,11 @@ class ACF_Integration implements Plugin_Integration {
 			}
 
 			return $content;
+		} elseif ( \is_string( $content ) ) {
+			return $this->process_acf_content( $content, $field );
 		}
 
-		return $this->process_acf_content( (string) $content, $field );
+		return $content;
 	}
 
 	/**
