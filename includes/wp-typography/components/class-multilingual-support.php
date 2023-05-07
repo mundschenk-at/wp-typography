@@ -462,14 +462,14 @@ class Multilingual_Support implements Plugin_Component {
 		}
 
 		// Try some heuristics..
-		$matches     = \preg_grep( "/^{$language}-/", array_keys( $languages ) ) ?: []; // phpcs:ignore WordPress.PHP.DisallowShortTernary -- ensure array type.
+		$matches     = \preg_grep( "/^{$language}-/", array_keys( $languages ) ) ?: []; // phpcs:ignore Universal.Operators.DisallowShortTernary -- ensure array type.
 		$match_count = \count( $matches );
 
 		if ( 1 === $match_count ) {
 			$result = \array_pop( $matches );
 		} elseif ( $match_count > 1 ) {
 			// Narrow the search further.
-			$matches     = \preg_grep( "/^{$locale}/", $matches ) ?: []; // phpcs:ignore WordPress.PHP.DisallowShortTernary -- ensure array type.
+			$matches     = \preg_grep( "/^{$locale}/", $matches ) ?: []; // phpcs:ignore Universal.Operators.DisallowShortTernary -- ensure array type.
 			$match_count = \count( $matches );
 
 			if ( 1 === $match_count ) {
