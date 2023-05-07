@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2022 Peter Putzer.
+ *  Copyright 2017-2023 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -49,7 +49,7 @@ class Basic_Locale_Settings_Test extends \WP_Typography\Tests\TestCase {
 	 *
 	 * @return mixed[]
 	 */
-	public function provide_match_data() : array {
+	public function provide_match_data(): array {
 		return [
 			[
 				[ 'de' ],
@@ -108,7 +108,7 @@ class Basic_Locale_Settings_Test extends \WP_Typography\Tests\TestCase {
 	 * @param  string   $modifier  Actual modifier.
 	 * @param  bool     $expected  Expected result.
 	 */
-	public function test_constructor_and_match( $languages, $countries, $modifiers, $language, $country, $modifier, $expected ) : void {
+	public function test_constructor_and_match( $languages, $countries, $modifiers, $language, $country, $modifier, $expected ): void {
 		/**
 		 * Locale mock.
 		 *

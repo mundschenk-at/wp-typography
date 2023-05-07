@@ -63,7 +63,7 @@ class ACF_Integration_Test extends TestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function set_up() : void {
+	protected function set_up(): void {
 		parent::set_up();
 
 		$this->api = m::mock( Implementation::class );
@@ -78,7 +78,7 @@ class ACF_Integration_Test extends TestCase {
 	 *
 	 * @covers ::__construct
 	 */
-	public function test_constructor() : void {
+	public function test_constructor(): void {
 		/**
 		 * ACF_Integration mock.
 		 *
@@ -103,7 +103,7 @@ class ACF_Integration_Test extends TestCase {
 	 *
 	 * @return mixed[]
 	 */
-	public function provide_run_data() : array {
+	public function provide_run_data(): array {
 		return [
 			[ 4 ],
 			[ 5 ],
@@ -119,7 +119,7 @@ class ACF_Integration_Test extends TestCase {
 	 *
 	 * @param int $api_version Required.
 	 */
-	public function test_run( $api_version ) : void {
+	public function test_run( $api_version ): void {
 		$this->acf_i->shouldReceive( 'get_acf_version' )->once()->andReturn( $api_version );
 
 		Functions\expect( 'is_admin' )->once()->andReturn( false );
@@ -137,7 +137,7 @@ class ACF_Integration_Test extends TestCase {
 	 *
 	 * @param int $api_version Required.
 	 */
-	public function test_run_admin( $api_version ) : void {
+	public function test_run_admin( $api_version ): void {
 		$this->acf_i->shouldReceive( 'get_acf_version' )->once()->andReturn( $api_version );
 
 		Functions\expect( 'is_admin' )->once()->andReturn( true );
@@ -154,7 +154,7 @@ class ACF_Integration_Test extends TestCase {
 	 *
 	 * @covers ::check
 	 */
-	public function test_check_failing() : void {
+	public function test_check_failing(): void {
 		$this->assertFalse( $this->acf_i->check() );
 	}
 
@@ -165,7 +165,7 @@ class ACF_Integration_Test extends TestCase {
 	 *
 	 * @runInSeperateProcess
 	 */
-	public function test_check_success() : void {
+	public function test_check_success(): void {
 		m::mock( 'acf' );
 		$this->assertTrue( $this->acf_i->check() );
 	}
@@ -175,7 +175,7 @@ class ACF_Integration_Test extends TestCase {
 	 *
 	 * @covers ::get_filter_tag
 	 */
-	public function test_get_filter_tag() : void {
+	public function test_get_filter_tag(): void {
 		$this->assertSame( 'acf', $this->acf_i->get_filter_tag() );
 	}
 
@@ -185,7 +185,7 @@ class ACF_Integration_Test extends TestCase {
 	 * @covers ::enable_content_filters
 	 * @covers ::get_acf_version
 	 */
-	public function test_enable_content_filters_acf4() : void {
+	public function test_enable_content_filters_acf4(): void {
 		$this->setValue( $this->acf_i, 'api_version', 4, ACF_Integration::class );
 
 		Filters\expectAdded( 'acf/format_value_for_api/type=wysiwyg' )->once();
@@ -205,7 +205,7 @@ class ACF_Integration_Test extends TestCase {
 	 * @covers ::enable_content_filters
 	 * @covers ::get_acf_version
 	 */
-	public function test_enable_content_filters_acf5() : void {
+	public function test_enable_content_filters_acf5(): void {
 		$this->setValue( $this->acf_i, 'api_version', 5, ACF_Integration::class );
 
 		Filters\expectAdded( 'acf/format_value' )->once();
@@ -220,7 +220,7 @@ class ACF_Integration_Test extends TestCase {
 	 *
 	 * @return mixed[]
 	 */
-	public function provide_process_acf5_data() : array {
+	public function provide_process_acf5_data(): array {
 		return [
 			[
 				'some text',
@@ -352,7 +352,7 @@ class ACF_Integration_Test extends TestCase {
 	 * @param mixed[]         $field    The field settings.
 	 * @param string|string[] $expected The expected method name or null.
 	 */
-	public function test_process_acf5( $content, $field, $expected ) : void {
+	public function test_process_acf5( $content, $field, $expected ): void {
 		$post_id = 77;
 
 		$this->acf_i->shouldReceive( 'process_acf_content' )->zeroOrMoreTimes()->with( m::type( 'string' ), $field )->andReturnUsing(
@@ -369,7 +369,7 @@ class ACF_Integration_Test extends TestCase {
 	 *
 	 * @return mixed[]
 	 */
-	public function provide_process_acf_content_data() : array {
+	public function provide_process_acf_content_data(): array {
 		return [
 			[ ACF_Integration::CONTENT_FILTER, 'process' ],
 			[ ACF_Integration::TITLE_FILTER, 'process_title' ],
@@ -391,7 +391,7 @@ class ACF_Integration_Test extends TestCase {
 	 * @param string      $filter_setting The field setting.
 	 * @param string|null $expected       The expected method name or null.
 	 */
-	public function test_process_acf_content( $filter_setting, $expected ) : void {
+	public function test_process_acf_content( $filter_setting, $expected ): void {
 		if ( ! empty( $expected ) ) {
 			$this->api->shouldReceive( $expected )->once()->with( 'bla' )->andReturn( 'blabla' );
 			$this->assertSame( 'blabla', $this->invokeMethod( $this->acf_i, 'process_acf_content', [ 'bla', [ 'wp-typography' => $filter_setting ] ] ) );
@@ -405,7 +405,7 @@ class ACF_Integration_Test extends TestCase {
 	 *
 	 * @covers ::process_acf_content
 	 */
-	public function test_process_acf_content_filter_unset() : void {
+	public function test_process_acf_content_filter_unset(): void {
 		$this->assertSame( 'bla', $this->invokeMethod( $this->acf_i, 'process_acf_content', [ 'bla', [] ] ) );
 	}
 
@@ -414,7 +414,7 @@ class ACF_Integration_Test extends TestCase {
 	 *
 	 * @covers ::get_acf_version
 	 */
-	public function test_get_acf_version_default() : void {
+	public function test_get_acf_version_default(): void {
 		$this->assertSame( 4, $this->acf_i->get_acf_version() ); // @phpstan-ignore-line - testing protected method.
 	}
 
@@ -423,7 +423,7 @@ class ACF_Integration_Test extends TestCase {
 	 *
 	 * @covers ::get_acf_version
 	 */
-	public function test_get_acf_version_acf5() : void {
+	public function test_get_acf_version_acf5(): void {
 		Functions\expect( 'acf_get_setting' )->once()->with( 'version' )->andReturn( '5.5' );
 
 		$this->assertSame( 5, $this->acf_i->get_acf_version() ); // @phpstan-ignore-line - testing protected method.
@@ -434,7 +434,7 @@ class ACF_Integration_Test extends TestCase {
 	 *
 	 * @return mixed[]
 	 */
-	public function provide_add_field_setting_data() : array {
+	public function provide_add_field_setting_data(): array {
 		return [
 			[ 'wysiwyg', ACF_Integration::CONTENT_FILTER ],
 			[ 'textarea', ACF_Integration::CONTENT_FILTER ],
@@ -453,7 +453,7 @@ class ACF_Integration_Test extends TestCase {
 	 * @param string $type    The field type.
 	 * @param string $default The default filter setting.
 	 */
-	public function test_add_field_setting( $type, $default ) : void {
+	public function test_add_field_setting( $type, $default ): void {
 		$field = [
 			'type' => $type,
 		];
@@ -469,7 +469,7 @@ class ACF_Integration_Test extends TestCase {
 	 *
 	 * @covers ::initialize_field_settings
 	 */
-	public function test_initialize_field_settings() : void {
+	public function test_initialize_field_settings(): void {
 		Functions\expect( 'acf_get_field_types' )->once()->andReturn(
 			[
 				'foo' => [],

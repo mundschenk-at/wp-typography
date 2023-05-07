@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2018-2022 Peter Putzer.
+ *  Copyright 2018-2023 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -51,7 +51,7 @@ class Custom_Registry_Test extends \WP_Typography\Tests\TestCase {
 	 * @uses WP_Typography\Typography\Custom_Token_Fix::__construct
 	 * @uses PHP_Typography\Fixes\Token_fixes\Abstract_Token_Fix::__construct
 	 */
-	public function test_constructor() : void {
+	public function test_constructor(): void {
 		$registry = m::mock( Custom_Registry::class )
 			->shouldAllowMockingProtectedMethods()
 			->makePartial()

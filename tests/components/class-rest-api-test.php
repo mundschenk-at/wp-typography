@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2020-2022 Peter Putzer.
+ *  Copyright 2020-2023 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -53,7 +53,7 @@ class REST_API_Test extends TestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function set_up() : void {
+	protected function set_up(): void {
 		parent::set_up();
 
 		// Mock WP_Typography\Components\REST_API instance.
@@ -66,7 +66,7 @@ class REST_API_Test extends TestCase {
 	 *
 	 * @covers ::run
 	 */
-	public function test_run() : void {
+	public function test_run(): void {
 		Actions\expectAdded( 'init' )->with( [ $this->sut, 'register_meta_fields' ] )->once();
 
 		$this->sut->run();
@@ -77,7 +77,7 @@ class REST_API_Test extends TestCase {
 	 *
 	 * @covers ::register_meta_fields
 	 */
-	public function test_register_meta_fields() : void {
+	public function test_register_meta_fields(): void {
 		Functions\expect( 'register_post_meta' )->once()->with( '', REST_API::WP_TYPOGRAPHY_DISABLED_META_KEY, m::type( 'array' ) );
 
 		$this->sut->register_meta_fields();

@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2022 Peter Putzer.
+ *  Copyright 2017-2023 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -55,7 +55,7 @@ class Options_Test extends TestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function set_up() : void {
+	protected function set_up(): void {
 		parent::set_up();
 
 		$this->options = m::mock( Options::class, [ Options::PREFIX ] )->makePartial();
@@ -66,7 +66,7 @@ class Options_Test extends TestCase {
 	 *
 	 * @covers ::__construct
 	 */
-	public function test___construct() : void {
+	public function test___construct(): void {
 		/**
 		 * Options mock.
 		 *
@@ -84,7 +84,7 @@ class Options_Test extends TestCase {
 	 *
 	 * @uses ::get_name
 	 */
-	public function test_get() : void {
+	public function test_get(): void {
 		$raw_key = 'foo';
 		$key     = $this->options->get_name( $raw_key );
 		$default = 'something';
@@ -101,7 +101,7 @@ class Options_Test extends TestCase {
 	 *
 	 * @uses ::get_name
 	 */
-	public function test_get_missing_array() : void {
+	public function test_get_missing_array(): void {
 		$raw_key = 'foo';
 		$key     = $this->options->get_name( $raw_key );
 		$default = [];
@@ -116,7 +116,7 @@ class Options_Test extends TestCase {
 	 *
 	 * @covers ::get
 	 */
-	public function test_get_raw() : void {
+	public function test_get_raw(): void {
 		$raw_key = 'foo';
 		$default = 'something';
 
@@ -133,7 +133,7 @@ class Options_Test extends TestCase {
 	 *
 	 * @uses ::get_name
 	 */
-	public function test_delete() : void {
+	public function test_delete(): void {
 		$raw_key = 'foo';
 		$key     = $this->options->get_name( $raw_key );
 
@@ -147,7 +147,7 @@ class Options_Test extends TestCase {
 	 *
 	 * @covers ::delete
 	 */
-	public function test_delete_raw() : void {
+	public function test_delete_raw(): void {
 		$raw_key = 'foo';
 
 		Functions\expect( 'delete_option' )->once()->with( $raw_key )->andReturn( true );
@@ -163,7 +163,7 @@ class Options_Test extends TestCase {
 	 *
 	 * @uses ::get_name
 	 */
-	public function test_set() : void {
+	public function test_set(): void {
 		$value   = 'bar';
 		$raw_key = 'foo';
 		$key     = $this->options->get_name( $raw_key );
@@ -178,7 +178,7 @@ class Options_Test extends TestCase {
 	 *
 	 * @covers ::set
 	 */
-	public function test_set_raw() : void {
+	public function test_set_raw(): void {
 		$value   = 'bar';
 		$raw_key = 'foo';
 
@@ -193,7 +193,7 @@ class Options_Test extends TestCase {
 	 *
 	 * @covers ::get_name
 	 */
-	public function test_get_name() : void {
+	public function test_get_name(): void {
 		$raw_key = 'foo';
 
 		$this->assertSame( Options::PREFIX . $raw_key, $this->options->get_name( $raw_key ) );

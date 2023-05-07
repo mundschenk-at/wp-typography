@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2022 Peter Putzer.
+ *  Copyright 2017-2023 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -58,7 +58,7 @@ class WP_Typography_Test extends TestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function set_up() : void {
+	protected function set_up(): void {
 		parent::set_up();
 
 		// Create instance.
@@ -73,7 +73,7 @@ class WP_Typography_Test extends TestCase {
 	/**
 	 * Necesssary clean-up work.
 	 */
-	protected function tear_down() : void {
+	protected function tear_down(): void {
 
 		// Reset singleton.
 		$this->setStaticValue( \WP_Typography::class, 'instance', null );
@@ -88,7 +88,7 @@ class WP_Typography_Test extends TestCase {
 	 *
 	 * @uses WP_Typography::get_instance
 	 */
-	public function test_get_user_settings() : void {
+	public function test_get_user_settings(): void {
 		/**
 		 * Settings mock.
 		 *
@@ -113,7 +113,7 @@ class WP_Typography_Test extends TestCase {
 	 *
 	 * @uses ::get_instance
 	 */
-	public function test_call_static_get_hyphenation_languages() : void {
+	public function test_call_static_get_hyphenation_languages(): void {
 		$this->wp_typo->shouldReceive( 'get_hyphenation_languages' )->once()->andReturn( [ 'de' => 'German' ] );
 
 		$langs = \WP_Typography::get_hyphenation_languages(); // @phpstan-ignore-line -- intentionally calling non-static method statically.
@@ -129,7 +129,7 @@ class WP_Typography_Test extends TestCase {
 	 *
 	 * @uses ::get_instance
 	 */
-	public function test_call_static_foobar() : void {
+	public function test_call_static_foobar(): void {
 		$this->wp_typo->shouldNotReceive( 'foobar' );
 
 		$this->expect_exception( \BadMethodCallException::class );
@@ -145,7 +145,7 @@ class WP_Typography_Test extends TestCase {
 	 *
 	 * @uses ::get_instance
 	 */
-	public function test_filter() : void {
+	public function test_filter(): void {
 		$this->wp_typo->shouldReceive( 'process' )->once()->with( 'foobar', false, false, null )->andReturn( 'barfoo' );
 		$this->assertSame( 'barfoo', \WP_Typography::filter( 'foobar', null ) );
 	}
@@ -157,7 +157,7 @@ class WP_Typography_Test extends TestCase {
 	 *
 	 * @uses ::get_instance
 	 */
-	public function test_filter_title() : void {
+	public function test_filter_title(): void {
 		$this->wp_typo->shouldReceive( 'process_title' )->once()->with( 'foobar', null )->andReturn( 'barfoo' );
 		$this->assertSame( 'barfoo', \WP_Typography::filter_title( 'foobar', null ) );
 	}
@@ -169,7 +169,7 @@ class WP_Typography_Test extends TestCase {
 	 *
 	 * @uses ::get_instance
 	 */
-	public function test_filter_title_parts() : void {
+	public function test_filter_title_parts(): void {
 		$this->wp_typo->shouldReceive( 'process_title_parts' )->once()->with( [ 'foobar' ], null )->andReturn( [ 'barfoo' ] );
 		$this->assertSame( [ 'barfoo' ], \WP_Typography::filter_title_parts( [ 'foobar' ], null ) );
 	}
@@ -181,7 +181,7 @@ class WP_Typography_Test extends TestCase {
 	 *
 	 * @uses ::get_instance
 	 */
-	public function test_filter_feed() : void {
+	public function test_filter_feed(): void {
 		$this->wp_typo->shouldReceive( 'process_feed' )->once()->with( 'foobar', false, null )->andReturn( 'barfoo' );
 		$this->assertSame( 'barfoo', \WP_Typography::filter_feed( 'foobar', null ) );
 	}
@@ -193,7 +193,7 @@ class WP_Typography_Test extends TestCase {
 	 *
 	 * @uses ::get_instance
 	 */
-	public function test_filter_feed_title() : void {
+	public function test_filter_feed_title(): void {
 		$this->wp_typo->shouldReceive( 'process_feed_title' )->once()->with( 'foobar', null )->andReturn( 'barfoo' );
 		$this->assertSame( 'barfoo', \WP_Typography::filter_feed_title( 'foobar', null ) );
 	}
@@ -206,7 +206,7 @@ class WP_Typography_Test extends TestCase {
 	 *
 	 * @uses ::get_instance
 	 */
-	public function test_get_version_hash() : void {
+	public function test_get_version_hash(): void {
 		$this->wp_typo->shouldReceive( 'get_version' )->once()->andReturn( '7.6.6' );
 
 		$this->assertSame( 'GFF', $this->wp_typo->get_version_hash() );

@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2022 Peter Putzer.
+ *  Copyright 2017-2023 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -64,7 +64,7 @@ class Public_Interface_Test extends TestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function set_up() : void {
+	protected function set_up(): void {
 		parent::set_up();
 
 		$this->api = m::mock( Implementation::class );
@@ -81,7 +81,7 @@ class Public_Interface_Test extends TestCase {
 	 *
 	 * @return mixed[]         The options array.
 	 */
-	protected function prepareOptions( array $options ) : array {
+	protected function prepareOptions( array $options ): array {
 		// Reset options.
 		$this->setValue( $this->public_if, 'config', $options );
 
@@ -93,7 +93,7 @@ class Public_Interface_Test extends TestCase {
 	 *
 	 * @covers ::__construct
 	 */
-	public function test_constructor() : void {
+	public function test_constructor(): void {
 		/**
 		 * Public_Intefface mock.
 		 *
@@ -118,7 +118,7 @@ class Public_Interface_Test extends TestCase {
 	 *
 	 * @covers ::run
 	 */
-	public function test_run() : void {
+	public function test_run(): void {
 		Functions\expect( 'is_admin' )->once()->andReturn( false );
 		Actions\expectAdded( 'init' )->once();
 
@@ -132,12 +132,11 @@ class Public_Interface_Test extends TestCase {
 	 *
 	 * @covers ::run
 	 */
-	public function test_run_admin() : void {
+	public function test_run_admin(): void {
 		Functions\expect( 'is_admin' )->once()->andReturn( true );
 		Actions\expectAdded( 'init' )->never();
 
 		$this->public_if->run();
-
 	}
 
 	/**
@@ -145,7 +144,7 @@ class Public_Interface_Test extends TestCase {
 	 *
 	 * @return mixed[]
 	 */
-	public function provide_init_data() : array {
+	public function provide_init_data(): array {
 		return [
 			[ true, true, true, true ],
 			[ false, false, false, false ],
@@ -168,7 +167,7 @@ class Public_Interface_Test extends TestCase {
 	 * @param bool $smart_characters The typo_smart_characters value.
 	 * @param bool $nextgen          Simulate enable NextGEN Gallery plugin.
 	 */
-	public function test_init( $restore_defaults, $clear_cache, $smart_characters, $nextgen ) : void {
+	public function test_init( $restore_defaults, $clear_cache, $smart_characters, $nextgen ): void {
 		$settings = $this->prepareOptions(
 			[
 				Config::SMART_CHARACTERS => $smart_characters,
@@ -205,7 +204,7 @@ class Public_Interface_Test extends TestCase {
 	 *
 	 * @return mixed[]
 	 */
-	public function provide_add_content_filters_data() : array {
+	public function provide_add_content_filters_data(): array {
 		return [
 			[ true,  true,  true,  '4.8' ],
 			[ false, false, false, '4.8.1' ],
@@ -230,7 +229,7 @@ class Public_Interface_Test extends TestCase {
 	 * @param bool   $title       Disable title filters if true.
 	 * @param string $wp_version Simulated WordPress version.
 	 */
-	public function test_add_content_filters( $content, $heading, $title, $wp_version ) : void {
+	public function test_add_content_filters( $content, $heading, $title, $wp_version ): void {
 
 		$content_hooks      = [
 			'comment_author',
@@ -292,7 +291,7 @@ class Public_Interface_Test extends TestCase {
 	 *
 	 * @covers ::enqueue_styles
 	 */
-	public function test_enqueue_styles_css() : void {
+	public function test_enqueue_styles_css(): void {
 		$custom_style = 'my: css;';
 		$clean_style  = 'my: clean css;';
 		$this->prepareOptions(
@@ -318,7 +317,7 @@ class Public_Interface_Test extends TestCase {
 	 *
 	 * @covers ::enqueue_styles
 	 */
-	public function test_enqueue_styles_safari_workaround() : void {
+	public function test_enqueue_styles_safari_workaround(): void {
 		$this->prepareOptions(
 			[
 				Config::STYLE_CSS_INCLUDE                => false,
@@ -339,7 +338,7 @@ class Public_Interface_Test extends TestCase {
 	 *
 	 * @covers ::enqueue_scripts
 	 */
-	public function test_enqueue_scripts() : void {
+	public function test_enqueue_scripts(): void {
 		$version = '6.6.6';
 		$this->prepareOptions(
 			[
@@ -362,7 +361,7 @@ class Public_Interface_Test extends TestCase {
 	 *
 	 * @covers ::enqueue_scripts
 	 */
-	public function test_enqueue_scripts_no_clipboard() : void {
+	public function test_enqueue_scripts_no_clipboard(): void {
 		$this->prepareOptions(
 			[
 				Config::HYPHENATE_CLEAN_CLIPBOARD => false,
@@ -381,7 +380,7 @@ class Public_Interface_Test extends TestCase {
 	 *
 	 * @covers ::clean_styles
 	 */
-	public function test_clean_styles() : void {
+	public function test_clean_styles(): void {
 		$selector1     = 'foo, bar';
 		$selector2     = 'bar < foobar';
 		$rules1        = 'foo-attribute: bar;bar-attribute: foo;';
@@ -403,7 +402,7 @@ class Public_Interface_Test extends TestCase {
 	 *
 	 * @covers ::clean_styles
 	 */
-	public function test_clean_styles_realworld() : void {
+	public function test_clean_styles_realworld(): void {
 		$input = <<<EOT
 		/*
 		 * Styled sub- and superscripts.
