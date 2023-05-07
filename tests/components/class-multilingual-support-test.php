@@ -681,9 +681,13 @@ class Multilingual_Support_Test extends TestCase {
 			'de-DE' => 'Deutsch',
 		];
 
+		$result = 'de-DE';
+
 		Filters\expectApplied( "typo_match_{$type}_language" )->once()->with( '', $languages, $locale, $language )->andReturn( '' );
 
-		$this->assertSame( 'de-DE', $this->invokeMethod( $this->multi, 'match_language', [ $languages, $locale, $language, $type ] ) );
+		$this->multi->shouldReceive( 'match_language_using_heuristics' )->once()->with( \array_keys( $languages ), $language, $locale )->andReturn( $result );
+
+		$this->assertSame( $result, $this->invokeMethod( $this->multi, 'match_language', [ $languages, $locale, $language, $type ] ) );
 	}
 
 	/**
@@ -706,6 +710,8 @@ class Multilingual_Support_Test extends TestCase {
 		];
 
 		Filters\expectApplied( "typo_match_{$type}_language" )->once()->with( '', $languages, $locale, $language )->andReturn( '' );
+
+		$this->multi->shouldReceive( 'match_language_using_heuristics' )->never();
 
 		$this->assertSame( $locale, $this->invokeMethod( $this->multi, 'match_language', [ $languages, $locale, $language, $type ] ) );
 	}
@@ -731,31 +737,9 @@ class Multilingual_Support_Test extends TestCase {
 
 		Filters\expectApplied( "typo_match_{$type}_language" )->once()->with( '', $languages, $locale, $language )->andReturn( '' );
 
+		$this->multi->shouldReceive( 'match_language_using_heuristics' )->never();
+
 		$this->assertSame( 'de', $this->invokeMethod( $this->multi, 'match_language', [ $languages, $locale, $language, $type ] ) );
-	}
-
-	/**
-	 * Test match_language.
-	 *
-	 * @covers ::match_language
-	 *
-	 * @uses ::normalize
-	 */
-	public function test_match_language_multiple_hits(): void {
-		$type     = 'foobar';
-		$language = 'de';
-		$country  = 'DE';
-		$locale   = "{$language}-{$country}";
-
-		$languages = [
-			'en-US'      => 'English (US)',
-			'de-DE-1901' => 'Deutsch (Deutschland, alte Rechtschreibung)',
-			'de-AT'      => 'Deutsch (Österreich)',
-		];
-
-		Filters\expectApplied( "typo_match_{$type}_language" )->once()->with( '', $languages, $locale, $language )->andReturn( '' );
-
-		$this->assertSame( 'de-DE-1901', $this->invokeMethod( $this->multi, 'match_language', [ $languages, $locale, $language, $type ] ) );
 	}
 
 	/**
@@ -779,8 +763,45 @@ class Multilingual_Support_Test extends TestCase {
 
 		Filters\expectApplied( "typo_match_{$type}_language" )->once()->with( '', $languages, $locale, $language )->andReturn( 'something' );
 
+		$this->multi->shouldReceive( 'match_language_using_heuristics' )->never();
+
 		$this->assertSame( 'something', $this->invokeMethod( $this->multi, 'match_language', [ $languages, $locale, $language, $type ] ) );
 	}
+
+	/**
+	 * Provides data for testing match_language_using_heuristics.
+	 *
+	 * @return array
+	 *
+	 * @phpstan-return array<array{0: string[], 1: string, 2: string, 3: string}>
+	 */
+	public function provide_match_language_using_heuristics_data(): array {
+		return [
+			// Only one match with language.
+			[ [ 'en-US', 'de-AT' ], 'de', 'de-DE', 'de-AT' ],
+			// Only one match with locale.
+			[ [ 'en-US', 'de-DE-1901', 'de-AT' ], 'de', 'de-DE', 'de-DE-1901' ],
+			// Two matches remain even with the locale.
+			[ [ 'en-US', 'de-DE-1901', 'de-DE-1996', 'de-AT' ], 'de', 'de-DE', '' ],
+		];
+	}
+
+	/**
+	 * Test ::match_language_using_heuristics.
+	 *
+	 * @covers ::match_language_using_heuristics
+	 *
+	 * @dataProvider provide_match_language_using_heuristics_data
+	 *
+	 * @param string[] $codes    The list of language codes.
+	 * @param string   $language The language code from the.
+	 * @param string   $locale   The full locale string.
+	 * @param string   $result   The expected result.
+	 */
+	public function test_match_language_using_heuristics( array $codes, string $language, string $locale, string $result ): void {
+		$this->assertSame( $result, $this->invokeMethod( $this->multi, 'match_language_using_heuristics', [ $codes, $language, $locale ] ) );
+	}
+
 
 	/**
 	 * Provide data for testing match_language.
@@ -811,6 +832,7 @@ class Multilingual_Support_Test extends TestCase {
 	 * @covers ::normalize
 	 *
 	 * @uses ::match_language
+	 * @uses ::match_language_using_heuristics
 	 * @uses PHP_Typography\PHP_Typography::get_hyphenation_languages
 	 *
 	 * @dataProvider provide_match_language_data

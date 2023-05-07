@@ -461,23 +461,39 @@ class Multilingual_Support implements Plugin_Component {
 			return $language;
 		}
 
-		// Try some heuristics..
-		$matches     = \preg_grep( "/^{$language}-/", array_keys( $languages ) ) ?: []; // phpcs:ignore Universal.Operators.DisallowShortTernary -- ensure array type.
+		// Try some heuristics.
+		return $this->match_language_using_heuristics( \array_keys( $languages ), $language, $locale );
+	}
+
+	/**
+	 * Tries to heuristically match a language code, looking first for variants of the language
+	 * and then narrowing it down using the whole locale.
+	 *
+	 * @since  5.9.2
+	 *
+	 * @param string[] $language_codes An array of language/locale codes.
+	 * @param string   $language       The current two-letter language code (e.g. 'en').
+	 * @param string   $locale         The current locale, separated with a dash (e.g. 'en-US').
+	 *
+	 * @return string           A language code (or '' if not match was possible).
+	 */
+	protected function match_language_using_heuristics( array $language_codes, string $language, string $locale ): string {
+		$matches     = \preg_grep( "/^{$language}-/", $language_codes ) ?: []; // phpcs:ignore Universal.Operators.DisallowShortTernary -- ensure array type.
 		$match_count = \count( $matches );
 
 		if ( 1 === $match_count ) {
-			$result = \array_pop( $matches );
+			return \array_pop( $matches );
 		} elseif ( $match_count > 1 ) {
 			// Narrow the search further.
 			$matches     = \preg_grep( "/^{$locale}/", $matches ) ?: []; // phpcs:ignore Universal.Operators.DisallowShortTernary -- ensure array type.
 			$match_count = \count( $matches );
 
 			if ( 1 === $match_count ) {
-				$result = \array_pop( $matches );
+				return \array_pop( $matches );
 			}
 		}
 
-		return $result;
+		return '';
 	}
 
 	/**
