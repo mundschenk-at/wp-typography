@@ -21,7 +21,7 @@
 
 	<rule ref="WordPress.NamingConventions.ValidVariableName">
 		<properties>
-			<property name="customPropertiesWhitelist" type="array" value="nodeValue,parentNode,childNodes,tagName,ownerDocument,nextSibling,previousSibling,firstChild,lastChild" />
+			<property name="allowed_custom_properties" type="array" value="nodeValue,parentNode,childNodes,tagName,ownerDocument,nextSibling,previousSibling,firstChild,lastChild" />
 		</properties>
 	</rule>
 
