@@ -83,7 +83,7 @@
           "phpcs -ps includes/ admin/ tests/ --extensions=php && phpcs -ps *.php --runtime-set testVersion 7.2-"
       ],
       "phpstan": [
-          "phpstan analyse --xdebug --ansi"
+          "phpstan analyse --ansi"
       ],
       "scope-dependencies": [
           "@php vendor/bin/php-scoper add-prefix --config=.scoper.inc.php --force --quiet"
