@@ -728,6 +728,7 @@ class Implementation extends \WP_Typography {
 				)
 			);
 
+			// @phpstan-ignore-next-line -- Ternary condition is not always true on PHP 7.4.
 			$exceptions = \array_combine( $patterns, $replacements ) ?: []; // phpcs:ignore Universal.Operators.DisallowShortTernary -- ensure array type.
 		}
 
