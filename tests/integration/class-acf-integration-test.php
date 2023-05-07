@@ -450,16 +450,16 @@ class ACF_Integration_Test extends TestCase {
 	 *
 	 * @dataProvider provide_add_field_setting_data
 	 *
-	 * @param string $type    The field type.
-	 * @param string $default The default filter setting.
+	 * @param string $type          The field type.
+	 * @param string $default_value The default filter setting.
 	 */
-	public function test_add_field_setting( $type, $default ): void {
+	public function test_add_field_setting( $type, $default_value ): void {
 		$field = [
 			'type' => $type,
 		];
 
 		Functions\when( '__' )->returnArg();
-		Functions\expect( 'acf_render_field_setting' )->once()->with( $field, m::subset( [ 'default_value' => $default ] ) );
+		Functions\expect( 'acf_render_field_setting' )->once()->with( $field, m::subset( [ 'default_value' => $default_value ] ) );
 
 		$this->acf_i->add_field_setting( $field );
 	}

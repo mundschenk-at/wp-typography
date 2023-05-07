@@ -158,8 +158,8 @@ class Admin_Interface_Test extends TestCase {
 
 		// Finish Admin_Interface.
 		Functions\expect( '__' )->atLeast()->once()->with( m::type( 'string' ), 'wp-typography' )->andReturnUsing(
-			function( $string, $domain ) {
-				return $string;
+			function( $str, $domain ) {
+				return $str;
 			}
 		);
 		Functions\expect( 'is_admin' )->once()->andReturn( true );

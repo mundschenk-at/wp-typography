@@ -55,23 +55,23 @@ abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 	/**
 	 * Call protected/private method of a class.
 	 *
-	 * @param object        $object      Instantiated object that we will run method on.
+	 * @param object        $instance    Instantiated object that we will run method on.
 	 * @param string        $method_name Method name to call.
 	 * @param mixed[]       $parameters  Array of parameters to pass into method.
 	 * @param ?class-string $classname   Optional. The class to use for accessing private properties.
 	 *
 	 * @return mixed Method return.
 	 */
-	protected function invokeMethod( $object, $method_name, array $parameters = [], $classname = null ) {
+	protected function invokeMethod( $instance, $method_name, array $parameters = [], $classname = null ) {
 		if ( empty( $classname ) ) {
-			$classname = \get_class( $object );
+			$classname = \get_class( $instance );
 		}
 
 		$reflection = new \ReflectionClass( $classname );
 		$method     = $reflection->getMethod( $method_name );
 		$method->setAccessible( true );
 
-		return $method->invokeArgs( $object, $parameters );
+		return $method->invokeArgs( $instance, $parameters );
 	}
 
 	/**
@@ -108,20 +108,20 @@ abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 	/**
 	 * Sets the value of a private/protected property of a class.
 	 *
-	 * @param object        $object        Instantiated object that we will run method on.
+	 * @param object        $instance      Instantiated object that we will run method on.
 	 * @param string        $property_name Property to set.
 	 * @param mixed|null    $value         The new value.
 	 * @param ?class-string $classname     Optional. The class to use for accessing private properties.
 	 */
-	protected function setValue( $object, $property_name, $value, $classname = null ): void {
+	protected function setValue( $instance, $property_name, $value, $classname = null ): void {
 		if ( empty( $classname ) ) {
-			$classname = \get_class( $object );
+			$classname = \get_class( $instance );
 		}
 
 		$reflection = new \ReflectionClass( $classname );
 		$property   = $reflection->getProperty( $property_name );
 		$property->setAccessible( true );
-		$property->setValue( $object, $value );
+		$property->setValue( $instance, $value );
 	}
 
 	/**
@@ -143,53 +143,53 @@ abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 	/**
 	 * Retrieves the value of a private/protected property of a class.
 	 *
-	 * @param object        $object        Instantiated object that we will run method on.
+	 * @param object        $instance      Instantiated object that we will run method on.
 	 * @param string        $property_name Property to set.
 	 * @param ?class-string $classname     Optional. The class to use for accessing private properties.
 	 *
 	 * @return mixed
 	 */
-	protected function getValue( $object, $property_name, $classname = null ) {
+	protected function getValue( $instance, $property_name, $classname = null ) {
 		if ( empty( $classname ) ) {
-			$classname = \get_class( $object );
+			$classname = \get_class( $instance );
 		}
 
 		$reflection = new \ReflectionClass( $classname );
 		$property   = $reflection->getProperty( $property_name );
 		$property->setAccessible( true );
 
-		return $property->getValue( $object );
+		return $property->getValue( $instance );
 	}
 
 	/**
-	 * Reports an error identified by $message if $attribute in $object does not have the $key.
+	 * Reports an error identified by $message if $attribute in $instance does not have the $key.
 	 *
 	 * @param string $key       The array key.
 	 * @param string $attribute The attribute name.
-	 * @param object $object    The object.
+	 * @param object $instance  The object.
 	 * @param string $message   Optional. Default ''.
 	 */
-	protected function assertAttributeArrayHasKey( $key, $attribute, $object, $message = '' ): void {
-		$ref  = new \ReflectionClass( \get_class( $object ) );
+	protected function assertAttributeArrayHasKey( $key, $attribute, $instance, $message = '' ): void {
+		$ref  = new \ReflectionClass( \get_class( $instance ) );
 		$prop = $ref->getProperty( $attribute );
 		$prop->setAccessible( true );
 
-		$this->assertArrayHasKey( $key, $prop->getValue( $object ), $message );
+		$this->assertArrayHasKey( $key, $prop->getValue( $instance ), $message );
 	}
 
 	/**
-	 * Reports an error identified by $message if $attribute in $object does have the $key.
+	 * Reports an error identified by $message if $attribute in $instance does have the $key.
 	 *
 	 * @param string $key       The array key.
 	 * @param string $attribute The attribute name.
-	 * @param object $object    The object.
+	 * @param object $instance  The object.
 	 * @param string $message   Optional. Default ''.
 	 */
-	protected function assertAttributeArrayNotHasKey( $key, $attribute, $object, $message = '' ): void {
-		$ref  = new \ReflectionClass( \get_class( $object ) );
+	protected function assertAttributeArrayNotHasKey( $key, $attribute, $instance, $message = '' ): void {
+		$ref  = new \ReflectionClass( \get_class( $instance ) );
 		$prop = $ref->getProperty( $attribute );
 		$prop->setAccessible( true );
 
-		$this->assertArrayNotHasKey( $key, $prop->getValue( $object ), $message );
+		$this->assertArrayNotHasKey( $key, $prop->getValue( $instance ), $message );
 	}
 }
