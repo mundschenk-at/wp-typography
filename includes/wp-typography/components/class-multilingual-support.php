@@ -428,7 +428,7 @@ class Multilingual_Support implements Plugin_Component {
 	 * @param  string               $language  A 2-letter language code.
 	 * @param  string               $type      Either "hyphenation" or "diacritic".
 	 *
-	 * @return String                          An index in the languages array (or '' if not match was possible).
+	 * @return string                          An index in the languages array (or '' if not match was possible).
 	 */
 	protected function match_language( array $languages, $locale, $language, $type ): string {
 		/**
