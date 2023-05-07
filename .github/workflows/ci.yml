@@ -12,15 +12,13 @@ jobs:
     name: Unit tests (PHP ${{ matrix.php-versions }})
     runs-on: ubuntu-22.04
     continue-on-error: ${{ matrix.experimental }}
-    env:
-      COVERAGE_PHP: '8.0'
     strategy:
       fail-fast: false
       matrix:
-        php-versions: ['7.4', '8.0']
+        php-versions: ['7.4', '8.0', '8.1', '8.2']
         experimental: [false]
         include:
-          - php-versions: '8.1'
+          - php-versions: '8.3'
             experimental: true
     steps:
       - name: Checkout repository
@@ -33,7 +31,6 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           coverage: none
-          extensions: gd
       - name: Setup problem matchers for PHPUnit
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
       - name: Remove unused Composer dependencies
@@ -58,7 +55,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php-versions: ['8.0']
+        php-versions: ['8.2']
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -70,7 +67,6 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           coverage: xdebug
-          extensions: gd
       - name: Remove unused Composer dependencies
         run: composer remove humbug/php-scoper sirbrillig/phpcs-import-detection szepeviktor/phpstan-wordpress --dev --no-interaction --no-update
       - name: Get composer cache directory
