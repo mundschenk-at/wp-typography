@@ -5,8 +5,8 @@
     "@babel/core": "^7.14",
     "@babel/preset-env": "^7.12.1",
     "@lodder/grunt-postcss": "^3.0.0",
-    "@wordpress/eslint-plugin": "^13.6.0",
-    "@wordpress/scripts": "^25.1.0",
+    "@wordpress/eslint-plugin": "^14",
+    "@wordpress/scripts": "^26",
     "autoprefixer": "^10.4.2",
     "coffeescript": "^2.5.1",
     "grunt": "^1.4.0",
@@ -28,7 +28,7 @@
     "load-grunt-tasks": "^5.0.0",
     "postcss": "^8.1.4",
     "sass": "^1.28.0",
-    "typescript": "^4.0.5"
+    "typescript": "^w5"
   },
   "scripts": {
     "build-blocks": "wp-scripts build admin/block-editor/src/index.js --output-path=build/admin/block-editor/js",
