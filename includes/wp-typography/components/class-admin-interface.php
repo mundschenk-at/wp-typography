@@ -76,7 +76,6 @@ class Admin_Interface implements Plugin_Component {
 	/**
 	 * The user-visible name of the plugin.
 	 *
-	 * @todo Maybe we should translate the name?
 	 * @var string $plugin_name
 	 */
 	private $plugin_name = 'wp-Typography';
