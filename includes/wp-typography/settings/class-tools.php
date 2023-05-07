@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2019-2022 Peter Putzer.
+ *  Copyright 2019-2023 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -49,7 +49,7 @@ abstract class Tools {
 	 *
 	 * @return string[]       An array of replacements, indexed by the key.
 	 */
-	public static function parse_smart_quote_exceptions_string( $string ) : array {
+	public static function parse_smart_quote_exceptions_string( $string ): array {
 		return \array_reduce(
 			\preg_split( '/,/', $string, -1, \PREG_SPLIT_NO_EMPTY ) ?: [], // phpcs:ignore WordPress.PHP.DisallowShortTernary -- ensure array type.
 			function( $result, $replacement ) {
@@ -81,7 +81,7 @@ abstract class Tools {
 	 *
 	 * @return array<T>
 	 */
-	public static function array_map_assoc( callable $callback, array $array ) : array {
+	public static function array_map_assoc( callable $callback, array $array ): array {
 		\_deprecated_function( __FUNCTION__, '5.8.0' );
 
 		$new = [];

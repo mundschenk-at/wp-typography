@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2018-2022 Peter Putzer.
+ *  Copyright 2018-2023 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -67,7 +67,7 @@ class Custom_Node_Fix extends Abstract_Node_Fix {
 	 *
 	 * @return void
 	 */
-	public function apply( \DOMText $textnode, Settings $settings, $is_title = false ) : void {
+	public function apply( \DOMText $textnode, Settings $settings, $is_title = false ): void {
 		/**
 		 * Filters the text node content for the given group.
 		 *

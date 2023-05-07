@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2018-2022 Peter Putzer.
+ *  Copyright 2018-2023 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -67,7 +67,7 @@ class Plugin_Controller {
 	/**
 	 * Starts the plugin for real.
 	 */
-	public function run() : void {
+	public function run(): void {
 		// Set plugin singleton.
 		\WP_Typography::set_instance( $this->api );
 

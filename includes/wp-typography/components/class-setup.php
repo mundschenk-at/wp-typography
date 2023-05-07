@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2014-2022 Peter Putzer.
+ *  Copyright 2014-2023 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -95,7 +95,7 @@ class Setup implements Plugin_Component {
 	 *
 	 * @since 5.7.0 Parameter $plugin removed.
 	 */
-	public function run() : void {
+	public function run(): void {
 		// Register various hooks.
 		\register_activation_hook( \WP_TYPOGRAPHY_PLUGIN_FILE,   [ $this,     'activate' ] );
 		\register_deactivation_hook( \WP_TYPOGRAPHY_PLUGIN_FILE, [ $this,     'deactivate' ] );
@@ -110,7 +110,7 @@ class Setup implements Plugin_Component {
 	 *
 	 * @since 3.1.0
 	 */
-	public function activate() : void {
+	public function activate(): void {
 		// Load default values for any new options.
 		$this->api->get_config();
 
@@ -123,7 +123,7 @@ class Setup implements Plugin_Component {
 	 *
 	 * @since 5.1.0
 	 */
-	public function plugin_update_check() : void {
+	public function plugin_update_check(): void {
 		// We can ignore errors here, just carry on as if for a new installation.
 		$installed_version = (string) $this->options->get( Options::INSTALLED_VERSION, '' );
 
@@ -137,7 +137,7 @@ class Setup implements Plugin_Component {
 	 *
 	 * @param string $previous_version The version we are upgrading from.
 	 */
-	protected function plugin_updated( $previous_version ) : void {
+	protected function plugin_updated( $previous_version ): void {
 		// Upgrade from version 3.0.0 or lower.
 		if ( \version_compare( $previous_version, '3.1.0-beta.2', '<' ) ) {
 			$this->upgrade_options_3_1();
@@ -169,7 +169,7 @@ class Setup implements Plugin_Component {
 	 *
 	 * @since 5.1.0
 	 */
-	protected function upgrade_options_3_1() : void {
+	protected function upgrade_options_3_1(): void {
 		foreach ( $this->api->get_default_options() as $option_name => $option ) {
 			$old_option = $this->get_old_option_name( self::LEGACY_OPTIONS_PREFIX . "_{$option_name}" );
 			$old_value  = $this->options->get( $old_option, self::UPGRADING, true );
@@ -187,7 +187,7 @@ class Setup implements Plugin_Component {
 	 *
 	 * @since 5.1.0
 	 */
-	protected function upgrade_options_3_2() : void {
+	protected function upgrade_options_3_2(): void {
 		$this->options->delete( 'typo_disable_caching', true );
 	}
 
@@ -196,7 +196,7 @@ class Setup implements Plugin_Component {
 	 *
 	 * @since 5.1.0
 	 */
-	protected function upgrade_options_3_3() : void {
+	protected function upgrade_options_3_3(): void {
 		$this->options->delete( 'typo_remove_ie6', true );
 	}
 
@@ -205,7 +205,7 @@ class Setup implements Plugin_Component {
 	 *
 	 * @since 5.1.0
 	 */
-	protected function upgrade_options_3_5() : void {
+	protected function upgrade_options_3_5(): void {
 		$this->options->delete( 'typo_enable_caching', true );
 		$this->options->delete( 'typo_caching_limit', true );
 	}
@@ -215,7 +215,7 @@ class Setup implements Plugin_Component {
 	 *
 	 * @since 5.1.0
 	 */
-	protected function upgrade_options_5_1() : void {
+	protected function upgrade_options_5_1(): void {
 		$this->options->delete( 'typo_transient_keys', true );
 		$this->options->delete( 'typo_cache_keys', true );
 
@@ -227,7 +227,7 @@ class Setup implements Plugin_Component {
 	 *
 	 * @since 5.1.0
 	 */
-	protected function upgrade_options_to_array() : void {
+	protected function upgrade_options_to_array(): void {
 		$config = $this->api->get_default_options();
 
 		foreach ( $config as $option_name => $default_value ) {
@@ -248,7 +248,7 @@ class Setup implements Plugin_Component {
 	 *
 	 * @since 5.1.0
 	 */
-	protected function set_installed_version() : void {
+	protected function set_installed_version(): void {
 		$this->options->set( Options::INSTALLED_VERSION, $this->api->get_version() );
 	}
 
@@ -260,7 +260,7 @@ class Setup implements Plugin_Component {
 	 *
 	 * @return string        An old-style option name, e.g. 'MyOldOption'.
 	 */
-	protected function get_old_option_name( $option ) : string {
+	protected function get_old_option_name( $option ): string {
 		$parts   = \explode( '_', $option );
 		$oldname = \array_shift( $parts );
 
@@ -288,7 +288,7 @@ class Setup implements Plugin_Component {
 	 *
 	 * @since 3.1.0
 	 */
-	public function deactivate() : void {
+	public function deactivate(): void {
 	}
 
 	/**
@@ -296,7 +296,7 @@ class Setup implements Plugin_Component {
 	 *
 	 * @since 3.1.0
 	 */
-	public static function uninstall() : void {
+	public static function uninstall(): void {
 
 		// Delete all our transients.
 		$transients = new \WP_Typography\Data_Storage\Transients();

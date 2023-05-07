@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2022 Peter Putzer.
+ *  Copyright 2017-2023 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -83,7 +83,7 @@ class Factory extends Dice {
 	 * @throws Object_Factory_Exception An exception is thrown if the factory cannot
 	 *                                  be created.
 	 */
-	public static function get() : self {
+	public static function get(): self {
 		if ( ! self::$factory instanceof static ) {
 
 			// Create factory.
@@ -107,7 +107,7 @@ class Factory extends Dice {
 	 *
 	 * @return mixed[]
 	 */
-	protected function get_rules() : array {
+	protected function get_rules(): array {
 		return [
 			// Shared helpers.
 			Cache::class                           => self::SHARED,
@@ -240,7 +240,7 @@ class Factory extends Dice {
 	 *
 	 * @return string
 	 */
-	protected function get_plugin_version( $plugin_file ) : string {
+	protected function get_plugin_version( $plugin_file ): string {
 		// Load version from plugin data.
 		if ( ! \function_exists( 'get_plugin_data' ) ) {
 			require_once \ABSPATH . 'wp-admin/includes/plugin.php';
@@ -265,7 +265,7 @@ class Factory extends Dice {
 	 *
 	 * @phpstan-return array<array<self::INSTANCE,class-string<Components\Plugin_Component>>>
 	 */
-	protected function get_components() : array {
+	protected function get_components(): array {
 		return [
 			[ self::INSTANCE => Components\Setup::class ],
 			[ self::INSTANCE => Components\Common::class ],
@@ -292,7 +292,7 @@ class Factory extends Dice {
 	 *
 	 * @phpstan-return array<array<self::INSTANCE,class-string<Integration\Plugin_Integration>>>
 	 */
-	protected function get_plugin_integrations() : array {
+	protected function get_plugin_integrations(): array {
 		return [
 			[ self::INSTANCE => Integration\ACF_Integration::class ],
 			[ self::INSTANCE => Integration\WooCommerce_Integration::class ],
@@ -314,7 +314,7 @@ class Factory extends Dice {
 	 *
 	 * @phpstan-return array<array<self::INSTANCE,string>>>
 	 */
-	protected function get_supported_locales() : array {
+	protected function get_supported_locales(): array {
 		return [
 			[ self::INSTANCE => '$LocaleSwitzerland' ],
 			[ self::INSTANCE => '$LocaleUnitedStates' ],
