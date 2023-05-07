@@ -80,7 +80,7 @@
           "@phpstan"
       ],
       "phpcs": [
-          "phpcs -ps includes/ admin/ tests/ --extensions=php && phpcs -ps *.php --runtime-set testVersion 7.2-"
+          "phpcs -ps includes/ admin/ tests/ --extensions=php && phpcs -ps *.php --runtime-set testVersion 7.4-"
       ],
       "phpstan": [
           "phpstan analyse --ansi"
