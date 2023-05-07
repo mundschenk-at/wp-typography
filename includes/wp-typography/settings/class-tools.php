@@ -45,13 +45,16 @@ abstract class Tools {
 	 * Parses a smart quotes exceptions string into an array. All single straight
 	 * quotes (prime marks) are treated as apostrophes.
 	 *
-	 * @param  string $string A string formatted `word1, word2, ...`.
+	 * @since  5.9.2 Parameter `$strings` renamed to `$exceptions` to prevent
+	 *               conflicts with reserved keywords.
 	 *
-	 * @return string[]       An array of replacements, indexed by the key.
+	 * @param  string $exceptions A string formatted `word1, word2, ...`.
+	 *
+	 * @return string[]           An array of replacements, indexed by the key.
 	 */
-	public static function parse_smart_quote_exceptions_string( $string ): array {
+	public static function parse_smart_quote_exceptions_string( $exceptions ): array {
 		return \array_reduce(
-			\preg_split( '/,/', $string, -1, \PREG_SPLIT_NO_EMPTY ) ?: [], // phpcs:ignore Universal.Operators.DisallowShortTernary -- ensure array type.
+			\preg_split( '/,/', $exceptions, -1, \PREG_SPLIT_NO_EMPTY ) ?: [], // phpcs:ignore Universal.Operators.DisallowShortTernary -- ensure array type.
 			function( $result, $replacement ) {
 				$key         = \trim( \strip_tags( $replacement ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.strip_tags_strip_tags -- no need for WordPress' version here.
 				$replacement = \str_replace( "'", U::APOSTROPHE, $key );
@@ -74,19 +77,21 @@ abstract class Tools {
 	 *
 	 * @deprecated 5.8.0
 	 *
+	 * @since 5.9.0 Parameter `$array` renamed to `$arr` to prevent conflict with reserved keywords.
+	 *
 	 * @template T
 	 *
 	 * @param  callable $callback A callback function that needs to return [ $key => $value ] pairs.
-	 * @param  array<T> $array    The array.
+	 * @param  array<T> $arr      The array.
 	 *
 	 * @return array<T>
 	 */
-	public static function array_map_assoc( callable $callback, array $array ): array {
+	public static function array_map_assoc( callable $callback, array $arr ): array {
 		\_deprecated_function( __FUNCTION__, '5.8.0' );
 
 		$new = [];
 
-		foreach ( $array as $k => $v ) {
+		foreach ( $arr as $k => $v ) {
 			$u = $callback( $k, $v );
 
 			if ( ! empty( $u ) ) {
