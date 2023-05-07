@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2014-2022 Peter Putzer.
+ *  Copyright 2014-2023 Peter Putzer.
  *  Copyright 2009-2011 KINGdesk, LLC.
  *
  *  This program is free software; you can redistribute it and/or
@@ -160,7 +160,7 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @return string[] An array in the form of ( $language_code => $language ).
 	 */
-	public function get_hyphenation_languages() : array {
+	public function get_hyphenation_languages(): array {
 		return $this->load_languages( 'hyphenate_languages', [ PHP_Typography::class, 'get_hyphenation_languages' ], 'hyphenate' );
 	}
 
@@ -173,7 +173,7 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @return string[] An array in the form of ( $language_code => $language ).
 	 */
-	public function get_diacritic_languages() : array {
+	public function get_diacritic_languages(): array {
 		return $this->load_languages( 'diacritic_languages', [ PHP_Typography::class, 'get_diacritic_languages' ], 'diacritic' );
 	}
 
@@ -186,7 +186,7 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @return string[]
 	 */
-	protected function load_languages( $cache_key, callable $get_language_list, $type ) : array {
+	protected function load_languages( $cache_key, callable $get_language_list, $type ): array {
 		// Try to load hyphenation language list from cache.
 		$languages = $this->cache->get( $cache_key, $found );
 
@@ -219,7 +219,7 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @return string[] The same array with the language name translated.
 	 */
-	private static function translate_languages( array $languages ) : array {
+	private static function translate_languages( array $languages ): array {
 		\array_walk(
 			$languages,
 			function( &$lang, $code ) {
@@ -241,7 +241,7 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @return array<string,string|int|bool>
 	 */
-	public function get_config() : array {
+	public function get_config(): array {
 		if ( ! isset( $this->configuration ) ) {
 			$config = $this->options->get( Options::CONFIGURATION );
 			if ( \is_array( $config ) ) {
@@ -280,7 +280,7 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @return Settings
 	 */
-	public function get_settings() : Settings {
+	public function get_settings(): Settings {
 
 		// Initialize Settings instance.
 		if ( empty( $this->typo_settings ) ) {
@@ -321,7 +321,7 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @return string                 The processed `$text`.
 	 */
-	public function process_title( $text, Settings $settings = null ) : string {
+	public function process_title( $text, Settings $settings = null ): string {
 		return $this->process( $text, true, false, $settings );
 	}
 
@@ -337,7 +337,7 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @return string                 The processed `$text`.
 	 */
-	public function process_feed_title( $text, Settings $settings = null ) : string {
+	public function process_feed_title( $text, Settings $settings = null ): string {
 		return $this->process_feed( $text, true, $settings );
 	}
 
@@ -356,7 +356,7 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @return string                 The processed `$text`.
 	 */
-	public function process_feed( $text, $is_title = false, Settings $settings = null ) : string {
+	public function process_feed( $text, $is_title = false, Settings $settings = null ): string {
 		return $this->process( $text, $is_title, true, $settings );
 	}
 
@@ -372,7 +372,7 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @return string[]
 	 */
-	public function process_title_parts( array $title_parts, Settings $settings = null ) : array {
+	public function process_title_parts( array $title_parts, Settings $settings = null ): array {
 		foreach ( $title_parts as $index => $part ) {
 			// Remove "&shy;" and "&#8203;" after processing title part.
 			$title_parts[ $index ] = \wp_strip_all_tags(
@@ -397,7 +397,7 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @return string                   The processed `$text`.
 	 */
-	public function process( $text, $is_title = false, $force_feed = false, Settings $settings = null ) : string {
+	public function process( $text, $is_title = false, $force_feed = false, Settings $settings = null ): string {
 		// Check if processing is disabled for this post.
 		$post_id = \get_the_ID();
 		$disable = ! empty( $post_id ) && \get_post_meta( $post_id, REST_API::WP_TYPOGRAPHY_DISABLED_META_KEY, true );
@@ -450,7 +450,7 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @return string            The processed `$text`.
 	 */
-	protected function maybe_process_fragment( $text, $is_title, $is_feed, Settings $settings ) : string {
+	protected function maybe_process_fragment( $text, $is_title, $is_feed, Settings $settings ): string {
 		// Construct cache key.
 		$key = 'frag_' . \md5( $text ) . '_' . $settings->get_hash( 32, false ) . '_' . ( $is_feed ? 'f' : '' ) . ( $is_title ? 't' : 's' );
 
@@ -486,7 +486,7 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @return string[]
 	 */
-	public function filter_body_class( array $classes ) : array {
+	public function filter_body_class( array $classes ): array {
 		$this->body_classes = $classes;
 
 		return $classes;
@@ -499,7 +499,7 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @return PHP_Typography
 	 */
-	protected function get_typography_instance() : PHP_Typography {
+	protected function get_typography_instance(): PHP_Typography {
 
 		// Retrieve options.
 		$config = $this->get_config();
@@ -543,7 +543,7 @@ class Implementation extends \WP_Typography {
 	/**
 	 * Save hyphenator cache for the next request.
 	 */
-	public function save_hyphenator_cache_on_shutdown() : void {
+	public function save_hyphenator_cache_on_shutdown(): void {
 		if ( isset( $this->hyphenator_cache ) && $this->hyphenator_cache->has_changed() ) {
 			$this->transients->cache_object( 'php_hyphenator_cache', $this->hyphenator_cache, 'hyphenator_cache' );
 		}
@@ -555,7 +555,7 @@ class Implementation extends \WP_Typography {
 	 * @param Settings $s      The settings instance to initialize.
 	 * @param mixed[]  $config The array of configuration entries.
 	 */
-	protected function init_settings_from_options( Settings $s, array $config ) : void {
+	protected function init_settings_from_options( Settings $s, array $config ): void {
 		// Necessary for full Settings initialization.
 		$s->set_smart_dashes_style( $config[ Config::SMART_DASHES_STYLE ] );
 		$s->set_smart_quotes_primary( $config[ Config::SMART_QUOTES_PRIMARY ] );
@@ -690,7 +690,7 @@ class Implementation extends \WP_Typography {
 	 * @return string[]                  An array of replacements, indexed by the
 	 *                                   key and sorted by descending key length.
 	 */
-	protected function prepare_smart_quotes_exceptions( $custom_exceptions ) : array {
+	protected function prepare_smart_quotes_exceptions( $custom_exceptions ): array {
 		global $wp_cockneyreplace;
 
 		// The combined exceptions list.
@@ -753,7 +753,7 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @param bool $force_defaults Optional. Default false.
 	 */
-	public function set_default_options( $force_defaults = false ) : void {
+	public function set_default_options( $force_defaults = false ): void {
 		$update = $force_defaults;
 
 		// Grab configuration variables.
@@ -782,7 +782,7 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @return array<string,string|int|bool>
 	 */
-	public function get_default_options() : array {
+	public function get_default_options(): array {
 		if ( empty( $this->default_settings ) ) {
 			/**
 			 * Filters the default settings used to initialize the plugin.
@@ -800,7 +800,7 @@ class Implementation extends \WP_Typography {
 	/**
 	 * Clears all transients set by the plugin.
 	 */
-	public function clear_cache() : void {
+	public function clear_cache(): void {
 		$this->transients->invalidate();
 		$this->cache->invalidate();
 
@@ -814,7 +814,7 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @return string[]         The filtered array.
 	 */
-	public function parser_errors_handler( $errors ) : array {
+	public function parser_errors_handler( $errors ): array {
 		/**
 		 * Filters the HTML parser errors (if there are any).
 		 *

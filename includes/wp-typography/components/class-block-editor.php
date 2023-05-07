@@ -2,7 +2,7 @@
 /**
  * This file is part of wp-Typography.
  *
- * Copyright 2020-2022 Peter Putzer.
+ * Copyright 2020-2023 Peter Putzer.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -57,7 +57,7 @@ class Block_Editor implements Plugin_Component {
 	/**
 	 * Set up the various hooks for the block editor.
 	 */
-	public function run() : void {
+	public function run(): void {
 		if ( ! \function_exists( 'register_block_type' ) ) {
 			// Block editor not installed.
 			return;
@@ -71,7 +71,7 @@ class Block_Editor implements Plugin_Component {
 	/**
 	 * Registers the Gutenberg sidebar.
 	 */
-	public function register_sidebar_and_blocks() : void {
+	public function register_sidebar_and_blocks(): void {
 		$suffix     = ( \defined( 'SCRIPT_DEBUG' ) && \SCRIPT_DEBUG ) ? '' : '.min';
 		$plugin_url = \plugins_url( '', \WP_TYPOGRAPHY_PLUGIN_FILE );
 
@@ -100,7 +100,7 @@ class Block_Editor implements Plugin_Component {
 	/**
 	 * Enqueues the block editor sidebar script.
 	 */
-	public function enqueue_sidebar() : void {
+	public function enqueue_sidebar(): void {
 		\wp_enqueue_script( 'wp-typography-gutenberg' );
 	}
 
@@ -112,7 +112,7 @@ class Block_Editor implements Plugin_Component {
 	 *
 	 * @return string
 	 */
-	public function render_typography_block( array $attributes, $content ) : string {
+	public function render_typography_block( array $attributes, $content ): string {
 		// Ensure that the inner blocks are processed.
 		\add_filter( 'typo_disable_processing_for_post', '__return_false', 999, 0 );
 		$markup = $this->api->process( $content );

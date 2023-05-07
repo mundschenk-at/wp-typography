@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2022 Peter Putzer.
+ *  Copyright 2017-2023 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -84,7 +84,7 @@ class Common implements Plugin_Component {
 	 *
 	 * @since 5.7.0 Parameter $plugin removed.
 	 */
-	public function run() : void {
+	public function run(): void {
 		// Load settings.
 		\add_action( 'init', [ $this, 'init' ] );
 
@@ -96,7 +96,7 @@ class Common implements Plugin_Component {
 	/**
 	 * Restore default options or clear cache if requested.
 	 */
-	public function init() : void {
+	public function init(): void {
 
 		// Restore defaults if necessary.
 		if ( $this->options->get( Options::RESTORE_DEFAULTS ) ) {  // any truthy value will do.

@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2022 Peter Putzer.
+ *  Copyright 2017-2023 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -63,7 +63,7 @@ class WooCommerce_Integration implements Plugin_Integration {
 	 *
 	 * @return bool
 	 */
-	public function check() : bool {
+	public function check(): bool {
 		return \class_exists( 'WooCommerce' );
 	}
 
@@ -72,7 +72,7 @@ class WooCommerce_Integration implements Plugin_Integration {
 	 *
 	 * @since 5.7.0 Parameter $plugin removed.
 	 */
-	public function run() : void {
+	public function run(): void {
 		// Nothing to do.
 	}
 
@@ -81,7 +81,7 @@ class WooCommerce_Integration implements Plugin_Integration {
 	 *
 	 * @return string
 	 */
-	public function get_filter_tag() : string {
+	public function get_filter_tag(): string {
 		return 'woocommerce';
 	}
 
@@ -90,7 +90,7 @@ class WooCommerce_Integration implements Plugin_Integration {
 	 *
 	 * @param int $priority The filter priority.
 	 */
-	public function enable_content_filters( $priority ) : void {
+	public function enable_content_filters( $priority ): void {
 
 		// Page descriptions.
 		\add_filter( 'woocommerce_format_content', [ $this->api, 'process' ], $priority );

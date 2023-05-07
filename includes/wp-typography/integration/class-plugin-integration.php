@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2018-2022 Peter Putzer.
+ *  Copyright 2018-2023 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -41,26 +41,26 @@ interface Plugin_Integration {
 	 *
 	 * @return bool
 	 */
-	public function check() : bool;
+	public function check(): bool;
 
 	/**
 	 * Activates the integration.
 	 *
 	 * @since 5.7.0 Parameter $plugin removed.
 	 */
-	public function run() : void;
+	public function run(): void;
 
 	/**
 	 * Retrieves the identifying tag for the frontend content filters.
 	 *
 	 * @return string
 	 */
-	public function get_filter_tag() : string;
+	public function get_filter_tag(): string;
 
 	/**
 	 * Enables frontend content filters.
 	 *
 	 * @param int $priority The filter priority.
 	 */
-	public function enable_content_filters( $priority ) : void;
+	public function enable_content_filters( $priority ): void;
 }

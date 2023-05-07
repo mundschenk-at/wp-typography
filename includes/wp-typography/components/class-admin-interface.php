@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2014-2022 Peter Putzer.
+ *  Copyright 2014-2023 Peter Putzer.
  *  Copyright 2012-2013 Marie Hogebrandt.
  *  Copyright 2009-2011 KINGdesk, LLC.
  *
@@ -169,7 +169,6 @@ class Admin_Interface implements Plugin_Component {
 	public function __construct( Implementation $api, Options $options ) {
 		$this->api     = $api;
 		$this->options = $options;
-
 	}
 
 	/**
@@ -177,7 +176,7 @@ class Admin_Interface implements Plugin_Component {
 	 *
 	 * @since 5.7.0 Parameter $plugin removed.
 	 */
-	public function run() : void {
+	public function run(): void {
 		if ( \is_admin() ) {
 
 			// Cache the plugin basename.
@@ -208,7 +207,7 @@ class Admin_Interface implements Plugin_Component {
 	 *
 	 * @return array<string,string> The array keys consist of the translated anchor text, their values of the linked URL.
 	 */
-	private function initialize_resource_links() : array {
+	private function initialize_resource_links(): array {
 		return [
 			\__( 'Plugin Home', 'wp-typography' ) => 'https://code.mundschenk.at/wp-typography/',
 			\__( 'FAQs',        'wp-typography' ) => 'https://code.mundschenk.at/wp-typography/frequently-asked-questions/',
@@ -229,7 +228,7 @@ class Admin_Interface implements Plugin_Component {
 	 *
 	 * @phpstan-return Help_Page[]
 	 */
-	private function initialize_help_pages() : array {
+	private function initialize_help_pages(): array {
 		return [
 			'help-intro' => [
 				'heading' => \__( 'Introduction', 'wp-typography' ),
@@ -246,7 +245,7 @@ class Admin_Interface implements Plugin_Component {
 	/**
 	 * Register admin settings.
 	 */
-	public function register_the_settings() : void {
+	public function register_the_settings(): void {
 		$configuration_name    = $this->options->get_name( Options::CONFIGURATION );
 		$restore_defaults_name = $this->options->get_name( Options::RESTORE_DEFAULTS );
 		$clear_cache_name      = $this->options->get_name( Options::CLEAR_CACHE );
@@ -298,7 +297,7 @@ class Admin_Interface implements Plugin_Component {
 	 *
 	 * @return string
 	 */
-	protected function get_active_settings_tab() : string {
+	protected function get_active_settings_tab(): string {
 		if ( empty( $this->active_tab ) ) {
 			// Check active tab.
 			if ( ! empty( $_REQUEST['tab'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
@@ -331,7 +330,7 @@ class Admin_Interface implements Plugin_Component {
 	 *
 	 * @return bool
 	 */
-	public function sanitize_clear_cache( $input ) : bool {
+	public function sanitize_clear_cache( $input ): bool {
 		return $this->trigger_admin_notice( Options::CLEAR_CACHE, 'cache-cleared', \__( 'Cached post content cleared.', 'wp-typography' ), 'notice-info', $input );
 	}
 
@@ -342,7 +341,7 @@ class Admin_Interface implements Plugin_Component {
 
 	 * @return array<string,string|int|bool>         The sanitized plugin settings.
 	 */
-	public function sanitize_settings( $input ) : array {
+	public function sanitize_settings( $input ): array {
 		$current_tab = $this->get_active_settings_tab();
 
 		foreach ( $this->defaults as $key => $info ) {
@@ -365,7 +364,7 @@ class Admin_Interface implements Plugin_Component {
 	 *
 	 * @return bool The $input parameter cast to a boolean value.
 	 */
-	protected function trigger_admin_notice( $setting_name, $notice_id, $message, $notice_level, $input ) : bool {
+	protected function trigger_admin_notice( $setting_name, $notice_id, $message, $notice_level, $input ): bool {
 		if (
 			 // phpcs:ignore WordPress.Security.NonceVerification.Missing -- we are only checking that the button was clicked.
 			! empty( $_POST[ $this->options->get_name( $setting_name ) ] ) &&
@@ -383,7 +382,7 @@ class Admin_Interface implements Plugin_Component {
 	/**
 	 * Add an options page for the plugin settings.
 	 */
-	public function add_options_page() : void {
+	public function add_options_page(): void {
 		$page = \add_options_page( $this->plugin_name, $this->plugin_name, 'manage_options', \strtolower( $this->plugin_name ), [ $this, 'get_admin_page_content' ] );
 
 		if ( ! $page ) {
@@ -411,7 +410,7 @@ class Admin_Interface implements Plugin_Component {
 	/**
 	 * Add context-sensitive help to the settings page.
 	 */
-	public function add_context_help() : void {
+	public function add_context_help(): void {
 		$screen = \get_current_screen();
 		if ( empty( $screen ) ) {
 			return; // Guard against calls when no current screen is defined.
@@ -445,7 +444,7 @@ class Admin_Interface implements Plugin_Component {
 	 *
 	 * @phpstan-param array{id : string, title? : string, callback? : callable} $section
 	 */
-	public function print_settings_section( array $section ) : void {
+	public function print_settings_section( array $section ): void {
 		$section_id = ! empty( $section['id'] ) ? $section['id'] : '';
 
 		if ( ! empty( $this->admin_form_tabs[ $section_id ]['description'] ) ) {
@@ -461,7 +460,7 @@ class Admin_Interface implements Plugin_Component {
 	/**
 	 * Enqueue stylesheet for options page.
 	 */
-	public function print_admin_styles() : void {
+	public function print_admin_styles(): void {
 		\wp_enqueue_style( 'wp-typography-settings', \plugins_url( 'admin/css/settings.css', $this->plugin_basename ), [], $this->api->get_version(), 'all' );
 	}
 
@@ -472,7 +471,7 @@ class Admin_Interface implements Plugin_Component {
 	 *
 	 * @return string[]        An array of HTML link tags.
 	 */
-	public function plugin_action_links( array $links ) : array {
+	public function plugin_action_links( array $links ): array {
 		$adminurl = \trailingslashit( \admin_url() );
 
 		// Add link "Settings" to the plugin in /wp-admin/plugins.php.
@@ -485,7 +484,7 @@ class Admin_Interface implements Plugin_Component {
 	/**
 	 * Display the plugin options page.
 	 */
-	public function get_admin_page_content() : void {
+	public function get_admin_page_content(): void {
 		$this->load_language_options( $this->admin_form_controls[ Plugin_Configuration::HYPHENATE_LANGUAGES ], $this->api->get_hyphenation_languages() );
 		$this->load_language_options( $this->admin_form_controls[ Plugin_Configuration::DIACRITIC_LANGUAGES ], $this->api->get_diacritic_languages() );
 
@@ -503,7 +502,7 @@ class Admin_Interface implements Plugin_Component {
 	 *
 	 * @return bool                           Returns `true` on success.
 	 */
-	private function load_language_options( Control $control, array $languages ) : bool {
+	private function load_language_options( Control $control, array $languages ): bool {
 		if ( $control instanceof Select ) {
 			$control->set_option_values( $languages );
 
@@ -518,7 +517,7 @@ class Admin_Interface implements Plugin_Component {
 	 *
 	 * @since 5.4.0
 	 */
-	public function maybe_add_privacy_notice_content() : void {
+	public function maybe_add_privacy_notice_content(): void {
 		// Don't crash on older versions of WordPress.
 		if ( ! \function_exists( 'wp_add_privacy_policy_content' ) ) {
 			return;

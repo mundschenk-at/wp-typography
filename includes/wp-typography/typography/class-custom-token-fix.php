@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2018-2022 Peter Putzer.
+ *  Copyright 2018-2023 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -84,7 +84,7 @@ class Custom_Token_Fix extends Abstract_Token_Fix {
 	 *
 	 * @return Token[] An array of tokens.
 	 */
-	public function apply( array $tokens, Settings $settings, $is_title = false, \DOMText $textnode = null ) : array {
+	public function apply( array $tokens, Settings $settings, $is_title = false, \DOMText $textnode = null ): array {
 
 		/**
 		 * Filters the tokenized text node content (limited to a certain "word" type).

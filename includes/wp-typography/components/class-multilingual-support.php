@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2022 Peter Putzer.
+ *  Copyright 2017-2023 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -119,7 +119,7 @@ class Multilingual_Support implements Plugin_Component {
 	 *
 	 * @since 5.7.0 Parameter $plugin removed.
 	 */
-	public function run() : void {
+	public function run(): void {
 		// Enable multilingual support.
 		\add_action( 'plugins_loaded', [ $this, 'add_plugin_defaults_filter' ] );
 		\add_action( 'init',           [ $this, 'enable_automatic_language_settings' ] );
@@ -128,7 +128,7 @@ class Multilingual_Support implements Plugin_Component {
 	/**
 	 * Adds a filter for the plugin defaults.
 	 */
-	public function add_plugin_defaults_filter() : void {
+	public function add_plugin_defaults_filter(): void {
 		// Translation of language names is irrelevant here.
 		$this->hyphenation_languages = $this->api->get_hyphenation_languages();
 		$this->diacritic_languages   = $this->api->get_diacritic_languages();
@@ -140,7 +140,7 @@ class Multilingual_Support implements Plugin_Component {
 	/**
 	 * Enable multilingual settings.
 	 */
-	public function enable_automatic_language_settings() : void {
+	public function enable_automatic_language_settings(): void {
 		if ( $this->api->get_config()[ Config::ENABLE_MULTILINGUAL_SUPPORT ] ) {
 			\add_filter( 'typo_settings', [ $this, 'automatic_language_settings' ] );
 		}
@@ -156,7 +156,7 @@ class Multilingual_Support implements Plugin_Component {
 	 * @return int             Returns 0 if both operands are equal, -1 if the
 	 *                         first operand is greater, 1 if the second one is greater.
 	 */
-	protected function locale_settings_sort( Locale_Settings $s1, Locale_Settings $s2 ) : int {
+	protected function locale_settings_sort( Locale_Settings $s1, Locale_Settings $s2 ): int {
 		$prio1 = $s1->priority();
 		$prio2 = $s2->priority();
 
@@ -177,7 +177,7 @@ class Multilingual_Support implements Plugin_Component {
 	 *
 	 * @return Settings
 	 */
-	public function automatic_language_settings( Settings $settings ) : Settings {
+	public function automatic_language_settings( Settings $settings ): Settings {
 
 		// Ensure that default settings stay unmodified.
 		$settings = clone $settings;
@@ -220,7 +220,7 @@ class Multilingual_Support implements Plugin_Component {
 	 *
 	 * @return array<string,string|int|bool>
 	 */
-	public function filter_defaults( array $defaults ) : array {
+	public function filter_defaults( array $defaults ): array {
 		[ 'language' => $language, 'country' => $country, 'modifier' => $modifier ] = $this->get_current_locale();
 
 		// Standard adjustments.
@@ -254,7 +254,7 @@ class Multilingual_Support implements Plugin_Component {
 	 * @param  string               $locale     A locale (e.g. 'en-US').
 	 * @param  Locale_Settings|null $adjustment Locale-specific settings.
 	 */
-	protected function adjust_french_punctuation_spacing( Settings $settings, $locale, Locale_Settings $adjustment = null ) : void {
+	protected function adjust_french_punctuation_spacing( Settings $settings, $locale, Locale_Settings $adjustment = null ): void {
 
 		if ( null === $adjustment ) {
 			$french_spacing = false;
@@ -278,7 +278,7 @@ class Multilingual_Support implements Plugin_Component {
 	 * @param  string               $locale     A locale (e.g. 'en-US').
 	 * @param  Locale_Settings|null $adjustment Locale-specific settings.
 	 */
-	protected function adjust_dash_style( Settings $settings, $locale, Locale_Settings $adjustment = null ) : void {
+	protected function adjust_dash_style( Settings $settings, $locale, Locale_Settings $adjustment = null ): void {
 
 		if ( null === $adjustment ) {
 			$dash_style = $settings->dash_style();
@@ -306,7 +306,7 @@ class Multilingual_Support implements Plugin_Component {
 	 * @param  string               $locale     A locale (e.g. 'en-US').
 	 * @param  Locale_Settings|null $adjustment Locale-specific settings.
 	 */
-	protected function adjust_quote_styles( Settings $settings, $locale, Locale_Settings $adjustment = null ) : void {
+	protected function adjust_quote_styles( Settings $settings, $locale, Locale_Settings $adjustment = null ): void {
 
 		if ( null === $adjustment ) {
 			$primary   = $settings->primary_quote_style();
@@ -352,7 +352,7 @@ class Multilingual_Support implements Plugin_Component {
 	 *
 	 * @return Locale_Settings|null
 	 */
-	protected function match_locale( $language, $country, $modifier = '' ) : ?Locale_Settings {
+	protected function match_locale( $language, $country, $modifier = '' ): ?Locale_Settings {
 
 		foreach ( $this->locales as $locale_settings ) {
 			if ( $locale_settings->match( $language, $country, $modifier ) ) {
@@ -379,7 +379,7 @@ class Multilingual_Support implements Plugin_Component {
 	 *
 	 * @phpstan-return Locale
 	 */
-	protected function get_current_locale() : array {
+	protected function get_current_locale(): array {
 		/**
 		 * Filters the current locale for wp-Typography.
 		 *
@@ -430,7 +430,7 @@ class Multilingual_Support implements Plugin_Component {
 	 *
 	 * @return String                          An index in the languages array (or '' if not match was possible).
 	 */
-	protected function match_language( array $languages, $locale, $language, $type ) : string {
+	protected function match_language( array $languages, $locale, $language, $type ): string {
 		/**
 		 * Filters the matched language.
 		 *
@@ -488,7 +488,7 @@ class Multilingual_Support implements Plugin_Component {
 	 *
 	 * @return string
 	 */
-	protected static function normalize( $key, array $aliases ) : string {
+	protected static function normalize( $key, array $aliases ): string {
 		return isset( $aliases[ $key ] ) ? $aliases[ $key ] : $key;
 	}
 }

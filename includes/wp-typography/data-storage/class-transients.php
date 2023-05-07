@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2022 Peter Putzer.
+ *  Copyright 2017-2023 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -52,7 +52,7 @@ class Transients extends \Mundschenk\Data_Storage\Transients {
 	 * @param  mixed  $object    Required.
 	 * @param  string $handle    Optional. A name passed to the filters.
 	 */
-	public function cache_object( $transient, $object, $handle = '' ) : void {
+	public function cache_object( $transient, $object, $handle = '' ): void {
 		/**
 		 * Filters whether the PHP_Typography engine state should be cached.
 		 *

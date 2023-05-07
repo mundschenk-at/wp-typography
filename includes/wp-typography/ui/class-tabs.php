@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2022 Peter Putzer.
+ *  Copyright 2017-2023 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -69,7 +69,7 @@ abstract class Tabs {
 	 *
 	 * @phpstan-return Tab[]
 	 */
-	public static function get_tabs() : array {
+	public static function get_tabs(): array {
 		if ( empty( self::$tabs ) ) {
 			self::$tabs = [ // @codeCoverageIgnore
 				self::GENERAL_SCOPE         => [

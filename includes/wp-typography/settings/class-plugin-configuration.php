@@ -132,7 +132,7 @@ abstract class Plugin_Configuration {
 	 *
 	 * @return array<string,Config>
 	 */
-	public static function get_defaults() : array {
+	public static function get_defaults(): array {
 		if ( empty( self::$defaults ) ) {
 			self::$defaults = [ // @codeCoverageIgnore
 				self::IGNORE_TAGS                      => [
@@ -688,7 +688,7 @@ abstract class Plugin_Configuration {
 	 *
 	 * @return array<int,int>
 	 */
-	private static function get_numeric_option_values( array $values ) : array {
+	private static function get_numeric_option_values( array $values ): array {
 		return \array_combine( $values, $values );
 	}
 
@@ -697,7 +697,7 @@ abstract class Plugin_Configuration {
 	 *
 	 * @return array<string,string>
 	 */
-	private static function get_quote_style_option_values() : array {
+	private static function get_quote_style_option_values(): array {
 		return [
 			Quote_Style::DOUBLE_CURLED              => '&ldquo;foo&rdquo;',
 			Quote_Style::DOUBLE_CURLED_REVERSED     => '&rdquo;foo&rdquo;', // @codeCoverageIgnoreStart
