@@ -376,7 +376,7 @@ class Implementation extends \WP_Typography {
 		foreach ( $title_parts as $index => $part ) {
 			// Remove "&shy;" and "&#8203;" after processing title part.
 			$title_parts[ $index ] = \wp_strip_all_tags(
-				\str_replace( [ \PHP_Typography\U::SOFT_HYPHEN, \PHP_Typography\U::ZERO_WIDTH_SPACE ], '', $this->process( $part, true, true, $settings ) )
+				\str_replace( [ U::SOFT_HYPHEN, U::ZERO_WIDTH_SPACE ], '', $this->process( $part, true, true, $settings ) )
 			);
 		}
 
