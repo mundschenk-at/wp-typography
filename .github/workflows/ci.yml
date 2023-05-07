@@ -89,8 +89,14 @@ jobs:
         run: |
           sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' phpunit.coverage.xml
           sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' phpunit.test-report.xml
+      - name: Extract version number
+        run: |
+          echo "PLUGIN_VERSION=$(sed -n 's/^.*Version: \(.*\)$/\1/p' wp-typography.php)" >> $GITHUB_ENV
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
+        with:
+          args: >
+            -Dsonar.projectVersion=${{ env.PLUGIN_VERSION }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
