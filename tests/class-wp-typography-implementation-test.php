@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2022 Peter Putzer.
+ *  Copyright 2017-2023 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -87,7 +87,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function set_up() : void {
+	protected function set_up(): void {
 		parent::set_up();
 
 		// Mock WP_Typography\Data_Storage\Options instance.
@@ -130,7 +130,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 * @uses \WP_Typography\Data_Storage\Transients::invalidate
 	 * @uses \WP_Typography\Data_Storage\Transients::get_keys_from_database
 	 */
-	public function test_constructor() : void {
+	public function test_constructor(): void {
 		/**
 		 * Mock.
 		 *
@@ -165,7 +165,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 * @uses \WP_Typography\Typography\Custom_Registry::__construct
 	 * @uses \WP_Typography\Typography\Custom_Token_Fix::__construct
 	 */
-	public function test_get_typography_instance() : void {
+	public function test_get_typography_instance(): void {
 		$this->wp_typo->shouldReceive( 'get_config' )->once()->andReturn(
 			[
 				Config::ENABLE_HYPHENATION => true,
@@ -184,7 +184,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 *
 	 * @covers ::get_config
 	 */
-	public function test_get_config() : void {
+	public function test_get_config(): void {
 
 		$this->options->shouldReceive( 'get' )->once()->with( Options::CONFIGURATION )->andReturn( [ 'foo' => 'bar' ] );
 		$this->wp_typo->shouldReceive( 'get_default_options' )->once()->andReturn( [ 'newbar' => 'foobar' ] );
@@ -201,7 +201,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 *
 	 * @covers ::get_config
 	 */
-	public function test_get_config_corrupted() : void {
+	public function test_get_config_corrupted(): void {
 
 		$this->options->shouldReceive( 'get' )->once()->with( Options::CONFIGURATION )->andReturn( 'wrong' );
 		$this->wp_typo->shouldReceive( 'set_default_options' )->once()->with( true );
@@ -215,7 +215,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 *
 	 * @covers ::get_settings
 	 */
-	public function test_get_settings() : void {
+	public function test_get_settings(): void {
 		$remap_narrow_no_break_space = false;
 		$config                      = [
 			Config::IGNORE_TAGS                    => [ 'script' ],
@@ -290,7 +290,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 *
 	 * @return mixed[]
 	 */
-	public function provide_init_settings_from_options_data() : array {
+	public function provide_init_settings_from_options_data(): array {
 		return [
 			'everything enabled'         => [ true, true, true, true ],
 			'everything but smart chars' => [ false, true, true, true ],
@@ -311,7 +311,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 * @param  bool $remap_hyphen                Whether REMAP_HYPHEN is enabled.
 	 * @param  bool $remap_narrow_no_break_space Whether REMAP_NARROW_NO_BREAK_SPACE is enabled.
 	 */
-	public function test_init_settings_from_options( $smart_chars, $hyphenation, $remap_hyphen, $remap_narrow_no_break_space ) : void {
+	public function test_init_settings_from_options( $smart_chars, $hyphenation, $remap_hyphen, $remap_narrow_no_break_space ): void {
 		/**
 		 * Settings mock.
 		 *
@@ -476,7 +476,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 *
 	 * @uses WP_Typography\Settings\Tools::parse_smart_quote_exceptions_string
 	 */
-	public function test_prepare_smart_quotes_exceptions() : void {
+	public function test_prepare_smart_quotes_exceptions(): void {
 		$custom_string = "rock 'n' roll";
 		$expected_keys = [
 			$custom_string,
@@ -507,7 +507,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 *
 	 * @uses WP_Typography\Settings\Tools::parse_smart_quote_exceptions_string
 	 */
-	public function test_prepare_smart_quotes_exceptions_wp_cockney_replace() : void {
+	public function test_prepare_smart_quotes_exceptions_wp_cockney_replace(): void {
 		global $wp_cockneyreplace;
 
 		$custom_string     = "rock 'n' roll";
@@ -537,7 +537,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 *
 	 * @uses \PHP_Typography\PHP_Typography::get_hyphenation_languages
 	 */
-	public function test_get_hyphenation_languages() : void {
+	public function test_get_hyphenation_languages(): void {
 		Functions\when( '_x' )->returnArg();
 		if ( ! defined( 'WEEK_IN_SECONDS' ) ) {
 			define( 'WEEK_IN_SECONDS', 999 );
@@ -565,7 +565,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 *
 	 * @uses \PHP_Typography\PHP_Typography::get_hyphenation_languages
 	 */
-	public function test_get_diacritic_languages() : void {
+	public function test_get_diacritic_languages(): void {
 		Functions\when( '_x' )->returnArg();
 		if ( ! defined( 'WEEK_IN_SECONDS' ) ) {
 			define( 'WEEK_IN_SECONDS', 999 );
@@ -589,7 +589,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 *
 	 * @covers ::process_title
 	 */
-	public function test_process_title() : void {
+	public function test_process_title(): void {
 		$this->wp_typo->shouldReceive( 'process' )->once()->with( 'foobar', true, false, null )->andReturn( 'barfoo' );
 
 		$this->assertSame( 'barfoo', $this->wp_typo->process_title( 'foobar', null ) );
@@ -600,7 +600,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 *
 	 * @covers ::process_feed
 	 */
-	public function test_process_feed() : void {
+	public function test_process_feed(): void {
 		$this->wp_typo->shouldReceive( 'process' )->once()->with( 'foobar', true, true, null )->andReturn( 'barfoo' );
 
 		$this->assertSame( 'barfoo', $this->wp_typo->process_feed( 'foobar', true, null ) );
@@ -611,7 +611,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 *
 	 * @covers ::process_feed_title
 	 */
-	public function test_process_feed_title() : void {
+	public function test_process_feed_title(): void {
 		$this->wp_typo->shouldReceive( 'process_feed' )->once()->with( 'foobar', true, null )->andReturn( 'barfoo' );
 
 		$this->assertSame( 'barfoo', $this->wp_typo->process_feed_title( 'foobar', null ) );
@@ -623,7 +623,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 *
 	 * @covers ::process_title_parts
 	 */
-	public function test_process_title_parts() : void {
+	public function test_process_title_parts(): void {
 		$title_parts = [
 			'fo' . \PHP_Typography\U::SOFT_HYPHEN . 'o',
 			'bar',
@@ -647,7 +647,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 *
 	 * @return mixed[]
 	 */
-	public function provide_process_data() : array {
+	public function provide_process_data(): array {
 		return [
 			[ true, true, true, null ],
 			[ false, false, false, null ],
@@ -672,7 +672,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 * @param  bool     $is_feed    Value for is_feed().
 	 * @param  Settings $settings   May be null.
 	 */
-	public function test_process( $is_title, $force_feed, $is_feed, $settings = null ) : void {
+	public function test_process( $is_title, $force_feed, $is_feed, $settings = null ): void {
 		$post_id = false; // Not in the loop.
 
 		Functions\expect( 'is_feed' )->andReturn( $is_feed );
@@ -713,7 +713,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 * @param  bool     $is_feed    Value for is_feed().
 	 * @param  Settings $settings   May be null.
 	 */
-	public function test_process_disabled( $is_title, $force_feed, $is_feed, $settings = null ) : void {
+	public function test_process_disabled( $is_title, $force_feed, $is_feed, $settings = null ): void {
 		$text    = 'my text';
 		$post_id = 67;
 
@@ -737,7 +737,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 *
 	 * @return mixed[]
 	 */
-	public function provide_maybe_process_fragment_data() : array {
+	public function provide_maybe_process_fragment_data(): array {
 		return [
 			[ false, false ],
 			[ false, true ],
@@ -756,7 +756,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 * @param  bool $is_title Fragment is a title.
 	 * @param  bool $is_feed  Value for is_feed().
 	 */
-	public function test_maybe_process_fragment( $is_title, $is_feed ) : void {
+	public function test_maybe_process_fragment( $is_title, $is_feed ): void {
 		/**
 		 * Settings mock.
 		 *
@@ -790,7 +790,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 *
 	 * @covers ::filter_body_class
 	 */
-	public function test_filter_body_class() : void {
+	public function test_filter_body_class(): void {
 		$classes = [ 'foo', 'bar' ];
 
 		$result = $this->wp_typo->filter_body_class( $classes );
@@ -807,7 +807,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 * @uses ::set_instance
 	 * @uses ::get_default_options
 	 */
-	public function test_set_default_options() : void {
+	public function test_set_default_options(): void {
 		$this->wp_typo->shouldReceive( 'get_default_options' )->once()->andReturn( [ 'foo' => 'bar' ] );
 
 		$this->options->shouldReceive( 'set' )->once()->with( Options::CONFIGURATION, m::type( 'array' ) );
@@ -824,7 +824,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 * @uses ::set_instance
 	 * @uses ::get_default_options
 	 */
-	public function test_set_default_options_force_defaults() : void {
+	public function test_set_default_options_force_defaults(): void {
 		$this->wp_typo->shouldReceive( 'get_default_options' )->once()->andReturn( [ 'foo' => 'bar' ] );
 
 		$this->options->shouldNotReceive( 'get' )->with( Options::RESTORE_DEFAULTS );
@@ -846,7 +846,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 *
 	 * @runInSeparateProcess
 	 */
-	public function test_get_default_options() : void {
+	public function test_get_default_options(): void {
 		Functions\expect( 'wp_list_pluck' )->once()->with( m::type( 'array' ), 'default' )->andReturn( [ 'bar' => 'foo' ] );
 		Functions\expect( '__' )->atLeast()->once()->andReturn( 'translated_string' );
 
@@ -858,7 +858,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 *
 	 * @covers ::clear_cache
 	 */
-	public function test_clear_cache() : void {
+	public function test_clear_cache(): void {
 		$this->transients->shouldReceive( 'invalidate' );
 		$this->cache->shouldReceive( 'invalidate' );
 
@@ -874,7 +874,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 *
 	 * @covers ::parser_errors_handler
 	 */
-	public function test_parser_errors_handler() : void {
+	public function test_parser_errors_handler(): void {
 		$this->wp_typo->parser_errors_handler( [] );
 		$this->assertTrue( 1 === Filters\applied( 'typo_handle_parser_errors' ) );
 	}
@@ -884,7 +884,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 *
 	 * @covers ::get_version
 	 */
-	public function test_get_version() : void {
+	public function test_get_version(): void {
 		$this->assert_is_string( $this->wp_typo->get_version() );
 	}
 
@@ -893,7 +893,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 *
 	 * @return mixed[]
 	 */
-	public function provide_save_hyphenator_cache_on_shutdown_data() : array {
+	public function provide_save_hyphenator_cache_on_shutdown_data(): array {
 		return [
 			[ true,  m::mock( Hyphenator_Cache::class ), true ],
 			[ false, m::mock( Hyphenator_Cache::class ), false ],
@@ -915,7 +915,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 *
 	 * @phpstan-param (Hyphenator_Cache&m\MockInterface)|null $hyphenator_cache
 	 */
-	public function test_save_hyphenator_cache_on_shutdown( $enable_hyphenation, $hyphenator_cache, $expected ) : void {
+	public function test_save_hyphenator_cache_on_shutdown( $enable_hyphenation, $hyphenator_cache, $expected ): void {
 
 		if ( null !== $hyphenator_cache ) {
 			$hyphenator_cache->shouldReceive( 'has_changed' )->andReturn( $expected );

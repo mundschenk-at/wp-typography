@@ -2,7 +2,7 @@
 /**
  *  This file is part of PHP-Typography.
  *
- *  Copyright 2017-2022 Peter Putzer.
+ *  Copyright 2017-2023 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -38,7 +38,7 @@ abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 	 *
 	 * @param string $html A HTML fragment.
 	 */
-	protected function clean_html( $html ) : string {
+	protected function clean_html( $html ): string {
 		// Convert everything except Latin and Cyrillic and Thai.
 		static $convmap = [ // phpcs:disable WordPress.Arrays.ArrayDeclarationSpacing.ArrayItemNoNewLine
 			// Simple Latin characters.
@@ -98,7 +98,7 @@ abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 	 * @param string       $property_name Property to set.
 	 * @param mixed|null   $value         The new value.
 	 */
-	protected function setStaticValue( $classname, $property_name, $value ) : void {
+	protected function setStaticValue( $classname, $property_name, $value ): void {
 		$reflection = new \ReflectionClass( $classname );
 		$property   = $reflection->getProperty( $property_name );
 		$property->setAccessible( true );
@@ -113,7 +113,7 @@ abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 	 * @param mixed|null    $value         The new value.
 	 * @param ?class-string $classname     Optional. The class to use for accessing private properties.
 	 */
-	protected function setValue( $object, $property_name, $value, $classname = null ) : void {
+	protected function setValue( $object, $property_name, $value, $classname = null ): void {
 		if ( empty( $classname ) ) {
 			$classname = \get_class( $object );
 		}
@@ -169,7 +169,7 @@ abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 	 * @param object $object    The object.
 	 * @param string $message   Optional. Default ''.
 	 */
-	protected function assertAttributeArrayHasKey( $key, $attribute, $object, $message = '' ) : void {
+	protected function assertAttributeArrayHasKey( $key, $attribute, $object, $message = '' ): void {
 		$ref  = new \ReflectionClass( \get_class( $object ) );
 		$prop = $ref->getProperty( $attribute );
 		$prop->setAccessible( true );
@@ -185,7 +185,7 @@ abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 	 * @param object $object    The object.
 	 * @param string $message   Optional. Default ''.
 	 */
-	protected function assertAttributeArrayNotHasKey( $key, $attribute, $object, $message = '' ) : void {
+	protected function assertAttributeArrayNotHasKey( $key, $attribute, $object, $message = '' ): void {
 		$ref  = new \ReflectionClass( \get_class( $object ) );
 		$prop = $ref->getProperty( $attribute );
 		$prop->setAccessible( true );

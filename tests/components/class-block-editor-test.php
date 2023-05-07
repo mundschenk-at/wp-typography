@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2020-2922 Peter Putzer.
+ *  Copyright 2020-2923 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -66,7 +66,7 @@ class Block_Editor_Test extends TestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function set_up() : void {
+	protected function set_up(): void {
 		parent::set_up();
 
 		// Set up virtual filesystem.
@@ -85,7 +85,7 @@ class Block_Editor_Test extends TestCase {
 	 *
 	 * @covers ::__construct
 	 */
-	public function test_constructor() : void {
+	public function test_constructor(): void {
 		/**
 		 * Block_Editor mock.
 		 *
@@ -110,7 +110,7 @@ class Block_Editor_Test extends TestCase {
 	 *
 	 * @covers ::run
 	 */
-	public function test_run_no_block_editor() : void {
+	public function test_run_no_block_editor(): void {
 		Actions\expectAdded( 'init' )->never();
 		Actions\expectAdded( 'enqueue_block_editor_assets' )->never();
 
@@ -122,7 +122,7 @@ class Block_Editor_Test extends TestCase {
 	 *
 	 * @covers ::run
 	 */
-	public function test_run() : void {
+	public function test_run(): void {
 		Functions\when( 'register_block_type' );
 
 		Actions\expectAdded( 'init' )->with( [ $this->sut, 'register_sidebar_and_blocks' ] )->once();
@@ -136,7 +136,7 @@ class Block_Editor_Test extends TestCase {
 	 *
 	 * @covers ::register_sidebar_and_blocks
 	 */
-	public function test_register_sidebar_and_blocks() : void {
+	public function test_register_sidebar_and_blocks(): void {
 		$plugin_url     = 'http://my_plugin/url';
 		$plugin_version = '6.6.6';
 		// Simulate blocks dependencies.
@@ -173,7 +173,7 @@ class Block_Editor_Test extends TestCase {
 	 *
 	 * @covers ::enqueue_sidebar
 	 */
-	public function test_enqueue_sidebar() : void {
+	public function test_enqueue_sidebar(): void {
 		Functions\expect( 'wp_enqueue_script' )->once()->with( 'wp-typography-gutenberg' );
 
 		$this->sut->enqueue_sidebar();
@@ -184,7 +184,7 @@ class Block_Editor_Test extends TestCase {
 	 *
 	 * @covers ::render_typography_block
 	 */
-	public function test_render_typography_block() : void {
+	public function test_render_typography_block(): void {
 		$attributes = [];
 		$content    = 'my content';
 		$rendered   = 'my rendered block';

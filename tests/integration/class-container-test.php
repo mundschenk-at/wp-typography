@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2018-2022 Peter Putzer.
+ *  Copyright 2018-2023 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -70,7 +70,7 @@ class Container_Test extends TestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function set_up() : void {
+	protected function set_up(): void {
 		parent::set_up();
 
 		$this->int1 = m::mock( Plugin_Integration::class );
@@ -86,7 +86,7 @@ class Container_Test extends TestCase {
 	 *
 	 * @covers ::__construct
 	 */
-	public function test_constructor() : void {
+	public function test_constructor(): void {
 		/**
 		 * Container mock.
 		 *
@@ -102,7 +102,7 @@ class Container_Test extends TestCase {
 	 *
 	 * @covers ::activate
 	 */
-	public function test_activate() : void {
+	public function test_activate(): void {
 		$this->int1->shouldReceive( 'check' )->once()->andReturn( true );
 		$this->int2->shouldReceive( 'check' )->once()->andReturn( false );
 
@@ -121,7 +121,7 @@ class Container_Test extends TestCase {
 	 *
 	 * @covers ::get_content_filters
 	 */
-	public function test_get_content_filters() : void {
+	public function test_get_content_filters(): void {
 		// Simulate a previous call to "activate".
 		$this->setValue( $this->integrations, 'active_integrations', [ $this->int2 ], Container::class );
 
