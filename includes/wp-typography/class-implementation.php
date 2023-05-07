@@ -728,7 +728,7 @@ class Implementation extends \WP_Typography {
 				)
 			);
 
-			$exceptions = \array_combine( $patterns, $replacements ) ?: []; // phpcs:ignore WordPress.PHP.DisallowShortTernary -- ensure array type.
+			$exceptions = \array_combine( $patterns, $replacements ) ?: []; // phpcs:ignore Universal.Operators.DisallowShortTernary -- ensure array type.
 		}
 
 		// If necessary, merge custom exceptions.
@@ -741,7 +741,7 @@ class Implementation extends \WP_Typography {
 		\uksort(
 			$exceptions,
 			function( $a, $b ) {
-				return ( \strlen( $b ) - \strlen( $a ) ) ?: \strcmp( $a, $b ); // phpcs:ignore WordPress.PHP.DisallowShortTernary
+				return ( \strlen( $b ) - \strlen( $a ) ) ?: \strcmp( $a, $b ); // phpcs:ignore Universal.Operators.DisallowShortTernary
 			}
 		);
 
