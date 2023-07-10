@@ -32,6 +32,8 @@ use WP_Typography\Data_Storage\Cache;
 use WP_Typography\Data_Storage\Options;
 use WP_Typography\Data_Storage\Transients;
 
+use WP_Typography\UI\Template;
+
 use WP_Typography\Integration\Container as Integrations;
 use WP_Typography\Settings\Basic_Locale_Settings;
 use WP_Typography\Settings\Locale_Settings;
@@ -113,6 +115,10 @@ class Factory extends Dice {
 			Cache::class                           => self::SHARED,
 			Transients::class                      => self::SHARED,
 			Options::class                         => self::SHARED,
+			Template::class                        => [
+				'shared'          => true,
+				'constructParams' => [ \WP_TYPOGRAPHY_PLUGIN_PATH ],
+			],
 
 			// API implementation.
 			'substitutions'                        => [

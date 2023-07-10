@@ -74,6 +74,13 @@ class Admin_Interface implements Plugin_Component {
 	private $options;
 
 	/**
+	 * The template helper.
+	 *
+	 * @var UI\Template
+	 */
+	private UI\Template $template;
+
+	/**
 	 * The user-visible name of the plugin.
 	 *
 	 * @var string $plugin_name
@@ -161,13 +168,16 @@ class Admin_Interface implements Plugin_Component {
 	 *
 	 * @since 5.6.0 Parameters $basename and $plugin_path removed.
 	 * @since 5.7.0 Parameter $api added.
+	 * @since 5.9.2 Parameter $template added.
 	 *
-	 * @param Implementation $api     The core API.
-	 * @param Options        $options The Options API handler.
+	 * @param Implementation $api      The core API.
+	 * @param Options        $options  The Options API handler.
+	 * @param UI\Template    $template The template helper.
 	 */
-	public function __construct( Implementation $api, Options $options ) {
-		$this->api     = $api;
-		$this->options = $options;
+	public function __construct( Implementation $api, Options $options, UI\Template $template ) {
+		$this->api      = $api;
+		$this->options  = $options;
+		$this->template = $template;
 	}
 
 	/**
@@ -445,15 +455,16 @@ class Admin_Interface implements Plugin_Component {
 	 */
 	public function print_settings_section( array $section ): void {
 		$section_id = ! empty( $section['id'] ) ? $section['id'] : '';
+		$args       = [];
 
 		if ( ! empty( $this->admin_form_tabs[ $section_id ]['description'] ) ) {
-			$description = $this->admin_form_tabs[ $section_id ]['description'];
+			$args['description'] = $this->admin_form_tabs[ $section_id ]['description'];
 		} elseif ( ! empty( $this->admin_form_sections[ $section_id ]['description'] ) ) {
-			$description = $this->admin_form_sections[ $section_id ]['description'];
+			$args['description'] = $this->admin_form_sections[ $section_id ]['description'];
 		}
 
 		// Load the settings page HTML.
-		require \WP_TYPOGRAPHY_PLUGIN_PATH . '/admin/partials/settings/section.php';
+		$this->template->print_partial( '/admin/partials/settings/section.php', $args );
 	}
 
 	/**
@@ -487,21 +498,32 @@ class Admin_Interface implements Plugin_Component {
 		$this->load_language_options( $this->admin_form_controls[ Plugin_Configuration::HYPHENATE_LANGUAGES ], $this->api->get_hyphenation_languages() );
 		$this->load_language_options( $this->admin_form_controls[ Plugin_Configuration::DIACRITIC_LANGUAGES ], $this->api->get_diacritic_languages() );
 
+		$active_tab = $this->get_active_settings_tab();
+		$args       = [
+			'plugin_name'             => $this->plugin_name,
+			'active_tab'              => $active_tab,
+			'option_group'            => self::OPTION_GROUP . $active_tab,
+			'admin_form_tabs'         => $this->admin_form_tabs,
+			'restore_defaults_button' => $this->options->get_name( Options::RESTORE_DEFAULTS ),
+			'clear_cache_button'      => $this->options->get_name( Options::CLEAR_CACHE ),
+		];
+
 		// Load the settings page HTML.
-		require \WP_TYPOGRAPHY_PLUGIN_PATH . '/admin/partials/settings/settings-page.php';
+		$this->template->print_partial( '/admin/partials/settings/settings-page.php', $args );
 	}
 
 	/**
 	 * Loads the available language option values into the control.
 	 *
 	 * @since 5.9.0
+	 * @since 5.9.2 Visibility changed to `protected`.
 	 *
 	 * @param Control              $control   The UI control (needs to be a Select element).
 	 * @param array<string,string> $languages The list of available language choices (in the form `$code => $translated_name`).
 	 *
 	 * @return bool                           Returns `true` on success.
 	 */
-	private function load_language_options( Control $control, array $languages ): bool {
+	protected function load_language_options( Control $control, array $languages ): bool {
 		if ( $control instanceof Select ) {
 			$control->set_option_values( $languages );
 

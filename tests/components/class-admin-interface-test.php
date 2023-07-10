@@ -28,6 +28,7 @@ use WP_Typography\Components\Admin_Interface;
 use WP_Typography\Data_Storage\Options;
 use WP_Typography\Implementation;
 use WP_Typography\Settings\Plugin_Configuration as Config;
+use WP_Typography\UI\Template;
 
 use Mundschenk\UI;
 
@@ -36,8 +37,6 @@ use WP_Typography\Tests\TestCase;
 use Brain\Monkey\Actions;
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
-
-use org\bovigo\vfs\vfsStream;
 
 use Mockery as m;
 
@@ -91,6 +90,13 @@ class Admin_Interface_Test extends TestCase {
 	/**
 	 * Test fixture.
 	 *
+	 * @var Template&m\MockInterface
+	 */
+	protected $template;
+
+	/**
+	 * Test fixture.
+	 *
 	 * @var UI\Control_Factory&m\MockInterface
 	 */
 	protected $control_factory;
@@ -102,35 +108,18 @@ class Admin_Interface_Test extends TestCase {
 	protected function set_up(): void {
 		parent::set_up();
 
-		// Set up virtual filesystem.
-		vfsStream::setup(
-			'root',
-			null,
-			[
-				'plugin' => [
-					'admin' => [
-						'partials' => [
-							'settings' => [
-								'settings-page.php' => 'SETTINGS_PHP',
-								'section.php'       => 'SECTION',
-							],
-						],
-					],
-				],
-			]
-		);
-		set_include_path( 'vfs://root/' ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_set_include_path
-
-		// Mock WP_Typography\Data_Storage\Options instance.
-		$this->options = m::mock( Options::class )
+		// Test fixtures.
+		$this->options  = m::mock( Options::class )
 			->shouldReceive( 'get' )->andReturn( false )->byDefault()
 			->shouldReceive( 'set' )->andReturn( false )->byDefault()
 			->getMock();
-
-		$this->api = m::mock( Implementation::class )->shouldReceive( 'get_version' )->andReturn( '6.6.6' )->byDefault()->getMock();
+		$this->api      = m::mock( Implementation::class )
+			->shouldReceive( 'get_version' )->andReturn( '6.6.6' )->byDefault()
+			->getMock();
+		$this->template = m::mock( Template::class );
 
 		// Mock WP_Typography\Components\Admin_Interface instance.
-		$this->admin = m::mock( Admin_Interface::class, [ $this->api, $this->options ] )
+		$this->admin = m::mock( Admin_Interface::class, [ $this->api, $this->options, $this->template ] )
 			->shouldAllowMockingProtectedMethods()->makePartial();
 
 		/**
@@ -173,10 +162,11 @@ class Admin_Interface_Test extends TestCase {
 	 * @covers ::__construct
 	 */
 	public function test_constructor(): void {
-		$admin = m::mock( Admin_Interface::class, [ $this->api, $this->options ] );
+		$admin = m::mock( Admin_Interface::class, [ $this->api, $this->options, $this->template ] );
 
 		$this->assert_attribute_same( $this->api, 'api', $admin );
 		$this->assert_attribute_same( $this->options, 'options', $admin );
+		$this->assert_attribute_same( $this->template, 'template', $admin );
 	}
 
 
@@ -221,10 +211,46 @@ class Admin_Interface_Test extends TestCase {
 		$this->api->shouldReceive( 'get_hyphenation_languages' )->andReturn( [ 'CODE' => 'Language' ] );
 		$this->api->shouldReceive( 'get_diacritic_languages' )->andReturn( [ 'CODE' => 'Language' ] );
 
-		$this->expectOutputString( 'SETTINGS_PHP' );
+		$this->options->shouldReceive( 'get_name' )->twice()->andReturn( 'button1', 'button2' );
+
+		$this->template->shouldReceive( 'print_partial' )->once()->with( '/admin/partials/settings/settings-page.php', m::type( 'array' ) );
 
 		// Do it.
 		$this->admin->get_admin_page_content();
+	}
+
+	/**
+	 * Tests load_language_options.
+	 *
+	 * @covers ::load_language_options
+	 */
+	public function test_load_language_options(): void {
+		/**
+		 * Valid UI control mock.
+		 *
+		 * @var UI\Control&m\MockInterface
+		 */
+		$valid_control = m::mock( UI\Controls\Select::class );
+
+		/**
+		 * Invalid UI control mock.
+		 *
+		 * @var UI\Control&m\MockInterface
+		 */
+		$invalid_control = m::mock( UI\Controls\Input::class );
+
+		$languages = [
+			'CODE1' => 'Language 1',
+			'CODE2' => 'Language 2',
+		];
+
+		// Set up expectations.
+		$valid_control->shouldReceive( 'set_option_values' )->once()->with( $languages );
+		$invalid_control->shouldReceive( 'set_option_values' )->never();
+
+		// Run test.
+		$this->assertTrue( $this->invoke_method( $this->admin, 'load_language_options', [ $valid_control, $languages ] ) );
+		$this->assertFalse( $this->invoke_method( $this->admin, 'load_language_options', [ $invalid_control, $languages ] ) );
 	}
 
 	/**
@@ -734,7 +760,7 @@ class Admin_Interface_Test extends TestCase {
 		$this->setValue( $this->admin, 'admin_form_sections', $sections, Admin_Interface::class );
 
 		// Set up expectations.
-		$this->expectOutputString( 'SECTION' );
+		$this->template->shouldReceive( 'print_partial' )->once()->with( '/admin/partials/settings/section.php', m::type( 'array' ) );
 
 		// Do it.
 		$this->admin->print_settings_section( [ 'id' => 'section1' ] );
@@ -778,7 +804,7 @@ class Admin_Interface_Test extends TestCase {
 		$this->setValue( $this->admin, 'admin_form_sections', $sections, Admin_Interface::class );
 
 		// Set up expectations.
-		$this->expectOutputString( 'SECTION' );
+		$this->template->shouldReceive( 'print_partial' )->once()->with( '/admin/partials/settings/section.php', m::type( 'array' ) );
 
 		// Do it.
 		$this->admin->print_settings_section( [ 'id' => '3rd_tab' ] );
