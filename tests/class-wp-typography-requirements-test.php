@@ -104,7 +104,7 @@ class WP_Typography_Requirements_Test extends TestCase {
 	 * @covers ::get_requirements
 	 */
 	public function test_get_requirements(): void {
-		$req_keys = \array_column( $this->sut->get_requirements(), 'enable_key' ); // @phpstan-ignore-line - testing protected method.
+		$req_keys = \array_column( $this->invoke_method( $this->sut, 'get_requirements' ), 'enable_key' );
 
 		$this->assertContains( 'dom', $req_keys );
 	}
@@ -118,7 +118,7 @@ class WP_Typography_Requirements_Test extends TestCase {
 		// Mocking tests for PHP extensions is difficult.
 		$dom = class_exists( 'DOMDocument' );
 
-		$this->assertSame( $dom, $this->sut->check_dom_support() ); // @phpstan-ignore-line - testing protected method.
+		$this->assertSame( $dom, $this->invoke_method( $this->sut, 'check_dom_support' ) );
 	}
 
 	/**

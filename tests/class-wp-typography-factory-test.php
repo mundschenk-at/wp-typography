@@ -89,7 +89,7 @@ class WP_Typography_Factory_Test extends TestCase {
 		$this->sut->shouldReceive( 'get_rules' )->never();
 
 		// Manually call constructor.
-		$this->sut->__construct(); // @phpstan-ignore-line - testing protected method.
+		$this->invoke_method( $this->sut, '__construct' );
 
 		$resulting_rules = $this->get_value( $this->sut, 'rules' );
 		$this->assert_is_array( $resulting_rules );

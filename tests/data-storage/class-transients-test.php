@@ -58,13 +58,17 @@ class Transients_Test extends TestCase {
 	protected function set_up(): void {
 		parent::set_up();
 
+		// Mock object without calling the constructor.
 		$this->transients = m::mock( Transients::class )
 			->shouldAllowMockingProtectedMethods()
-			->makePartial()
-			->shouldReceive( 'get' )->once()->with( m::pattern( '/incrementor/' ), true )->andReturn( 0 )
-			->shouldReceive( 'invalidate' )->once()
-			->getMock();
-		$this->transients->__construct( [] );
+			->makePartial();
+
+		// Set up expecations.
+		$this->transients->shouldReceive( 'get' )->once()->with( m::pattern( '/incrementor/' ), true )->andReturn( 0 );
+		$this->transients->shouldReceive( 'invalidate' )->once();
+
+		// Now run the constructor.
+		$this->invokeMethod( $this->transients, '__construct' );
 	}
 
 	/**
@@ -73,7 +77,13 @@ class Transients_Test extends TestCase {
 	 * @covers ::__construct
 	 */
 	public function test___construct(): void {
-		$transients = m::mock( Transients::class )->shouldAllowMockingProtectedMethods()->makePartial()
+		/**
+		 * Test fixture.
+		 *
+		 * @var Transients&m\MockInterface
+		 */
+		$transients = m::mock( Transients::class )
+			->shouldAllowMockingProtectedMethods()->makePartial()
 			->shouldReceive( 'get' )->once()->with( m::pattern( '/incrementor/' ), true )->andReturn( 0 )
 			->shouldReceive( 'invalidate' )->once()
 			->getMock();

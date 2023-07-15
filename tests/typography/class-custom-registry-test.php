@@ -52,16 +52,22 @@ class Custom_Registry_Test extends \WP_Typography\Tests\TestCase {
 	 * @uses PHP_Typography\Fixes\Token_fixes\Abstract_Token_Fix::__construct
 	 */
 	public function test_constructor(): void {
-		$registry = m::mock( Custom_Registry::class )
+		/**
+		 * PHPStan class hints.
+		 *
+		 * @var Custom_Registry&m\MockInterface
+		 */
+		$registry = m::mock( Custom_Registry::class );
+		$registry
 			->shouldAllowMockingProtectedMethods()
 			->makePartial()
-			->shouldReceive( 'register_node_fix' )->times( 4 )->with( m::type( Custom_Node_Fix::class ), m::type( 'int' ) )
+			->shouldReceive( 'register_node_fix' )->times( 4 )->with( m::type( Custom_Node_Fix::class ), m::type( 'int' ) )->getMock()
 			->shouldReceive( 'register_token_fix' )->times( 4 )->with( m::type( Custom_Token_Fix::class ) )
 			->getMock();
 
+		// Call constructor.
 		$registry->__construct();
 
 		$this->assertInstanceOf( Custom_Registry::class, $registry );
 	}
-
 }
