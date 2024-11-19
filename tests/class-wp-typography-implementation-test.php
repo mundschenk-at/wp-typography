@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2023 Peter Putzer.
+ *  Copyright 2017-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -544,7 +544,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 		}
 
 		$this->cache->shouldReceive( 'get' )->once()->andReturnUsing(
-			function( $key, &$found ) {
+			function ( $key, &$found ) {
 				$found = false;
 				return [];
 			}
@@ -572,7 +572,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 		}
 
 		$this->cache->shouldReceive( 'get' )->once()->andReturnUsing(
-			function( $key, &$found ) {
+			function ( $key, &$found ) {
 				$found = false;
 				return [];
 			}
@@ -631,7 +631,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 		];
 
 		Functions\expect( 'wp_strip_all_tags' )->times( \count( $title_parts ) )->andReturnUsing(
-			function( $arg ) {
+			function ( $arg ) {
 				return \strip_tags( $arg ); // phpcs:ignore WordPress.WP.AlternativeFunctions.strip_tags_strip_tags
 			}
 		);

@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2019-2023 Peter Putzer.
+ *  Copyright 2019-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -74,7 +74,7 @@ class Tools_Test extends \WP_Typography\Tests\TestCase {
 	 * @covers ::array_map_assoc
 	 */
 	public function test_array_map_assoc(): void {
-		$callback = function( $key, $value ) {
+		$callback = function ( $key, $value ) {
 			return [ "cb_$key" => "cb_$value" ];
 		};
 		$array    = [
