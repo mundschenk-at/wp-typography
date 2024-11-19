@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2023 Peter Putzer.
+ *  Copyright 2023-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -140,7 +140,7 @@ class Template_Test extends \WP_Typography\Tests\TestCase {
 
 		Functions\expect( 'esc_html' )->once()->with( m::type( 'string' ) )->andReturnFirstArg();
 		Functions\expect( '_doing_it_wrong' )->once()->with( Template::class . '::print_partial', m::type( 'string' ), 'wp-Typography 5.9.2' )->andReturnUsing(
-			function() {
+			function () {
 				throw new \InvalidArgumentException( '_doing_it_wrong' );
 			}
 		);
@@ -192,7 +192,7 @@ class Template_Test extends \WP_Typography\Tests\TestCase {
 
 		Functions\expect( 'esc_html' )->once()->with( m::type( 'string' ) )->andReturnFirstArg();
 		Functions\expect( '_doing_it_wrong' )->once()->with( Template::class . '::print_partial', m::type( 'string' ), 'wp-Typography 5.9.2' )->andReturnUsing(
-			function() {
+			function () {
 				throw new \InvalidArgumentException( '_doing_it_wrong' );
 			}
 		);

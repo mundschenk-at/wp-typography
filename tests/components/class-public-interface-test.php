@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2023 Peter Putzer.
+ *  Copyright 2017-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -476,12 +476,12 @@ EOT;
 		$result = 'sub, sup{font-size: 75%;line-height: 100%;}sup{vertical-align: 60%;}sub{vertical-align: -10%;}.amp{font-family: Baskerville, "Goudy Old Style", Palatino, "Book Antiqua", "Warnock Pro", serif;font-size: 1.1em;font-style: italic;font-weight: normal;line-height: 1em;}.caps{font-size: 90%;}.dquo{margin-left: -0.4em;}.quo{margin-left: -0.2em;}.pull-single{margin-left: -0.15em;}.push-single{margin-right: 0.15em;}.pull-double{margin-left: -0.38em;}.push-double{margin-right: 0.38em;}';
 
 		Functions\expect( 'wp_strip_all_tags' )->atLeast()->once()->with( m::type( 'string' ) )->andReturnUsing(
-			function( $in ) {
+			function ( $in ) {
 				return $in;
 			}
 		);
 		Functions\expect( 'safecss_filter_attr' )->atLeast()->once()->with( m::type( 'string' ) )->andReturnUsing(
-			function( $in ) {
+			function ( $in ) {
 				return $in;
 			}
 		);

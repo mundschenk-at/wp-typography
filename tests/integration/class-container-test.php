@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2018-2023 Peter Putzer.
+ *  Copyright 2018-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -128,7 +128,7 @@ class Container_Test extends TestCase {
 		$this->int1->shouldNotReceive( 'get_filter_tag' );
 		$this->int2->shouldReceive( 'get_filter_tag' )->once()->andReturn( 'fizban' );
 
-		$result = $this->integrations->get_content_filters( [ 'foo' => function(){} ] );
+		$result = $this->integrations->get_content_filters( [ 'foo' => function () {} ] );
 
 		$this->assertArrayHasKey( 'foo', $result );
 		$this->assertArrayHasKey( 'fizban', $result );

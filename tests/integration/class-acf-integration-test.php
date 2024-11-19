@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2018-2023 Peter Putzer.
+ *  Copyright 2018-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -356,7 +356,7 @@ class ACF_Integration_Test extends TestCase {
 		$post_id = 77;
 
 		$this->acf_i->shouldReceive( 'process_acf_content' )->zeroOrMoreTimes()->with( m::type( 'string' ), $field )->andReturnUsing(
-			function( $content ) {
+			function ( $content ) {
 				return "{$content}_processed";
 			}
 		);

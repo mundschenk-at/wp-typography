@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2019-2023 Peter Putzer.
+ *  Copyright 2019-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -55,7 +55,7 @@ abstract class Tools {
 	public static function parse_smart_quote_exceptions_string( $exceptions ): array {
 		return \array_reduce(
 			\preg_split( '/,/', $exceptions, -1, \PREG_SPLIT_NO_EMPTY ) ?: [], // phpcs:ignore Universal.Operators.DisallowShortTernary -- ensure array type.
-			function( $result, $replacement ) {
+			function ( $result, $replacement ) {
 				$key         = \trim( \strip_tags( $replacement ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.strip_tags_strip_tags -- no need for WordPress' version here.
 				$replacement = \str_replace( "'", U::APOSTROPHE, $key );
 

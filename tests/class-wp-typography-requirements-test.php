@@ -2,7 +2,7 @@
 /**
  * This file is part of wp-Typography.
  *
- * Copyright 2020-2023 Peter Putzer.
+ * Copyright 2020-2024 Peter Putzer.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -72,7 +72,7 @@ class WP_Typography_Requirements_Test extends TestCase {
 	public function test_constructor(): void {
 
 		Functions\expect( 'wp_parse_args' )->andReturnUsing(
-			function( $args, $defaults ) {
+			function ( $args, $defaults ) {
 				return \array_merge( $defaults, $args );
 			}
 		);
