@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2023 Peter Putzer.
+ *  Copyright 2017-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -23,10 +23,6 @@
  */
 
 namespace WP_Typography\Tests;
-
-use \WP_Typography\Data_Storage\Options;
-use \WP_Typography\Data_Storage\Transients;
-use \WP_Typography\Data_Storage\Cache;
 
 use Brain\Monkey\Actions;
 use Brain\Monkey\Filters;
@@ -66,40 +62,6 @@ class WP_Typography_Singleton_Test extends TestCase {
 	 * @uses \WP_Typography\Data_Storage\Transients::__construct
 	 */
 	public function test_singleton(): void {
-
-		/**
-		 * Options mock.
-		 *
-		 * @var Options&m\MockInterface
-		 */
-		$options = m::mock( Options::class )
-			->shouldReceive( 'get' )->andReturn( false )->byDefault()
-			->shouldReceive( 'set' )->andReturn( false )->byDefault()
-			->getMock();
-
-		/**
-		 * Transients mock.
-		 *
-		 * @var Transients&m\MockInterface
-		 */
-		$transients = m::mock( Transients::class )
-			->shouldReceive( 'get' )->byDefault()->andReturn( false )
-			->shouldReceive( 'get_large_object' )->byDefault()->andReturn( false )
-			->shouldReceive( 'set' )->andReturn( false )->byDefault()
-			->shouldReceive( 'set_large_object' )->andReturn( false )->byDefault()
-			->getMock();
-
-		/**
-		 * Cache mock.
-		 *
-		 * @var Cache&m\MockInterface
-		 */
-		$cache = m::mock( Cache::class )
-			->shouldReceive( 'get' )->andReturn( false )->byDefault()
-			->shouldReceive( 'set' )->andReturn( false )->byDefault()
-			->shouldReceive( 'invalidate' )->byDefault()
-			->getMock();
-
 		/**
 		 * Singleton instance.
 		 *
@@ -135,10 +97,6 @@ class WP_Typography_Singleton_Test extends TestCase {
 	 * @covers ::set_instance
 	 */
 	public function test_set_instance_failing(): void {
-		$transients = m::mock( \WP_Typography\Data_Storage\Transients::class );
-		$cache      = m::mock( \WP_Typography\Data_Storage\Cache::class );
-		$options    = m::mock( \WP_Typography\Data_Storage\Options::class );
-
 		/**
 		 * Second "singleton" instance.
 		 *
