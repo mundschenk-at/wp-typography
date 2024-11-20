@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2023 Peter Putzer.
+ *  Copyright 2017-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -132,6 +132,7 @@ class WP_Typography_Test extends TestCase {
 	public function test_call_static_foobar(): void {
 		$this->wp_typo->shouldNotReceive( 'foobar' );
 
+		Functions\expect( 'esc_html' )->once()->with( m::type( 'string' ) )->andReturnFirstArg();
 		$this->expect_exception( \BadMethodCallException::class );
 		$this->expect_exception_message_matches( '/Static method WP_Typography::foobar does not exist/' );
 

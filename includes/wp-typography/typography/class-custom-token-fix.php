@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2018-2023 Peter Putzer.
+ *  Copyright 2018-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -65,7 +65,7 @@ class Custom_Token_Fix extends Abstract_Token_Fix {
 		];
 
 		if ( ! isset( $valid_types[ $type ] ) ) {
-			throw new \InvalidArgumentException( "$type is not a valid word type." );
+			throw new \InvalidArgumentException( \esc_html( $type ) . ' is not a valid word type.' );
 		}
 
 		parent::__construct( $valid_types[ $type ], true );
