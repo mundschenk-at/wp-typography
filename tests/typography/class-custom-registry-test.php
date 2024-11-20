@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2018-2023 Peter Putzer.
+ *  Copyright 2018-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -52,7 +52,12 @@ class Custom_Registry_Test extends \WP_Typography\Tests\TestCase {
 	 * @uses PHP_Typography\Fixes\Token_fixes\Abstract_Token_Fix::__construct
 	 */
 	public function test_constructor(): void {
-		$registry = m::mock( Custom_Registry::class )
+		/**
+		 * Test fixture.
+		 *
+		 * @var Custom_Registry&m\MockInterface $registry
+		 */
+		$registry = m::mock( Custom_Registry::class ) // @phpstan-ignore method.notFound
 			->shouldAllowMockingProtectedMethods()
 			->makePartial()
 			->shouldReceive( 'register_node_fix' )->times( 4 )->with( m::type( Custom_Node_Fix::class ), m::type( 'int' ) )
@@ -63,5 +68,4 @@ class Custom_Registry_Test extends \WP_Typography\Tests\TestCase {
 
 		$this->assertInstanceOf( Custom_Registry::class, $registry );
 	}
-
 }
