@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2023 Peter Putzer.
+ *  Copyright 2017-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -809,6 +809,7 @@ class Multilingual_Support_Test extends TestCase {
 	 * @return mixed[]
 	 */
 	public function provide_match_language_data(): array {
+		// @phpcs:disable Universal.WhiteSpace.CommaSpacing.TooMuchSpaceAfter
 		return [
 			[ 'en-US',   'en',    'US' ],
 			[ 'en-GB',   'en',    'GB' ],
@@ -823,7 +824,7 @@ class Multilingual_Support_Test extends TestCase {
 			[ 'mr',      'mr',    null ],
 			[ 'nl',      'nl',    'BE' ],
 			[ 'tk',      'tuk',   null ],
-		];
+		]; // @phpcs:enable Universal.WhiteSpace.CommaSpacing.TooMuchSpaceAfter
 	}
 
 	/**

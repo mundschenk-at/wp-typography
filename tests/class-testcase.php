@@ -2,7 +2,7 @@
 /**
  *  This file is part of PHP-Typography.
  *
- *  Copyright 2017-2023 Peter Putzer.
+ *  Copyright 2017-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -40,14 +40,14 @@ abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 	 */
 	protected function clean_html( $html ): string {
 		// Convert everything except Latin and Cyrillic and Thai.
-		static $convmap = [ // phpcs:disable WordPress.Arrays.ArrayDeclarationSpacing.ArrayItemNoNewLine
+		static $convmap = [ // phpcs:disable WordPress.Arrays.ArrayDeclarationSpacing.ArrayItemNoNewLine,Universal.WhiteSpace.CommaSpacing.TooMuchSpaceAfter
 			// Simple Latin characters.
 			0x80,   0x03ff,   0, 0xffffff,
 			// Cyrillic characters.
 			0x0514, 0x0dff,   0, 0xffffff,
 			// Thai characters.
 			0x0e7f, 0x10ffff, 0, 0xffffff,
-		]; // phpcs:enable WordPress.Arrays.ArrayDeclarationSpacing.ArrayItemNoNewLine
+		]; // phpcs:enable WordPress.Arrays.ArrayDeclarationSpacing.ArrayItemNoNewLine,Universal.WhiteSpace.CommaSpacing.TooMuchSpaceAfter
 
 		return str_replace( [ '&lt;', '&gt;' ], [ '<', '>' ], mb_encode_numericentity( htmlentities( $html, ENT_NOQUOTES, 'UTF-8', false ), $convmap, 'UTF-8' ) );
 	}

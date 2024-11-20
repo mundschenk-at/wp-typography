@@ -206,11 +206,11 @@ class Public_Interface_Test extends TestCase {
 	 */
 	public function provide_add_content_filters_data(): array {
 		return [
-			[ true,  true,  true,  '4.8' ],
+			[ true, true, true, '4.8' ],
 			[ false, false, false, '4.8.1' ],
-			[ true,  false, false, '4.6' ],
+			[ true, false, false, '4.6' ],
 			[ false, false, false, '4.6' ],
-			[ true,  false, false, '4.9.5' ],
+			[ true, false, false, '4.9.5' ],
 			[ false, false, false, '4.9.5' ],
 		];
 	}

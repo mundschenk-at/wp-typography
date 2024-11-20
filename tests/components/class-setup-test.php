@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2023 Peter Putzer.
+ *  Copyright 2017-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -158,6 +158,7 @@ class Setup_Test extends TestCase {
 	 * @return mixed[]
 	 */
 	public function provide_get_old_option_name_data(): array {
+		// @phpcs:disable Universal.WhiteSpace.CommaSpacing.TooMuchSpaceAfter
 		return [
 			[ 'typo_disable_caching',    'typoDisableCaching' ],
 			[ 'typo_remove_ie6',         'typoRemoveIE6' ],
@@ -166,7 +167,7 @@ class Setup_Test extends TestCase {
 			[ 'typo_ignore_ids',         'typoIgnoreIDs' ],
 			[ 'typo_style_css',          'typoStyleCSS' ],
 			[ 'typo_hyphenate_headings', 'typoHyphenateHeadings' ],
-		];
+		]; // @phpcs:enable Universal.WhiteSpace.CommaSpacing.TooMuchSpaceAfter
 	}
 
 	/**
@@ -215,6 +216,7 @@ class Setup_Test extends TestCase {
 	 * @return mixed[]
 	 */
 	public function provide_plugin_updated_data(): array {
+		// @phpcs:disable Universal.WhiteSpace.CommaSpacing.TooMuchSpaceAfter
 		return [
 			[ '',              [ 'upgrade_options_3_1', 'upgrade_options_3_2', 'upgrade_options_3_3', 'upgrade_options_3_5', 'upgrade_options_5_1' ] ],
 			[ '3.0.0',         [ 'upgrade_options_3_1', 'upgrade_options_3_2', 'upgrade_options_3_3', 'upgrade_options_3_5', 'upgrade_options_5_1' ] ],
@@ -224,7 +226,7 @@ class Setup_Test extends TestCase {
 			[ '3.3.0-alpha.2', [ 'upgrade_options_3_5', 'upgrade_options_5_1' ] ],
 			[ '5.0.0',         [ 'upgrade_options_5_1' ] ],
 			[ '5.2.0',         [] ],
-		];
+		]; // @phpcs:enable Universal.WhiteSpace.CommaSpacing.TooMuchSpaceAfter
 	}
 
 	/**
