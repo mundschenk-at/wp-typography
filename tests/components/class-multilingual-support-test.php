@@ -249,7 +249,7 @@ class Multilingual_Support_Test extends TestCase {
 		$locale1->shouldReceive( 'priority' )->once()->andReturn( $prio1 );
 		$locale2->shouldReceive( 'priority' )->once()->andReturn( $prio2 );
 
-		$this->assertSame( $result, $this->multi->locale_settings_sort( $locale1, $locale2 ) ); // @phpstan-ignore-line - testing protected method.
+		$this->assertSame( $result, $this->invokeMethod( $this->multi, 'locale_settings_sort', [ $locale1, $locale2 ] ) );
 	}
 
 	/**
@@ -409,7 +409,7 @@ class Multilingual_Support_Test extends TestCase {
 		Filters\expectApplied( 'typo_enable_french_punctuation_spacing_for_locale' )->once()->with( true, $locale )->andReturnFirstArg();
 		$s->shouldReceive( 'set_french_punctuation_spacing' )->once()->with( true );
 
-		$this->multi->adjust_french_punctuation_spacing( $s, $locale, $this->locale ); // @phpstan-ignore-line - testing protected method.
+		$this->invokeMethod( $this->multi, 'adjust_french_punctuation_spacing', [ $s, $locale, $this->locale ] );
 	}
 
 	/**
@@ -429,7 +429,7 @@ class Multilingual_Support_Test extends TestCase {
 		Filters\expectApplied( 'typo_enable_french_punctuation_spacing_for_locale' )->once()->with( false, $locale )->andReturnFirstArg();
 		$s->shouldReceive( 'set_french_punctuation_spacing' )->once()->with( false );
 
-		$this->multi->adjust_french_punctuation_spacing( $s, $locale, null ); // @phpstan-ignore-line - testing protected method.
+		$this->invokeMethod( $this->multi, 'adjust_french_punctuation_spacing', [ $s, $locale, null ] );
 	}
 
 	/**
@@ -450,7 +450,7 @@ class Multilingual_Support_Test extends TestCase {
 		Filters\expectApplied( 'typo_dash_style_for_locale' )->once()->with( true, $locale )->andReturnFirstArg();
 		$s->shouldReceive( 'set_smart_dashes_style' )->once()->with( true );
 
-		$this->multi->adjust_dash_style( $s, $locale, $this->locale ); // @phpstan-ignore-line - testing protected method.
+		$this->invokeMethod( $this->multi, 'adjust_dash_style', [ $s, $locale, $this->locale ] );
 	}
 
 	/**
@@ -471,7 +471,7 @@ class Multilingual_Support_Test extends TestCase {
 		Filters\expectApplied( 'typo_dash_style_for_locale' )->once()->with( true, $locale )->andReturnFirstArg();
 		$s->shouldReceive( 'set_smart_dashes_style' )->once()->with( true );
 
-		$this->multi->adjust_dash_style( $s, $locale, null ); // @phpstan-ignore-line - testing protected method.
+		$this->invokeMethod( $this->multi, 'adjust_dash_style', [ $s, $locale, null ] );
 	}
 
 	/**
@@ -495,7 +495,7 @@ class Multilingual_Support_Test extends TestCase {
 		$s->shouldReceive( 'set_smart_quotes_primary' )->once()->with( 'primary' );
 		$s->shouldReceive( 'set_smart_quotes_secondary' )->once()->with( 'secondary' );
 
-		$this->multi->adjust_quote_styles( $s, $locale, $this->locale ); // @phpstan-ignore-line - testing protected method.
+		$this->invokeMethod( $this->multi, 'adjust_quote_styles', [ $s, $locale, $this->locale ] );
 	}
 
 	/**
@@ -519,7 +519,7 @@ class Multilingual_Support_Test extends TestCase {
 		$s->shouldReceive( 'set_smart_quotes_primary' )->once()->with( 'primary' );
 		$s->shouldReceive( 'set_smart_quotes_secondary' )->once()->with( 'secondary' );
 
-		$this->multi->adjust_quote_styles( $s, $locale, null ); // @phpstan-ignore-line - testing protected method.
+		$this->invokeMethod( $this->multi, 'adjust_quote_styles', [ $s, $locale, null ] );
 	}
 
 	/**

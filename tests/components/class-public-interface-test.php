@@ -394,7 +394,7 @@ class Public_Interface_Test extends TestCase {
 		Functions\expect( 'safecss_filter_attr' )->once()->with( $rules1 )->andReturn( 'cleaned rules#1' );
 		Functions\expect( 'safecss_filter_attr' )->once()->with( $rules2 )->andReturn( 'cleaned rules#2' );
 
-		$this->assertSame( $result, $this->public_if->clean_styles( $with_comments ) ); // @phpstan-ignore-line - testing protected method.
+		$this->assertSame( $result, $this->invokeMethod( $this->public_if, 'clean_styles', [ $with_comments ] ) );
 	}
 
 	/**
@@ -486,6 +486,6 @@ EOT;
 			}
 		);
 
-		$this->assertSame( $result, $this->public_if->clean_styles( $input ) ); // @phpstan-ignore-line - testing protected method.
+		$this->assertSame( $result, $this->invokeMethod( $this->public_if, 'clean_styles', [ $input ] ) );
 	}
 }
