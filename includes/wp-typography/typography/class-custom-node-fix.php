@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2018-2023 Peter Putzer.
+ *  Copyright 2018-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -44,7 +44,7 @@ class Custom_Node_Fix extends Abstract_Node_Fix {
 	 *
 	 * @var string
 	 */
-	private $group;
+	private string $group;
 
 	/**
 	 * Creates a new fix instance.

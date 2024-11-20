@@ -52,7 +52,7 @@ abstract class Tools {
 	 *
 	 * @return string[]           An array of replacements, indexed by the key.
 	 */
-	public static function parse_smart_quote_exceptions_string( $exceptions ): array {
+	public static function parse_smart_quote_exceptions_string( string $exceptions ): array {
 		return \array_reduce(
 			\preg_split( '/,/', $exceptions, -1, \PREG_SPLIT_NO_EMPTY ) ?: [], // phpcs:ignore Universal.Operators.DisallowShortTernary -- ensure array type.
 			function ( $result, $replacement ) {

@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2023 Peter Putzer.
+ *  Copyright 2017-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -72,21 +72,21 @@ class Multilingual_Support implements Plugin_Component {
 	 *
 	 * @var Locale_Settings[]
 	 */
-	protected $locales = [];
+	protected array $locales = [];
 
 	/**
 	 * The list of available hyhphenation languages.
 	 *
 	 * @var string[]
 	 */
-	protected $hyphenation_languages;
+	protected array $hyphenation_languages;
 
 	/**
 	 * The list of available diacritics replacement languages.
 	 *
 	 * @var string[]
 	 */
-	protected $diacritic_languages;
+	protected array $diacritic_languages;
 
 	/**
 	 * The plugin API.
@@ -95,7 +95,7 @@ class Multilingual_Support implements Plugin_Component {
 	 *
 	 * @var \WP_Typography
 	 */
-	protected $api;
+	protected \WP_Typography $api;
 
 	/**
 	 * Create a new instace.

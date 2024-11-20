@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2023 Peter Putzer.
+ *  Copyright 2023-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -44,7 +44,7 @@ class Template {
 	 *
 	 * @var string
 	 */
-	private $base_dir;
+	private string $base_dir;
 
 	/**
 	 * Creates a new instance.
@@ -67,7 +67,7 @@ class Template {
 	 *
 	 * @phpstan-param PartialArguments $args
 	 */
-	public function print_partial( $partial, array $args = [] ) {
+	public function print_partial( string $partial, array $args = [] ) {
 		if ( \extract( $args ) !== \count( $args ) ) { // phpcs:ignore WordPress.PHP.DontExtract.extract_extract -- needed for "natural" partials.
 			\_doing_it_wrong( __METHOD__, \esc_html( "Invalid arguments passed to partial {$partial}." ), 'wp-Typography 5.9.2' );
 		}
@@ -87,7 +87,7 @@ class Template {
 	 *
 	 * @phpstan-param PartialArguments $args
 	 */
-	public function get_partial( $partial, array $args = [] ) {
+	public function get_partial( string $partial, array $args = [] ) {
 		\ob_start();
 		try {
 			$this->print_partial( $partial, $args );

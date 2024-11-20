@@ -56,7 +56,7 @@ class Custom_Token_Fix extends Abstract_Token_Fix {
 	 *
 	 * @throws \InvalidArgumentException The exception is thrown if `$type` is any other string.
 	 */
-	public function __construct( $type ) {
+	public function __construct( string $type ) {
 		$valid_types = [
 			'mixed_words'    => self::MIXED_WORDS,
 			'compound_words' => self::COMPOUND_WORDS,

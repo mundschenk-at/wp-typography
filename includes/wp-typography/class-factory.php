@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2023 Peter Putzer.
+ *  Copyright 2017-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -63,7 +63,7 @@ class Factory extends Dice {
 	 *
 	 * @var Factory
 	 */
-	private static $factory;
+	private static Factory $factory;
 
 	/**
 	 * Creates a new instance.
@@ -86,7 +86,7 @@ class Factory extends Dice {
 	 *                                  be created.
 	 */
 	public static function get(): self {
-		if ( ! self::$factory instanceof static ) {
+		if ( ! isset( self::$factory ) ) {
 
 			// Create factory.
 			$factory = new static();
