@@ -87,8 +87,7 @@ class WP_Typography_Singleton_Test extends TestCase {
 		$this->expect_exception( \BadMethodCallException::class );
 		$this->expect_exception_message_matches( '/WP_Typography::get_instance called without prior plugin intialization/' );
 
-		$typo = \WP_Typography::get_instance();
-		$this->assertInstanceOf( \WP_Typography::class, $typo );
+		\WP_Typography::get_instance();
 	}
 
 	/**

@@ -130,7 +130,7 @@ class Setup_Test extends TestCase {
 	public function test_deactivate(): void {
 		// Currently, this hook does nothing.
 		$this->setup->deactivate();
-		$this->assertTrue( true );
+		$this->assertTrue( true ); // @phpstan-ignore method.alreadyNarrowedType
 	}
 
 	/**
