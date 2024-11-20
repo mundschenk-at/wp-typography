@@ -623,7 +623,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 */
 	public function test_process_title_parts(): void {
 		$title_parts = [
-			'fo' . \PHP_Typography\U::SOFT_HYPHEN . 'o',
+			'fo' . U::SOFT_HYPHEN . 'o',
 			'bar',
 			'baz',
 		];
