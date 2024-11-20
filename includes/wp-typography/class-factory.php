@@ -248,7 +248,7 @@ class Factory extends Dice {
 	protected function get_plugin_version( $plugin_file ): string {
 		// Load version from plugin data.
 		if ( ! \function_exists( 'get_plugin_data' ) ) {
-			require_once \ABSPATH . 'wp-admin/includes/plugin.php';
+			require_once \ABSPATH . 'wp-admin/includes/plugin.php'; // @phpstan-ignore requireOnce.fileNotFound
 		}
 
 		return \get_plugin_data( $plugin_file, false, false )['Version'];
@@ -317,7 +317,7 @@ class Factory extends Dice {
 	 *     }
 	 * }
 	 *
-	 * @phpstan-return array<array<self::INSTANCE,string>>>
+	 * @phpstan-return array<array<self::INSTANCE,string>>
 	 */
 	protected function get_supported_locales(): array {
 		return [

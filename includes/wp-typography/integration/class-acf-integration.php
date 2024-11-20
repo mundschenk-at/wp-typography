@@ -248,7 +248,7 @@ class ACF_Integration implements Plugin_Integration {
 		if ( \is_array( $content ) ) {
 			$supported_subfields = self::SUPPORTED_ARRAY_TYPES[ $field['type'] ] ?? [];
 
-			if ( ! \is_array( $supported_subfields ) && '*' === $supported_subfields ) {
+			if ( ! \is_array( $supported_subfields ) && '*' === $supported_subfields ) { // @phpstan-ignore identical.alwaysTrue
 				$supported_subfields = \array_keys( $content );
 			}
 
