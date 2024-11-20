@@ -106,7 +106,7 @@ class Public_Interface_Test extends TestCase {
 		 *
 		 * @var Implementation&m\MockInterface
 		 */
-		$api = m::mock( \WP_Typography\Implementation::class );
+		$api = m::mock( Implementation::class );
 
 		$sut->__construct( $api );
 
