@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2018-2023 Peter Putzer.
+ *  Copyright 2018-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -61,6 +61,7 @@ class Custom_Token_Fix_Test extends \WP_Typography\Tests\TestCase {
 	 * @uses PHP_Typography\Fixes\Token_fixes\Abstract_Token_Fix::__construct
 	 */
 	public function test_constructor_invalid(): void {
+		Functions\expect( 'esc_html' )->once()->with( m::type( 'string' ) )->andReturnFirstArg();
 		$this->expectException( \InvalidArgumentException::class );
 
 		$fix = new Custom_Token_Fix( 'foobar' );

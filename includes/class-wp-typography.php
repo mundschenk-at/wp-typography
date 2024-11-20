@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2014-2023 Peter Putzer.
+ *  Copyright 2014-2024 Peter Putzer.
  *  Copyright 2009-2011 KINGdesk, LLC.
  *
  *  This program is free software; you can redistribute it and/or
@@ -122,7 +122,7 @@ abstract class WP_Typography {
 		if ( \method_exists( self::$instance, $name ) ) {
 			return self::$instance->$name( ...$arguments );
 		} else {
-			throw new BadMethodCallException( "Static method WP_Typography::$name does not exist." );
+			throw new BadMethodCallException( 'Static method WP_Typography::' . \esc_html( $name ) . ' does not exist.' );
 		}
 	}
 
