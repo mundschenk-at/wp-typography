@@ -11,7 +11,7 @@
 	<config name="testVersion" value="7.4-"/>
 
 	<!-- Include the WordPress ruleset, with exclusions. -->
-	<rule ref="WordPress">
+	<rule ref="WordPress-Core">
 		<exclude name="WordPress.Arrays.CommaAfterArrayItem.SpaceAfterComma" />
 		<exclude name="Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma" />
 		<exclude name="Universal.Arrays.DisallowShortArraySyntax" />

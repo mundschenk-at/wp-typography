@@ -28,21 +28,22 @@
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.4",
-        "wp-coding-standards/wpcs": "dev-develop",
+        "wp-coding-standards/wpcs": "^3",
         "phpcompatibility/php-compatibility": "^9.0",
         "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
-        "phpunit/phpunit": "9.*||10.*",
+        "phpunit/phpunit": "9.*||10.*||11.*",
         "mikey179/vfsstream": "~1",
         "brain/monkey": "^2.2",
         "roave/security-advisories": "dev-master",
         "humbug/php-scoper": "^0.18",
         "mundschenk-at/phpunit-cross-version": "dev-master",
-        "phpstan/phpstan": "^1.9",
+        "phpstan/phpstan": "^2",
         "sniccowp/php-scoper-wordpress-excludes": "^6",
-        "szepeviktor/phpstan-wordpress": "^1.1",
+        "szepeviktor/phpstan-wordpress": "^2.0.0-rc.2",
         "phpstan/extension-installer": "^1.2",
         "paulthewalton/acf-stubs": "^5.8",
-        "phpstan/phpstan-phpunit": "^1.2"
+        "phpstan/phpstan-phpunit": "^2",
+        "phpstan/phpstan-mockery": "^2.0"
     },
 
     "minimum-stability": "dev",
