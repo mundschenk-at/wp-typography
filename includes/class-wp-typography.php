@@ -213,7 +213,7 @@ abstract class WP_Typography {
 	 *
 	 * @return string The processed $text.
 	 */
-	public static function filter_feed_title( $text, Settings $settings = null ) {
+	public static function filter_feed_title( string $text, Settings $settings = null ): string {
 		return self::get_instance()->process_feed_title( $text, $settings );
 	}
 

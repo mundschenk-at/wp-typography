@@ -894,10 +894,10 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 */
 	public function provide_save_hyphenator_cache_on_shutdown_data(): array {
 		return [
-			[ true,  m::mock( Hyphenator_Cache::class ), true ],
+			[ true, m::mock( Hyphenator_Cache::class ), true ],
 			[ false, m::mock( Hyphenator_Cache::class ), false ],
-			[ true,  null,                               false ],
-			[ false, null,                               false ],
+			[ true, null, false ],
+			[ false, null, false ],
 		];
 	}
 
