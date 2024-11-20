@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2023 Peter Putzer.
+ *  Copyright 2017-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -124,9 +124,6 @@ class WP_Typography_Factory_Test extends TestCase {
 		Functions\expect( 'get_plugin_data' )->once()->with( m::type( 'string' ), false, false )->andReturn( [ 'Version' => '42' ] );
 
 		$result1 = Factory::get();
-
-		$this->assertInstanceOf( Factory::class, $result1 );
-
 		$result2 = Factory::get();
 
 		$this->assertSame( $result1, $result2 );

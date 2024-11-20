@@ -151,7 +151,6 @@ class WP_Typography_Implementation_Test extends TestCase {
 
 		$typo = new Implementation( '6.6.6', $transients, $cache, $options );
 
-		$this->assertInstanceOf( Implementation::class, $typo );
 		$this->assert_attribute_same( '6.6.6', 'version', $typo );
 	}
 
@@ -812,7 +811,6 @@ class WP_Typography_Implementation_Test extends TestCase {
 		$this->options->shouldReceive( 'set' )->once()->with( Options::CONFIGURATION, m::type( 'array' ) );
 
 		$this->wp_typo->set_default_options();
-		$this->assertTrue( true );
 	}
 
 	/**
@@ -832,7 +830,6 @@ class WP_Typography_Implementation_Test extends TestCase {
 		$this->options->shouldReceive( 'delete' )->once()->with( Options::CLEAR_CACHE )->andReturn( true );
 
 		$this->wp_typo->set_default_options( true );
-		$this->assertTrue( true );
 	}
 
 
@@ -864,7 +861,6 @@ class WP_Typography_Implementation_Test extends TestCase {
 		$this->options->shouldReceive( 'delete' )->once()->with( 'clear_cache' )->andReturn( true );
 
 		$this->wp_typo->clear_cache();
-		$this->assertTrue( true );
 	}
 
 
@@ -928,7 +924,5 @@ class WP_Typography_Implementation_Test extends TestCase {
 		}
 
 		$this->wp_typo->save_hyphenator_cache_on_shutdown();
-
-		$this->assertTrue( true );
 	}
 }
