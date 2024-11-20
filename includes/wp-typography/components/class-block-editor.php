@@ -2,7 +2,7 @@
 /**
  * This file is part of wp-Typography.
  *
- * Copyright 2020-2023 Peter Putzer.
+ * Copyright 2020-2024 Peter Putzer.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -77,7 +77,7 @@ class Block_Editor implements Plugin_Component {
 
 		// Register the script containing all our block types (and the sidebar plugin).
 		$blocks = 'admin/block-editor/js/index';
-		$asset  = include \WP_TYPOGRAPHY_PLUGIN_PATH . "/{$blocks}.asset.php";
+		$asset  = include \WP_TYPOGRAPHY_PLUGIN_PATH . "/{$blocks}.asset.php"; // @phpstan-ignore include.fileNotFound
 		\wp_register_script( 'wp-typography-gutenberg', "{$plugin_url}/{$blocks}.js", $asset['dependencies'], $asset['version'], false );
 		\wp_register_style( 'wp-typography-gutenberg-style', "{$plugin_url}/admin/css/blocks{$suffix}.css", [], $this->api->get_version() );
 

@@ -103,7 +103,7 @@ class Multilingual_Support_Test extends TestCase {
 			->times( \count( $locales ) - 1 )
 			->with( m::type( Basic_Locale_Settings::class ), m::type( Basic_Locale_Settings::class ) )
 			->andReturn( 0 );
-		$this->multi->__construct( $this->api, $locales ); // @phpstan-ignore-line - calling constructor on partial mock.
+		$this->multi->__construct( $this->api, $locales );
 
 		$this->setValue( $this->multi, 'hyphenation_languages', [ 'de' => 'Deutsch' ] );
 		$this->setValue( $this->multi, 'diacritic_languages',   [ 'en' => 'English' ] );
