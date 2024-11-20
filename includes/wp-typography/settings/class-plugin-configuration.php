@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2023 Peter Putzer.
+ *  Copyright 2017-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -26,7 +26,6 @@
 
 namespace WP_Typography\Settings;
 
-use WP_Typography;
 use WP_Typography\UI\Sections;
 use WP_Typography\UI\Tabs;
 

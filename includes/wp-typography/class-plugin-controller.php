@@ -26,7 +26,6 @@
 
 namespace WP_Typography;
 
-use WP_Typography\Implementation;
 use WP_Typography\Components\Plugin_Component;
 
 /**

@@ -29,7 +29,6 @@ namespace WP_Typography\Components;
 use WP_Typography\Data_Storage\Options;
 use WP_Typography\Implementation;
 use WP_Typography\Integration\Container as Integrations;
-use WP_Typography\Settings\Plugin_Configuration as Config;
 
 /**
  * Common functionality necessary for both public and admin interfaces.

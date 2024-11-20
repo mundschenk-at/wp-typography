@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2018 Peter Putzer.
+ *  Copyright 2018-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -27,7 +27,6 @@
 namespace WP_Typography\Typography;
 
 use PHP_Typography\Fixes\Default_Registry;
-use PHP_Typography\Hyphenator\Cache;
 
 /**
  * An extension of the default PHP-Typography registry.
