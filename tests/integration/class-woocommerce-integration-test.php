@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2018-2023 Peter Putzer.
+ *  Copyright 2018-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -97,7 +97,7 @@ class WooCommerce_Integration_Test extends TestCase {
 	 * @covers ::run
 	 */
 	public function test_run(): void {
-		$this->assertNull( $this->woo_i->run() ); // @phpstan-ignore-line - testing protected method.
+		$this->assertNull( $this->invokeMethod( $this->woo_i, 'run' ) );
 	}
 
 	/**

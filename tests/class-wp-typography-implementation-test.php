@@ -464,7 +464,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 		Filters\expectApplied( 'typo_ignore_parser_errors' )->with( false )->once();
 		$s->shouldReceive( 'set_ignore_parser_errors' )->once()->with( $config[ Config::IGNORE_PARSER_ERRORS ] );
 
-		$this->wp_typo->init_settings_from_options( $s, $config ); // @phpstan-ignore-line - testing protected method.
+		$this->invokeMethod( $this->wp_typo, 'init_settings_from_options', [ $s, $config ] );
 	}
 
 	/**
@@ -780,7 +780,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 			->shouldReceive( 'get' )->once()->andReturn( false )
 			->shouldReceive( 'set' )->once();
 
-		$this->assertSame( 'processed text', $this->wp_typo->maybe_process_fragment( $text, $is_title, $is_feed, $settings ) ); // @phpstan-ignore-line - testing protected method.
+		$this->assertSame( 'processed text', $this->invokeMethod( $this->wp_typo, 'maybe_process_fragment', [ $text, $is_title, $is_feed, $settings ] ) );
 	}
 
 	/**
