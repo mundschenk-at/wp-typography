@@ -102,7 +102,7 @@ abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 		$reflection = new \ReflectionClass( $classname );
 		$property   = $reflection->getProperty( $property_name );
 		$property->setAccessible( true );
-		$property->setValue( $value );
+		$property->setValue( null, $value );
 	}
 
 	/**
