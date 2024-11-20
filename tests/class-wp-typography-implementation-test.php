@@ -92,13 +92,12 @@ class WP_Typography_Implementation_Test extends TestCase {
 
 		// Mock WP_Typography\Data_Storage\Options instance.
 		$this->options = m::mock( Options::class );
-		$this->options
-			->shouldReceive( 'get' )->andReturn( false )->byDefault()
-			->shouldReceive( 'set' )->andReturn( false )->byDefault();
+		$this->options->shouldReceive( 'get' )->andReturn( false )->byDefault();
+		$this->options->shouldReceive( 'set' )->andReturn( false )->byDefault();
 
 		// Mock WP_Typography\Data_Storage\Transients instance.
 		$this->transients = m::mock( Transients::class );
-		$this->transients
+		$this->transients // @phpstan-ignore method.notFound
 			->shouldReceive( 'get' )->byDefault()->andReturn( false )
 			->shouldReceive( 'get_large_object' )->byDefault()->andReturn( false )
 			->shouldReceive( 'set' )->andReturn( false )->byDefault()
@@ -106,7 +105,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 
 		// Mock WP_Typography\Data_Storage\Cache instance.
 		$this->cache = m::mock( Cache::class );
-		$this->cache
+		$this->cache  // @phpstan-ignore method.notFound
 			->shouldReceive( 'get' )->andReturn( false )->byDefault()
 			->shouldReceive( 'set' )->andReturn( false )->byDefault()
 			->shouldReceive( 'invalidate' )->byDefault();
@@ -543,7 +542,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 			define( 'WEEK_IN_SECONDS', 999 );
 		}
 
-		$this->cache->shouldReceive( 'get' )->once()->andReturnUsing(
+		$this->cache->shouldReceive( 'get' )->once()->andReturnUsing( // @phpstan-ignore method.notFound
 			function ( $key, &$found ) {
 				$found = false;
 				return [];
@@ -571,7 +570,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 			define( 'WEEK_IN_SECONDS', 999 );
 		}
 
-		$this->cache->shouldReceive( 'get' )->once()->andReturnUsing(
+		$this->cache->shouldReceive( 'get' )->once()->andReturnUsing( // @phpstan-ignore method.notFound
 			function ( $key, &$found ) {
 				$found = false;
 				return [];
@@ -778,7 +777,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 
 		$typo_mock->shouldReceive( $process_method )->once()->with( $text, m::type( Settings::class ), $is_title, [ 'foo', 'bar' ] )->andReturn( 'processed text' );
 
-		$this->cache
+		$this->cache // @phpstan-ignore method.notFound
 			->shouldReceive( 'get' )->once()->andReturn( false )
 			->shouldReceive( 'set' )->once();
 

@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2023 Peter Putzer.
+ *  Copyright 2017-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -58,7 +58,8 @@ class Transients_Test extends TestCase {
 	protected function set_up(): void {
 		parent::set_up();
 
-		$this->transients = m::mock( Transients::class )
+		// Mock object without calling the constructor.
+		$this->transients = m::mock( Transients::class ) // @phpstan-ignore method.notFound
 			->shouldAllowMockingProtectedMethods()
 			->makePartial()
 			->shouldReceive( 'get' )->once()->with( m::pattern( '/incrementor/' ), true )->andReturn( 0 )
@@ -73,7 +74,12 @@ class Transients_Test extends TestCase {
 	 * @covers ::__construct
 	 */
 	public function test___construct(): void {
-		$transients = m::mock( Transients::class )->shouldAllowMockingProtectedMethods()->makePartial()
+		/**
+		 * Test fixture.
+		 *
+		 * @var Transients&m\MockInterface $transients
+		 */
+		$transients = m::mock( Transients::class )->shouldAllowMockingProtectedMethods()->makePartial() // @phpstan-ignore method.notFound
 			->shouldReceive( 'get' )->once()->with( m::pattern( '/incrementor/' ), true )->andReturn( 0 )
 			->shouldReceive( 'invalidate' )->once()
 			->getMock();

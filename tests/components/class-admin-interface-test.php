@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2023 Peter Putzer.
+ *  Copyright 2017-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -109,13 +109,12 @@ class Admin_Interface_Test extends TestCase {
 		parent::set_up();
 
 		// Test fixtures.
-		$this->options  = m::mock( Options::class )
+		$this->options = m::mock( Options::class ) // @phpstan-ignore method.notFound
 			->shouldReceive( 'get' )->andReturn( false )->byDefault()
 			->shouldReceive( 'set' )->andReturn( false )->byDefault()
 			->getMock();
-		$this->api      = m::mock( Implementation::class )
-			->shouldReceive( 'get_version' )->andReturn( '6.6.6' )->byDefault()
-			->getMock();
+		$this->api     = m::mock( Implementation::class );
+		$this->api->shouldReceive( 'get_version' )->andReturn( '6.6.6' )->byDefault();
 		$this->template = m::mock( Template::class );
 
 		// Mock WP_Typography\Components\Admin_Interface instance.
@@ -141,19 +140,22 @@ class Admin_Interface_Test extends TestCase {
 			Config::DIACRITIC_LANGUAGES => $control2,
 		];
 
-		$this->control_factory = m::mock( 'alias:' . UI\Control_Factory::class )
-			->shouldReceive( 'initialize' )->with( m::type( 'array' ), m::type( Options::class ), m::type( 'string' ) )->andReturn( $this->admin_form_controls )->byDefault()
-			->getMock();
+		$this->control_factory = m::mock( 'alias:' . UI\Control_Factory::class );
+		$this->control_factory
+			->shouldReceive( 'initialize' )
+			->with( m::type( 'array' ), m::type( Options::class ), m::type( 'string' ) )
+			->andReturn( $this->admin_form_controls )
+			->byDefault();
 
 		// Finish Admin_Interface.
 		Functions\expect( '__' )->atLeast()->once()->with( m::type( 'string' ), 'wp-typography' )->andReturnUsing(
-			function( $str, $domain ) {
+			function ( $str ) {
 				return $str;
 			}
 		);
 		Functions\expect( 'is_admin' )->once()->andReturn( true );
 		Functions\expect( 'plugin_basename' )->once()->with( \WP_TYPOGRAPHY_PLUGIN_FILE )->andReturn( 'plugin/basename' );
-		$this->admin->run();  // @phpstan-ignore-line - We need to run this method to properly set up the fixture.
+		$this->admin->run();
 	}
 
 	/**

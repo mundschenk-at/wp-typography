@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2023 Peter Putzer.
+ *  Copyright 2017-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -72,6 +72,11 @@ class Cache_Test extends TestCase {
 	public function test___construct(): void {
 		Functions\expect( 'wp_cache_get' )->once()->with( m::pattern( '/incrementor/' ), Cache::GROUP )->andReturn( 0 );
 
+		/**
+		 * Test fixture.
+		 *
+		 * @var Cache&m\MockInterface $cache
+		 */
 		$cache = m::mock( Cache::class )->makePartial()
 			->shouldReceive( 'invalidate' )->once()
 			->getMock();
