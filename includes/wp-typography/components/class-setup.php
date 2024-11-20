@@ -28,7 +28,6 @@ namespace WP_Typography\Components;
 
 use WP_Typography\Implementation;
 use WP_Typography\Data_Storage\Options;
-use WP_Typography\Settings\Plugin_Configuration as Config;
 
 /**
  * Fired during plugin de-/activation and uninstall.

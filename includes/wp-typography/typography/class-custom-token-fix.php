@@ -27,9 +27,7 @@
 namespace WP_Typography\Typography;
 
 use PHP_Typography\Settings;
-
 use PHP_Typography\Text_Parser\Token;
-
 use PHP_Typography\Fixes\Token_Fixes\Abstract_Token_Fix;
 
 /**

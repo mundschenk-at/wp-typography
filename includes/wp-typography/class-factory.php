@@ -36,7 +36,6 @@ use WP_Typography\UI\Template;
 
 use WP_Typography\Integration\Container as Integrations;
 use WP_Typography\Settings\Basic_Locale_Settings;
-use WP_Typography\Settings\Locale_Settings;
 
 use WP_Typography\Exceptions\Object_Factory_Exception;
 

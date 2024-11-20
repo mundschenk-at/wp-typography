@@ -27,7 +27,6 @@
 namespace WP_Typography\Components;
 
 use WP_Typography\Implementation;
-use WP_Typography\Settings\Basic_Locale_Settings;
 use WP_Typography\Settings\Locale_Settings;
 use WP_Typography\Settings\Plugin_Configuration as Config;
 

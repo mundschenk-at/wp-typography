@@ -26,8 +26,6 @@
 
 namespace WP_Typography\Settings;
 
-use PHP_Typography\Settings;
-
 /**
  * A class implementing fast but versatile locale matching.
  *
