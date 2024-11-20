@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2014-2023 Peter Putzer.
+ *  Copyright 2014-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -65,7 +65,7 @@ class Setup implements Plugin_Component {
 	 *
 	 * @var \WP_Typography
 	 */
-	private $api;
+	private \WP_Typography $api;
 
 	/**
 	 * An abstraction of the WordPress Options API.
@@ -74,7 +74,7 @@ class Setup implements Plugin_Component {
 	 *
 	 * @var Options
 	 */
-	private $options;
+	private Options $options;
 
 	/**
 	 * Create a new instace of WP_Typography\Setup.

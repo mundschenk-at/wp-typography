@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2023 Peter Putzer.
+ *  Copyright 2017-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -45,7 +45,7 @@ class WooCommerce_Integration implements Plugin_Integration {
 	 *
 	 * @var \WP_Typography
 	 */
-	private $api;
+	private \WP_Typography $api;
 
 	/**
 	 * Creates a new integration.
@@ -90,7 +90,7 @@ class WooCommerce_Integration implements Plugin_Integration {
 	 *
 	 * @param int $priority The filter priority.
 	 */
-	public function enable_content_filters( $priority ): void {
+	public function enable_content_filters( int $priority ): void {
 
 		// Page descriptions.
 		\add_filter( 'woocommerce_format_content', [ $this->api, 'process' ], $priority );

@@ -40,16 +40,16 @@ class Plugin_Controller {
 	/**
 	 * The plugin API implementation.
 	 *
-	 * @var \WP_Typography\Implementation
+	 * @var \WP_Typography
 	 */
-	private $api;
+	private \WP_Typography $api;
 
 	/**
 	 * The plugin components in order of execution.
 	 *
 	 * @var Plugin_Component[]
 	 */
-	private $plugin_components = [];
+	private array $plugin_components = [];
 
 	/**
 	 * Sets up a new plugin controller instance.

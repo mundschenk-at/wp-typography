@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2023 Peter Putzer.
+ *  Copyright 2017-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -83,7 +83,7 @@ abstract class Abstract_Locale_Settings implements Locale_Settings {
 	 * @param string $secondary_quote    A Quote_Style constant.
 	 * @param bool   $french_punctuation True if French punctuation spacing should be enabled.
 	 */
-	protected function __construct( $priority, $dash, $primary_quote, $secondary_quote, $french_punctuation ) {
+	protected function __construct( int $priority, string $dash, string $primary_quote, string $secondary_quote, bool $french_punctuation ) {
 		$this->priority              = $priority;
 		$this->dash_style            = $dash;
 		$this->primary_quote_style   = $primary_quote;
@@ -100,7 +100,7 @@ abstract class Abstract_Locale_Settings implements Locale_Settings {
 	 *
 	 * @return bool             True if the default is applicable to this locale, false otherwise.
 	 */
-	abstract public function match( $language, $country, $modifier = '' ): bool;
+	abstract public function match( string $language, string $country, string $modifier = '' ): bool;
 
 	/**
 	 * Retrieves the matching priority. A higher value means earlier matching.

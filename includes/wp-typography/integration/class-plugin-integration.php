@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2018-2023 Peter Putzer.
+ *  Copyright 2018-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -62,5 +62,5 @@ interface Plugin_Integration {
 	 *
 	 * @param int $priority The filter priority.
 	 */
-	public function enable_content_filters( $priority ): void;
+	public function enable_content_filters( int $priority ): void;
 }

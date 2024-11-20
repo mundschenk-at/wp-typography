@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2023 Peter Putzer.
+ *  Copyright 2017-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -74,7 +74,7 @@ class Basic_Locale_Settings extends Abstract_Locale_Settings {
 	 * @param string   $secondary_quote    A Quote_Style constant.
 	 * @param bool     $french_punctuation True if French punctuation spacing should be enabled.
 	 */
-	public function __construct( array $languages, array $countries, array $modifiers, $dash, $primary_quote, $secondary_quote, $french_punctuation ) {
+	public function __construct( array $languages, array $countries, array $modifiers, string $dash, string $primary_quote, string $secondary_quote, bool $french_punctuation ) {
 		parent::__construct(
 			self::LANGUAGE_PRIORITY * \count( $languages ) + self::COUNTRY_PRIORITY * \count( $countries ) + self::MODIFIER_PRIORITY * \count( $modifiers ),
 			$dash,
@@ -97,7 +97,7 @@ class Basic_Locale_Settings extends Abstract_Locale_Settings {
 	 *
 	 * @return bool             True if the default is applicable to this locale, false otherwise.
 	 */
-	public function match( $language, $country, $modifier = '' ): bool {
+	public function match( string $language, string $country, string $modifier = '' ): bool {
 		return ( empty( $this->valid_languages ) || isset( $this->valid_languages[ $language ] ) )
 			&& ( empty( $this->valid_countries ) || isset( $this->valid_countries[ $country ] ) )
 			&& ( empty( $modifier ) || empty( $this->valid_modifiers ) || isset( $this->valid_modifiers[ $modifier ] ) );

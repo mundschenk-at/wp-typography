@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2014-2023 Peter Putzer.
+ *  Copyright 2014-2024 Peter Putzer.
  *  Copyright 2009-2011 KINGdesk, LLC.
  *
  *  This program is free software; you can redistribute it and/or
@@ -62,7 +62,7 @@ class Public_Interface implements Plugin_Component {
 	 *
 	 * @var int
 	 */
-	private $filter_priority = 9999;
+	private int $filter_priority = 9999;
 
 	/**
 	 * The plugin configuration.

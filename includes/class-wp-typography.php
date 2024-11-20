@@ -99,7 +99,7 @@ abstract class WP_Typography {
 	 *
 	 * @return WP_Typography
 	 */
-	public static function get_instance() {
+	public static function get_instance(): WP_Typography {
 		if ( null === self::$instance ) {
 			throw new BadMethodCallException( 'WP_Typography::get_instance called without prior plugin intialization.' );
 		}
@@ -118,7 +118,7 @@ abstract class WP_Typography {
 	 *
 	 * @return mixed
 	 */
-	public static function __callStatic( $name, array $arguments ) {
+	public static function __callStatic( string $name, array $arguments ) {
 		if ( \method_exists( self::$instance, $name ) ) {
 			return self::$instance->$name( ...$arguments );
 		} else {
@@ -133,7 +133,7 @@ abstract class WP_Typography {
 	 *
 	 * @return Settings
 	 */
-	public static function get_user_settings() {
+	public static function get_user_settings(): Settings {
 		return clone self::get_instance()->get_settings();
 	}
 
@@ -149,7 +149,7 @@ abstract class WP_Typography {
 	 *
 	 * @return string The processed $text.
 	 */
-	public static function filter( $text, Settings $settings = null ) {
+	public static function filter( string $text, Settings $settings = null ): string {
 		return self::get_instance()->process( $text, false, false, $settings );
 	}
 
@@ -165,7 +165,7 @@ abstract class WP_Typography {
 	 *
 	 * @return string The processed $text.
 	 */
-	public static function filter_title( $text, Settings $settings = null ) {
+	public static function filter_title( string $text, Settings $settings = null ): string {
 		return self::get_instance()->process_title( $text, $settings );
 	}
 
@@ -197,7 +197,7 @@ abstract class WP_Typography {
 	 *
 	 * @return string The processed $text.
 	 */
-	public static function filter_feed( $text, Settings $settings = null ) {
+	public static function filter_feed( string $text, Settings $settings = null ): string {
 		return self::get_instance()->process_feed( $text, false, $settings );
 	}
 
@@ -234,7 +234,7 @@ abstract class WP_Typography {
 	 *
 	 * @return string The hashed version (containing as few bytes as possible);
 	 */
-	private static function hash_version_string( $version ) {
+	private static function hash_version_string( $version ): string {
 		$hash = '';
 
 		foreach ( \explode( '.', $version ) as $part ) {
@@ -251,7 +251,7 @@ abstract class WP_Typography {
 	 *
 	 * @return string
 	 */
-	public function get_version_hash() {
+	public function get_version_hash(): string {
 		return self::hash_version_string( self::get_instance()->get_version() );
 	}
 }

@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2023 Peter Putzer.
+ *  Copyright 2017-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -83,14 +83,14 @@ class ACF_Integration implements Plugin_Integration {
 	 *
 	 * @var \WP_Typography
 	 */
-	private $api;
+	private \WP_Typography $api;
 
 	/**
 	 * The ACF API version.
 	 *
 	 * @var int
 	 */
-	private $api_version;
+	private int $api_version;
 
 	/**
 	 * Creates a new integration.
@@ -155,7 +155,7 @@ class ACF_Integration implements Plugin_Integration {
 	 *
 	 * @param int $priority The filter priority.
 	 */
-	public function enable_content_filters( $priority ): void {
+	public function enable_content_filters( int $priority ): void {
 		if ( $this->api_version >= 5 ) {
 			// Advanced Custom Fields (version 5 and above).
 			\add_filter( 'acf/format_value', [ $this, 'process_acf5' ], $priority, 3 );

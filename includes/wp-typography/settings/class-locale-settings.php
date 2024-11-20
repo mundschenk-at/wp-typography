@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2023 Peter Putzer.
+ *  Copyright 2017-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -45,7 +45,7 @@ interface Locale_Settings {
 	 *
 	 * @return bool             True if the default is applicable to this locale, false otherwise.
 	 */
-	public function match( $language, $country, $modifier = '' ): bool;
+	public function match( string $language, string $country, string $modifier = '' ): bool;
 
 	/**
 	 * Retrieves the matching priority. A higher value means earlier matching.

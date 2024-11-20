@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2014-2023 Peter Putzer.
+ *  Copyright 2014-2024 Peter Putzer.
  *  Copyright 2012-2013 Marie Hogebrandt.
  *  Copyright 2009-2011 KINGdesk, LLC.
  *
@@ -71,7 +71,7 @@ class Admin_Interface implements Plugin_Component {
 	 *
 	 * @var Options
 	 */
-	private $options;
+	private Options $options;
 
 	/**
 	 * The template helper.
@@ -85,21 +85,21 @@ class Admin_Interface implements Plugin_Component {
 	 *
 	 * @var string $plugin_name
 	 */
-	private $plugin_name = 'wp-Typography';
+	private string $plugin_name = 'wp-Typography';
 
 	/**
 	 * The result of plugin_basename() for the main plugin file (relative from plugins folder).
 	 *
 	 * @var string
 	 */
-	private $plugin_basename;
+	private string $plugin_basename;
 
 	/**
 	 * Links to add the settings page.
 	 *
 	 * @var array<string,string> $admin_resource_links An array in the form of 'anchor text' => 'URL'.
 	 */
-	private $admin_resource_links;
+	private array $admin_resource_links;
 
 	/**
 	 * Context sensitive help for the settings page.
@@ -147,7 +147,7 @@ class Admin_Interface implements Plugin_Component {
 	 *
 	 * @var string
 	 */
-	private $active_tab;
+	private string $active_tab;
 
 	/**
 	 * The plugin configuration defaults (including UI definition).
@@ -328,7 +328,7 @@ class Admin_Interface implements Plugin_Component {
 	 *
 	 * @return bool
 	 */
-	public function sanitize_restore_defaults( $input ) {
+	public function sanitize_restore_defaults( $input ): bool {
 		return $this->trigger_admin_notice( Options::RESTORE_DEFAULTS, 'defaults-restored', \__( 'Settings reset to default values.', 'wp-typography' ), 'updated', $input );
 	}
 
