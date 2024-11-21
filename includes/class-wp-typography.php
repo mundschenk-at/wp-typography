@@ -40,18 +40,18 @@ use PHP_Typography\Settings;
  *
  * @method void clear_cache() Retrieves the plugin's default option values.
  *
- * @method array get_config() Retrieves the plugin configuration.
- * @method array get_default_options() Retrieves the plugin's default option values.
+ * @method array<string,string|int|bool> get_config() Retrieves the plugin configuration.
+ * @method array<string,string|int|bool> get_default_options() Retrieves the plugin's default option values.
  * @method void set_default_options($force_defaults = false) Initializes the options with default values.
  *
  * @method string process(string $text, bool $is_title = false, bool $force_feed = false, Settings $settings = null) Processes a text fragment.
  * @method string process_title($text, Settings $settings = null) Processes a heading text fragment.
  * @method string process_feed_title($text, Settings $settings = null) Processes a heading text fragment as part of an RSS feed.
  * @method string process_feed($text, $is_title = false, Settings $settings = null) Processes a content text fragment as part of an RSS feed.
- * @method array process_title_parts($title_parts, Settings $settings = null) Processes title parts and strips &shy; and zero-width space.
+ * @method string[] process_title_parts($title_parts, Settings $settings = null) Processes title parts and strips &shy; and zero-width space.
  *
- * @method array get_hyphenation_languages() Retrieves and caches the list of valid hyphenation languages.
- * @method array get_diacritic_languages() Retrieves and caches the list of valid diacritic replacement languages.
+ * @method array<string,string> get_hyphenation_languages() Retrieves and caches the list of valid hyphenation languages.
+ * @method array<string,string> get_diacritic_languages() Retrieves and caches the list of valid diacritic replacement languages.
  */
 abstract class WP_Typography {
 
