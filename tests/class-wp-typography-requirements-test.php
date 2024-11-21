@@ -89,7 +89,7 @@ class WP_Typography_Requirements_Test extends TestCase {
 		$this->assertSame( 'wp-typography', $this->get_value( $req, 'textdomain' ) );
 		$this->assertSame(
 			[
-				'php'              => '7.2.0',
+				'php'              => '7.4.0',
 				'multibyte'        => true,
 				'utf-8'            => true,
 				'dom'              => true,
