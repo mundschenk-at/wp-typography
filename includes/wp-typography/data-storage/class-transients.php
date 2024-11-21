@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2023 Peter Putzer.
+ *  Copyright 2017-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -48,8 +48,8 @@ class Transients extends \Mundschenk\Data_Storage\Transients {
 	/**
 	 * Cache the given object under the transient name.
 	 *
-	 * @since  5.9.2 Parameter `$object` renamed to `$large_object` to prevent
-	 *               conflict with reserved keywords.
+	 * @since  5.10.0 Parameter `$object` renamed to `$large_object` to prevent
+	 *                conflict with reserved keywords.
 	 *
 	 * @param  string $transient    The transient key.
 	 * @param  mixed  $large_object The object to store.

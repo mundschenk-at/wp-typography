@@ -31,7 +31,7 @@ namespace WP_Typography\UI;
  *
  * @internal
  *
- * @since  5.9.2
+ * @since  5.10.0
  *
  * @author Peter Putzer <github@mundschenk.at>
  *
@@ -69,7 +69,7 @@ class Template {
 	 */
 	public function print_partial( string $partial, array $args = [] ) {
 		if ( \extract( $args ) !== \count( $args ) ) { // phpcs:ignore WordPress.PHP.DontExtract.extract_extract -- needed for "natural" partials.
-			\_doing_it_wrong( __METHOD__, \esc_html( "Invalid arguments passed to partial {$partial}." ), 'wp-Typography 5.9.2' );
+			\_doing_it_wrong( __METHOD__, \esc_html( "Invalid arguments passed to partial {$partial}." ), 'wp-Typography 5.10.0' );
 		}
 
 		require "{$this->base_dir}/{$partial}";

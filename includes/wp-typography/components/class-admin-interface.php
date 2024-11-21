@@ -166,9 +166,9 @@ class Admin_Interface implements Plugin_Component {
 	/**
 	 * Create a new instace of admin backend.
 	 *
-	 * @since 5.6.0 Parameters $basename and $plugin_path removed.
-	 * @since 5.7.0 Parameter $api added.
-	 * @since 5.9.2 Parameter $template added.
+	 * @since 5.6.0  Parameters $basename and $plugin_path removed.
+	 * @since 5.7.0  Parameter $api added.
+	 * @since 5.10.0 Parameter $template added.
 	 *
 	 * @param Implementation $api      The core API.
 	 * @param Options        $options  The Options API handler.
@@ -516,7 +516,7 @@ class Admin_Interface implements Plugin_Component {
 	 * Loads the available language option values into the control.
 	 *
 	 * @since 5.9.0
-	 * @since 5.9.2 Visibility changed to `protected`.
+	 * @since 5.10.0 Visibility changed to `protected`.
 	 *
 	 * @param Control              $control   The UI control (needs to be a Select element).
 	 * @param array<string,string> $languages The list of available language choices (in the form `$code => $translated_name`).

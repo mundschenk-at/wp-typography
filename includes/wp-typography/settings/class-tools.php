@@ -45,8 +45,8 @@ abstract class Tools {
 	 * Parses a smart quotes exceptions string into an array. All single straight
 	 * quotes (prime marks) are treated as apostrophes.
 	 *
-	 * @since  5.9.2 Parameter `$strings` renamed to `$exceptions` to prevent
-	 *               conflicts with reserved keywords.
+	 * @since  5.10.0 Parameter `$strings` renamed to `$exceptions` to prevent
+	 *                conflicts with reserved keywords.
 	 *
 	 * @param  string $exceptions A string formatted `word1, word2, ...`.
 	 *
