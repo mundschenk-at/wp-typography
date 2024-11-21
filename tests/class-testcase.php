@@ -27,9 +27,9 @@ namespace WP_Typography\Tests;
 /**
  * Abstract base class for \PHP_Typography\* unit tests.
  *
- * @since 5.9.0 Trait MockeryPHPUnitIntegration added to class.
- * @since 5.9.2 Trait MockeryPHPUnitIntegration removed again in favor of using
- *                    newer version of mundschenk-at/phpunit-cross-version package.
+ * @since 5.9.0  Trait MockeryPHPUnitIntegration added to class.
+ * @since 5.10.0 Trait MockeryPHPUnitIntegration removed again in favor of using
+ *               newer version of mundschenk-at/phpunit-cross-version package.
  */
 abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 

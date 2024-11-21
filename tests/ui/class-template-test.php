@@ -139,7 +139,7 @@ class Template_Test extends \WP_Typography\Tests\TestCase {
 		];
 
 		Functions\expect( 'esc_html' )->once()->with( m::type( 'string' ) )->andReturnFirstArg();
-		Functions\expect( '_doing_it_wrong' )->once()->with( Template::class . '::print_partial', m::type( 'string' ), 'wp-Typography 5.9.2' )->andReturnUsing(
+		Functions\expect( '_doing_it_wrong' )->once()->with( Template::class . '::print_partial', m::type( 'string' ), 'wp-Typography 5.10.0' )->andReturnUsing(
 			function () {
 				throw new \InvalidArgumentException( '_doing_it_wrong' );
 			}
@@ -191,7 +191,7 @@ class Template_Test extends \WP_Typography\Tests\TestCase {
 		];
 
 		Functions\expect( 'esc_html' )->once()->with( m::type( 'string' ) )->andReturnFirstArg();
-		Functions\expect( '_doing_it_wrong' )->once()->with( Template::class . '::print_partial', m::type( 'string' ), 'wp-Typography 5.9.2' )->andReturnUsing(
+		Functions\expect( '_doing_it_wrong' )->once()->with( Template::class . '::print_partial', m::type( 'string' ), 'wp-Typography 5.10.0' )->andReturnUsing(
 			function () {
 				throw new \InvalidArgumentException( '_doing_it_wrong' );
 			}

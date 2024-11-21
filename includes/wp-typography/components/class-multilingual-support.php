@@ -468,7 +468,7 @@ class Multilingual_Support implements Plugin_Component {
 	 * Tries to heuristically match a language code, looking first for variants of the language
 	 * and then narrowing it down using the whole locale.
 	 *
-	 * @since  5.9.2
+	 * @since  5.10.0
 	 *
 	 * @param string[] $language_codes An array of language/locale codes.
 	 * @param string   $language       The current two-letter language code (e.g. 'en').
