@@ -2,7 +2,7 @@
 /**
  * This file is part of wp-Typography.
  *
- * Copyright 2020-2023 Peter Putzer.
+ * Copyright 2020-2024 Peter Putzer.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -39,7 +39,7 @@ namespace WP_Typography;
 class Requirements extends \Mundschenk\WP_Requirements {
 
 	const REQUIREMENTS = [
-		'php'              => '7.2.0',
+		'php'              => '7.4.0',
 		'multibyte'        => true,
 		'utf-8'            => true,
 		'dom'              => true,
