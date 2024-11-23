@@ -253,7 +253,7 @@ class Multilingual_Support implements Plugin_Component {
 	 * @param  string               $locale     A locale (e.g. 'en-US').
 	 * @param  Locale_Settings|null $adjustment Locale-specific settings.
 	 */
-	protected function adjust_french_punctuation_spacing( Settings $settings, $locale, Locale_Settings $adjustment = null ): void {
+	protected function adjust_french_punctuation_spacing( Settings $settings, $locale, ?Locale_Settings $adjustment = null ): void {
 
 		if ( null === $adjustment ) {
 			$french_spacing = false;
@@ -277,7 +277,7 @@ class Multilingual_Support implements Plugin_Component {
 	 * @param  string               $locale     A locale (e.g. 'en-US').
 	 * @param  Locale_Settings|null $adjustment Locale-specific settings.
 	 */
-	protected function adjust_dash_style( Settings $settings, $locale, Locale_Settings $adjustment = null ): void {
+	protected function adjust_dash_style( Settings $settings, $locale, ?Locale_Settings $adjustment = null ): void {
 
 		if ( null === $adjustment ) {
 			$dash_style = $settings->dash_style();
@@ -305,7 +305,7 @@ class Multilingual_Support implements Plugin_Component {
 	 * @param  string               $locale     A locale (e.g. 'en-US').
 	 * @param  Locale_Settings|null $adjustment Locale-specific settings.
 	 */
-	protected function adjust_quote_styles( Settings $settings, $locale, Locale_Settings $adjustment = null ): void {
+	protected function adjust_quote_styles( Settings $settings, $locale, ?Locale_Settings $adjustment = null ): void {
 
 		if ( null === $adjustment ) {
 			$primary   = $settings->primary_quote_style();

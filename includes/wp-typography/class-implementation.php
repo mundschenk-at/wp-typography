@@ -321,7 +321,7 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @return string                 The processed `$text`.
 	 */
-	public function process_title( $text, Settings $settings = null ): string {
+	public function process_title( $text, ?Settings $settings = null ): string {
 		return $this->process( $text, true, false, $settings );
 	}
 
@@ -337,7 +337,7 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @return string                 The processed `$text`.
 	 */
-	public function process_feed_title( $text, Settings $settings = null ): string {
+	public function process_feed_title( $text, ?Settings $settings = null ): string {
 		return $this->process_feed( $text, true, $settings );
 	}
 
@@ -356,7 +356,7 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @return string                 The processed `$text`.
 	 */
-	public function process_feed( $text, $is_title = false, Settings $settings = null ): string {
+	public function process_feed( $text, $is_title = false, ?Settings $settings = null ): string {
 		return $this->process( $text, $is_title, true, $settings );
 	}
 
@@ -372,7 +372,7 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @return string[]
 	 */
-	public function process_title_parts( array $title_parts, Settings $settings = null ): array {
+	public function process_title_parts( array $title_parts, ?Settings $settings = null ): array {
 		foreach ( $title_parts as $index => $part ) {
 			// Remove "&shy;" and "&#8203;" after processing title part.
 			$title_parts[ $index ] = \wp_strip_all_tags(
@@ -397,7 +397,7 @@ class Implementation extends \WP_Typography {
 	 *
 	 * @return string                   The processed `$text`.
 	 */
-	public function process( $text, $is_title = false, $force_feed = false, Settings $settings = null ): string {
+	public function process( $text, $is_title = false, $force_feed = false, ?Settings $settings = null ): string {
 		// Check if processing is disabled for this post.
 		$post_id = \get_the_ID();
 		$disable = ! empty( $post_id ) && \get_post_meta( $post_id, REST_API::WP_TYPOGRAPHY_DISABLED_META_KEY, true );

@@ -141,7 +141,7 @@ abstract class WP_Typography {
 	 *
 	 * @return string The processed $text.
 	 */
-	public static function filter( string $text, Settings $settings = null ): string {
+	public static function filter( string $text, ?Settings $settings = null ): string {
 		return self::get_instance()->process( $text, false, false, $settings );
 	}
 
@@ -157,7 +157,7 @@ abstract class WP_Typography {
 	 *
 	 * @return string The processed $text.
 	 */
-	public static function filter_title( string $text, Settings $settings = null ): string {
+	public static function filter_title( string $text, ?Settings $settings = null ): string {
 		return self::get_instance()->process_title( $text, $settings );
 	}
 
@@ -173,7 +173,7 @@ abstract class WP_Typography {
 	 *
 	 * @return string[]
 	 */
-	public static function filter_title_parts( array $title_parts, Settings $settings = null ): array {
+	public static function filter_title_parts( array $title_parts, ?Settings $settings = null ): array {
 		return self::get_instance()->process_title_parts( $title_parts, $settings );
 	}
 
@@ -189,7 +189,7 @@ abstract class WP_Typography {
 	 *
 	 * @return string The processed $text.
 	 */
-	public static function filter_feed( string $text, Settings $settings = null ): string {
+	public static function filter_feed( string $text, ?Settings $settings = null ): string {
 		return self::get_instance()->process_feed( $text, false, $settings );
 	}
 
@@ -205,7 +205,7 @@ abstract class WP_Typography {
 	 *
 	 * @return string The processed $text.
 	 */
-	public static function filter_feed_title( string $text, Settings $settings = null ): string {
+	public static function filter_feed_title( string $text, ?Settings $settings = null ): string {
 		return self::get_instance()->process_feed_title( $text, $settings );
 	}
 

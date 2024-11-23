@@ -82,7 +82,7 @@ class Custom_Token_Fix extends Abstract_Token_Fix {
 	 *
 	 * @return Token[] An array of tokens.
 	 */
-	public function apply( array $tokens, Settings $settings, $is_title = false, \DOMText $textnode = null ): array {
+	public function apply( array $tokens, Settings $settings, $is_title = false, ?\DOMText $textnode = null ): array {
 
 		/**
 		 * Filters the tokenized text node content (limited to a certain "word" type).
