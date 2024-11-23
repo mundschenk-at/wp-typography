@@ -6,7 +6,8 @@ on:
       - main
   pull_request:
     types: [opened, synchronize, reopened]
-
+env:
+  MAIN_PHP_VERSION: '8.3'
 jobs:
   unit-tests:
     name: Unit tests (PHP ${{ matrix.php-versions }})
@@ -53,12 +54,10 @@ jobs:
         run: composer test
 
   coverage:
-    name: Coverage & SonarCloud (PHP ${{ matrix.php-versions }})
+    name: Coverage & SonarCloud
     runs-on: ubuntu-22.04
     strategy:
       fail-fast: true
-      matrix:
-        php-versions: ['8.3']
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -68,7 +67,7 @@ jobs:
       - name: Setup PHP, with Composer and extensions
         uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ env.MAIN_PHP_VERSION }}
           coverage: xdebug
       - name: Remove unused Composer dependencies
         run: composer remove humbug/php-scoper sirbrillig/phpcs-import-detection szepeviktor/phpstan-wordpress --dev --no-interaction --no-update
@@ -110,15 +109,13 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       fail-fast: true
-      matrix:
-        php-versions: ['8.3']
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Setup PHP, with Composer and extensions
         uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ env.MAIN_PHP_VERSION }}
           coverage: none
           extensions: gd
           tools: cs2pr
@@ -143,15 +140,13 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       fail-fast: true
-      matrix:
-        php-versions: ['8.3']
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Setup PHP, with Composer and extensions
         uses: shivammathur/setup-php@v2 #https://github.com/shivammathur/setup-php
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ env.MAIN_PHP_VERSION }}
           coverage: none
           extensions: gd
       - name: Remove unused Composer dependencies
