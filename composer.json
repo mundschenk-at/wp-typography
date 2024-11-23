@@ -43,7 +43,8 @@
         "phpstan/extension-installer": "^1.2",
         "paulthewalton/acf-stubs": "^5.8",
         "phpstan/phpstan-phpunit": "^2",
-        "phpstan/phpstan-mockery": "^2.0"
+        "phpstan/phpstan-mockery": "^2.0",
+        "shish/safe": "^2"
     },
 
     "minimum-stability": "dev",

@@ -15,10 +15,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-versions: ['7.4', '8.0', '8.1', '8.2']
+        php-versions: ['7.4', '8.0', '8.1', '8.2', '8.3']
         experimental: [false]
         include:
-          - php-versions: '8.3'
+          - php-versions: '8.4'
             experimental: true
     steps:
       - name: Checkout repository
@@ -35,6 +35,9 @@ jobs:
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
       - name: Remove unused Composer dependencies
         run: composer remove humbug/php-scoper sirbrillig/phpcs-import-detection szepeviktor/phpstan-wordpress --dev --no-interaction --no-update
+      - name: Remove PHP 8.4 workaround dependency
+        if: ${{ matrix.php-versions < '8.2' }}
+        run: composer remove shish/safe --dev --no-interaction --no-update
       - name: Get composer cache directory
         id: composer-cache
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
@@ -55,7 +58,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php-versions: ['8.2']
+        php-versions: ['8.3']
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -108,7 +111,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php-versions: ['8.2']
+        php-versions: ['8.3']
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -141,7 +144,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php-versions: ['8.2']
+        php-versions: ['8.3']
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
