@@ -33,9 +33,9 @@ export const TypographyToggleControl = ( props ) => (
 export default compose( [
 	withSelect( ( select ) => {
 		return {
-			typographyEnabled: ! select( 'core/editor' ).getEditedPostAttribute(
-				'meta'
-			).wp_typography_post_enhancements_disabled,
+			typographyEnabled:
+				! select( 'core/editor' ).getEditedPostAttribute( 'meta' )
+					.wp_typography_post_enhancements_disabled,
 		};
 	} ),
 	withDispatch( ( dispatch ) => {

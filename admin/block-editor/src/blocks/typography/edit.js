@@ -3,7 +3,7 @@
 /**
  * This file is part of wp-Typography.
  *
- * Copyright 2020 Peter Putzer.
+ * Copyright 2020-2024 Peter Putzer.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -39,9 +39,9 @@ import { __ } from '@wordpress/i18n';
  * Makes the markup for the editor interface.
  *
  * @param {Object} props {
- *     attributes    - The block attributes.
- *     setAttributes - The attribute setter function.
- * }
+ *                       attributes    - The block attributes.
+ *                       setAttributes - The attribute setter function.
+ *                       }
  *
  * @return {Object} ECMAScript JSX Markup for the editor
  */
