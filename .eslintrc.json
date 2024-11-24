@@ -1,5 +1,5 @@
 {
-  "extends": [ "plugin:@wordpress/eslint-plugin/recommended" ],
+  "extends": [ "plugin:@wordpress/eslint-plugin/recommended-with-formatting" ],
   "parserOptions": {
     "sourceType": "module",
     "ecmaFeatures": {
@@ -22,6 +22,12 @@
     "!**/src/**/*.js"
   ],
   "overrides": [
+    {
+      "files": [ "*.js" ],
+      "rules": {
+        "@wordpress/no-wp-process-env": "off"
+      }
+    },
     {
       "files": [ "js/src/clean-clipboard.js" ],
       "rules": {
