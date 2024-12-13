@@ -24,7 +24,6 @@
  * @file     This file handles the edit function for the Typography block.
  * @author   Peter Putzer <github@mundschenk.at>
  * @since    5.7.0
- * @requires Gutenberg 4.3
  */
 
 /**
