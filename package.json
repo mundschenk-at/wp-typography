@@ -16,7 +16,7 @@
     "grunt-contrib-compress": "^2",
     "grunt-contrib-copy": "^1.0",
     "grunt-contrib-uglify": "^5.0.0",
-    "grunt-eslint": "^25",
+    "grunt-eslint": "^24",
     "grunt-exec": "^3.0",
     "grunt-load-npm-run-tasks": "^1.0.3",
     "grunt-mkdir": "^1.0",
