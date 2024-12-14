@@ -1,5 +1,0 @@
-**/js/**.min.js
-node_modules/**/*.js
-build/**/*.js
-vendor/**/*.js
-Gruntfile.js

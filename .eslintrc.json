@@ -19,7 +19,10 @@
   },
   "ignorePatterns": [
     "**/*.js",
-    "!**/src/**/*.js"
+    "!**/src/**/*.js",
+    "build/**/*.js",
+    "node_modules/**/*.js",
+    "vendor/**/*.js"
   ],
   "overrides": [
     {
