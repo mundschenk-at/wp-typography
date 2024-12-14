@@ -692,7 +692,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 		$get_language_list = [ $this->wp_typo, 'get_language_list_mock' ];
 
 		// Intermediate data.
-		$cache_key_raw = "${cache_key}_raw";
+		$cache_key_raw = "{$cache_key}_raw";
 		$langs_raw     = [
 			'af' => 'Afghan',
 			'de' => 'German',
@@ -736,7 +736,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 		$get_language_list = [ $this->wp_typo, 'get_language_list_mock' ];
 
 		// Intermediate data.
-		$cache_key_raw = "${cache_key}_raw";
+		$cache_key_raw = "{$cache_key}_raw";
 		$langs_raw     = [
 			'af' => 'Afghan',
 			'de' => 'German',

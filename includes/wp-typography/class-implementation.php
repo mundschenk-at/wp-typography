@@ -238,7 +238,7 @@ class Implementation extends \WP_Typography {
 	 */
 	protected function maybe_load_untranslated_languages_from_disk( string $cache_key, callable $get_language_list, string $type ): array {
 		// Try to load language list from cache.
-		$cache_key_raw = "${cache_key}_raw";
+		$cache_key_raw = "{$cache_key}_raw";
 		$languages     = $this->cache->get( $cache_key_raw, $found );
 
 		// Dynamically generate the list of hyphenation language patterns.
