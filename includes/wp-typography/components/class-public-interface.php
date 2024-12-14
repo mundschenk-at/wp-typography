@@ -243,14 +243,16 @@ class Public_Interface implements Plugin_Component {
 	 */
 	public function enqueue_styles(): void {
 		// Custom styles set via the CSS Hooks settings page.
-		$custom_styles = \trim( (string) $this->config[ Config::STYLE_CSS ] );
-		if ( ! empty( $custom_styles ) ) {
-			// Register and enqueue dummy stylesheet.
-			\wp_register_style( 'wp-typography-custom', '' ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion -- only inline.
-			\wp_enqueue_style( 'wp-typography-custom' );
+		if ( $this->config[ Config::STYLE_CSS_INCLUDE ] ) {
+			$custom_styles = \trim( (string) $this->config[ Config::STYLE_CSS ] );
+			if ( ! empty( $custom_styles ) ) {
+				// Register and enqueue dummy stylesheet.
+				\wp_register_style( 'wp-typography-custom', '' ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion -- only inline.
+				\wp_enqueue_style( 'wp-typography-custom' );
 
-			// Print the inline styles.
-			\wp_add_inline_style( 'wp-typography-custom', $this->clean_styles( $custom_styles ) );
+				// Print the inline styles.
+				\wp_add_inline_style( 'wp-typography-custom', $this->clean_styles( $custom_styles ) );
+			}
 		}
 
 		// The Safari bug workaround.

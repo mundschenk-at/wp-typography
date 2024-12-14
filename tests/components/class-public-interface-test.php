@@ -302,7 +302,7 @@ class Public_Interface_Test extends TestCase {
 			]
 		);
 
-		Functions\expect( 'wp_register_style' )->once()->with( 'wp-typography-custom', false );
+		Functions\expect( 'wp_register_style' )->once()->with( 'wp-typography-custom', '' );
 		Functions\expect( 'wp_enqueue_style' )->once()->with( 'wp-typography-custom' );
 
 		$this->public_if->shouldReceive( 'clean_styles' )->once()->with( $custom_style )->andReturn( $clean_style );
@@ -311,6 +311,32 @@ class Public_Interface_Test extends TestCase {
 
 		$this->public_if->enqueue_styles();
 	}
+
+	/**
+	 * Test enqueue_styles.
+	 *
+	 * @covers ::enqueue_styles
+	 */
+	public function test_enqueue_styles_css_disabled(): void {
+		$custom_style = 'my: css;';
+		$this->prepareOptions(
+			[
+				Config::STYLE_CSS_INCLUDE                => false,
+				Config::STYLE_CSS                        => $custom_style,
+				Config::HYPHENATE_SAFARI_FONT_WORKAROUND => false,
+			]
+		);
+
+		Functions\expect( 'wp_register_style' )->never();
+		Functions\expect( 'wp_enqueue_style' )->never();
+
+		$this->public_if->shouldReceive( 'clean_styles' )->never();
+
+		Functions\expect( 'wp_add_inline_style' )->never();
+
+		$this->public_if->enqueue_styles();
+	}
+
 
 	/**
 	 * Test enqueue_styles.
