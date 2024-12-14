@@ -32,6 +32,11 @@
 import { __ } from '@wordpress/i18n';
 
 /**
+ * Type checking dependencies
+ */
+import PropTypes from 'prop-types';
+
+/**
  * Internal dependencies
  */
 import edit from './edit';
@@ -48,6 +53,10 @@ export const settings = {
 	supports: {
 		align: false,
 		html: false,
+	},
+
+	propTypes: {
+		className: PropTypes.string.isRequired,
 	},
 
 	edit,
