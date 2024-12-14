@@ -117,7 +117,7 @@ class Admin_Interface_Test extends TestCase {
 		$this->api->shouldReceive( 'get_version' )->andReturn( '6.6.6' )->byDefault();
 		$this->template = m::mock( Template::class );
 
-		// Mock WP_Typography\Components\Admin_Interface instance.
+		// SUT.
 		$this->admin = m::mock( Admin_Interface::class, [ $this->api, $this->options, $this->template ] )
 			->shouldAllowMockingProtectedMethods()->makePartial();
 
@@ -156,6 +156,7 @@ class Admin_Interface_Test extends TestCase {
 		Functions\expect( 'is_admin' )->once()->andReturn( true );
 		Functions\expect( 'plugin_basename' )->once()->with( \WP_TYPOGRAPHY_PLUGIN_FILE )->andReturn( 'plugin/basename' );
 		$this->admin->run();
+		$this->admin->initialize_translated_properties();
 	}
 
 	/**
@@ -176,6 +177,26 @@ class Admin_Interface_Test extends TestCase {
 	 * Test run.
 	 *
 	 * @covers ::run
+	 */
+	public function test_run(): void {
+		Functions\expect( 'is_admin' )->once()->andReturn( true );
+		Functions\expect( 'plugin_basename' )->once()->with( \WP_TYPOGRAPHY_PLUGIN_FILE )->andReturn( 'plugin/basename' );
+
+		Actions\expectAdded( 'init' )->with( [ $this->admin, 'initialize_translated_properties' ] )->once();
+		Actions\expectAdded( 'admin_menu' )->with( [ $this->admin, 'add_options_page' ] )->once();
+		Actions\expectAdded( 'admin_init' )->with( [ $this->admin, 'register_the_settings' ] )->once();
+		Actions\expectAdded( 'admin_init' )->with( [ $this->admin, 'maybe_add_privacy_notice_content' ] )->once();
+		Filters\expectAdded( 'plugin_action_links_plugin/basename' )->with( [ $this->admin, 'plugin_action_links' ] )->once();
+
+		$this->admin->run();
+
+		$this->assert_attribute_same( $this->api, 'api', $this->admin );
+	}
+
+	/**
+	 * Test initialize_translated_properties.
+	 *
+	 * @covers ::initialize_translated_properties
 	 * @covers ::initialize_resource_links
 	 * @covers ::initialize_help_pages
 	 *
@@ -183,20 +204,10 @@ class Admin_Interface_Test extends TestCase {
 	 * @uses \WP_Typography\UI\Tabs::get_tabs
 	 * @uses \WP_Typography\UI\Sections::get_sections
 	 */
-	public function test_run(): void {
-		Functions\expect( 'is_admin' )->once()->andReturn( true );
-		Functions\expect( 'plugin_basename' )->once()->with( \WP_TYPOGRAPHY_PLUGIN_FILE )->andReturn( 'plugin/basename' );
-
-		Actions\expectAdded( 'admin_menu' )->with( [ $this->admin, 'add_options_page' ] )->once();
-		Actions\expectAdded( 'admin_init' )->with( [ $this->admin, 'register_the_settings' ] )->once();
-		Actions\expectAdded( 'admin_init' )->with( [ $this->admin, 'maybe_add_privacy_notice_content' ] )->once();
-		Filters\expectAdded( 'plugin_action_links_plugin/basename' )->with( [ $this->admin, 'plugin_action_links' ] )->once();
-
+	public function test_initialize_translated_properties(): void {
 		$this->control_factory->shouldReceive( 'initialize' )->with( m::type( 'array' ), m::type( Options::class ), m::type( 'string' ) )->andReturn( [] );
 
-		$this->admin->run();
-
-		$this->assert_attribute_same( $this->api, 'api', $this->admin );
+		$this->admin->initialize_translated_properties();
 	}
 
 	/**

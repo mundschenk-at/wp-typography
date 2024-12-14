@@ -187,21 +187,11 @@ class Admin_Interface implements Plugin_Component {
 	 */
 	public function run(): void {
 		if ( \is_admin() ) {
-
 			// Cache the plugin basename.
 			$this->plugin_basename = \plugin_basename( \WP_TYPOGRAPHY_PLUGIN_FILE );
 
-			// Set up default options.
-			$this->defaults = Plugin_Configuration::get_defaults();
-
-			// Initialize admin form.
-			$this->admin_resource_links = $this->initialize_resource_links();
-			$this->admin_help_pages     = $this->initialize_help_pages();
-			$this->admin_form_tabs      = UI\Tabs::get_tabs();
-			$this->admin_form_sections  = UI\Sections::get_sections();
-			$this->admin_form_controls  = Control_Factory::initialize( $this->defaults, $this->options, Options::CONFIGURATION );
-
 			// Add action hooks.
+			\add_action( 'init', [ $this, 'initialize_translated_properties' ] );
 			\add_action( 'admin_menu', [ $this, 'add_options_page' ] );
 			\add_action( 'admin_init', [ $this, 'register_the_settings' ] );
 			\add_action( 'admin_init', [ $this, 'maybe_add_privacy_notice_content' ] );
@@ -209,6 +199,24 @@ class Admin_Interface implements Plugin_Component {
 			// Add filter hooks.
 			\add_filter( 'plugin_action_links_' . $this->plugin_basename, [ $this, 'plugin_action_links' ] );
 		}
+	}
+
+	/**
+	 * Initializes all properties containign translated strings, as the
+	 * WordPress i18n functions cannot be called before `init`.
+	 *
+	 * @since 5.10.0
+	 */
+	public function initialize_translated_properties(): void {
+		// Set up default options.
+		$this->defaults = Plugin_Configuration::get_defaults();
+
+		// Initialize admin form.
+		$this->admin_resource_links = $this->initialize_resource_links();
+		$this->admin_help_pages     = $this->initialize_help_pages();
+		$this->admin_form_tabs      = UI\Tabs::get_tabs();
+		$this->admin_form_sections  = UI\Sections::get_sections();
+		$this->admin_form_controls  = Control_Factory::initialize( $this->defaults, $this->options, Options::CONFIGURATION );
 	}
 
 	/**
