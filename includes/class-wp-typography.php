@@ -50,8 +50,8 @@ use PHP_Typography\Settings;
  * @method string process_feed($text, $is_title = false, Settings $settings = null) Processes a content text fragment as part of an RSS feed.
  * @method string[] process_title_parts($title_parts, Settings $settings = null) Processes title parts and strips &shy; and zero-width space.
  *
- * @method array<string,string> get_hyphenation_languages() Retrieves and caches the list of valid hyphenation languages.
- * @method array<string,string> get_diacritic_languages() Retrieves and caches the list of valid diacritic replacement languages.
+ * @method array<string,string> get_hyphenation_languages( $translate = true ) Retrieves and caches the list of valid hyphenation languages.
+ * @method array<string,string> get_diacritic_languages( $translate = true ) Retrieves and caches the list of valid diacritic replacement languages.
  */
 abstract class WP_Typography {
 

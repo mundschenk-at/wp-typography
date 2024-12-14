@@ -180,8 +180,8 @@ class Multilingual_Support_Test extends TestCase {
 	 */
 	public function test_add_plugin_defaults_filter(): void {
 
-		$this->api->shouldReceive( 'get_hyphenation_languages' )->once()->andReturn( [ 'de' => 'Deutsch' ] );
-		$this->api->shouldReceive( 'get_diacritic_languages' )->once()->andReturn( [ 'en' => 'English' ] );
+		$this->api->shouldReceive( 'get_hyphenation_languages' )->once()->with( false )->andReturn( [ 'de' => 'Deutsch' ] );
+		$this->api->shouldReceive( 'get_diacritic_languages' )->once()->with( false )->andReturn( [ 'en' => 'English' ] );
 
 		Filters\expectAdded( 'typo_plugin_defaults' )->once()->with( [ $this->multi, 'filter_defaults' ] );
 

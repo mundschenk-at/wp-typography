@@ -32,6 +32,7 @@ use WP_Typography\Data_Storage\Options;
 use WP_Typography\Data_Storage\Transients;
 use WP_Typography\Settings\Plugin_Configuration as Config;
 
+use PHP_Typography\PHP_Typography;
 use PHP_Typography\Hyphenator\Cache as Hyphenator_Cache;
 use PHP_Typography\Settings;
 use PHP_Typography\U;
@@ -530,56 +531,264 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 * Test get_hyphenation_languages
 	 *
 	 * @covers ::get_hyphenation_languages
-	 * @covers ::load_languages
-	 * @covers ::translate_languages
-	 *
-	 * @uses \PHP_Typography\PHP_Typography::get_hyphenation_languages
 	 */
 	public function test_get_hyphenation_languages(): void {
-		Functions\when( '_x' )->returnArg();
-		if ( ! defined( 'WEEK_IN_SECONDS' ) ) {
-			define( 'WEEK_IN_SECONDS', 999 );
-		}
+		$translate = true;
+		$expected  = [
+			'af' => 'Afghanisch',
+			'de' => 'Deutsch',
+			'en' => 'Englisch',
+			'fu' => 'Foobar',
+		];
 
-		$this->cache->shouldReceive( 'get' )->once()->andReturnUsing( // @phpstan-ignore method.notFound
-			function ( $key, &$found ) {
-				$found = false;
-				return [];
-			}
-		)->shouldReceive( 'set' )->once();
+		$this->wp_typo->shouldReceive( 'load_languages' )->once()->with( 'hyphenate_languages', [ PHP_Typography::class, 'get_hyphenation_languages' ], 'hyphenate', $translate )->andReturn( $expected );
 
-		$langs = $this->wp_typo->get_hyphenation_languages();
-
-		$this->assertContainsOnly( 'string', $langs, true, 'The languages array should only contain strings.' );
-		$this->assertContainsOnly( 'string', array_keys( $langs ), true, 'The languages array should be indexed by language codes.' );
+		$this->assertSame( $expected, $this->wp_typo->get_hyphenation_languages( $translate ) );
 	}
 
 	/**
-	 * Test get_hyphenation_languages
+	 * Test get_diacritic_languages
 	 *
 	 * @covers ::get_diacritic_languages
-	 * @covers ::load_languages
-	 * @covers ::translate_languages
-	 *
-	 * @uses \PHP_Typography\PHP_Typography::get_hyphenation_languages
 	 */
 	public function test_get_diacritic_languages(): void {
-		Functions\when( '_x' )->returnArg();
-		if ( ! defined( 'WEEK_IN_SECONDS' ) ) {
-			define( 'WEEK_IN_SECONDS', 999 );
-		}
+		$translate = true;
+		$expected  = [
+			'af' => 'Afghanisch',
+			'de' => 'Deutsch',
+			'en' => 'Englisch',
+			'fu' => 'Foobar',
+		];
 
-		$this->cache->shouldReceive( 'get' )->once()->andReturnUsing( // @phpstan-ignore method.notFound
+		$this->wp_typo->shouldReceive( 'load_languages' )->once()->with( 'diacritic_languages', [ PHP_Typography::class, 'get_diacritic_languages' ], 'diacritic', $translate )->andReturn( $expected );
+
+		$this->assertSame( $expected, $this->wp_typo->get_diacritic_languages( $translate ) );
+	}
+
+	/**
+	 * Provides data for testing load_languages.
+	 *
+	 * @return mixed[]
+	 */
+	public function provide_load_languages_data(): array {
+		return [
+			'translated'   => [ 'some_cache_key', 'some_type', true ],
+			'untranslated' => [ 'some_other_cache_key', 'some_other_type', false ],
+		];
+	}
+
+	/**
+	 * Test load_languages
+	 *
+	 * @dataProvider provide_load_languages_data
+	 *
+	 * @covers ::load_languages
+	 *
+	 * @param  string $cache_key The cache key.
+	 * @param  string $type      The language list type (directory).
+	 * @param  bool   $translate If the language names should be translated.
+	 */
+	public function test_load_languages( string $cache_key, string $type, bool $translate ): void {
+		// Additional input data.
+		$get_language_list = function () {}; // Noop, only used as parameter for maybe_load_untranslated_languages_from_disk.
+
+		// Intermediate data.
+		$langs_raw  = [
+			'af' => 'Afghan',
+			'de' => 'German',
+			'en' => 'English',
+			'fu' => 'Foobar',
+		];
+		$langs_i18n = [
+			'af' => 'Afghanisch',
+			'de' => 'Deutsch',
+			'en' => 'Englisch',
+			'fu' => 'Foobar',
+		];
+		$result     = $translate ? $langs_i18n : $langs_raw;
+
+		if ( $translate ) {
+			// Convoluted syntax necessary because of argument-by-reference.
+			$this->cache->shouldReceive( 'get' )->once()->withArgs(
+				function ( $key ) use ( $cache_key ) {
+					return $key === $cache_key;
+				}
+			)->andReturnUsing(
+				function ( $key, &$found ) {
+					$found = false;
+					return [];
+				}
+			);
+
+			$this->cache->shouldReceive( 'set' )->once()->with( $cache_key, $result, m::type( 'int' ) );
+			$this->wp_typo->shouldReceive( 'translate_languages' )->once()->with( $langs_raw )->andReturn( $langs_i18n );
+		} else {
+			$this->cache->shouldReceive( 'get' )->never();
+			$this->wp_typo->shouldReceive( 'translate_languages' )->never();
+			$this->cache->shouldReceive( 'set' )->never();
+		}
+		$this->wp_typo->shouldReceive( 'maybe_load_untranslated_languages_from_disk' )->once()->with( $cache_key, $get_language_list, $type )->andReturn( $langs_raw );
+
+		$this->assertSame( $result, $this->wp_typo->load_languages( $cache_key, $get_language_list, $type, $translate ) ); // @phpstan-ignore method.protected
+	}
+
+	/**
+	 * Test load_languages
+	 *
+	 * @dataProvider provide_load_languages_data
+	 *
+	 * @covers ::load_languages
+	 *
+	 * @param string $cache_key The cache key.
+	 * @param string $type      The language list type (directory).
+	 */
+	public function test_load_translated_languages_cached( string $cache_key, string $type ): void {
+		// Additional input data.
+		$get_language_list = function () {}; // Noop, only used as parameter for maybe_load_untranslated_languages_from_disk.
+
+		// Intermediate data.
+		$langs_i18n = [
+			'af' => 'Afghanisch',
+			'de' => 'Deutsch',
+			'en' => 'Englisch',
+			'fu' => 'Foobar',
+		];
+
+		// Convoluted syntax necessary because of argument-by-reference.
+		$this->cache->shouldReceive( 'get' )->once()->withArgs(
+			function ( $key ) use ( $cache_key ) {
+				return $key === $cache_key;
+			}
+		)->andReturnUsing(
+			function ( $key, &$found ) use ( $langs_i18n ) {
+				$found = true;
+				return $langs_i18n;
+			}
+		);
+
+		$this->wp_typo->shouldReceive( 'maybe_load_untranslated_languages_from_disk' )->never();
+		$this->wp_typo->shouldReceive( 'translate_languages' )->never();
+		$this->cache->shouldReceive( 'set' )->never();
+
+		$this->assertSame( $langs_i18n, $this->wp_typo->load_languages( $cache_key, $get_language_list, $type, true ) ); // @phpstan-ignore method.protected
+	}
+
+	/**
+	 * Test maybe_load_untranslated_languages_from_disk
+	 *
+	 * @dataProvider provide_load_languages_data
+	 *
+	 * @covers ::maybe_load_untranslated_languages_from_disk
+	 *
+	 * @param string $cache_key The cache key.
+	 * @param string $type      The language list type (directory).
+	 */
+	public function test_maybe_load_untranslated_languages_from_disk( string $cache_key, string $type ): void {
+		/**
+		 * Fake callable.
+		 *
+		 * @var callable $get_language_list
+		 */
+		$get_language_list = [ $this->wp_typo, 'get_language_list_mock' ];
+
+		// Intermediate data.
+		$cache_key_raw = "${cache_key}_raw";
+		$langs_raw     = [
+			'af' => 'Afghan',
+			'de' => 'German',
+			'en' => 'English',
+			'fu' => 'Foobar',
+		];
+
+		// Convoluted syntax necessary because of argument-by-reference.
+		$this->cache->shouldReceive( 'get' )->once()->withArgs(
+			function ( $key ) use ( $cache_key_raw ) {
+				return $key === $cache_key_raw;
+			}
+		)->andReturnUsing(
 			function ( $key, &$found ) {
 				$found = false;
 				return [];
 			}
-		)->shouldReceive( 'set' )->once();
+		);
+		$this->wp_typo->shouldReceive( 'get_language_list_mock' )->once()->andReturn( $langs_raw );
+		$this->cache->shouldReceive( 'set' )->once()->with( $cache_key_raw, $langs_raw, m::type( 'int' ) );
 
-		$langs = $this->wp_typo->get_diacritic_languages();
+		$this->assertSame( $langs_raw, $this->wp_typo->maybe_load_untranslated_languages_from_disk( $cache_key, $get_language_list, $type ) ); // @phpstan-ignore method.protected
+	}
 
-		$this->assertContainsOnly( 'string', $langs, true, 'The languages array should only contain strings.' );
-		$this->assertContainsOnly( 'string', array_keys( $langs ), true, 'The languages array should be indexed by language codes.' );
+	/**
+	 * Test maybe_load_untranslated_languages_from_disk
+	 *
+	 * @dataProvider provide_load_languages_data
+	 *
+	 * @covers ::maybe_load_untranslated_languages_from_disk
+	 *
+	 * @param string $cache_key The cache key.
+	 * @param string $type      The language list type (directory).
+	 */
+	public function test_maybe_load_untranslated_languages_from_disk_cached( string $cache_key, string $type ): void {
+		/**
+		 * Fake callable.
+		 *
+		 * @var callable $get_language_list
+		 */
+		$get_language_list = [ $this->wp_typo, 'get_language_list_mock' ];
+
+		// Intermediate data.
+		$cache_key_raw = "${cache_key}_raw";
+		$langs_raw     = [
+			'af' => 'Afghan',
+			'de' => 'German',
+			'en' => 'English',
+			'fu' => 'Foobar',
+		];
+
+		// Convoluted syntax necessary because of argument-by-reference.
+		$this->cache->shouldReceive( 'get' )->once()->withArgs(
+			function ( $key ) use ( $cache_key_raw ) {
+				return $key === $cache_key_raw;
+			}
+		)->andReturnUsing(
+			function ( $key, &$found ) use ( $langs_raw ) {
+				$found = true;
+				return $langs_raw;
+			}
+		);
+		$this->wp_typo->shouldReceive( 'get_language_list_mock' )->never();
+		$this->cache->shouldReceive( 'set' )->never();
+
+		$this->assertSame( $langs_raw, $this->wp_typo->maybe_load_untranslated_languages_from_disk( $cache_key, $get_language_list, $type ) ); // @phpstan-ignore method.protected
+	}
+
+	/**
+	 * Test translate_languages.
+	 *
+	 * @covers ::translate_languages
+	 */
+	public function test_translate_languages(): void {
+		// Input data.
+		$input = [
+			'af' => 'Afghan',
+			'de' => 'German',
+			'en' => 'English',
+			'fu' => 'Foobar',
+		];
+
+		// Expected output.
+		$result = [
+			'af' => 'Afghanisch',
+			'fu' => 'Barfoo', // Re-sorted!
+			'de' => 'Deutsch',
+			'en' => 'Englisch',
+		];
+
+		Functions\expect( '_x' )->once()->with( 'Afghan', 'language name', 'wp-typography' )->andReturn( 'Afghanisch' );
+		Functions\expect( '_x' )->once()->with( 'German', 'language name', 'wp-typography' )->andReturn( 'Deutsch' );
+		Functions\expect( '_x' )->once()->with( 'English', 'language name', 'wp-typography' )->andReturn( 'Englisch' );
+		Functions\expect( '_x' )->once()->with( 'Foobar', 'language name', 'wp-typography' )->andReturn( 'Barfoo' ); // To force re-sort.
+
+		$this->assertSame( $result, $this->wp_typo->translate_languages( $input ) ); // @phpstan-ignore method.protected
 	}
 
 	/**
