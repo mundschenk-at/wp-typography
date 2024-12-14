@@ -29,6 +29,7 @@
     "load-grunt-tasks": "^5.0.0",
     "postcss": "^8.1.4",
     "prettier": "^3.3.3",
+    "prop-types": "^15.8.1",
     "sass": "^1.28.0",
     "typescript": "^5"
   },

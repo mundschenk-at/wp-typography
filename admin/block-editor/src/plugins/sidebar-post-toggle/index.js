@@ -29,8 +29,13 @@
 /**
  * WordPress dependencies
  */
-import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
+import { PluginDocumentSettingPanel } from '@wordpress/editor';
 import { select } from '@wordpress/data';
+
+/**
+ * Type checking dependencies
+ */
+import PropTypes from 'prop-types';
 
 /**
  * Internal dependencies
@@ -42,6 +47,15 @@ import TypographyToggleControl from './toggle-control';
  */
 export const name = 'wp-typography-sidebar';
 const icon = 'format-quote';
+
+/**
+ * Type checking.
+ */
+const propTypes = {
+	className: PropTypes.string.isRequired,
+	typographyEnabled: PropTypes.bool.isRequired,
+	setTypographyEnabled: PropTypes.func.isRequired,
+};
 
 /**
  * Renders the plugin.
@@ -69,4 +83,4 @@ const render = () => {
 };
 
 // Export settings.
-export const settings = { icon, render };
+export const settings = { icon, render, propTypes };
