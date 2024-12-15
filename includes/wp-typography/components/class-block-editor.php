@@ -65,20 +65,24 @@ class Block_Editor implements Plugin_Component {
 
 		// Register and enqueue sidebar.
 		\add_action( 'init', [ $this, 'register_sidebar_and_blocks' ] );
+		\add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_blocks' ] );
 		\add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_sidebar' ] );
 	}
 
 	/**
-	 * Registers the Gutenberg sidebar.
+	 * Registers the Gutenberg sidebar and blocks.
 	 */
 	public function register_sidebar_and_blocks(): void {
 		$suffix     = ( \defined( 'SCRIPT_DEBUG' ) && \SCRIPT_DEBUG ) ? '' : '.min';
 		$plugin_url = \plugins_url( '', \WP_TYPOGRAPHY_PLUGIN_FILE );
 
 		// Register the script containing all our block types (and the sidebar plugin).
-		$blocks = 'admin/block-editor/js/index';
-		$asset  = include \WP_TYPOGRAPHY_PLUGIN_PATH . "/{$blocks}.asset.php"; // @phpstan-ignore include.fileNotFound
-		\wp_register_script( 'wp-typography-gutenberg', "{$plugin_url}/{$blocks}.js", $asset['dependencies'], $asset['version'], false );
+		$blocks        = 'admin/block-editor/js/blocks';
+		$sidebar       = 'admin/block-editor/js/plugins';
+		$blocks_asset  = include \WP_TYPOGRAPHY_PLUGIN_PATH . "/{$blocks}.asset.php"; // @phpstan-ignore include.fileNotFound
+		$sidebar_asset = include \WP_TYPOGRAPHY_PLUGIN_PATH . "/{$sidebar}.asset.php"; // @phpstan-ignore include.fileNotFound
+		\wp_register_script( 'wp-typography-gutenberg-blocks', "{$plugin_url}/{$blocks}.js", $blocks_asset['dependencies'], $blocks_asset['version'], false );
+		\wp_register_script( 'wp-typography-gutenberg-sidebar', "{$plugin_url}/{$sidebar}.js", $sidebar_asset['dependencies'], $sidebar_asset['version'], false );
 		\wp_register_style( 'wp-typography-gutenberg-style', "{$plugin_url}/admin/css/blocks{$suffix}.css", [], $this->api->get_version() );
 
 		// Register each individual block type:
@@ -86,7 +90,7 @@ class Block_Editor implements Plugin_Component {
 		\register_block_type(
 			'wp-typography/typography',
 			[
-				'editor_script'   => 'wp-typography-gutenberg',
+				'editor_script'   => 'wp-typography-gutenberg-blocks',
 				'editor_style'    => 'wp-typography-gutenberg-style',
 				'render_callback' => [ $this, 'render_typography_block' ],
 				'attributes'      => [],
@@ -94,14 +98,31 @@ class Block_Editor implements Plugin_Component {
 		);
 
 		// Enable i18n.
-		\wp_set_script_translations( 'wp-typography-gutenberg', 'wp-typography' );
+		\wp_set_script_translations( 'wp-typography-gutenberg-blocks', 'wp-typography' );
+		\wp_set_script_translations( 'wp-typography-gutenberg-sidebar', 'wp-typography' );
 	}
 
 	/**
 	 * Enqueues the block editor sidebar script.
 	 */
 	public function enqueue_sidebar(): void {
-		\wp_enqueue_script( 'wp-typography-gutenberg' );
+		global $pagenow;
+
+		// Return early when viewing the customizer or widgets screen.
+		if ( \is_customize_preview() || 'widgets.php' === $pagenow ) {
+			return;
+		}
+
+		\wp_enqueue_script( 'wp-typography-gutenberg-sidebar' );
+	}
+
+	/**
+	 * Enqueues the block editor blocks script.
+	 *
+	 * @since 5.10.0
+	 */
+	public function enqueue_blocks(): void {
+		\wp_enqueue_script( 'wp-typography-gutenberg-blocks' );
 	}
 
 	/**

@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2020-2923 Peter Putzer.
+ *  Copyright 2020-2024 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -126,6 +126,7 @@ class Block_Editor_Test extends TestCase {
 		Functions\when( 'register_block_type' );
 
 		Actions\expectAdded( 'init' )->with( [ $this->sut, 'register_sidebar_and_blocks' ] )->once();
+		Actions\expectAdded( 'enqueue_block_editor_assets' )->with( [ $this->sut, 'enqueue_blocks' ] )->once();
 		Actions\expectAdded( 'enqueue_block_editor_assets' )->with( [ $this->sut, 'enqueue_sidebar' ] )->once();
 
 		$this->sut->run();
@@ -137,19 +138,23 @@ class Block_Editor_Test extends TestCase {
 	 * @covers ::register_sidebar_and_blocks
 	 */
 	public function test_register_sidebar_and_blocks(): void {
-		$plugin_url     = 'http://my_plugin/url';
-		$plugin_version = '6.6.6';
+		$plugin_url      = 'http://my_plugin/url';
+		$plugin_version  = '6.6.6';
 		// Simulate blocks dependencies.
-		$blocks_version = 'fake blocks version';
-		$blocks_deps    = [ 'foo', 'bar' ];
-		$asset          = '<?php return [ "dependencies" => ' . \var_export( $blocks_deps, true ) . ', "version" => ' . \var_export( $blocks_version, true ) . ' ]; ?>'; // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export
+		$blocks_version  = 'fake blocks version';
+		$blocks_deps     = [ 'foo', 'bar' ];
+		$sidebar_version = 'fake sidebar version';
+		$sidebar_deps    = [ 'foo', 'bar', 'baz' ];
+		$blocks_asset    = '<?php return [ "dependencies" => ' . \var_export( $blocks_deps, true ) . ', "version" => ' . \var_export( $blocks_version, true ) . ' ]; ?>'; // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export
+		$sidebar_asset   = '<?php return [ "dependencies" => ' . \var_export( $sidebar_deps, true ) . ', "version" => ' . \var_export( $sidebar_version, true ) . ' ]; ?>'; // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export
 		vfsStream::create(
 			[
 				'plugin' => [
 					'admin' => [
 						'block-editor' => [
 							'js' => [
-								'index.asset.php' => $asset,
+								'blocks.asset.php'  => $blocks_asset,
+								'plugins.asset.php' => $sidebar_asset,
 							],
 						],
 					],
@@ -160,10 +165,12 @@ class Block_Editor_Test extends TestCase {
 		$this->api->shouldReceive( 'get_version' )->once()->andReturn( $plugin_version );
 
 		Functions\expect( 'plugins_url' )->once()->with( '', \WP_TYPOGRAPHY_PLUGIN_FILE )->andReturn( $plugin_url );
-		Functions\expect( 'wp_register_script' )->once()->with( 'wp-typography-gutenberg', m::pattern( '/' . \preg_quote( $plugin_url, '/' ) . '.*\\.js$/' ), $blocks_deps, $blocks_version, false );
+		Functions\expect( 'wp_register_script' )->once()->with( 'wp-typography-gutenberg-blocks', m::pattern( '/' . \preg_quote( $plugin_url, '/' ) . '.*\\.js$/' ), $blocks_deps, $blocks_version, false );
+		Functions\expect( 'wp_register_script' )->once()->with( 'wp-typography-gutenberg-sidebar', m::pattern( '/' . \preg_quote( $plugin_url, '/' ) . '.*\\.js$/' ), $sidebar_deps, $sidebar_version, false );
 		Functions\expect( 'wp_register_style' )->once()->with( 'wp-typography-gutenberg-style', m::pattern( '/' . \preg_quote( $plugin_url, '/' ) . '.*\\.css$/' ), [], $plugin_version );
 		Functions\expect( 'register_block_type' )->once()->with( 'wp-typography/typography', m::type( 'array' ) );
-		Functions\expect( 'wp_set_script_translations' )->once()->with( 'wp-typography-gutenberg', 'wp-typography' );
+		Functions\expect( 'wp_set_script_translations' )->once()->with( 'wp-typography-gutenberg-blocks', 'wp-typography' );
+		Functions\expect( 'wp_set_script_translations' )->once()->with( 'wp-typography-gutenberg-sidebar', 'wp-typography' );
 
 		$this->sut->register_sidebar_and_blocks();
 	}
@@ -174,9 +181,51 @@ class Block_Editor_Test extends TestCase {
 	 * @covers ::enqueue_sidebar
 	 */
 	public function test_enqueue_sidebar(): void {
-		Functions\expect( 'wp_enqueue_script' )->once()->with( 'wp-typography-gutenberg' );
+		Functions\expect( 'is_customize_preview' )->once()->withNoArgs()->andReturn( false );
+		Functions\expect( 'wp_enqueue_script' )->once()->with( 'wp-typography-gutenberg-sidebar' );
 
 		$this->sut->enqueue_sidebar();
+	}
+
+	/**
+	 * Tests enqueue_sidebar.
+	 *
+	 * @covers ::enqueue_sidebar
+	 */
+	public function test_enqueue_sidebar_customizer(): void {
+		Functions\expect( 'is_customize_preview' )->once()->withNoArgs()->andReturn( true );
+		Functions\expect( 'wp_enqueue_script' )->never();
+
+		$this->sut->enqueue_sidebar();
+	}
+
+	/**
+	 * Tests enqueue_sidebar.
+	 *
+	 * @covers ::enqueue_sidebar
+	 */
+	public function test_enqueue_sidebar_widgets_editor(): void {
+		global $pagenow;
+		$old_pagenow = $pagenow;
+		$pagenow     = 'widgets.php'; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- Unit test.
+
+		Functions\expect( 'is_customize_preview' )->once()->withNoArgs()->andReturn( false );
+		Functions\expect( 'wp_enqueue_script' )->never();
+
+		$this->sut->enqueue_sidebar();
+
+		$pagenow = $old_pagenow; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- Unit test.
+	}
+
+	/**
+	 * Tests enqueue_blocks.
+	 *
+	 * @covers ::enqueue_blocks
+	 */
+	public function test_enqueue_blocks(): void {
+		Functions\expect( 'wp_enqueue_script' )->once()->with( 'wp-typography-gutenberg-blocks' );
+
+		$this->sut->enqueue_blocks();
 	}
 
 	/**
