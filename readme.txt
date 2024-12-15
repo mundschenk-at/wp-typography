@@ -1,8 +1,8 @@
 === wp-Typography ===
 Contributors: pputzer, kingjeffrey
 Tags: typography, hyphenation, smart quotes, formatting, widows, orphans, typogrify, quotes, prettify, small caps, diacritics
-Tested up to: 6.1
-Stable tag: 5.9.1
+Tested up to: 6.7
+Stable tag: 5.10.0
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
