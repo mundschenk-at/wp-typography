@@ -940,6 +940,38 @@ class WP_Typography_Implementation_Test extends TestCase {
 	}
 
 	/**
+	 * Test process
+	 *
+	 * @covers ::process
+	 *
+	 * @uses ::set_instance
+	 *
+	 * @dataProvider provide_process_data
+	 *
+	 * @param  bool     $is_title   Fragment is a title.
+	 * @param  bool     $force_feed Enforce feed processing.
+	 * @param  bool     $is_feed    Value for is_feed().
+	 * @param  Settings $settings   May be null.
+	 */
+	public function test_process_disabled_null( $is_title, $force_feed, $is_feed, $settings = null ): void {
+		$post_id = 67;
+
+		Functions\expect( 'is_feed' )->andReturn( $is_feed );
+		Functions\expect( 'get_the_ID' )->once()->andReturn( $post_id );
+		Functions\expect( 'get_post_meta' )->once()->with( $post_id, REST_API::WP_TYPOGRAPHY_DISABLED_META_KEY, true )->andReturn( true );
+
+		Filters\expectApplied( 'typo_disable_processing_for_post' )->once()->with( true, $post_id )->andReturnFirstArg();
+
+		$this->wp_typo->shouldReceive( 'get_settings' )->never();
+
+		Filters\expectApplied( 'typo_settings' )->never();
+
+		$this->wp_typo->shouldReceive( 'maybe_process_fragment' )->never();
+
+		$this->assertSame( '', $this->wp_typo->process( null, $is_title, $force_feed, $settings ) ); // @phpstan-ignore argument.type
+	}
+
+	/**
 	 * Provide data for testing process.
 	 *
 	 * @return mixed[]

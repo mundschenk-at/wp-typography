@@ -462,7 +462,7 @@ class Implementation extends \WP_Typography {
 
 		// Return original HTML fragment if processing has been disabled.
 		if ( $disable ) {
-			return $text;
+			return (string) $text;
 		}
 
 		// Use default settings if no argument was given.
