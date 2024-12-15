@@ -21,22 +21,20 @@
  *
  * ***
  *
- * @file     This file handles the Gutenberg integration of the wp-Typography plugin.
+ * @file     This file handles the Gutenberg blocks integration for the wp-Typography plugin.
  * @author   Peter Putzer <github@mundschenk.at>
- * @since    5.7.0
+ * @since    5.10.0
  */
 
 /**
  * WordPress dependencies
  */
 import { registerBlockType } from '@wordpress/blocks';
-import { registerPlugin } from '@wordpress/plugins';
 
 /**
  * Internal dependencies
  */
-import * as typographyBlock from './blocks/typography';
-import * as sidebarPlugin from './plugins/sidebar-post-toggle';
+import * as typographyBlock from './typography';
 
 // Register all our blocks.
 [ typographyBlock ].forEach( ( block ) => {
@@ -48,14 +46,4 @@ import * as sidebarPlugin from './plugins/sidebar-post-toggle';
 		...metadata,
 		...settings,
 	} );
-} );
-
-// Register the plugins as well.
-[ sidebarPlugin ].forEach( ( plugin ) => {
-	if ( ! plugin ) {
-		return;
-	}
-
-	const { name, settings } = plugin;
-	registerPlugin( name, settings );
 } );

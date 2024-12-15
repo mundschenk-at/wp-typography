@@ -34,14 +34,14 @@
     "typescript": "^5"
   },
   "scripts": {
-    "build-blocks": "wp-scripts build admin/block-editor/src/index.js --output-path=build/admin/block-editor/js",
+    "build-blocks": "wp-scripts build admin/block-editor/src/blocks admin/block-editor/src/plugins --output-path=build/admin/block-editor/js",
     "build-clipboard": "babel js/src/clean-clipboard.js --out-file=js/clean-clipboard.js",
     "check-engines": "wp-scripts check-engines",
     "check-licenses": "wp-scripts check-licenses",
     "lint:css": "wp-scripts lint-style",
     "lint:js": "wp-scripts lint-js admin/block-editor/src",
     "lint:pkg-json": "wp-scripts lint-pkg-json ./package.json",
-    "start": "wp-scripts start admin/block-editor/src/index.js --output-path=admin/block-editor/js",
+    "start": "wp-scripts start admin/block-editor/src/blocks admin/block-editor/src/plugins --output-path=admin/block-editor/js",
     "test:e2e": "wp-scripts test-e2e",
     "test:unit": "wp-scripts test-unit-js"
   },
