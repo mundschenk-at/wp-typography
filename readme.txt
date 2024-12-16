@@ -2,7 +2,7 @@
 Contributors: pputzer, kingjeffrey
 Tags: typography, hyphenation, smart quotes, formatting, widows, orphans, typogrify, quotes, prettify, small caps, diacritics
 Tested up to: 6.7
-Stable tag: 5.10.0
+Stable tag: 5.10.1
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
@@ -77,7 +77,10 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 
 == Changelog ==
 
-## 5.10.0 - December 15, 2024
+= 5.10.1 - December 16, 2024 =
+* _Bugfix_: A debug message intended for local use accidentally got into the build of 5.10.0.
+
+= 5.10.0 - December 15, 2024 =
 * _Bugfix_: Default styles were always loaded, even when `Include styling for CSS hooks` was unchecked.
 * _Bugfix_: No more `Function _load_textdomain_just_in_time was called incorrectly.` (present since WordPress 6.7).
 * _Bugfix_: Block Editor blocks and the sidebar extension have been split into separate assets to prevent issues with the widget editor (and customizer preview).
