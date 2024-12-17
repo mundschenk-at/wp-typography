@@ -365,7 +365,7 @@
 *   Prevent references to US non-profit organizations like `501(c)(3)` being replaced with the copyright symbol (props @randybruder).
 *   Added optional clean up of text copied to clipboard to prevent stray hyphens from showing on paste.
 *   Added CSS classes for smart fractions ("numerator", "denominator") and ordinal suffixes ("ordinal").
-*   Fixed « and » spacing when French punctuation style is enabled.
+*   Fixed Â« and Â» spacing when French punctuation style is enabled.
 *   Fixed `<title>` tag handling (no more `&shy;` and `<span>`tags, props @mpcube).
 *   [Preliminary API documentation](https://code.mundschenk.at/wp-typography/api/) has been added to the plugin website.
 
