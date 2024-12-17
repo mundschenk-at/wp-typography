@@ -27,7 +27,7 @@
 namespace WP_Typography\Data_Storage;
 
 /**
- * Implements an inteface to the object cache for wp-Typography.
+ * Implements an interface to the object cache for wp-Typography.
  *
  * @since 5.1.0
  *
