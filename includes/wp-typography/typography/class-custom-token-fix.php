@@ -50,7 +50,7 @@ class Custom_Token_Fix extends Abstract_Token_Fix {
 	/**
 	 * Creates a new fix instance.
 	 *
-	 * @param string $type The word type targetted by the fix, i.e. either `mixed_words`, 'compound_words`, `words`, or `other`.
+	 * @param string $type The word type targeted by the fix, i.e. either `mixed_words`, 'compound_words`, `words`, or `other`.
 	 *
 	 * @throws \InvalidArgumentException The exception is thrown if `$type` is any other string.
 	 */

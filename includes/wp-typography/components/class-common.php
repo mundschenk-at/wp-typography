@@ -65,7 +65,7 @@ class Common implements Plugin_Component {
 	private Integrations $integrations;
 
 	/**
-	 * Create a new instace.
+	 * Create a new instance.
 	 *
 	 * @since 5.7.0 Parameter $api added.
 	 *

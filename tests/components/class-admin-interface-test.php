@@ -46,7 +46,7 @@ use Mockery as m;
  * @coversDefaultClass \WP_Typography\Components\Admin_Interface
  * @usesDefaultClass \WP_Typography\Components\Admin_Interface
  *
- * This should be replaced by runClassInSeperateProcess (which currently is broken):
+ * This should be replaced by runClassInSeparateProcess (which currently is broken):
  * @runTestsInSeparateProcesses
  *
  * @uses ::__construct

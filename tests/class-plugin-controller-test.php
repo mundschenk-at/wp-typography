@@ -60,7 +60,7 @@ class Plugin_Controller_Test extends TestCase {
 	}
 
 	/**
-	 * Necesssary clean-up work.
+	 * Necessary clean-up work.
 	 */
 	protected function tear_down(): void {
 		// Reset singleton.

@@ -53,7 +53,7 @@ class Plugin_Controller {
 	/**
 	 * Sets up a new plugin controller instance.
 	 *
-	 * @since 5.7.0 Component parameters replaced with factory-cofigured array.
+	 * @since 5.7.0 Component parameters replaced with factory-configured array.
 	 *
 	 * @param Implementation     $api        The core API.
 	 * @param Plugin_Component[] $components An array of plugin components.

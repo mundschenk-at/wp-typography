@@ -46,7 +46,7 @@ class Block_Editor implements Plugin_Component {
 	private Implementation $api;
 
 	/**
-	 * Create a new instace.
+	 * Create a new instance.
 	 *
 	 * @param Implementation $api The core API.
 	 */

@@ -76,7 +76,7 @@ class Setup implements Plugin_Component {
 	private Options $options;
 
 	/**
-	 * Create a new instace of WP_Typography\Setup.
+	 * Create a new instance of WP_Typography\Setup.
 	 *
 	 * @since 5.6.0 Parameter $plugin_path removed.
 	 * @since 5.7.0 Parameter $api added.
@@ -113,7 +113,7 @@ class Setup implements Plugin_Component {
 		// Load default values for any new options.
 		$this->api->get_config();
 
-		// After get_config(), otherwhise previous options are overwritten.
+		// After get_config(), otherwise previous options are overwritten.
 		$this->api->set_default_options();
 	}
 

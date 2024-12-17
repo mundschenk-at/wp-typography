@@ -41,7 +41,7 @@ use Mockery as m;
 class WP_Typography_Singleton_Test extends TestCase {
 
 	/**
-	 * Necesssary clean-up work.
+	 * Necessary clean-up work.
 	 */
 	protected function tear_down(): void {
 
