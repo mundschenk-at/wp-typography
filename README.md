@@ -2,6 +2,7 @@
 
 ![Build Status](https://github.com/mundschenk-at/wp-typography/actions/workflows/ci.yml/badge.svg)
 [![Latest Stable Version](https://poser.pugx.org/mundschenk-at/wp-typography/v/stable)](https://packagist.org/packages/mundschenk-at/wp-typography)
+[![WordPress Plugin Version](https://img.shields.io/wordpress/plugin/v/wp-typography)](https://wordpress.org/plugins/wp-typography/)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=mundschenk-at_wp-typography&metric=alert_status)](https://sonarcloud.io/dashboard?id=mundschenk-at_wp-typography)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=mundschenk-at_wp-typography&metric=coverage)](https://sonarcloud.io/dashboard?id=mundschenk-at_wp-typography)
 [![License](https://poser.pugx.org/mundschenk-at/wp-typography/license)](https://packagist.org/packages/mundschenk-at/wp-typography)
