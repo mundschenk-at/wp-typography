@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2014-2024 Peter Putzer.
+ *  Copyright 2014-2025 Peter Putzer.
  *  Copyright 2009-2011 KINGdesk, LLC.
  *
  *  This program is free software; you can redistribute it and/or
@@ -331,7 +331,7 @@ class Implementation extends \WP_Typography {
 		if ( empty( $this->typo_settings ) ) {
 			$config    = $this->get_config();
 			$transient = 'php_settings_' . \md5( (string) \wp_json_encode( $config ) );
-			$settings  = $this->transients->get_large_object( $transient );
+			$settings  = $this->transients->get_large_object( $transient, [ Settings::class ] );
 
 			if ( ! $settings instanceof Settings ) {
 				// OK, we have to initialize the PHP_Typography instance manually.
@@ -552,7 +552,7 @@ class Implementation extends \WP_Typography {
 		// Initialize PHP_Typography instance.
 		if ( ! isset( $this->typography ) ) {
 			$transient = 'php_' . \md5( (string) \wp_json_encode( $config ) );
-			$typo      = $this->transients->get_large_object( $transient );
+			$typo      = $this->transients->get_large_object( $transient, [ PHP_Typography::class ] );
 
 			if ( ! $typo instanceof PHP_Typography ) {
 				// OK, we have to initialize the PHP_Typography instance manually.
@@ -568,7 +568,7 @@ class Implementation extends \WP_Typography {
 		// Also cache hyphenators (the pattern tries are expensive to build).
 		if ( $config[ Config::ENABLE_HYPHENATION ] && ! isset( $this->hyphenator_cache ) ) {
 			$transient    = 'php_hyphenator_cache';
-			$hyphen_cache = $this->transients->get_large_object( $transient );
+			$hyphen_cache = $this->transients->get_large_object( $transient, [ Hyphenator_Cache::class ] );
 
 			if ( ! $hyphen_cache instanceof Hyphenator_Cache ) {
 				$hyphen_cache = $this->typography->get_hyphenator_cache();
