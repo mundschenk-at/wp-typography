@@ -275,7 +275,7 @@ class WP_Typography_Implementation_Test extends TestCase {
 		];
 
 		$this->wp_typo->shouldReceive( 'get_config' )->once()->andReturn( $config );
-		$this->transients->shouldReceive( 'get_large_object' )->once()->with( m::type( 'string' ) )->andReturn( false );
+		$this->transients->shouldReceive( 'get_large_object' )->once()->with( m::type( 'string' ), [ Settings::class ] )->andReturn( false );
 		$this->wp_typo->shouldReceive( 'init_settings_from_options' )->once()->with( m::type( Settings::class ), $config );
 		$this->transients->shouldReceive( 'cache_object' )->once()->with( m::type( 'string' ), m::type( Settings::class ), 'settings' );
 

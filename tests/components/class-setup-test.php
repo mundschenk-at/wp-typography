@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2024 Peter Putzer.
+ *  Copyright 2017-2025 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -143,7 +143,7 @@ class Setup_Test extends TestCase {
 	 */
 	public function test_uninstall(): void {
 		Functions\expect( 'get_transient' )->atLeast()->once();
-		Functions\expect( 'set_transient' )->atLeast()->once();
+		Functions\expect( 'set_transient' )->atLeast()->once()->andReturn( true );
 
 		// Fake object cache used to shortcircuit Transients::invalidate.
 		Functions\expect( 'wp_using_ext_object_cache' )->atLeast()->once()->andReturn( true );

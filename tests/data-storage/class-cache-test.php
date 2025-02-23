@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2024 Peter Putzer.
+ *  Copyright 2017-2025 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -61,6 +61,7 @@ class Cache_Test extends TestCase {
 		$this->cache = m::mock( Cache::class )->makePartial();
 		$this->setValue( $this->cache, 'prefix', Cache::PREFIX, \Mundschenk\Data_Storage\Abstract_Cache::class );
 		$this->setValue( $this->cache, 'group', Cache::GROUP, \Mundschenk\Data_Storage\Cache::class );
+		$this->setValue( $this->cache, 'incrementor', 0, \Mundschenk\Data_Storage\Cache::class );
 		$this->setValue( $this->cache, 'incrementor_key', Cache::PREFIX . 'cache_incrementor', \Mundschenk\Data_Storage\Cache::class );
 	}
 
