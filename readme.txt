@@ -3,6 +3,8 @@ Contributors: pputzer, kingjeffrey
 Tags: typography, hyphenation, smart quotes, widows, typogrify
 Tested up to: 6.7
 Stable tag: 5.10.1
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Improve your web typography with: hyphenation, space control, intelligent character replacement, and CSS hooks.
 
