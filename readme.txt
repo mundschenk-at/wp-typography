@@ -77,6 +77,9 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 
 == Changelog ==
 
+= 5.11.0 - February 23, 2025 =
+* _Bugfix_: Don't crash when a runtime requirement is not met.
+
 = 5.10.1 - December 16, 2024 =
 * _Bugfix_: A debug message intended for local use accidentally got into the build of 5.10.0.
 
