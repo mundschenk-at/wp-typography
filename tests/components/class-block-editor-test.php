@@ -138,8 +138,8 @@ class Block_Editor_Test extends TestCase {
 	 * @covers ::register_sidebar_and_blocks
 	 */
 	public function test_register_sidebar_and_blocks(): void {
-		$plugin_url      = 'http://my_plugin/url';
-		$plugin_version  = '6.6.6';
+		$plugin_url     = 'http://my_plugin/url';
+		$plugin_version = '6.6.6';
 		// Simulate blocks dependencies.
 		$blocks_version  = 'fake blocks version';
 		$blocks_deps     = [ 'foo', 'bar' ];
