@@ -68,13 +68,13 @@ class Public_Interface implements Plugin_Component {
 	const CLEAN_CSS_PATTERNS = [
 		// Remove whitespace from beginning of line.
 		'`^\s+`Ssm',
-		// Remove block comments from begining of line.
+		// Remove block comments from beginning of line.
 		'`^\/\*(.+?)\*\/`Ssm',
 		// Remove block comments from middle/end of line.
 		'`((?:\s;)+)\/\*(.+?)\*\/`Ssm',
-		// Remove inline comments from middle/end of line and use \n as line seperator.
+		// Remove inline comments from middle/end of line and use \n as line separator.
 		'`((?:\s;)+)//(.+?)\R`Ssm',
-		// Replace multiple newlines/empty lines with single line seperator.
+		// Replace multiple newlines/empty lines with single line separator.
 		'`(^\R*|\R+)\s*\R+`Ssm',
 		// Remove newlines between rules.
 		'`;\R`Ssm',
@@ -90,7 +90,7 @@ class Public_Interface implements Plugin_Component {
 	];
 
 	/**
-	 * Create a new instace.
+	 * Create a new instance.
 	 *
 	 * @since 5.7.0
 	 *

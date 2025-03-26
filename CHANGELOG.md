@@ -80,7 +80,7 @@
     has been deprecated.
 *   _Change_: The HTML title handling has been reengineered, and consequently, the
     `title` variant of the `typo_disable_filtering` hook has been removed.
-*   _Change_: CSS class injection for ampersands, acronyms, and intial quotes is
+*   _Change_: CSS class injection for ampersands, acronyms, and initial quotes is
     now disabled by default.
 *   _Change_: The smart quotes preview in the settings page should now be easier to read.
 *   _Change_: All external PHP dependencies have been moved to the namespace
@@ -141,7 +141,7 @@
 *   _Bugfix_: The comma is now recognized as a decimal separator (e.g. `1,5`, in addition to `1.5`).
 *   _Bugfix_: Smart maths properly handles 2-digit years in dates.
 *   _Bugfix_: Smart diacritics won't try to "correct" the spelling of `Uber` anymore.
-*   _Bugfix_: French punctuation is now correctly applied to quotes preceeded or followed by round and square brackets.
+*   _Bugfix_: French punctuation is now correctly applied to quotes preceded or followed by round and square brackets.
 *   _Bugfix_: Smart quotes replacement could result in invalid unicode sequences in rare cases.
 
 ## 5.3.5 - May 10, 2018
@@ -399,14 +399,14 @@
 *   Added proper hyphenation of hyphenated compound words (e.g. `editor-in-chief`).
 *   Added partial support for styling hanging punctuation.
 *   Added adjustable limit for the number of cached text fragments.
-*   Changed behavior of caching setting: it needs to be explicitely enabled. Having it on by default caused too many problems on shared hosting environments.
+*   Changed behavior of caching setting: it needs to be explicitly enabled. Having it on by default caused too many problems on shared hosting environments.
 *   Started adding filters for programmatic adjustments to the typographic enhancements.
 *   Made main plugin class a singleton to ensure easier access for theme developers.
 *   Added the wp-Typography filter to additional WordPress hooks and completely disabled `wptexturize` (if Intelligent Character Replacement is enabled).
 
 ## 3.1.3 - January 13, 2016
-*   Pre­vent in­cor­rect re­place­ment of straight quotes with primes (e.g. `"number 6"` is not re­placed with `“num­ber 6″` but with `“num­ber 6”`).
-*   Fixed a bug that pre­vented header tags (`<h1>` … `<h6>`) that were set as “tags to ig­nore” from ac­tu­ally be­ing left alone by the plu­gin.
+*   Prevent incorrect replacemeant of straight quotes with primes (e.g. `"number 6"` is not replaced with `“number 6″` but with `“number 6”`).
+*   Fixed a bug that prevented header tags (`<h1>` … `<h6>`) that were set as “tags to ignore” from actually being left alone by the plugin.
 
 ## 3.1.2 - January 7, 2016
 *   Do not create (most) transients if Disable Caching is set. This prevents unchecked database growth on large installations.
