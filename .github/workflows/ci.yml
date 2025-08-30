@@ -94,8 +94,8 @@ jobs:
       - name: Extract version number
         run: |
           echo "PLUGIN_VERSION=$(sed -n 's/^.*Version: \(.*\)$/\1/p' wp-typography.php)" >> $GITHUB_ENV
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
+      - name: Official SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5.3.1
         with:
           args: >
             -Dsonar.projectVersion=${{ env.PLUGIN_VERSION }}
