@@ -97,7 +97,7 @@ class Multilingual_Support implements Plugin_Component {
 	protected \WP_Typography $api;
 
 	/**
-	 * Create a new instace.
+	 * Create a new instance.
 	 *
 	 * @since 5.7.0
 	 *
@@ -402,7 +402,7 @@ class Multilingual_Support implements Plugin_Component {
 			// The country code always consists of the 2 letters after the underscore/dash.
 			$country = (string) \substr( $locale, $first_dash + 1, 2 );
 
-			// Some locales also have another underscore/dash, followed by an arbitrary modifer.
+			// Some locales also have another underscore/dash, followed by an arbitrary modifier.
 			$second_dash = \strpos( $locale, '_', $first_dash + 1 );
 			$modifier    = $second_dash ? (string) \substr( $locale, $second_dash + 1 ) : '';
 		} else {
@@ -437,7 +437,7 @@ class Multilingual_Support implements Plugin_Component {
 		 *
 		 * @param string $match     The matched PHP-Typography language code. Default ''.
 		 * @param array  $languages {
-		 *    The list of available langugaes.
+		 *    The list of available languages.
 		 *
 		 *    @type string $code Language name.
 		 * }

@@ -93,7 +93,7 @@ abstract class WP_Typography {
 	 */
 	public static function get_instance(): WP_Typography {
 		if ( null === self::$instance ) {
-			throw new BadMethodCallException( 'WP_Typography::get_instance called without prior plugin intialization.' );
+			throw new BadMethodCallException( 'WP_Typography::get_instance called without prior plugin initialization.' );
 		}
 
 		return self::$instance;

@@ -79,7 +79,7 @@ abstract class Sections {
 				],
 				self::MATH_REPLACEMENTS  => [
 					'heading'     => \__( 'Math & Numbers', 'wp-typography' ),
-					'description' => \__( 'Not all number formattings are appropriate for all languages.', 'wp-typography' ),
+					'description' => \__( 'Not all number formatting are appropriate for all languages.', 'wp-typography' ),
 					'tab_id'      => Tabs::CHARACTER_REPLACEMENT,
 				],
 				self::LINE_WRAPPING      => [
