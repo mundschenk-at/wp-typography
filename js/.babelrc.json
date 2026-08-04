@@ -2,10 +2,7 @@
   "presets": [
     [
       "@babel/preset-env",
-      {
-        "bugfixes": true,
-        "spec": true,
-      }
+      {}
     ]
   ],
   "sourceType": "script",
