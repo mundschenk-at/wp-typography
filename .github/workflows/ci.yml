@@ -7,7 +7,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 env:
-  MAIN_PHP_VERSION: '8.3'
+  MAIN_PHP_VERSION: '8.5'
 jobs:
   unit-tests:
     name: Unit tests (PHP ${{ matrix.php-versions }})
@@ -16,11 +16,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-versions: ['7.4', '8.0', '8.1', '8.2', '8.3']
+        php-versions: ['8.1', '8.2', '8.3', '8.4', '8.5']
         experimental: [false]
-        include:
-          - php-versions: '8.4'
-            experimental: true
+        #include:
+        #  - php-versions: '8.4'
+        #    experimental: true
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
