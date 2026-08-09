@@ -2,7 +2,7 @@
 /**
  *  This file is part of PHP-Typography.
  *
- *  Copyright 2017-2024 Peter Putzer.
+ *  Copyright 2017-2026 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -69,7 +69,6 @@ abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 
 		$reflection = new \ReflectionClass( $classname );
 		$method     = $reflection->getMethod( $method_name );
-		$method->setAccessible( true );
 
 		return $method->invokeArgs( $instance, $parameters );
 	}
@@ -86,7 +85,6 @@ abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 	protected function invokeStaticMethod( $classname, $method_name, array $parameters = [] ) {
 		$reflection = new \ReflectionClass( $classname );
 		$method     = $reflection->getMethod( $method_name );
-		$method->setAccessible( true );
 
 		return $method->invokeArgs( null, $parameters );
 	}
@@ -101,7 +99,6 @@ abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 	protected function setStaticValue( $classname, $property_name, $value ): void {
 		$reflection = new \ReflectionClass( $classname );
 		$property   = $reflection->getProperty( $property_name );
-		$property->setAccessible( true );
 		$property->setValue( null, $value );
 	}
 
@@ -120,7 +117,6 @@ abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 
 		$reflection = new \ReflectionClass( $classname );
 		$property   = $reflection->getProperty( $property_name );
-		$property->setAccessible( true );
 		$property->setValue( $instance, $value );
 	}
 
@@ -135,7 +131,6 @@ abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 	protected function getStaticValue( $classname, $property_name ) {
 		$reflection = new \ReflectionClass( $classname );
 		$property   = $reflection->getProperty( $property_name );
-		$property->setAccessible( true );
 
 		return $property->getValue();
 	}
@@ -156,7 +151,6 @@ abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 
 		$reflection = new \ReflectionClass( $classname );
 		$property   = $reflection->getProperty( $property_name );
-		$property->setAccessible( true );
 
 		return $property->getValue( $instance );
 	}
@@ -188,7 +182,6 @@ abstract class TestCase extends \Mundschenk\PHPUnit_Cross_Version\TestCase {
 	protected function assertAttributeArrayNotHasKey( $key, $attribute, $instance, $message = '' ): void {
 		$ref  = new \ReflectionClass( \get_class( $instance ) );
 		$prop = $ref->getProperty( $attribute );
-		$prop->setAccessible( true );
 
 		$this->assertArrayNotHasKey( $key, $prop->getValue( $instance ), $message );
 	}
