@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2018-2024 Peter Putzer.
+ *  Copyright 2018-2026 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -75,14 +75,16 @@ class Custom_Token_Fix extends Abstract_Token_Fix {
 	/**
 	 * Apply the tweak to a given textnode.
 	 *
-	 * @param Token[]       $tokens   Required.
-	 * @param Settings      $settings Required.
-	 * @param bool          $is_title Optional. Default false.
-	 * @param \DOMText|null $textnode Optional. Default null.
+	 * @since 5.12.0 Parameter order changed to follow parent class.
+	 *
+	 * @param Token[]  $tokens   Required.
+	 * @param \DOMText $textnode Required.
+	 * @param Settings $settings Required.
+	 * @param bool     $is_title Required.
 	 *
 	 * @return Token[] An array of tokens.
 	 */
-	public function apply( array $tokens, Settings $settings, $is_title = false, ?\DOMText $textnode = null ): array {
+	public function apply( array $tokens, \DOMText $textnode, Settings $settings, $is_title ): array {
 
 		/**
 		 * Filters the tokenized text node content (limited to a certain "word" type).

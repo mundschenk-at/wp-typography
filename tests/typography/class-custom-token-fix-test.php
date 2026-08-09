@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2018-2024 Peter Putzer.
+ *  Copyright 2018-2026 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -97,6 +97,6 @@ class Custom_Token_Fix_Test extends \WP_Typography\Tests\TestCase {
 			->with( [], $node, $s, false )
 			->andReturn( [] );
 
-		$this->assertSame( [], $fix->apply( [], $s, false, $node ) );
+		$this->assertSame( [], $fix->apply( [], $node, $s, false ) );
 	}
 }
