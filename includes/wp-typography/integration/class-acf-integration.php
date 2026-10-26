@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2024 Peter Putzer.
+ *  Copyright 2017-2026 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -143,7 +143,7 @@ class ACF_Integration implements Plugin_Integration {
 		 *
 		 * @var array<string,mixed[]>
 		 */
-		$field_types = \acf_get_field_types();
+		$field_types = \acf_get_field_types(); // @phpstan-ignore function.void
 
 		foreach ( $field_types as $type => $settings ) {
 			\add_action( "acf/render_field_settings/type=$type", [ $this, 'add_field_setting' ], 1 );
@@ -225,7 +225,7 @@ class ACF_Integration implements Plugin_Integration {
 
 		// Check for newer versions.
 		if ( \function_exists( 'acf_get_setting' ) ) {
-			$acf_version = \intval( \acf_get_setting( 'version' ) );
+			$acf_version = \intval( \acf_get_setting( 'version' ) ); // @phpstan-ignore function.void
 		}
 
 		return $acf_version;

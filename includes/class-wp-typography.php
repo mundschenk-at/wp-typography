@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2014-2024 Peter Putzer.
+ *  Copyright 2014-2026 Peter Putzer.
  *  Copyright 2009-2011 KINGdesk, LLC.
  *
  *  This program is free software; you can redistribute it and/or
@@ -230,7 +230,7 @@ abstract class WP_Typography {
 		$hash = '';
 
 		foreach ( \explode( '.', $version ) as $part ) {
-			$hash .= \chr( 64 + (int) \preg_replace( '/[^0-9]/', '', $part ) );
+			$hash .= \chr( 64 + (int) \preg_replace( '/[^0-9]/', '', $part ) ); // @phpstan-ignore argument.type
 		}
 
 		return $hash;
