@@ -29,3 +29,6 @@ includes/_language_names.php
 
 # PHPUnit cache
 .phpunit.result.cache
+
+# VSCode support files
+.vscode
