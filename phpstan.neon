@@ -15,7 +15,7 @@ parameters:
 		- tests
 
 	scanFiles:
-		- vendor/paulthewalton/acf-stubs/acf-stubs.php
+		- vendor/php-stubs/acf-pro-stubs/acf-pro-stubs.php
 
 	excludePaths:
 		analyse:

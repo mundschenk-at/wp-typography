@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2024 Peter Putzer.
+ *  Copyright 2017-2026 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -59,11 +59,11 @@ class Transients_Test extends TestCase {
 		parent::set_up();
 
 		// Mock object without calling the constructor.
-		$this->transients = m::mock( Transients::class ) // @phpstan-ignore method.notFound
+		$this->transients = m::mock( Transients::class )
 			->shouldAllowMockingProtectedMethods()
 			->makePartial()
 			->shouldReceive( 'get' )->once()->with( m::pattern( '/incrementor/' ), true )->andReturn( 0 )
-			->shouldReceive( 'invalidate' )->once()
+			->shouldReceive( 'invalidate' )->once() // @phpstan-ignore method.notFound
 			->getMock();
 		$this->transients->__construct( [] );
 	}
@@ -79,9 +79,9 @@ class Transients_Test extends TestCase {
 		 *
 		 * @var Transients&m\MockInterface $transients
 		 */
-		$transients = m::mock( Transients::class )->shouldAllowMockingProtectedMethods()->makePartial() // @phpstan-ignore method.notFound
+		$transients = m::mock( Transients::class )->shouldAllowMockingProtectedMethods()->makePartial()
 			->shouldReceive( 'get' )->once()->with( m::pattern( '/incrementor/' ), true )->andReturn( 0 )
-			->shouldReceive( 'invalidate' )->once()
+			->shouldReceive( 'invalidate' )->once() // @phpstan-ignore method.notFound
 			->getMock();
 		$transients->__construct();
 

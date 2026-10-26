@@ -98,17 +98,17 @@ class WP_Typography_Implementation_Test extends TestCase {
 
 		// Mock WP_Typography\Data_Storage\Transients instance.
 		$this->transients = m::mock( Transients::class );
-		$this->transients // @phpstan-ignore method.notFound
+		$this->transients
 			->shouldReceive( 'get' )->byDefault()->andReturn( false )
-			->shouldReceive( 'get_large_object' )->byDefault()->andReturn( false )
+			->shouldReceive( 'get_large_object' )->byDefault()->andReturn( false ) // @phpstan-ignore method.notFound
 			->shouldReceive( 'set' )->andReturn( false )->byDefault()
 			->shouldReceive( 'set_large_object' )->andReturn( false )->byDefault();
 
 		// Mock WP_Typography\Data_Storage\Cache instance.
 		$this->cache = m::mock( Cache::class );
-		$this->cache  // @phpstan-ignore method.notFound
+		$this->cache
 			->shouldReceive( 'get' )->andReturn( false )->byDefault()
-			->shouldReceive( 'set' )->andReturn( false )->byDefault()
+			->shouldReceive( 'set' )->andReturn( false )->byDefault() // @phpstan-ignore method.notFound
 			->shouldReceive( 'invalidate' )->byDefault();
 
 		// Create instance.
@@ -1019,9 +1019,9 @@ class WP_Typography_Implementation_Test extends TestCase {
 
 		$typo_mock->shouldReceive( $process_method )->once()->with( $text, m::type( Settings::class ), $is_title, [ 'foo', 'bar' ] )->andReturn( 'processed text' );
 
-		$this->cache // @phpstan-ignore method.notFound
+		$this->cache
 			->shouldReceive( 'get' )->once()->andReturn( false )
-			->shouldReceive( 'set' )->once();
+			->shouldReceive( 'set' )->once(); // @phpstan-ignore method.notFound
 
 		$this->assertSame( 'processed text', $this->invokeMethod( $this->wp_typo, 'maybe_process_fragment', [ $text, $is_title, $is_feed, $settings ] ) );
 	}

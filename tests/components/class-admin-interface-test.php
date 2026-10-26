@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2024 Peter Putzer.
+ *  Copyright 2017-2026 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -109,9 +109,9 @@ class Admin_Interface_Test extends TestCase {
 		parent::set_up();
 
 		// Test fixtures.
-		$this->options = m::mock( Options::class ) // @phpstan-ignore method.notFound
+		$this->options = m::mock( Options::class )
 			->shouldReceive( 'get' )->andReturn( false )->byDefault()
-			->shouldReceive( 'set' )->andReturn( false )->byDefault()
+			->shouldReceive( 'set' )->andReturn( false )->byDefault() // @phpstan-ignore method.notFound
 			->getMock();
 		$this->api     = m::mock( Implementation::class );
 		$this->api->shouldReceive( 'get_version' )->andReturn( '6.6.6' )->byDefault();

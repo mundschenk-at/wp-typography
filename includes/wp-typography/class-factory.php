@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2024 Peter Putzer.
+ *  Copyright 2017-2026 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -248,7 +248,7 @@ class Factory extends Dice {
 	protected function get_plugin_version( $plugin_file ): string {
 		// Load version from plugin data.
 		if ( ! \function_exists( 'get_plugin_data' ) ) {
-			require_once \ABSPATH . 'wp-admin/includes/plugin.php'; // @phpstan-ignore requireOnce.fileNotFound
+			require_once \ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 
 		return \get_plugin_data( $plugin_file, false, false )['Version'];
