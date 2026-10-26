@@ -331,7 +331,7 @@ class Implementation extends \WP_Typography {
 		if ( empty( $this->typo_settings ) ) {
 			$config    = $this->get_config();
 			$transient = 'php_settings_' . \md5( (string) \wp_json_encode( $config ) );
-			$settings  = $this->transients->get_large_object( $transient, [ Settings::class ] );
+			$settings  = $this->transients->get_large_object( $transient, [] );
 
 			if ( ! $settings instanceof Settings ) {
 				// OK, we have to initialize the PHP_Typography instance manually.
@@ -552,7 +552,7 @@ class Implementation extends \WP_Typography {
 		// Initialize PHP_Typography instance.
 		if ( ! isset( $this->typography ) ) {
 			$transient = 'php_' . \md5( (string) \wp_json_encode( $config ) );
-			$typo      = $this->transients->get_large_object( $transient, [ PHP_Typography::class ] );
+			$typo      = $this->transients->get_large_object( $transient, [] );
 
 			if ( ! $typo instanceof PHP_Typography ) {
 				// OK, we have to initialize the PHP_Typography instance manually.
@@ -568,7 +568,7 @@ class Implementation extends \WP_Typography {
 		// Also cache hyphenators (the pattern tries are expensive to build).
 		if ( $config[ Config::ENABLE_HYPHENATION ] && ! isset( $this->hyphenator_cache ) ) {
 			$transient    = 'php_hyphenator_cache';
-			$hyphen_cache = $this->transients->get_large_object( $transient, [ Hyphenator_Cache::class ] );
+			$hyphen_cache = $this->transients->get_large_object( $transient, [] );
 
 			if ( ! $hyphen_cache instanceof Hyphenator_Cache ) {
 				$hyphen_cache = $this->typography->get_hyphenator_cache();
