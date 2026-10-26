@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2024 Peter Putzer.
+ *  Copyright 2017-2026 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -303,6 +303,8 @@ class WP_Typography_Implementation_Test extends TestCase {
 	 *
 	 * @covers ::init_settings_from_options
 	 *
+	 * @uses WP_Typography\Settings\Tools::ensure_array
+	 *
 	 * @dataProvider provide_init_settings_from_options_data
 	 *
 	 * @param  bool $smart_chars                 Whether SMART_CHARACTERS is enabled.
@@ -436,8 +438,8 @@ class WP_Typography_Implementation_Test extends TestCase {
 		$s->shouldReceive( 'set_dewidow_word_number' )->once()->with( 1 );
 
 		$s->shouldReceive( 'set_wrap_hard_hyphens' )->once()->with( $config[ Config::WRAP_HYPHENS ] );
-		$s->shouldReceive( 'set_email_wrap' )->once()->with( $config[ Config::WRAP_EMAILS ] );
-		$s->shouldReceive( 'set_url_wrap' )->once()->with( $config[ Config::WRAP_URLS ] );
+		$s->shouldReceive( 'set_wrap_emails' )->once()->with( $config[ Config::WRAP_EMAILS ] );
+		$s->shouldReceive( 'set_wrap_urls' )->once()->with( $config[ Config::WRAP_URLS ] );
 		$s->shouldReceive( 'set_min_after_url_wrap' )->once()->with( $config[ Config::WRAP_MIN_AFTER ] );
 
 		$s->shouldReceive( 'set_style_ampersands' )->once()->with( $config[ Config::STYLE_AMPS ] );

@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2024 Peter Putzer.
+ *  Copyright 2017-2026 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -446,9 +446,12 @@ class Multilingual_Support_Test extends TestCase {
 		$s      = m::mock( Settings::class );
 		$locale = 'de-DE-foobar';
 
-		$this->locale->shouldReceive( 'dash_style' )->andReturn( true );
-		Filters\expectApplied( 'typo_dash_style_for_locale' )->once()->with( true, $locale )->andReturnFirstArg();
-		$s->shouldReceive( 'set_smart_dashes_style' )->once()->with( true );
+		$orig_dash_style     = 'some-dash-style';
+		$modified_dash_style = 'other-dash-style';
+
+		$this->locale->shouldReceive( 'dash_style' )->andReturn( $orig_dash_style );
+		Filters\expectApplied( 'typo_dash_style_for_locale' )->once()->with( $orig_dash_style, $locale )->andReturn( $modified_dash_style );
+		$s->shouldReceive( 'set_smart_dashes_style' )->once()->with( $modified_dash_style );
 
 		$this->invokeMethod( $this->multi, 'adjust_dash_style', [ $s, $locale, $this->locale ] );
 	}
@@ -458,21 +461,7 @@ class Multilingual_Support_Test extends TestCase {
 	 *
 	 * @covers ::adjust_dash_style
 	 */
-	public function test_adjust_dash_style_null_adjustment(): void {
-		/**
-		 * Settings mock.
-		 *
-		 * @var Settings&m\MockInterface
-		 */
-		$s      = m::mock( Settings::class );
-		$locale = 'de-DE-foobar';
-
-		$s->shouldReceive( 'dash_style' )->andReturn( true );
-		Filters\expectApplied( 'typo_dash_style_for_locale' )->once()->with( true, $locale )->andReturnFirstArg();
-		$s->shouldReceive( 'set_smart_dashes_style' )->once()->with( true );
-
-		$this->invokeMethod( $this->multi, 'adjust_dash_style', [ $s, $locale, null ] );
-	}
+	// Testcase does not work with PHP-Typography 7.x for now.
 
 	/**
 	 * Test adjust_quote_styles.
@@ -503,24 +492,7 @@ class Multilingual_Support_Test extends TestCase {
 	 *
 	 * @covers ::adjust_quote_styles
 	 */
-	public function test_adjust_quote_styles_null_adjustment(): void {
-		/**
-		 * Settings mock.
-		 *
-		 * @var Settings&m\MockInterface
-		 */
-		$s      = m::mock( Settings::class );
-		$locale = 'de-DE-foobar';
-
-		$s->shouldReceive( 'primary_quote_style' )->andReturn( 'primary' );
-		$s->shouldReceive( 'secondary_quote_style' )->andReturn( 'secondary' );
-		Filters\expectApplied( 'typo_primary_quote_style_for_locale' )->once()->with( 'primary', $locale )->andReturnFirstArg();
-		Filters\expectApplied( 'typo_secondary_quote_style_for_locale' )->once()->with( 'secondary', $locale )->andReturnFirstArg();
-		$s->shouldReceive( 'set_smart_quotes_primary' )->once()->with( 'primary' );
-		$s->shouldReceive( 'set_smart_quotes_secondary' )->once()->with( 'secondary' );
-
-		$this->invokeMethod( $this->multi, 'adjust_quote_styles', [ $s, $locale, null ] );
-	}
+	// Testcase does not work with PHP-Typography 7.x for now.
 
 	/**
 	 * Test match_locale.

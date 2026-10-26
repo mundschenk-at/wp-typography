@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2019-2024 Peter Putzer.
+ *  Copyright 2019-2026 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -100,5 +100,27 @@ abstract class Tools {
 		}
 
 		return $new;
+	}
+
+	/**
+	 * Ensure that a given config value is an array.
+	 *
+	 * @since  5.12.0
+	 *
+	 * @param  string|string[] $config_value The configuration value.
+	 * @param  string          $separator    Optional. Default ' '.
+	 *
+	 * @return string[]
+	 *
+	 * @phpstan-param non-empty-string $separator
+	 */
+	public static function ensure_array( $config_value, string $separator = ' ' ): array {
+		if ( empty( $config_value ) ) {
+			$config_value = [];
+		} elseif ( \is_string( $config_value ) ) {
+			$config_value = \explode( $separator, $config_value );
+		}
+
+		return $config_value;
 	}
 }

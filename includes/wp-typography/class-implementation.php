@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2014-2025 Peter Putzer.
+ *  Copyright 2014-2026 Peter Putzer.
  *  Copyright 2009-2011 KINGdesk, LLC.
  *
  *  This program is free software; you can redistribute it and/or
@@ -607,9 +607,9 @@ class Implementation extends \WP_Typography {
 		$s->set_smart_quotes_secondary( $config[ Config::SMART_QUOTES_SECONDARY ] );
 
 		// Load the rest of the configuration variables into our Settings class.
-		$s->set_tags_to_ignore( $config[ Config::IGNORE_TAGS ] );
-		$s->set_classes_to_ignore( $config[ Config::IGNORE_CLASSES ] );
-		$s->set_ids_to_ignore( $config[ Config::IGNORE_IDS ] );
+		$s->set_tags_to_ignore( Settings_Tools::ensure_array( $config[ Config::IGNORE_TAGS ] ) );
+		$s->set_classes_to_ignore( Settings_Tools::ensure_array( $config[ Config::IGNORE_CLASSES ] ) );
+		$s->set_ids_to_ignore( Settings_Tools::ensure_array( $config[ Config::IGNORE_IDS ] ) );
 
 		// Remap problematic Unicode characters.
 		$hyphen = ! empty( $config[ Config::REMAP_HYPHEN ] ) ? U::HYPHEN_MINUS : U::HYPHEN;
@@ -651,7 +651,7 @@ class Implementation extends \WP_Typography {
 
 			$s->set_smart_diacritics( $config[ Config::SMART_DIACRITICS ] );
 			$s->set_diacritic_language( $config[ Config::DIACRITIC_LANGUAGES ] );
-			$s->set_diacritic_custom_replacements( $config[ Config::DIACRITIC_CUSTOM_REPLACEMENTS ] );
+			$s->set_diacritic_custom_replacements( Settings_Tools::ensure_array( $config[ Config::DIACRITIC_CUSTOM_REPLACEMENTS ] ) );
 		} else {
 			$s->set_smart_dashes( false );
 			$s->set_smart_ellipses( false );
@@ -672,18 +672,18 @@ class Implementation extends \WP_Typography {
 		$s->set_unit_spacing( $config[ Config::UNIT_SPACING ] );
 		$s->set_numbered_abbreviation_spacing( $config[ Config::NUMBERED_ABBREVIATIONS_SPACING ] );
 		$s->set_french_punctuation_spacing( $config[ Config::FRENCH_PUNCTUATION_SPACING ] );
-		$s->set_units( $config[ Config::UNITS ] );
+		$s->set_units( Settings_Tools::ensure_array( $config[ Config::UNITS ] ) );
 		$s->set_space_collapse( $config[ Config::SPACE_COLLAPSE ] );
 		$s->set_dewidow( $config[ Config::PREVENT_WIDOWS ] );
-		$s->set_max_dewidow_length( $config[ Config::WIDOW_MIN_LENGTH ] );
-		$s->set_max_dewidow_pull( $config[ Config::WIDOW_MAX_PULL ] );
+		$s->set_max_dewidow_length( (int) $config[ Config::WIDOW_MIN_LENGTH ] );
+		$s->set_max_dewidow_pull( (int) $config[ Config::WIDOW_MAX_PULL ] );
 		$s->set_dewidow_word_number( 1 );
 
 		// Line wrapping.
 		$s->set_wrap_hard_hyphens( $config[ Config::WRAP_HYPHENS ] );
-		$s->set_email_wrap( $config[ Config::WRAP_EMAILS ] );
-		$s->set_url_wrap( $config[ Config::WRAP_URLS ] );
-		$s->set_min_after_url_wrap( $config[ Config::WRAP_MIN_AFTER ] );
+		$s->set_wrap_emails( $config[ Config::WRAP_EMAILS ] );
+		$s->set_wrap_urls( $config[ Config::WRAP_URLS ] );
+		$s->set_min_after_url_wrap( (int) $config[ Config::WRAP_MIN_AFTER ] );
 
 		// CSS hooks.
 		$s->set_style_ampersands( $config[ Config::STYLE_AMPS ] );
@@ -691,7 +691,7 @@ class Implementation extends \WP_Typography {
 		$s->set_style_numbers( $config[ Config::STYLE_NUMBERS ] );
 		$s->set_style_hanging_punctuation( $config[ Config::STYLE_HANGING_PUNCTUATION ] );
 		$s->set_style_initial_quotes( $config[ Config::STYLE_INITIAL_QUOTES ] );
-		$s->set_initial_quote_tags( $config[ Config::INITIAL_QUOTE_TAGS ] );
+		$s->set_initial_quote_tags( Settings_Tools::ensure_array( $config[ Config::INITIAL_QUOTE_TAGS ] ) );
 
 		if ( $config[ Config::ENABLE_HYPHENATION ] ) {
 			$s->set_hyphenation( true );
@@ -700,10 +700,10 @@ class Implementation extends \WP_Typography {
 			$s->set_hyphenate_title_case( $config[ Config::HYPHENATE_TITLE_CASE ] );
 			$s->set_hyphenate_compounds( $config[ Config::HYPHENATE_COMPOUNDS ] );
 			$s->set_hyphenation_language( $config[ Config::HYPHENATE_LANGUAGES ] );
-			$s->set_min_length_hyphenation( $config[ Config::HYPHENATE_MIN_LENGTH ] );
-			$s->set_min_before_hyphenation( $config[ Config::HYPHENATE_MIN_BEFORE ] );
-			$s->set_min_after_hyphenation( $config[ Config::HYPHENATE_MIN_AFTER ] );
-			$s->set_hyphenation_exceptions( $config[ Config::HYPHENATE_EXCEPTIONS ] );
+			$s->set_min_length_hyphenation( (int) $config[ Config::HYPHENATE_MIN_LENGTH ] );
+			$s->set_min_before_hyphenation( (int) $config[ Config::HYPHENATE_MIN_BEFORE ] );
+			$s->set_min_after_hyphenation( (int) $config[ Config::HYPHENATE_MIN_AFTER ] );
+			$s->set_hyphenation_exceptions( Settings_Tools::ensure_array( $config[ Config::HYPHENATE_EXCEPTIONS ] ) );
 		} else { // save some cycles.
 			$s->set_hyphenation( false );
 		}

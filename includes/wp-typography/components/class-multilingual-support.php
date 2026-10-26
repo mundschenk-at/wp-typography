@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2017-2024 Peter Putzer.
+ *  Copyright 2017-2026 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -280,7 +280,7 @@ class Multilingual_Support implements Plugin_Component {
 	protected function adjust_dash_style( Settings $settings, $locale, ?Locale_Settings $adjustment = null ): void {
 
 		if ( null === $adjustment ) {
-			$dash_style = $settings->dash_style();
+			$dash_style = $settings->dash_style;
 		} else {
 			$dash_style = $adjustment->dash_style();
 		}
@@ -308,8 +308,8 @@ class Multilingual_Support implements Plugin_Component {
 	protected function adjust_quote_styles( Settings $settings, $locale, ?Locale_Settings $adjustment = null ): void {
 
 		if ( null === $adjustment ) {
-			$primary   = $settings->primary_quote_style();
-			$secondary = $settings->secondary_quote_style();
+			$primary   = $settings->primary_quote_style;
+			$secondary = $settings->secondary_quote_style;
 		} else {
 			$primary   = $adjustment->primary_quote_style();
 			$secondary = $adjustment->secondary_quote_style();
