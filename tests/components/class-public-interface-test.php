@@ -429,7 +429,7 @@ class Public_Interface_Test extends TestCase {
 	 * @covers ::clean_styles
 	 */
 	public function test_clean_styles_realworld(): void {
-		$input = <<<EOT
+		$input = <<<'EOT'
 		/*
 		 * Styled sub- and superscripts.
 		 */
