@@ -2,7 +2,7 @@
 /**
  *  This file is part of wp-Typography.
  *
- *  Copyright 2019-2024 Peter Putzer.
+ *  Copyright 2019-2026 Peter Putzer.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -91,5 +91,38 @@ class Tools_Test extends \WP_Typography\Tests\TestCase {
 		Functions\expect( '_deprecated_function' )->once()->with( m::type( 'string' ), '5.8.0' );
 
 		$this->assertSame( $expected, Tools::array_map_assoc( $callback, $array ) );
+	}
+
+	/**
+	 * Provides data for testing ensure_array.
+	 *
+	 * @return mixed[]
+	 */
+	public function provide_ensure_array_data(): array {
+		return [
+			'empty array'      => [ [], [], ' ' ],
+			'non-empty array'  => [ [ 'foo' ], [ 'foo' ], ' ' ],
+			'empty string'     => [ [], '', ' ' ],
+			'non-empty string' => [ [ 'foo', 'bar' ], 'foo bar', ' ' ],
+			'single string'    => [ [ 'foo' ], 'foo', ' ' ],
+			'custom separator' => [ [ 'foo', 'bar', 'baz' ], 'foo,bar,baz', ',' ],
+		];
+	}
+
+	/**
+	 * Tests ensure_array.
+	 *
+	 * @covers ::ensure_array
+	 *
+	 * @dataProvider provide_ensure_array_data
+	 *
+	 * @param  string[]         $expected     The expected result.
+	 * @param  string[]|string  $config_value The input value.
+	 * @param  non-empty-string $separator    The separator.
+	 *
+	 * @return void
+	 */
+	public function test_ensure_array( array $expected, $config_value, string $separator ): void {
+		$this->assertSame( $expected, Tools::ensure_array( $config_value, $separator ) );
 	}
 }
