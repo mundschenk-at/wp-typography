@@ -79,6 +79,10 @@ module.exports = function(grunt) {
               "build/vendor-scoped/dangoodman/**",
               "build/vendor-scoped/mundschenk-at/composer-for-wordpress/**"
             ],
+            "vendor-dev": [
+                "build/vendor-scoped/**/phpstan.neon",
+                "build/vendor-scoped/**/_typos.toml",
+            ],
         },
 
         "string-replace": {
@@ -463,6 +467,8 @@ module.exports = function(grunt) {
         'exec:composer_build:build-wordpress',
         // Clean up unused packages
         'clean:autoloader',
+        // Clean up dev artifacts
+        'clean:vendor-dev',
         'string-replace:vendor-dir',
         'string-replace:autoloader',
         'string-replace:autoloader-aliases',
