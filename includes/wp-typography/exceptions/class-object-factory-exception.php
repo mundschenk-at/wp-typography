@@ -27,7 +27,7 @@
 namespace WP_Typography\Exceptions;
 
 /**
- * An exception indicating that an error occured while setting up the object factory.
+ * An exception indicating that an error occurred while setting up the object factory.
  *
  * @since 5.8.0
  *

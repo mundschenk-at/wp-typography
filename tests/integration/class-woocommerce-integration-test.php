@@ -114,7 +114,7 @@ class WooCommerce_Integration_Test extends TestCase {
 	 *
 	 * @covers ::check
 	 *
-	 * @runInSeperateProcess
+	 * @runInSeparateProcess
 	 */
 	public function test_check_success(): void {
 		m::mock( 'WooCommerce' );

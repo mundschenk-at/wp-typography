@@ -164,7 +164,7 @@ class Admin_Interface implements Plugin_Component {
 	private array $triggered_notice = [];
 
 	/**
-	 * Create a new instace of admin backend.
+	 * Create a new instance of admin backend.
 	 *
 	 * @since 5.6.0  Parameters $basename and $plugin_path removed.
 	 * @since 5.7.0  Parameter $api added.

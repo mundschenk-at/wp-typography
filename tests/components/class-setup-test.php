@@ -123,7 +123,7 @@ class Setup_Test extends TestCase {
 	}
 
 	/**
-	 * Test deactive.
+	 * Test deactivate.
 	 *
 	 * @covers ::deactivate
 	 */

@@ -71,7 +71,7 @@ class WP_Typography_Test extends TestCase {
 	}
 
 	/**
-	 * Necesssary clean-up work.
+	 * Necessary clean-up work.
 	 */
 	protected function tear_down(): void {
 
@@ -137,7 +137,7 @@ class WP_Typography_Test extends TestCase {
 		$this->expect_exception( \BadMethodCallException::class );
 		$this->expect_exception_message_matches( '/Static method WP_Typography::foobar does not exist/' );
 
-		// Intentionally calling non-existant static method.
+		// Intentionally calling non-existent static method.
 		\WP_Typography::foobar(); // @phpstan-ignore staticMethod.notFound
 	}
 
