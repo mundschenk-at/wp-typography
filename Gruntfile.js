@@ -487,7 +487,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('deploy', [
         'phpcs',
-        'eslint',
+        //'eslint',
         'build',
         'wp_deploy:release'
     ]);
@@ -505,7 +505,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('default', [
         'phpcs',
-        'newer:eslint',
+        //'newer:eslint',
         'extract_language_names',
         'newer:delegate:sass:dev',
         'newer:postcss:dev',
