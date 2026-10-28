@@ -2,7 +2,7 @@
 Contributors: pputzer, kingjeffrey
 Tags: typography, hyphenation, smart quotes, widows, typogrify
 Tested up to: 7.1
-Stable tag: 5.12.0
+Stable tag: 5.12.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,10 @@ Remember, many more FAQs are are addressed the [wp-Typography website](https://c
 4. wp-Typography "Add CSS Hooks" settings page.
 
 == Changelog ==
+
+= 5.12.1 - October 28, 2026 =
+* _Change_: Custom diacritic replacements are temperarily disabled due.
+* _Bugfix_: Fixes crash with non-boolean settings values in the database.
 
 = 5.12.0 - October 27, 2026 =
 * _Change_: PHP minimum version increased to 8.1.

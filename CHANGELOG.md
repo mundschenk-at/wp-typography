@@ -1,5 +1,9 @@
 # Changes
 
+## 5.12.1 - October 28, 2026
+*   _Change_: Custom diacritic replacements are temperarily disabled due.
+*   _Bugfix_: Fixes crash with non-boolean settings values in the database.
+
 ## 5.12.0 - October 27, 2026
 *   _Change_: PHP minimum version increased to 8.1.
 *   _Change_: Updated to use version 7.0.0 of the composer package `mundschenk-at/php-typography`.
