@@ -634,22 +634,22 @@ class Implementation extends \WP_Typography {
 		$s->remap_character( U::NO_BREAK_NARROW_SPACE, $narrow_no_break_space );
 
 		if ( $config[ Config::SMART_CHARACTERS ] ) {
-			$s->set_smart_dashes( $config[ Config::SMART_DASHES ] );
-			$s->set_smart_ellipses( $config[ Config::SMART_ELLIPSES ] );
-			$s->set_smart_math( $config[ Config::SMART_MATH ] );
+			$s->set_smart_dashes( (bool) $config[ Config::SMART_DASHES ] );
+			$s->set_smart_math( (bool) $config[ Config::SMART_MATH ] );
+			$s->set_smart_ellipses( (bool) $config[ Config::SMART_ELLIPSES ] );
 
 			// Note: smart_exponents was grouped with smart_math for the WordPress plugin,
 			// but does not have to be done that way for other ports.
-			$s->set_smart_exponents( $config[ Config::SMART_MATH ] );
-			$s->set_smart_fractions( $config[ Config::SMART_FRACTIONS ] );
-			$s->set_smart_ordinal_suffix( $config[ Config::SMART_ORDINALS ] );
-			$s->set_smart_ordinal_suffix_match_roman_numerals( $config[ Config::SMART_ORDINALS_ROMAN_NUMBERS ] );
-			$s->set_smart_marks( $config[ Config::SMART_MARKS ] );
-			$s->set_smart_area_units( $config[ Config::SMART_AREA_UNITS ] );
-			$s->set_smart_quotes( $config[ Config::SMART_QUOTES ] );
+			$s->set_smart_exponents( (bool) $config[ Config::SMART_MATH ] );
+			$s->set_smart_fractions( (bool) $config[ Config::SMART_FRACTIONS ] );
+			$s->set_smart_ordinal_suffix( (bool) $config[ Config::SMART_ORDINALS ] );
+			$s->set_smart_ordinal_suffix_match_roman_numerals( (bool) $config[ Config::SMART_ORDINALS_ROMAN_NUMBERS ] );
+			$s->set_smart_marks( (bool) $config[ Config::SMART_MARKS ] );
+			$s->set_smart_area_units( (bool) $config[ Config::SMART_AREA_UNITS ] );
+			$s->set_smart_quotes( (bool) $config[ Config::SMART_QUOTES ] );
 			$s->set_smart_quotes_exceptions( $this->prepare_smart_quotes_exceptions( $config[ Config::SMART_QUOTES_EXCEPTIONS ] ) );
 
-			$s->set_smart_diacritics( $config[ Config::SMART_DIACRITICS ] );
+			$s->set_smart_diacritics( (bool) $config[ Config::SMART_DIACRITICS ] );
 			$s->set_diacritic_language( $config[ Config::DIACRITIC_LANGUAGES ] );
 			$s->set_diacritic_custom_replacements( Settings_Tools::ensure_array( $config[ Config::DIACRITIC_CUSTOM_REPLACEMENTS ] ) );
 		} else {
@@ -666,39 +666,39 @@ class Implementation extends \WP_Typography {
 		}
 
 		// Space control.
-		$s->set_single_character_word_spacing( $config[ Config::SINGLE_CHARACTER_WORD_SPACING ] );
-		$s->set_dash_spacing( $config[ Config::DASH_SPACING ] );
-		$s->set_fraction_spacing( $config[ Config::FRACTION_SPACING ] );
-		$s->set_unit_spacing( $config[ Config::UNIT_SPACING ] );
-		$s->set_numbered_abbreviation_spacing( $config[ Config::NUMBERED_ABBREVIATIONS_SPACING ] );
-		$s->set_french_punctuation_spacing( $config[ Config::FRENCH_PUNCTUATION_SPACING ] );
+		$s->set_single_character_word_spacing( (bool) $config[ Config::SINGLE_CHARACTER_WORD_SPACING ] );
+		$s->set_dash_spacing( (bool) $config[ Config::DASH_SPACING ] );
+		$s->set_fraction_spacing( (bool) $config[ Config::FRACTION_SPACING ] );
+		$s->set_unit_spacing( (bool) $config[ Config::UNIT_SPACING ] );
+		$s->set_numbered_abbreviation_spacing( (bool) $config[ Config::NUMBERED_ABBREVIATIONS_SPACING ] );
+		$s->set_french_punctuation_spacing( (bool) $config[ Config::FRENCH_PUNCTUATION_SPACING ] );
 		$s->set_units( Settings_Tools::ensure_array( $config[ Config::UNITS ] ) );
-		$s->set_space_collapse( $config[ Config::SPACE_COLLAPSE ] );
-		$s->set_dewidow( $config[ Config::PREVENT_WIDOWS ] );
+		$s->set_space_collapse( (bool) $config[ Config::SPACE_COLLAPSE ] );
+		$s->set_dewidow( (bool) $config[ Config::PREVENT_WIDOWS ] );
 		$s->set_max_dewidow_length( (int) $config[ Config::WIDOW_MIN_LENGTH ] );
 		$s->set_max_dewidow_pull( (int) $config[ Config::WIDOW_MAX_PULL ] );
 		$s->set_dewidow_word_number( 1 );
 
 		// Line wrapping.
-		$s->set_wrap_hard_hyphens( $config[ Config::WRAP_HYPHENS ] );
-		$s->set_wrap_emails( $config[ Config::WRAP_EMAILS ] );
-		$s->set_wrap_urls( $config[ Config::WRAP_URLS ] );
+		$s->set_wrap_hard_hyphens( (bool) $config[ Config::WRAP_HYPHENS ] );
+		$s->set_wrap_emails( (bool) $config[ Config::WRAP_EMAILS ] );
+		$s->set_wrap_urls( (bool) $config[ Config::WRAP_URLS ] );
 		$s->set_min_after_url_wrap( (int) $config[ Config::WRAP_MIN_AFTER ] );
 
 		// CSS hooks.
-		$s->set_style_ampersands( $config[ Config::STYLE_AMPS ] );
-		$s->set_style_caps( $config[ Config::STYLE_CAPS ] );
-		$s->set_style_numbers( $config[ Config::STYLE_NUMBERS ] );
-		$s->set_style_hanging_punctuation( $config[ Config::STYLE_HANGING_PUNCTUATION ] );
-		$s->set_style_initial_quotes( $config[ Config::STYLE_INITIAL_QUOTES ] );
+		$s->set_style_ampersands( (bool) $config[ Config::STYLE_AMPS ] );
+		$s->set_style_caps( (bool) $config[ Config::STYLE_CAPS ] );
+		$s->set_style_numbers( (bool) $config[ Config::STYLE_NUMBERS ] );
+		$s->set_style_hanging_punctuation( (bool) $config[ Config::STYLE_HANGING_PUNCTUATION ] );
+		$s->set_style_initial_quotes( (bool) $config[ Config::STYLE_INITIAL_QUOTES ] );
 		$s->set_initial_quote_tags( Settings_Tools::ensure_array( $config[ Config::INITIAL_QUOTE_TAGS ] ) );
 
 		if ( $config[ Config::ENABLE_HYPHENATION ] ) {
 			$s->set_hyphenation( true );
-			$s->set_hyphenate_headings( $config[ Config::HYPHENATE_HEADINGS ] );
-			$s->set_hyphenate_all_caps( $config[ Config::HYPHENATE_CAPS ] );
-			$s->set_hyphenate_title_case( $config[ Config::HYPHENATE_TITLE_CASE ] );
-			$s->set_hyphenate_compounds( $config[ Config::HYPHENATE_COMPOUNDS ] );
+			$s->set_hyphenate_headings( (bool) $config[ Config::HYPHENATE_HEADINGS ] );
+			$s->set_hyphenate_all_caps( (bool) $config[ Config::HYPHENATE_CAPS ] );
+			$s->set_hyphenate_title_case( (bool) $config[ Config::HYPHENATE_TITLE_CASE ] );
+			$s->set_hyphenate_compounds( (bool) $config[ Config::HYPHENATE_COMPOUNDS ] );
 			$s->set_hyphenation_language( $config[ Config::HYPHENATE_LANGUAGES ] );
 			$s->set_min_length_hyphenation( (int) $config[ Config::HYPHENATE_MIN_LENGTH ] );
 			$s->set_min_before_hyphenation( (int) $config[ Config::HYPHENATE_MIN_BEFORE ] );
