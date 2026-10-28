@@ -651,7 +651,7 @@ class Implementation extends \WP_Typography {
 
 			$s->set_smart_diacritics( (bool) $config[ Config::SMART_DIACRITICS ] );
 			$s->set_diacritic_language( $config[ Config::DIACRITIC_LANGUAGES ] );
-			$s->set_diacritic_custom_replacements( Settings_Tools::ensure_array( $config[ Config::DIACRITIC_CUSTOM_REPLACEMENTS ] ) );
+			$s->set_diacritic_custom_replacements( [] );
 		} else {
 			$s->set_smart_dashes( false );
 			$s->set_smart_ellipses( false );
